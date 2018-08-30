@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 
+var mongoose = require('mongoose');
 var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
@@ -24,6 +25,14 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
+
+mongoose.connect(process.env.MONGO_TOOL_CONNECTION, { useNewUrlParser: true }).then(
+  (res) => {
+   console.log("Connected to Database Successfully.")
+  }
+).catch(() => {
+  console.log("Conntection to database failed.");
+});; 
 
 server.listen(port);
 server.on('error', onError);
