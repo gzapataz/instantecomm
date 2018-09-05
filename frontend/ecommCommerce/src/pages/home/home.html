@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar *ngIf="!loggedIn" color="light">
+    <button ion-button color="secondary" small outline [navPush]="loginPage">Ingresar</button>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="loggedIn" color="light">
+    <button ion-button icon-left clear small color="dark">
+      <ion-icon name="contact"></ion-icon>
+      {{loggedIn}}
+    </button>
+    <button ion-button color="dark" outline small (click)="signOff()">Salir</button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+</ion-content>
