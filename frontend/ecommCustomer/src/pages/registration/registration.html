@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Registro</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+    <ion-label color="danger">Nombre</ion-label>
+    <ion-input type="text" [(ngModel)] = "reg.name" name="name"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="danger">Apellido</ion-label>
+    <ion-input type="text" [(ngModel)] = "reg.lastName" name="lastName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="danger">eMail</ion-label>
+    <ion-input type="email" [(ngModel)] = "reg.email" name="email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="danger">Password</ion-label>
+    <ion-input type="password" [(ngModel)] = "reg.password" name="password"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="danger">Repetir Password</ion-label>
+    <ion-input type="password" [(ngModel)] = "reg.password2" name="password2"></ion-input>
+  </ion-item>
+  <button ion-button color="danger" (click)="registerAccoun()">Registrar</button>
+
+</ion-content>

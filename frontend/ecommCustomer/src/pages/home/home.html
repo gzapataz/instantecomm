@@ -2,16 +2,17 @@
   <ion-navbar>
     <ion-title>Home</ion-title>
   </ion-navbar>
+  <ion-toolbar *ngIf="!loggedIn" color="light">
+    <button ion-button color="secondary" small outline [navPush]="loginPage">Ingresar</button>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="loggedIn" color="light">
+    <button ion-button icon-left clear small color="dark">
+      <ion-icon name="contact"></ion-icon>
+      {{loggedIn}}
+    </button>
+    <button ion-button color="dark" outline small (click)="signOff()">Salir</button>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
 </ion-content>
