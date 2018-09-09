@@ -14,6 +14,7 @@ var personSchema   = new Schema({
         type: String,
         enum: Object.values(IdType),
     },
+    identification: String,
     gender: {
         type: String,
         enum: Object.values(Gender),

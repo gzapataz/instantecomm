@@ -1,10 +1,10 @@
 'use strict'
 // Cargamos los modelos para usarlos posteriormente
 var Person = require('../models/person');
+var PersonService = require('../services/person');
 
 // Conseguir datos de todas las persona
 exports.getPersons = function(req, res){
-//buscar un documento por un  id
   Person.find((err, persons) => {
     if(err)
       return res.status(500).send({message: 'Error en la petición'});
@@ -16,23 +16,12 @@ exports.getPersons = function(req, res){
 }
 
 exports.setPerson = function(req, res){
-  var person = savePerson(req, res);
-  if(person != undefined && person != null && person != ""){
-    res.json({ message: 'Persona creada!' });
-  }
-}
-
-exports.savePerson = function(req, res){
-  var person = new Person();
-  person.personName = req.body.personName;
-  person.personLastName = req.body.personLastName;
-  person.idType = req.body.idType;
-  person.gender = req.body.gender;
-  person.birthdate = req.body.birthdate;
-  person.phone = req.body.phone;
-  person.mobile = req.body.mobile;
-  person.email = req.body.email;
-  // save the person and check for errors
-  person.save();
-  return person;
+  var person = PersonService.savePerson(req);
+  person.then((results) => {
+    if(results.errors)
+      return res.status(500).send({message: 'Ha ocurrido un error en la validación ' + results});
+    else{
+      return res.json(results);
+    }  
+  });
 }

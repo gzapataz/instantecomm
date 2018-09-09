@@ -2,7 +2,7 @@
 // Cargamos los modelos para usarlos posteriormente
 var Person = require('../models/person');
 
-exports.savePerson = function(req, res){
+exports.savePerson = async function(req){
   var person = new Person();
   person.personName = req.body.personName;
   person.personLastName = req.body.personLastName;
@@ -12,7 +12,11 @@ exports.savePerson = function(req, res){
   person.phone = req.body.phone;
   person.mobile = req.body.mobile;
   person.email = req.body.email;
-  // save the person and check for errors
-  person.save();
+  try{
+    await person.save();
+  }
+  catch(err){
+    return err;
+  }  
   return person;
 }
