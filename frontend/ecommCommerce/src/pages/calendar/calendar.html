@@ -1,18 +1,84 @@
-<!--
-  Generated template for the CalendarPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
+
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>Calendar</ion-title>
-  </ion-navbar>
 
 </ion-header>
 
+<ion-content>
 
-<ion-content padding>
+  <ion-row>
+    <ion-col col-3 >
+      <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">
+        <ion-item *ngFor="let service of servicesAvail" id={{service.id}}>{{service.name}}</ion-item>
+      </ion-list>
+    </ion-col>
+   <ion-col col-8 >
+     <ion-navbar color="primary">
+       <ion-title>
+         {{ viewTitle }}
+       </ion-title>
+       <ion-buttons end>
+         <button ion-button [disabled]="isToday" (click)="today()">Hoy</button>
+         <button ion-button (click)="changeMode('month')">Mes</button>
+         <button ion-button (click)="changeMode('week')">Semana</button>
+         <button ion-button (click)="changeMode('day')">Dia</button>
+       </ion-buttons>
+       <ion-buttons end>
+         <button ion-button icon-only (click)="addEvent()">
+           <ion-icon name="add"></ion-icon>
+         </button>
+       </ion-buttons>
+     </ion-navbar>
 
+       <ng-template #template1 let-allDayEvents="allDayEvents" let-eventTemplate="eventTemplate">
+         <div *ngFor="let displayEvent of allDayEvents; let eventIndex=index"
+              class="calendar-event" tappable
+              (click)="onEventSelected(displayEvent.event)"
+              [ngStyle]="{top: 25*eventIndex+'px',width: '100%',height:'125px'}">
+           <ng-template [ngTemplateOutlet]="eventTemplate"
+                        [ngTemplateOutletContext]="{displayEvent:displayEvent}">
+           </ng-template>
+           <ion-list dragula="SERVICE" [(dragulaModel)]="events">Prueba</ion-list>
+         </div>
+       </ng-template>
+
+       <calendar [dayviewAllDayEventSectionTemplate]="template"
+                 [eventSource]="eventSource"
+                 [calendarMode]="calendar.mode"
+                 [currentDate]="calendar.currentDate"
+                 (press)="calendar.onTimePress($event)"
+                 (click)="calendar.onClick()"
+                 (doubleclick)="calendar.onDoubleClick()"
+                 (mousemove)="calendar.onMove($event)"
+                 (mousedown)="calendar.onMoveDown($event)"
+                 (drop)="calendar.onDrop()"
+                 (dragover)="calendar.onDrop()"
+                 (onEventSelected)="onEventSelected($event)"
+                 (onTitleChanged)="onViewTitleChanged($event)"
+                 (onTimeSelected)="onTimeSelected($event)"
+                 [locale]="calendar.locale"
+                 step="30"
+                 startHour="9"
+                 endHour="20"
+                 class="calendar">
+       </calendar>
+
+       <ng-template #template let-day="day" let-eventTemplate="eventTemplate">
+         <div [ngClass]="{'calendar-event-wrap': events}" *ngIf="events"
+              [ngStyle]="{height: 25*day.events.length+'px'}">
+           <div dragula="SERVICE" *ngFor="let displayEvent of events" class="calendar-event" tappable
+                (click)="onViewTitleChanged('cambio')"
+                [ngStyle]="{top: 25*displayEvent.position+'px', width: 100*(displayEvent.endIndex-displayEvent.startIndex)+'%', height: '25px'}">
+             <ng-template [ngTemplateOutlet]="eventTemplate"
+                          [ngTemplateOutletContext]="{displayEvent:displayEvent}">
+             </ng-template>
+             <ion-list dragula="SERVICE" [(dragulaModel)]="events">Prueba</ion-list>
+           </div>
+         </div>
+       </ng-template>
+
+   </ion-col>
+  </ion-row>
 </ion-content>
+
+
