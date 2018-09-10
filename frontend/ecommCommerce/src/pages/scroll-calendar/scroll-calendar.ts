@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { mobiscroll, MbscCalendarOptions } from '@mobiscroll/angular';
+//import { mobiscroll, MbscCalendarOptions } from '@mobiscroll/angular';
 
+/*
 mobiscroll.settings = {
   theme: 'ios'
 };
+*/
 
 /**
  * Generated class for the ScrollCalendarPage page.
@@ -26,7 +28,7 @@ export class ScrollCalendarPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScrollCalendarPage');
   }
-
+/*
   demo: Date;
   max: Date;
   count: Date;
@@ -44,5 +46,5 @@ export class ScrollCalendarPage {
     select: 'multiple',
     counter: true
   };
-
+*/
 }
