@@ -45,7 +45,8 @@ exports.saveRatingProfessional =  async function(professional,rating){
  */
 exports.findProfessionalByEmail = function(email){
   var professional = Professional.findOne()
-  .populate({path: 'person', match: { email: { $gte: email }}});
+  .populate({path: 'person', match: { email: { $gte: email }}})
+  .populate('professionalGrades');
   return professional;
 }
 
@@ -53,6 +54,6 @@ exports.findProfessionalByEmail = function(email){
  * buscar todos los profesionales
  */
 exports.findAllProfessionals = function(){
-  var professionals = Professional.find().populate('person');
+  var professionals = Professional.find().populate('person').populate('professionalGrades');
   return professionals;
 }

@@ -70,13 +70,12 @@ exports.getClientByEmail = function(req, res){
  * @param {*} res 
  */
 exports.setRatingClientByEmail = function(req, res){
-
   var rating = RatingService.saveRating(req.body.ratingValue);
   rating.then((rate) => {
     var client = ClientService.findClientByEmail(req.body.email);
     client.exec().then((results) => {
-      var clienRating = ClientService.saveRatingClient(results,rate);
-      clienRating.then((results) => {
+      var clientRating = ClientService.saveRatingClient(results,rate);
+      clientRating.then((results) => {
         if(results.errors)
           return res.status(500).send({message: 'Ha ocurrido un error al agregar la calificación del cliente ' + results});
         else{
