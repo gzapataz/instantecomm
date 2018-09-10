@@ -1,5 +1,5 @@
 import { FormsModule } from '@angular/forms';
-import { MbscModule } from '@mobiscroll/angular';
+//import { MbscModule } from '@mobiscroll/angular';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -43,12 +43,12 @@ import { CustomerServiceProvider } from '../providers/customer-service/customer-
     MyApp,
     HomePage,
     CalendarPage,
-    ScrollCalendarPage,
+    //ScrollCalendarPage,
     TabsPage
   ],
   imports: [ 
     FormsModule, 
-    MbscModule,
+    //MbscModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
@@ -67,7 +67,7 @@ import { CustomerServiceProvider } from '../providers/customer-service/customer-
     MyApp,
     HomePage,
     CalendarPage,
-    ScrollCalendarPage,
+    //ScrollCalendarPage,
     TabsPage,
   ],
   providers: [

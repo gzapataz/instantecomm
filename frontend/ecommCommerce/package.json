@@ -27,7 +27,6 @@
         "@ionic-native/status-bar": "^4.11.0",
         "@ionic/pro": "2.0.3",
         "@ionic/storage": "2.1.3",
-        "@mobiscroll/angular": "https://npm.mobiscroll.com/@mobiscroll/angular-trial/-/angular-trial-4.3.2.tgz",
         "angular-calendar": "^0.26.0",
         "angular-calendar-week-hours-view": "^1.0.2",
         "angular-in-memory-web-api": "^0.5.4",
