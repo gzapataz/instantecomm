@@ -45,8 +45,7 @@ exports.saveRatingProfessional =  async function(professional,rating){
  */
 exports.findProfessionalByEmail = function(email){
   var professional = Professional.findOne()
-  .populate({path: 'person', match: { email: { $gte: email }}})
-  .populate('professionalGrades');
+  .populate({path: 'person', match: { email: { $gte: email }}}).populate('professionalGrades');
   return professional;
 }
 

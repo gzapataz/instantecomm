@@ -21,8 +21,8 @@ var personSchema   = new Schema({
     },
     birthdate: { type: Date },
     creationDate:{ type: Date, default: Date.now },
-    phone: Number,
-    mobile: Number,
+    phone: String,
+    mobile: String,
     email: { type: String, required: true}
 });
 

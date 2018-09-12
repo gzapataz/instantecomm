@@ -28,7 +28,6 @@ exports.saveClinic = async function(req){
  */
 exports.saveProfessionalClinic =  async function(clinic,professional){
   try{
-    console.log(professional);
     return await Clinic.findOneAndUpdate(
       {_id : clinic._id},
       {$addToSet: {professionals: professional}},
