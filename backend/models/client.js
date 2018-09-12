@@ -14,12 +14,11 @@ var clientSchema   = new Schema({
     person: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Person',
-
     },
-    clientGrades:[{
+    /*clientGrades:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Rating',
-    }],
+    }],*/
     uid: String
 });
 

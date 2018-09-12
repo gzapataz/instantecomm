@@ -16,10 +16,10 @@ var professionalSchema   = new Schema({
         ref: 'Person',
 
     },
-    professionalGrades:[{
+    /**professionalGrades:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Rating',
-    }],
+    }],*/
     uid: String
 });
 

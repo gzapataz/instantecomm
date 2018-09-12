@@ -45,8 +45,7 @@ exports.saveRatingClient =  async function(client,rating){
  */
 exports.findClientByEmail = function(email){
   var client = Client.findOne()
-  .populate({path: 'person', match: { email: { $gte: email }}})
-  .populate('clientGrades');
+  .populate({path: 'person', match: { email: { $gte: email }}}).populate('clientGrades');
   return client;
 }
 

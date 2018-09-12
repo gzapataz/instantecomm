@@ -1,9 +1,10 @@
 //idType.js
 
 const IdType = Object.freeze({
-    CEDULA: "CC",
-    TARJETA_IDENTIDAD: "TI",
-    CEDULA_EXTRANJERIA: "CE",
+    CEDULA: "Cédula",
+    TARJETA_IDENTIDAD: "Tarjeta de Identidad",
+    CEDULA_EXTRANJERIA: "Cédula de Extranjería",
+    CEDULA_EXTRANJERIA: "Registro Civil"
   });
 
 module.exports =  IdType;
