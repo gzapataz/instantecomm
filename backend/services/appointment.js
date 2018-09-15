@@ -1,6 +1,7 @@
 'use strict'
 // Cargamos los modelos para usarlos posteriormente
 var Appointment = require('../models/appointment');
+var ObjectID = require('mongodb').ObjectID;
 
 /**
  * Guardar una cita.
@@ -8,7 +9,7 @@ var Appointment = require('../models/appointment');
  */
 exports.saveAppointment = async function(req){
   var appointment = new Appointment();
-  appointment._id          = req.body._id;
+  appointment._id          = new ObjectID(req.body.idAppointment);
   appointment.initialDate  = req.body.initialDate;
   appointment.finalDate    = req.body.finalDate;
   appointment.durationTime = req.body.durationTime;

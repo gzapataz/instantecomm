@@ -2,6 +2,7 @@
 // Cargamos los controladores para usarlos posteriormente
 var ProfessionalScheduleService = require('../services/professionalSchedule');
 var AppointmentService = require('../services/appointment');
+var ProfessionalService = require('../services/professional');
 
 /**
  * Conseguir datos de todas las citas
@@ -62,18 +63,18 @@ exports.getProfessionalScheduleBy_id = function(req, res){
  * @param {*} res 
  */
 exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
-  var appointment = AppointmentService.findAppointmentBy_id(req.body.idAppointment);
-  appointment.then((appoint) => {
-    var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.body._id);
-    professionalSchedule.exec().then((results) => {
-      var professionalSchedule = ProfessionalScheduleService.saveProfessionalScheduleAppointment(results,appoint);
-      professionalSchedule.then((results) => {
-        if(results.errors)
-          return res.status(500).send({message: 'Ha ocurrido un error al agregar una cita a la agenda ' + results});
-        else{
-          res.json(results); 
-        }       
-      });  
+    var appointment = AppointmentService.saveAppointment(req);
+    appointment.then((appoint) => {
+      var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.body.idSchedule);
+      professionalSchedule.exec().then((results) => {
+        var professionalSchedule = ProfessionalScheduleService.saveProfessionalScheduleAppointment(results,appoint);
+        professionalSchedule.then((results) => {
+          if(results.errors)
+            return res.status(500).send({message: 'Ha ocurrido un error al agregar una cita a la agenda ' + results});
+          else{
+            res.json(results); 
+          }       
+        });  
+      });
     });
-  });
 }

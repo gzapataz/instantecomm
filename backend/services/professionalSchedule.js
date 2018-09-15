@@ -42,7 +42,6 @@ exports.saveProfessionalScheduleAppointment =  async function(professionalSchedu
  * @param {*} _id 
  */
 exports.findProfessionalScheduleBy_id = function(_id){
-  console.log("---->"+_id);
   var professionalSchedule = ProfessionalSchedule.findOne({_id:_id})
   .populate({path: 'appointments', populate: {path: 'professional', populate: {path: 'person'}}})
   .populate({path: 'appointments', populate: {path: 'client', populate: {path: 'person'}}})
