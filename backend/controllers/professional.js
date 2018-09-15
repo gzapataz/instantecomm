@@ -10,17 +10,22 @@ var RatingService = require('../services/rating');
  * @param {*} res 
  */
 exports.getProfessionals = function(req, res){
-var professionals = ProfessionalService.findAllProfessionals();
-professionals.exec(
-  (err, professionals) => {
-    if(err)
-      return res.status(500).send({message: 'Error en la petición ' + err});
-    if(!professionals) 
-      return res.status(404).send({message: 'No existen profesionales creados'});
-    else
-      return res.json(professionals);
+  if(req.query.email  == undefined){   
+    var professionals = ProfessionalService.findAllProfessionals();
+    professionals.exec(
+      (err, professionals) => {
+        if(err)
+          return res.status(500).send({message: 'Error en la petición ' + err});
+        if(!professionals) 
+          return res.status(404).send({message: 'No existen profesionales creados'});
+        else
+          return res.json(professionals);
+      }
+    );
   }
-)
+  else{
+    exports.getProfessionalByEmail(req, res);
+  }  
 }
 
 /**
@@ -53,7 +58,24 @@ exports.setProfessional = function(req, res){
  * @param {*} res 
  */
 exports.getProfessionalByEmail = function(req, res){
-  var professional = ProfessionalService.findProfessionalByEmail(req.params.email);
+  var professional = ProfessionalService.findProfessionalByEmail(req.query.email);
+  professional.exec(function(err, professional) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!professional) 
+      return res.status(404).send({message: 'No existe este profesional'});
+    else
+      return res.json(professional);
+  });
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getProfessionalBy_id = function(req, res){
+  var professional = ProfessionalService.findProfessionalBy_id(req.params._id);
   professional.exec(function(err, professional) {
     if(err)
       return res.status(500).send({message: 'Error en la petición: ' + err});

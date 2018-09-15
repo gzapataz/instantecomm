@@ -5,6 +5,6 @@ var router = express.Router();
 router.get('/', ClientController.getClients);
 router.post('/', ClientController.setClient);
 router.post('/rating/', ClientController.setRatingClientByEmail);
-router.get('/:email', ClientController.getClientByEmail);
+router.get('/:_id', ClientController.getClientBy_id);
 
 module.exports = router;

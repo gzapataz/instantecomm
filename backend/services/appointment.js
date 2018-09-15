@@ -8,6 +8,7 @@ var Appointment = require('../models/appointment');
  */
 exports.saveAppointment = async function(req){
   var appointment = new Appointment();
+  appointment._id          = req.body._id;
   appointment.initialDate  = req.body.initialDate;
   appointment.finalDate    = req.body.finalDate;
   appointment.durationTime = req.body.durationTime;
@@ -49,7 +50,7 @@ exports.saveAppointment = async function(req){
  * @param {*} _id 
  */
 exports.findAppointmentBy_id = function(_id){
-  var appointment = Appointment.findOne()
+  var appointment = Appointment.findOne({_id:_id})
   .populate(
     {
       path: 'client', populate: {path:'person'}

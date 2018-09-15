@@ -14,6 +14,7 @@ var clinicsRouter = require('./routes/clinic');
 var servicesRouter = require('./routes/service');
 var serviceConditionsRouter = require('./routes/serviceCondition');
 var appointmentsRouter = require('./routes/appointment');
+var professionalsScheduleRouter = require('./routes/professionalSchedule');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use("/clinics", clinicsRouter);
 app.use("/services", servicesRouter);
 app.use("/serviceConditions", serviceConditionsRouter);
 app.use("/appointments", appointmentsRouter);
+app.use("/professionalsSchedule", professionalsScheduleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

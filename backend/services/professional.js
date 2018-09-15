@@ -50,6 +50,17 @@ exports.findProfessionalByEmail = function(email){
 }
 
 /**
+ * Buscar profesional por _id
+ * @param {*} _id 
+ */
+exports.findProfessionalBy_id = function(_id){
+  var professional = Professional.findOne({_id:_id})
+  .populate('person').populate('professionalGrades');
+  return professional;
+}
+
+
+/**
  * buscar todos los profesionales
  */
 exports.findAllProfessionals = function(){
