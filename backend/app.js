@@ -42,16 +42,12 @@ app.use("/professionalsSchedule", professionalsScheduleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// more routes for our API will happen here
-app.use(function(req, res, next) {
+  console.log("Configuración permisos");
   res.header('Access-Control-Allow-Origin', "*");
   res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-})
+  next(createError(404));
+});
 
 // error handler
 app.use(function(err, req, res, next) {
