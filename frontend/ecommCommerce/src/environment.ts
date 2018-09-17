@@ -7,3 +7,8 @@ export const firebaseConfig = {
   messagingSenderId: "342856925244"
 };
 
+export const environment = {
+  production: false,
+  baseUrl: 'https://ecommercealinstante.herokuapp.com'
+  //baseUrl: 'api'
+};

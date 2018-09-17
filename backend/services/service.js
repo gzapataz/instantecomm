@@ -44,7 +44,7 @@ exports.saveServiceConditionService =  async function(service,serviceCondition){
  * @param {*} _id 
  */
 exports.findServiceBy_id = function(_id){
-  var service = Service.findOne()
+  var service = Service.findOne({_id:_id})
   .populate({path: 'serviceConditions', match: { _id: { $gte: _id }}})
   return service;
 }

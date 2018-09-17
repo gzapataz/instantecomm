@@ -12,6 +12,7 @@ exports.saveProfessional = async function(req, person){
   professional.status = req.body.status;
   professional.person = person;
   professional.uid    = req.body.uid;
+  professional.professionalSchedule = req.body.professionalSchedule; 
   try{
     await professional.save();
   }
@@ -50,9 +51,30 @@ exports.findProfessionalByEmail = function(email){
 }
 
 /**
+ * Buscar profesional por _id
+ * @param {*} _id 
+ */
+exports.findProfessionalBy_id = function(_id){
+  var professional = Professional.findOne({_id:_id})
+  .populate('person').populate('professionalGrades').populate('professionalSchedule')
+  .populate(
+    {
+      path: 'professionalSchedule', populate: {path:'appointments', populate:{path: 'service'}}
+    }
+  );
+  return professional;
+}
+
+
+/**
  * buscar todos los profesionales
  */
 exports.findAllProfessionals = function(){
-  var professionals = Professional.find().populate('person').populate('professionalGrades');
+  var professionals = Professional.find().populate('person').populate('professionalGrades')
+  .populate(
+    {
+      path: 'professionalSchedule', populate: {path:'appointments', populate:{path: 'service'}}
+    }
+  );
   return professionals;
 }

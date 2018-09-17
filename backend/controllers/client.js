@@ -10,17 +10,22 @@ var RatingService = require('../services/rating');
  * @param {*} res 
  */
 exports.getClients = function(req, res){
-var clients = ClientService.findAllClients();
-clients.exec(
-  (err, clients) => {
-    if(err)
-      return res.status(500).send({message: 'Error en la petición ' + err});
-    if(!clients) 
-      return res.status(404).send({message: 'No existen clientes creados'});
-    else
-      return res.json(clients);
+  if(req.query.email  == undefined){  
+    var clients = ClientService.findAllClients();
+    clients.exec(
+      (err, clients) => {
+        if(err)
+          return res.status(500).send({message: 'Error en la petición ' + err});
+        if(!clients) 
+          return res.status(404).send({message: 'No existen clientes creados'});
+        else
+          return res.json(clients);
+      }
+    )
   }
-)
+  else{
+    exports.getClientByEmail(req, res);
+  }
 }
 
 /**
@@ -53,7 +58,24 @@ exports.setClient = function(req, res){
  * @param {*} res 
  */
 exports.getClientByEmail = function(req, res){
-  var client = ClientService.findClientByEmail(req.params.email);
+  var client = ClientService.findClientByEmail(req.query.email);
+  client.exec(function(err, client) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!client) 
+      return res.status(404).send({message: 'No existe este cliente'});
+    else
+      return res.json(client);
+  });
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getClientBy_id = function(req, res){
+  var client = ClientService.findClientBy_id(req.params._id);
   client.exec(function(err, client) {
     if(err)
       return res.status(500).send({message: 'Error en la petición: ' + err});

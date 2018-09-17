@@ -62,7 +62,7 @@ exports.getServiceBy_id = function(req, res){
  * @param {*} res 
  */
 exports.setServiceConditionServiceBy_id = function(req, res){
-  var serviceCondition = ServiceConditionService.saveServiceCondition(req.body.description);
+  var serviceCondition = ServiceConditionService.findServiceConditionBy_id(req.body._id);
   serviceCondition.then((condition) => {
     var service = ServiceService.findServiceBy_id(req.body._id);
     service.exec().then((results) => {
