@@ -42,12 +42,14 @@ import { ServiceServiceProvider } from '../providers/service-service/service-ser
 import { CustomerServiceProvider } from '../providers/customer-service/customer-service';
 import { MessageServiceProvider } from '../providers/message-service/message-service';
 import { AppointmentServiceProvider } from '../providers/appointment-service/appointment-service';
+import { CustomerPage } from "../pages/customer/customer";
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     CalendarPage,
+    CustomerPage,
     //ScrollCalendarPage,
     TabsPage
   ],
@@ -73,6 +75,7 @@ import { AppointmentServiceProvider } from '../providers/appointment-service/app
     MyApp,
     HomePage,
     CalendarPage,
+    CustomerPage,
     //ScrollCalendarPage,
     TabsPage,
   ],
