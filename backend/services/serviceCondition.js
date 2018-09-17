@@ -13,3 +13,12 @@ exports.saveServiceCondition = async function(description){
   }  
   return serviceCondition;
 }
+
+/**
+ * Buscar condiciones de servicio por _id
+ * @param {*} _id 
+ */
+exports.findServiceConditionBy_id = function(_id){
+  var serviceCondition = serviceCondition.findOne({_id:_id});
+  return serviceCondition;
+}

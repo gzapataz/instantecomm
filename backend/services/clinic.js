@@ -28,7 +28,6 @@ exports.saveClinic = async function(req){
  */
 exports.saveProfessionalClinic =  async function(clinic,professional){
   try{
-    console.log(professional);
     return await Clinic.findOneAndUpdate(
       {_id : clinic._id},
       {$addToSet: {professionals: professional}},
@@ -45,7 +44,7 @@ exports.saveProfessionalClinic =  async function(clinic,professional){
  * @param {*} _id 
  */
 exports.findClinicBy_id = function(_id){
-  var clinic = Clinic.findOne()
+  var clinic = Clinic.findOne({_id:_id})
   .populate({path: 'professionals', match: { _id: { $gte: _id }}})
   .populate(
     {
