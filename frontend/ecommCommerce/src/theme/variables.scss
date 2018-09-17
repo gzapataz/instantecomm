@@ -12,7 +12,7 @@ $font-path: "../assets/fonts";
 $app-direction: ltr;
 
 
-@import "ionic.globals";
+@import "../../node_modules/ionic-angular/themes/ionic.globals";
 
 
 // Shared Variables
@@ -40,7 +40,7 @@ $card-md-margin-left: 10px;
 $card-md-margin-right: 10px;
 
 $colors: (
-  primary: #ebedf2,
+  primary: #88888d,
   secondary: #49db21,
   danger:     #f53d3d,
   light:      #f4f4f4,
@@ -76,7 +76,7 @@ $colors: (
 // so that the above variables are used and Ionic's
 // default are overridden.
 
-@import "ionic.theme.default";
+@import "../../node_modules/ionic-angular/themes/ionic.theme.default";
 
 
 // Ionicons
@@ -84,11 +84,11 @@ $colors: (
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/ionicons/
 
-@import "ionic.ionicons";
+@import "../../node_modules/ionic-angular/themes/ionic.ionicons";
 
 
 // Fonts
 // --------------------------------------------------
 
-@import "roboto";
-@import "noto-sans";
+@import "../../www/assets/fonts/roboto";
+@import "../../www/assets/fonts/noto-sans";

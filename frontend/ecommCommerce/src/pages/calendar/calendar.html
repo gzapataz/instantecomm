@@ -1,22 +1,23 @@
 
 
 <ion-header>
-
 </ion-header>
 
 <ion-content>
-
+  <customer-search (messageEvent)="receiveMessage($event)"></customer-search>
   <ion-row>
-    <ion-col col-3 >
-      <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">
-        <ion-item *ngFor="let service of servicesAvail" id={{service.id}}>{{service.name}}</ion-item>
-      </ion-list>
-    </ion-col>
-   <ion-col col-8 >
-     <ion-navbar color="primary">
+    <div *ngIf="platform.is('tablet') || platform.is('core')">
+      <ion-col col-4 col-md-4 col-lg-6 >
+        <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">
+          <ion-item *ngFor="let service of servicesAvail" id={{service.id}}>{{service.name}}</ion-item>
+        </ion-list>
+      </ion-col>
+    </div>
+      <ion-col col-12 col-sm-12 col-md-8 col-lg-8>
        <ion-title>
          {{ viewTitle }}
        </ion-title>
+     <ion-navbar color="primary">
        <ion-buttons end>
          <button ion-button [disabled]="isToday" (click)="today()">Hoy</button>
          <button ion-button (click)="changeMode('month')">Mes</button>

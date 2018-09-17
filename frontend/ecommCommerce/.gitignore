@@ -2,6 +2,7 @@
 # http://git-scm.com/docs/gitignore
 
 GoogleService-Info.plist
+environment.ts
 
 *~
 *.sw[mnpcod]

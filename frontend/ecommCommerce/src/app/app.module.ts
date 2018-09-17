@@ -17,6 +17,9 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgCalendarModule  } from 'ionic2-calendar';
 import { HttpClientModule } from '@angular/common/http';
 
+import { ComponentsModule } from "../components/components.module";
+import { CustomerSearchComponent } from "../components/customer-search/customer-search";
+
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 
@@ -37,6 +40,8 @@ import { CustomDateFormatterProvider } from '../providers/custom-date-formatter/
 import { ScrollCalendarPage } from "../pages/scroll-calendar/scroll-calendar";
 import { ServiceServiceProvider } from '../providers/service-service/service-service';
 import { CustomerServiceProvider } from '../providers/customer-service/customer-service';
+import { MessageServiceProvider } from '../providers/message-service/message-service';
+import { AppointmentServiceProvider } from '../providers/appointment-service/appointment-service';
 
 @NgModule({
   declarations: [
@@ -59,8 +64,9 @@ import { CustomerServiceProvider } from '../providers/customer-service/customer-
     BrowserAnimationsModule,
     NgCalendarModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {dataEncapsulation: false})
+    //HttpClientInMemoryWebApiModule,
+    //HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {dataEncapsulation: false}),
+    ComponentsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -79,8 +85,10 @@ import { CustomerServiceProvider } from '../providers/customer-service/customer-
     CustomEventTittleFormatterProvider,
     CustomDateFormatterProvider,
     ServiceServiceProvider,
-    CustomerServiceProvider
-
+    CustomerServiceProvider,
+    MessageServiceProvider,
+    CustomerSearchComponent,
+    AppointmentServiceProvider
   ]
 })
 export class AppModule {}

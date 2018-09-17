@@ -4,9 +4,15 @@ import { Observable } from 'rxjs';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 import { ServiceClass } from "../../classes/service-class";
+import { MessageServiceProvider } from "../message-service/message-service";
+import { environment } from "../../environment";
 
 import { SERVICES } from '../../mock/services-mock';
 
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 /*
   Generated class for the ServiceServiceProvider provider.
@@ -17,15 +23,20 @@ import { SERVICES } from '../../mock/services-mock';
 @Injectable()
 export class ServiceServiceProvider {
 
-  serviceUrl = 'api/services';
+  serviceUrl = environment.baseUrl + '/services';
 
-  constructor(public http: HttpClient) {
+
+  constructor(public http: HttpClient, private messageService: MessageServiceProvider) {
     console.log('Hello ServiceServiceProvider Provider');
+  }
+
+  private log(message: String) {
+    this.messageService.add(`ServicesService: ${message}`);
   }
 
   getServices(): Observable<ServiceClass[]> {
     //return of (SERVICES);
-   return this.http.get<ServiceClass[]>(this.serviceUrl).pipe(
+   return this.http.get<ServiceClass[]>(this.serviceUrl, httpOptions).pipe(
       catchError(this.handleError('getServices', []))
     );
   }

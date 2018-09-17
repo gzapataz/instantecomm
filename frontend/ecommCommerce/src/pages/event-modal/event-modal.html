@@ -5,7 +5,7 @@
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Cita</ion-title>
+    <ion-title>Cita: {{event.clientName}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -14,7 +14,7 @@
     <ion-item>
       <ion-label color={{eventColor}}>Servicio</ion-label>
       <ion-select  type="text" placeholder="Tpo" [(ngModel)]="event.serviceId" (ionChange)="onServiceSelected()">
-        <ion-option  *ngFor="let service of servicesAvail" value={{service.id}}>{{service.name}}</ion-option>
+        <ion-option  *ngFor="let service of servicesAvail" value={{service._id}}>{{service.name}}</ion-option>
       </ion-select>
     </ion-item>
 

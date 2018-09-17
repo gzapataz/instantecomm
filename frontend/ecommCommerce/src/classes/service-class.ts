@@ -10,7 +10,7 @@ export class ServiceClass {
     //this.value = value;
     this.averageTime = averageTime;
   }*/
-  id: number;
+  _id: string;
   name: string;
   averageTime: number;
 }

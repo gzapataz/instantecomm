@@ -1,3 +1,5 @@
+import {UUID} from "angular2-uuid";
+
 export interface IAppointment {
   id: string,
   startTime: string,
@@ -6,9 +8,10 @@ export interface IAppointment {
   finalDate: Date,
   durationTime: number,
   status: string,
-  clientId: number,
+  clientId: string,
+  clientName: string,
+  professionalId: string,
   serviceId: number,
-  description: string,
   title: string
 };
 
@@ -20,10 +23,11 @@ export class AppointmentClass implements IAppointment {
               public finalDate: Date,
               public durationTime: number,
               public status: string,
-              public clientId: number,
+              public clientId: string,
+              public clientName: string,
+              public professionalId: string,
               public serviceId: number,
-              public title: string,
-              public description: string) {
+              public title: string) {
     this.id = id;
     this.startTime = startTime;
     this.endTime = endTime;
@@ -32,8 +36,9 @@ export class AppointmentClass implements IAppointment {
     this.durationTime = durationTime;
     this.status = status;
     this.clientId = clientId;
+    this.clientName = clientName;
+    this.professionalId = professionalId;
     this.serviceId = serviceId;
-    this.description = description;
     this.title = title;
 
   }
