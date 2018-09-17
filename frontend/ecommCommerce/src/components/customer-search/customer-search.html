@@ -1,0 +1,20 @@
+<!-- Generated template for the CustomerSearchComponent component -->
+<div id="search-component">
+  <!--input #searchBox id="search-box" (keyup)="search(searchBox.value)" /-->
+  <ion-searchbar
+    [(ngModel)]="myInput"
+    [placeholder]="srcTitle"
+    [autocomplete]="on"
+    [debounce]="500"
+    [showCancelButton]="shouldShowCancel"
+    (ionInput)="onInput($event)"
+    (ionCancel)="onCancel($event)"
+    (ionClear)="onClear($event)">
+  </ion-searchbar>
+  <div *ngIf="show">
+    <ion-list *ngFor="let customer of customers$ | async">
+      <ion-item (click)="selectedName(customer._id, customer.name, customer)">{{customer.person.personName.firstName}}</ion-item>
+    </ion-list>
+  </div>
+
+</div>
