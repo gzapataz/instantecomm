@@ -23,7 +23,7 @@ var personSchema   = new Schema({
     creationDate:{ type: Date, default: Date.now },
     phone: String,
     mobile: String,
-    email: { type: String, required: true}
+    email: { type: String, required: true, index: { unique: true }}
 });
 
 module.exports = mongoose.model('Person', personSchema);
