@@ -40,6 +40,6 @@ export class CustomerModalPage {
   }
 
   cancel() {
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss(undefined);
   }
 }

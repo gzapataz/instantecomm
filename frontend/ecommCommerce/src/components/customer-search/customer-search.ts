@@ -23,6 +23,7 @@ import {CustomerModalPage} from "../../pages/customer-modal/customer-modal";
 export class CustomerSearchComponent implements OnInit {
 
   modal: any;
+  openAlready: boolean = false;
   srcTitle = "Busqueda de Paciente"
   customers$: Observable<CustomerClass[]>;
   private searchTerms = new Subject<string>();
@@ -53,14 +54,18 @@ export class CustomerSearchComponent implements OnInit {
 
   onInput(ev: any) {
     console.log ('OnInput Search:' +ev.target.value);
-    if (ev.target.value != undefined && ev.target.value !== '') {
+    if (ev.target.value != undefined && ev.target.value !== '' && !this.openAlready) {
       this.customerService.searchCustomers(ev.target.value).subscribe(customers => {
           this.customerTest = customers;
           console.log('CusotmerOnInput:' + JSON.stringify(this.customerTest))
           this.modal = this.modalCtrl.create('CustomerModalPage', {customerList: this.customerTest});
           this.modal.present();
+          this.openAlready = true;
           this.modal.onDidDismiss(data => {
-            this.selectedName(data._id, data.name, data);
+            if (data !== undefined) {
+              this.selectedName(data._id, data.name, data);
+            }
+            this.openAlready = false;
           });
         },
         null);
