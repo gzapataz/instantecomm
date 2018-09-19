@@ -15,7 +15,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CalendarPage } from "../pages/calendar/calendar";
-
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     MyApp,
@@ -30,7 +30,8 @@ import { CalendarPage } from "../pages/calendar/calendar";
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     IonicStorageModule.forRoot(),
-    DragulaModule
+    DragulaModule,
+    HttpClientModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -6,14 +6,25 @@ import * as firebase from 'firebase/app';
 
 import { Storage } from "@ionic/storage";
 import { AngularFireDatabase } from "angularfire2/database";
+import 'rxjs/Rx';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {catchError} from "rxjs/operators";
+import {of} from "rxjs/observable/of";
+import {ProfessionalClass} from "../../classes/ProfessionalClass";
 
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 @Injectable()
 export class UserServiceProvider {
   items: any;
   success: boolean;
 
+
+
   constructor(public alertCtrl: AlertController, private afAuth: AngularFireAuth,
-              private storage: Storage, private afDataBase: AngularFireDatabase) {
+              private storage: Storage, private afDataBase: AngularFireDatabase,public http: HttpClient) {
     this.items = this.afDataBase.list("/users")
   }
 
@@ -41,6 +52,8 @@ export class UserServiceProvider {
         this.storageControl('get', user.email)
           .then( returned => {
             if (!returned) {
+              console.log("result: "+result.user.uid.toString());
+              console.log(this.getUserData(result.user.uid.toString()).subscribe(val => console.log(val)));
               this.saveNewUser(user);
             }
           });
@@ -103,4 +116,29 @@ export class UserServiceProvider {
     }
 
   }
+
+  getUserData(uid:string): Observable<ProfessionalClass[]> {
+
+    return this.http.get<ProfessionalClass[]>("https://ecommercealinstante.herokuapp.com/professionals/?uid="+uid, httpOptions)
+      .pipe(
+      catchError(this.handleError('getProfessional', []))
+    )
+
+
+      ;
+  }
+
+  private handleError<T> (operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+      // TODO: better job of transforming error for user consumption
+      console.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
+
 }
