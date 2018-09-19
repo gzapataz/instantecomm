@@ -15,6 +15,8 @@ var servicesRouter = require('./routes/service');
 var serviceConditionsRouter = require('./routes/serviceCondition');
 var appointmentsRouter = require('./routes/appointment');
 var professionalsScheduleRouter = require('./routes/professionalSchedule');
+var notificationsRouter = require('./routes/notification');
+var notificationMessagesRouter = require('./routes/notificationMessage');
 
 var app = express();
 
@@ -30,7 +32,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log("Seteando configuración de permisos");
   res.header('Access-Control-Allow-Origin', "*");
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
@@ -40,7 +41,6 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  console.log("Entra 2");
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -61,7 +61,7 @@ app.use("/services", servicesRouter);
 app.use("/serviceConditions", serviceConditionsRouter);
 app.use("/appointments", appointmentsRouter);
 app.use("/professionalsSchedule", professionalsScheduleRouter);
-
-
+app.use("/notifications", notificationsRouter);
+app.use("/notificationMessages", notificationMessagesRouter);
 
 module.exports = app;

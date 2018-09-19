@@ -6,7 +6,8 @@ var Schema                = mongoose.Schema;
 var serviceSchema   = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        index: { unique: true }
     },    
     description: {
         type: String,

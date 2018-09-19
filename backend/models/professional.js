@@ -24,7 +24,7 @@ var professionalSchema   = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Rating',
     }],*/
-    uid: String
+    uid: { type: String, index: { unique: true }}
 });
 
 module.exports = mongoose.model('Professional', professionalSchema);
