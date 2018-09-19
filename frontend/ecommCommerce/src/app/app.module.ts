@@ -29,7 +29,11 @@ import { HttpClientModule } from '@angular/common/http';
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    IonicStorageModule.forRoot(),
+   // IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: '__mydb',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
     DragulaModule,
     HttpClientModule
   ],

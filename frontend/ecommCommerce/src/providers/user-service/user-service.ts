@@ -52,8 +52,10 @@ export class UserServiceProvider {
         this.storageControl('get', user.email)
           .then( returned => {
             if (!returned) {
-              console.log("result: "+result.user.uid.toString());
-              console.log(this.getUserData(result.user.uid.toString()).subscribe(val => console.log(val)));
+              this.getUserData(result.user.uid.toString()).subscribe(
+                result => this.getValuesProfessional(result),
+                error => this.handleError('getProfessional', [])
+              );
               this.saveNewUser(user);
             }
           });
@@ -117,16 +119,14 @@ export class UserServiceProvider {
 
   }
 
-  getUserData(uid:string): Observable<ProfessionalClass[]> {
+  getUserData(uid:string): Observable<any> {
 
-    return this.http.get<ProfessionalClass[]>("https://ecommercealinstante.herokuapp.com/professionals/?uid="+uid, httpOptions)
-      .pipe(
-      catchError(this.handleError('getProfessional', []))
-    )
-
-
-      ;
+    return this.http.get<any>("https://ecommercealinstante.herokuapp.com/professionals/?uid="+uid, httpOptions)
+      .pipe(catchError(this.handleError('getProfessional', [])))
+      .map(data => <ProfessionalClass[]>data)
+   ;
   }
+
 
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -140,5 +140,20 @@ export class UserServiceProvider {
       return of(result as T);
     };
   }
+  getValuesProfessional(jsonProfesional:JSON){
+    var obj = jsonProfesional['person'];
+    for(var key in obj)
+    {
+      console.log("key: " + key + ", value: " + obj[key])
+      this.storage.ready().then(() => {
+         this.storageControl('set', key, obj[key]);
+      })
+    }
+    this.storage.ready().then(() => {
 
+      console.log("key almacenada creationDate value almacenado "+ this.storageControl('get','creationDate'));
+
+    })
+    
+  }
 }
