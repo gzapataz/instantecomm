@@ -44,6 +44,7 @@ import { MessageServiceProvider } from '../providers/message-service/message-ser
 import { AppointmentServiceProvider } from '../providers/appointment-service/appointment-service';
 import { CustomerPage } from "../pages/customer/customer";
 
+
 @NgModule({
   declarations: [
     MyApp,

@@ -31,20 +31,15 @@
        </ion-buttons>
      </ion-navbar>
 
-       <ng-template #template1 let-allDayEvents="allDayEvents" let-eventTemplate="eventTemplate">
-         <div *ngFor="let displayEvent of allDayEvents; let eventIndex=index"
-              class="calendar-event" tappable
-              (click)="onEventSelected(displayEvent.event)"
-              [ngStyle]="{top: 25*eventIndex+'px',width: '100%',height:'125px'}">
-           <ng-template [ngTemplateOutlet]="eventTemplate"
-                        [ngTemplateOutletContext]="{displayEvent:displayEvent}">
-           </ng-template>
-           <ion-list dragula="SERVICE" [(dragulaModel)]="events">Prueba</ion-list>
-         </div>
-       </ng-template>
 
-       <calendar [dayviewAllDayEventSectionTemplate]="template"
-                 [eventSource]="eventSource"
+
+        <ng-template #template3 let-displayEvent="displayEvent">
+          <div class="calendar-event-inner" [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white'}">
+            {{displayEvent.event.title}}
+          </div>
+        </ng-template>
+
+       <calendar [eventSource]="eventSource"
                  [calendarMode]="calendar.mode"
                  [currentDate]="calendar.currentDate"
                  (press)="calendar.onTimePress($event)"
@@ -58,25 +53,15 @@
                  (onTitleChanged)="onViewTitleChanged($event)"
                  (onTimeSelected)="onTimeSelected($event)"
                  [locale]="calendar.locale"
+                 [dayviewNormalEventTemplate]="template3"
                  step="30"
                  startHour="9"
                  endHour="20"
                  class="calendar">
        </calendar>
 
-       <ng-template #template let-day="day" let-eventTemplate="eventTemplate">
-         <div [ngClass]="{'calendar-event-wrap': events}" *ngIf="events"
-              [ngStyle]="{height: 25*day.events.length+'px'}">
-           <div dragula="SERVICE" *ngFor="let displayEvent of events" class="calendar-event" tappable
-                (click)="onViewTitleChanged('cambio')"
-                [ngStyle]="{top: 25*displayEvent.position+'px', width: 100*(displayEvent.endIndex-displayEvent.startIndex)+'%', height: '25px'}">
-             <ng-template [ngTemplateOutlet]="eventTemplate"
-                          [ngTemplateOutletContext]="{displayEvent:displayEvent}">
-             </ng-template>
-             <ion-list dragula="SERVICE" [(dragulaModel)]="events">Prueba</ion-list>
-           </div>
-         </div>
-       </ng-template>
+
+
 
    </ion-col>
   </ion-row>

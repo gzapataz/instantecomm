@@ -20,9 +20,10 @@
       </ion-col>
       <ion-col>
         <ion-buttons end>
+          <!--button ion-button color="secondary" small (click)="addNewAppointment(customer)"><ion-icon name="calendar"></ion-icon></button-->
           <button ion-button color="secondary" small><a href="tel:{{customer.person.phone}}"><ion-icon name="call"></ion-icon> </a></button>
           <button ion-button color="secondary" small><a href="https://wa.me/{{customer.person.phone}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>
-          <button ion-button color="secondary" small><ion-icon name="mail"></ion-icon></button>
+          <button ion-button color="secondary" small><a href="mailto:{{customer.person.email}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>
         </ion-buttons>
       </ion-col>
     </ion-row>

@@ -16,6 +16,7 @@ export class EventModalPage implements OnInit {
   eventColor = 'default';
   servicesAvail = [];
   customerSelected: CustomerClass;
+  eventSelected: '';
 
   event: IAppointment;
 
@@ -37,6 +38,7 @@ export class EventModalPage implements OnInit {
   }
 
   ngOnInit() {
+    this.eventSelected = this.navParams.get('eventSelected');
     this.getServices()
   }
 
@@ -48,7 +50,11 @@ export class EventModalPage implements OnInit {
     this.event.endTime = moment(this.event.startTime).add(this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime, 'm').format();
     this.event.finalDate = moment(this.event.startTime).add(this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime, 'm').toDate();
     this.event.durationTime = this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime;
-    this.eventColor = 'default';
+  }
+
+  confirmAppnt(status) {
+    this.event.status = status;
+    this.viewCtrl.dismiss(this.event);
   }
 
   cancel() {

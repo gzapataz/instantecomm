@@ -37,6 +37,7 @@ class Product {
 })
 export class CalendarPage implements OnInit {
 
+  eventCollection = [];
   eventSelected = false;
   eventSource = [];
   viewTitle: string;
@@ -94,7 +95,7 @@ export class CalendarPage implements OnInit {
             title: el.id,
             startTime: new Date(),
             endTime: new Date(),
-            eventColor: 'green'
+            eventColor: 'red'
           };
 
           let events = this.eventSource;
@@ -165,9 +166,17 @@ export class CalendarPage implements OnInit {
         eventData.title = data.title;
         eventData.startTime = new Date(data.startTime);
         eventData.endTime = new Date(data.endTime);
+        if (event.status == 'Confirmada') {
+          eventData.eventColor =  '#3bdb01';
+        }
+        else {
+          eventData.eventColor= '#db5614';
+        }
         this.eventSelected = false;
         this.eventSource = [];
+
         setTimeout(() => {
+
           this.eventSource = events;
         });
       }
@@ -183,10 +192,12 @@ export class CalendarPage implements OnInit {
         let eventData = data;
         eventData.startTime = new Date(data.startTime);
         eventData.endTime = new Date(data.endTime);
-        eventData.eventColor= 'blue';
+        eventData.eventColor= '#db5614';
         eventData.status = 'Agendada';
         let events = this.eventSource;
         events.push(eventData);
+        this.eventCollection.push(eventData);
+        console.log('EVENTOS:' + JSON.stringify(this.eventCollection))
         this.appointmentService.addAppointment(eventData).subscribe(data => {
           console.log('Datos Salvados:' + JSON.stringify(data));
         });
@@ -209,7 +220,7 @@ export class CalendarPage implements OnInit {
   }
 
   onEventSelected(event) {
-    console.log('Event onEventSelected ')
+    console.log('Event onEventSelected ' + JSON.stringify(event))
     this.eventSelected = true;
     this.updateEvent(event);
   }
@@ -217,16 +228,18 @@ export class CalendarPage implements OnInit {
   onTimeSelected(ev) {
     console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
     this.selectedDay = ev.selectedTime;
-    if (!this.eventSelected && this.customerId) {
-      this.addEvent();
-    }
-    else {
-      let alert = this.alertCtrl.create({
+    if (!this.eventSelected) {
+      if (this.customerId) {
+        this.addEvent();
+      }
+      else {
+        let alert = this.alertCtrl.create({
           title: 'Busqueda de Paciente',
           subTitle: 'Debe seleccionar un paciente en Buscar',
           buttons: ['Dismiss']
-      })
-      alert.present();
+        })
+        alert.present();
+      }
     }
   }
 

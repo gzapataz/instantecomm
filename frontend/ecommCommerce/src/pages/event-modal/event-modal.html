@@ -27,14 +27,30 @@
       <ion-label>Fin</ion-label>
       <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime"></ion-datetime>
     </ion-item>
+    <ion-item>
+      <ion-label>Estado</ion-label>
+      <ion-label end>{{event.status}}</ion-label>
+    </ion-item>
 
     <ion-item>
       <ion-label>Todo el Día?</ion-label>
       <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
     </ion-item>
   </ion-list>
-
-  <button ion-button full icon-left (click)="save()">
-    <ion-icon name="checkmark"></ion-icon> Adicionar Cita
-  </button>
+  <ion-buttons *ngIf="!this.eventSelected">
+    <button ion-button full icon-left color="secondary" (click)="save()">
+      <ion-icon name="checkmark"></ion-icon> Adicionar Cita
+    </button>
+  </ion-buttons>
+  <ion-buttons *ngIf="this.eventSelected">
+    <button ion-button small (click)="save()">
+      <ion-icon name="checkmark"></ion-icon> Actualizar Cita
+    </button>
+    <button ion-button small color="secondary" icon-left (click)="confirmAppnt('Confirmada')">
+      <ion-icon name="checkmark"></ion-icon>Confirmar
+    </button>
+    <button ion-button small icon-left color="danger" (click)="confirmAppnt('Cancelada')">
+      <ion-icon name="checkmark"></ion-icon>Cancelar
+    </button>
+  </ion-buttons>
 </ion-content>
