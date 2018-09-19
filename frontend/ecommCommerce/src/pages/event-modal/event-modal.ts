@@ -17,6 +17,10 @@ export class EventModalPage implements OnInit {
   servicesAvail = [];
   customerSelected: CustomerClass;
   eventSelected: '';
+  professional = {
+    "_id": "5b986c2e6775906044a08d5e",
+    "idSchedule": "5b9b35508365b87a63f45aee"
+  }
 
   event: IAppointment;
 
@@ -28,14 +32,15 @@ export class EventModalPage implements OnInit {
     this.customerSelected = this.navParams.get('customerSelected');
     if (this.navParams.get('eventSelected')) {
       this.event = this.navParams.get('eventSelected');
-      this.event.startTime =moment(this.event.initialDate).format();
-      this.event.endTime = moment(this.event.finalDate).format();
+      this.event.startTime =moment(this.event.startTime).format();
+      this.event.endTime = moment(this.event.startTime).format();
     }
     else {
       let preselectedDate = moment(this.navParams.get('selectedDay')).format();
-      this.event = new AppointmentClass(UUID.UUID(), preselectedDate, preselectedDate, new Date(preselectedDate), new Date(preselectedDate), null, null, this.customerSelected._id, this.customerSelected.name, null, null, null);
+      this.event = new AppointmentClass(UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,null, null, this.customerSelected._id, this.customerSelected.name, this.professional._id, null, null);
     }
   }
+
 
   ngOnInit() {
     this.eventSelected = this.navParams.get('eventSelected');
@@ -47,9 +52,9 @@ export class EventModalPage implements OnInit {
   }
 
   onServiceSelected() {
-    this.event.endTime = moment(this.event.startTime).add(this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime, 'm').format();
-    this.event.finalDate = moment(this.event.startTime).add(this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime, 'm').toDate();
-    this.event.durationTime = this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime;
+    //this.event.endTime = moment(this.event.startTime).add(this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime, 'm').format();
+    //this.event.finalDate = moment(this.event.startTime).add(this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime, 'm').toDate();
+    this.event.durationTime = this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.service).averageTime;
   }
 
   confirmAppnt(status) {
@@ -62,9 +67,9 @@ export class EventModalPage implements OnInit {
   }
 
   save() {
-    if (this.event.serviceId) {
+    if (this.event.service) {
       console.log('obteniendo dato:' + JSON.stringify(this.event));
-      this.event.title = this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).name + ': ' + this.event.clientName;
+      this.event.title = this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.service).name + ': ' + this.event.clientName;
       this.viewCtrl.dismiss(this.event);
     }
     else {

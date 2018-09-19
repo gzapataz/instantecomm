@@ -22,7 +22,7 @@ const httpOptions = {
 @Injectable()
 export class AppointmentServiceProvider {
 
-  appntUrl = environment.baseUrl + '/appointments';
+  appntUrl = environment.baseUrl + '/professionalsSchedule';
 
   constructor(public http: HttpClient, private messageService: MessageServiceProvider) {
     console.log('Hello AppointmentServiceProvider Provider');
@@ -35,10 +35,10 @@ export class AppointmentServiceProvider {
   /** POST: add a new Appointment to the server */
   addAppointment (event: AppointmentClass): Observable<AppointmentClass> {
     console.log('Service: addAppointment:' + JSON.stringify(event));
-    return this.http.post<AppointmentClass>(this.appntUrl, event, httpOptions).pipe(
+    return this.http.post<AppointmentClass>(this.appntUrl + '/appointment/', event, httpOptions).pipe(
       tap((event: AppointmentClass) => {
         console.log('EN POST');
-        this.log(`added appointment w/ id=${event.id}`)
+        this.log(`added appointment w/ id=${event.idAppointment}`)
       }),
       catchError(this.handleError<AppointmentClass>('addAppointment'))
     );

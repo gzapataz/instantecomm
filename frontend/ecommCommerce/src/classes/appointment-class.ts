@@ -1,46 +1,42 @@
 import {UUID} from "angular2-uuid";
 
 export interface IAppointment {
-  id: string,
+  idAppointment: string,
+  idSchedule: string
   startTime: string,
   endTime: string,
-  initialDate: Date,
-  finalDate: Date,
   durationTime: number,
   status: string,
-  clientId: string,
+  client: string,
+  professional: string,
+  service: string,
   clientName: string,
-  professionalId: string,
-  serviceId: number,
   title: string
 };
 
 export class AppointmentClass implements IAppointment {
-  constructor(public id: string,
+  constructor(public idAppointment: string,
+              public idSchedule: string,
               public startTime,
               public endTime,
-              public initialDate: Date,
-              public finalDate: Date,
               public durationTime: number,
               public status: string,
-              public clientId: string,
-              public clientName: string,
-              public professionalId: string,
-              public serviceId: number,
+              public client: string,
+              public clientName: string ,
+              public professional: string,
+              public service: string,
               public title: string) {
-    this.id = id;
+    this.idAppointment = idAppointment;
     this.startTime = startTime;
     this.endTime = endTime;
-    this.initialDate = initialDate;
-    this.finalDate = finalDate;
     this.durationTime = durationTime;
     this.status = status;
-    this.clientId = clientId;
-    this.clientName = clientName;
-    this.professionalId = professionalId;
-    this.serviceId = serviceId;
+    this.client = client;
+    this.professional = professional;
+    this.service = service;
     this.title = title;
-
+    this.clientName = clientName
   }
 
 }
+
