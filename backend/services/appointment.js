@@ -10,8 +10,8 @@ var ObjectID = require('mongodb').ObjectID;
 exports.saveAppointment = async function(req){
   var appointment = new Appointment();
   appointment._id          = new ObjectID(req.body.idAppointment);
-  appointment.initialDate  = req.body.initialDate;
-  appointment.finalDate    = req.body.finalDate;
+  appointment.startTime  = req.body.startTime;
+  appointment.endTime    = req.body.endTime;
   appointment.durationTime = req.body.durationTime;
   appointment.status       = req.body.status;
   appointment.title        = req.body.title;
@@ -33,7 +33,7 @@ exports.saveAppointment = async function(req){
  * @param {*} appointment 
  * @param {*} notification
  */
-/*exports.saveAppointmentNotification =  async function(appointment,notification){
+exports.saveAppointmentNotification =  async function(appointment,notification){
   try{
     return await Appointment.findOneAndUpdate(
       {_id : appointment._id},
@@ -44,7 +44,7 @@ exports.saveAppointment = async function(req){
   catch(error){
     return error;
   }  
-}*/
+}
 
 /**
  * Buscar una cita por _id

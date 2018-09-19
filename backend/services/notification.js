@@ -9,7 +9,7 @@ var Notification = require('../models/notification');
 exports.saveNotification = async function(req){
   var notification = new Notification();
   notification.notificationMesagge = req.body.notificationMesagge;
-  notification.notificationState = notificationState;
+  notification.notificationState = req.body.notificationState;
   try{
     await notification.save();
   }

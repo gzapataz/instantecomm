@@ -5,8 +5,8 @@ var Schema                = mongoose.Schema;
 const AppointmentStatus   = require('../enums/appointmentStatus');
 
 var appointmentSchema   = new Schema({
-    initialDate: {type: Date, required: true},
-    finalDate: {type: Date, required: true},
+    startTime: {type: Date, required: true},
+    endTime: {type: Date, required: true},
     durationTime: {type: Number, required: true},
     status: {
         type: String,
@@ -28,10 +28,10 @@ var appointmentSchema   = new Schema({
         type: String,
         required: true
     },
-    /*notifications: [{
+    notifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'
-    }]*/
+    }]
 });
 
 module.exports = mongoose.model('Appointment', appointmentSchema);
