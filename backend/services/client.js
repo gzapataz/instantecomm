@@ -50,6 +50,16 @@ exports.findClientByEmail = function(email){
 }
 
 /**
+ * Buscar clientes por _id
+ * @param {*} _id 
+ */
+exports.findClientBy_id = function(_id){
+  var client = Client.findOne({_id:_id})
+  .populate('person').populate('clientGrades');
+  return client;
+}
+
+/**
  * buscar todos los clientes
  */
 exports.findAllClients = function(){

@@ -16,6 +16,10 @@ var professionalSchema   = new Schema({
         ref: 'Person',
 
     },
+    professionalSchedule:{
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'ProfessionalSchedule',
+    },
     /**professionalGrades:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Rating',
