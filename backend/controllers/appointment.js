@@ -3,6 +3,7 @@
 var AppointmentService = require('../services/appointment');
 var NotificationService = require('../services/notification');
 const constants = require('../constants/ECAIConstants');
+const NotificationState = require('../enums/notificationState');
 
 /**
  * Conseguir datos de todas las citas
@@ -63,7 +64,7 @@ exports.getAppointmentBy_id = function(req, res){
  * @param {*} res 
  */
 exports.setNotificationAppointmentBy_id = function(req, res){
-  var notification = NotificationService.saveNotification(constants.FIRST_MESSAGE);
+  var notification = NotificationService.saveNotification(constants.FIRST_MESSAGE, NotificationState.INITIAL);
   notification.then((notif) => {
     var appointment = AppointmentService.findAppointmentBy_id(req.body.idAppointment);
     appointment.exec().then((results) => {

@@ -6,10 +6,10 @@ var Notification = require('../models/notification');
  * Guardar una notificación.
  * @param {*} req
  */
-exports.saveNotification = async function(req){
+exports.saveNotification = async function(notificationMesagge, notificationState){
   var notification = new Notification();
-  notification.notificationMesagge = req.body.notificationMesagge;
-  notification.notificationState = req.body.notificationState;
+  notification.notificationMesagge = notificationMesagge;
+  notification.notificationState = notificationState;
   try{
     await notification.save();
   }
