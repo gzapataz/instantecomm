@@ -9,6 +9,7 @@ import {Observable} from "rxjs";
 import {map, filter} from "rxjs/operators";
 import {observableToBeFn} from "rxjs/testing/TestScheduler";
 import {ServiceClass} from "../../classes/service-class";
+import {LoggedProfessional} from "../../classes/logged-class";
 
 @IonicPage()
 @Component({
@@ -22,10 +23,7 @@ export class EventModalPage implements OnInit {
   servicesAvailAux$: Observable<any[]>;
   customerSelected: CustomerClass;
   eventSelected: '';
-  professional = {
-    "_id": "5b986c2e6775906044a08d5e",
-    "idSchedule": "5b9b35508365b87a63f45aee"
-  }
+  professional: LoggedProfessional;
 
   event: IAppointment;
   prevEventImage: IAppointment = undefined;
@@ -36,6 +34,7 @@ export class EventModalPage implements OnInit {
   constructor(public navCtrl: NavController, private navParams: NavParams, public viewCtrl: ViewController,
               private servicesService: ServiceServiceProvider ) {
     this.customerSelected = this.navParams.get('customerSelected');
+    this.professional = this.navParams.get('professional');
     if (this.navParams.get('eventSelected')) {
       this.event = this.navParams.get('eventSelected');
       this.prevEventImage = Object.assign({}, this.event);
@@ -45,7 +44,7 @@ export class EventModalPage implements OnInit {
     else {
       let preselectedDate = moment(this.navParams.get('selectedDay')).format();
       let thsService = this.navParams.get('service');
-      this.event = new AppointmentClass(null, UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,null, null, this.customerSelected._id, this.customerSelected.name, this.professional._id, thsService, null);
+      this.event = new AppointmentClass(null, UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,null, null, this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
       this.event.startTime = preselectedDate;
       if (thsService !== undefined) {
         this.event.service = thsService;

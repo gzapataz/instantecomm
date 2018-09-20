@@ -40,7 +40,6 @@ export class ScheduleServiceProvider {
           appointment.startTime = new Date(appointment.startTime);
           appointment.endTime = new Date(appointment.endTime);
           appointment = this.preferencesProvider.getColor(appointment);
-          console.log('MapAgenda:' + JSON.stringify(appointment));
         })
         return appointments;
       })
@@ -51,7 +50,6 @@ export class ScheduleServiceProvider {
     console.log('Service: addScheduledAppointment:' + JSON.stringify(event));
     return this.http.post<any>(this.appntUrl + '/' , event, httpOptions).pipe(
       tap((event: any) => {
-        console.log('EN POST');
         this.log(`added appointment w/ id=${event.id}`)
       }),
       catchError(this.handleError<AppointmentClass>('addAppointment'))

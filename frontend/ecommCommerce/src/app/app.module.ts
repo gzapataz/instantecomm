@@ -45,6 +45,7 @@ import { AppointmentServiceProvider } from '../providers/appointment-service/app
 import { CustomerPage } from "../pages/customer/customer";
 import { ScheduleServiceProvider } from '../providers/schedule-service/schedule-service';
 import { PreferencesServiceProvider } from '../providers/preferences-service/preferences-service';
+import { GlobalsServiceProvider } from '../providers/globals-service/globals-service';
 
 @NgModule({
   declarations: [
@@ -79,8 +80,6 @@ import { PreferencesServiceProvider } from '../providers/preferences-service/pre
       driverOrder: ['indexeddb', 'sqlite', 'websql']
     }),
     DragulaModule
-
-
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -105,7 +104,8 @@ import { PreferencesServiceProvider } from '../providers/preferences-service/pre
     CustomerSearchComponent,
     AppointmentServiceProvider,
     ScheduleServiceProvider,
-    PreferencesServiceProvider
+    PreferencesServiceProvider,
+    GlobalsServiceProvider
   ]
 })
 export class AppModule {}
