@@ -1,2 +1,2 @@
-web: npm run build && npm startgit add .
+web: npm run build && npm startgit add ./frontend/ecommCommerce
 
