@@ -24,7 +24,7 @@ export class UserServiceProvider {
 
 
   constructor(public alertCtrl: AlertController, private afAuth: AngularFireAuth,
-              private storage: Storage, private afDataBase: AngularFireDatabase,public http: HttpClient) {
+              public storage: Storage, private afDataBase: AngularFireDatabase,public http: HttpClient) {
     this.items = this.afDataBase.list("/users")
   }
 
@@ -106,6 +106,7 @@ export class UserServiceProvider {
       return this.storage.set(key, value);
     }
     if (action == 'get') {
+
       return this.storage.get(key);
     }
     if (action == 'delete') {
@@ -153,9 +154,11 @@ export class UserServiceProvider {
     this.storageControl('set', 'idSchedule', obj2['idSchedule']);
     this.storageControl('set', 'uid', jsonProfesional['uid']);
 
-    var dataPromise = this.storage.get('phone');
-    Promise.all([ dataPromise]).then((dataPromise) => {
-      console.log(dataPromise);
+    this.storage.ready().then(() => {
+      this.storage.get('uid').then((test)=>{
+          console.log('testing of sqlite was ' + test); //this is always null, even though I just set it to true.
+          //...
+        });
     });
-  }
+}
 }
