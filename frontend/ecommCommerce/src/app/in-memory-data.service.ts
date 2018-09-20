@@ -18,7 +18,17 @@ export class InMemoryDataService implements InMemoryDbService {
     ];
 
     const appointments = [
-      {"id":"3a8fbc9c-ada9-2894-e8d4-b07bbe8d6292","startTime":"2018-09-14T14:00:00.000Z","endTime":"2018-09-14T15:00:00.000Z","initialDate":"2018-09-14T14:00:00.000Z","finalDate":"2018-09-14T15:00:00.000Z","durationTime":null,"status":null,"clientId":"5b94946395f40e109bf98099","clientName":"Mahecha Diego","professionalId":null,"serviceId":"5b95e37e5837d923570f4ed9","title":"Periodoncia: Mahecha Diego","eventColor":"blue"}
+      {"idAppointment":"27c45933-8b11-d89b-ece5-4a5ee05f77b5",
+        "idSchedule":"5b9b35508365b87a63f45aee",
+        "startTime":"2018-09-19T22:00:00.000Z",
+        "endTime":"2018-09-19T22:00:00.000Z",
+        "durationTime":60,
+        "status":"Agendada",
+        "client":"5b94946395f40e109bf98099",
+        "professional":"5b986c2e6775906044a08d5e",
+        "service":"5ba062d3906ef79c13e330cc",
+        "title":"Rehabilitación Oral: Mahecha Diego"
+      }
     ];
 
     return {clients: clients, services: services, appointments};

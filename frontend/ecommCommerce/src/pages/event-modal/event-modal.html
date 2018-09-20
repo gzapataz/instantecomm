@@ -13,7 +13,7 @@
   <ion-list>
     <ion-item>
       <ion-label color={{eventColor}}>Servicio</ion-label>
-      <ion-select  type="text" placeholder="Tpo" [(ngModel)]="event.serviceId" (ionChange)="onServiceSelected()">
+      <ion-select  type="text" placeholder="Tpo" [(ngModel)]="event.service" (ionChange)="onServiceSelected()">
         <ion-option  *ngFor="let service of servicesAvail" value={{service._id}}>{{service.name}}</ion-option>
       </ion-select>
     </ion-item>
@@ -50,7 +50,7 @@
       <ion-icon name="checkmark"></ion-icon>Confirmar
     </button>
     <button ion-button small icon-left color="danger" (click)="confirmAppnt('Cancelada')">
-      <ion-icon name="checkmark"></ion-icon>Cancelar
+      <ion-icon name="checkmark"></ion-icon>Cancelar Cita
     </button>
   </ion-buttons>
 </ion-content>
