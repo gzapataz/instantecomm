@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {AlertController, NavController, Platform } from 'ionic-angular';
 
 import { AngularFireAuth } from "angularfire2/auth";
 import * as firebase from 'firebase/app';
@@ -16,12 +16,23 @@ export class HomePage {
   loginPage: any;
   loggedIn: any;
 
-  constructor(public navCtrl: NavController, private afAuth: AngularFireAuth, private userService: UserServiceProvider) {
+  constructor(public navCtrl: NavController, private afAuth: AngularFireAuth, private userService: UserServiceProvider,
+              private alertCtrl: AlertController, private platform: Platform) {
     this.loginPage = 'LoginPage';
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user)
         this.loggedIn = user.email;
     });
+  }
+
+  showPlatform() {
+    let text = 'Corriendo en: ' + this.platform.platforms();
+    let alert = this.alertCtrl.create({
+      title: 'Home',
+      subTitle: text,
+      buttons: ['Ok']
+    });
+    alert.present();
   }
 
   signOff() {
