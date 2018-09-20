@@ -145,15 +145,17 @@ export class UserServiceProvider {
     for(var key in obj)
     {
       console.log("key: " + key + ", value: " + obj[key])
-      this.storage.ready().then(() => {
-         this.storageControl('set', key.toString(), obj[key]);
-      })
+      this.storageControl('set', key.toString(), obj[key]);
+
     }
-    this.storage.ready().then(() => {
 
-      console.log("key almacenada creationDate value almacenado "+ this.storageControl('get','creationDate'));
+    var obj2 = jsonProfesional['professionalSchedule'];
+    this.storageControl('set', 'idSchedule', obj2['idSchedule']);
+    this.storageControl('set', 'uid', jsonProfesional['uid']);
 
-    })
-    
+    var dataPromise = this.storage.get('phone');
+    Promise.all([ dataPromise]).then((dataPromise) => {
+      console.log(dataPromise);
+    });
   }
 }
