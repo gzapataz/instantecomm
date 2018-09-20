@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import { CustomerServiceProvider } from "../../providers/customer-service/customer-service";
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import { CustomerClass } from "../../classes/customer-class";
+import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
 
 
 /**
@@ -26,7 +27,9 @@ export class CustomerPage implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public customerService: CustomerServiceProvider,
-              private modalCtrl: ModalController) {
+              private modalCtrl: ModalController,
+              private alertCtrl: AlertController,
+              private globalService: GlobalsServiceProvider) {
   }
 
   getCustomers() {
@@ -34,7 +37,28 @@ export class CustomerPage implements OnInit {
   }
 
   ngOnInit() {
+    console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
+    let userLogged = this.globalService.getLoggedProffessionalData();
+    if (userLogged.userId === '' || userLogged.userId == null) {
+      return;
+    };
+
     this.getCustomers();
+  }
+
+  ionViewWillEnter () {
+    let userLogged = this.globalService.getLoggedProffessionalData();
+    if (userLogged.userId === '' || userLogged.userId == null) {
+      let alert = this.alertCtrl.create({
+        title: 'Errro de Ingreso',
+        subTitle: 'Debe ingresar sus credenciales antes de poder ver la agenda',
+        buttons: ['Dismiss']
+      })
+      alert.present();
+      this.navCtrl.push('LoginPage');
+    } else if (this.myCustomers.length == 0) {
+      this.getCustomers();
+    }
   }
 
   addNewAppointment(customer) {

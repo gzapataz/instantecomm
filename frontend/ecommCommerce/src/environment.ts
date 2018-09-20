@@ -12,3 +12,4 @@ export const environment = {
   baseUrl: 'https://ecommercealinstante.herokuapp.com'
   //baseUrl: 'api'
 };
+

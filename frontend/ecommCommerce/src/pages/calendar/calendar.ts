@@ -18,6 +18,8 @@ registerLocaleData(localCo);
 import { CustomerSearchComponent } from "../../components/customer-search/customer-search";
 import {Observable} from "rxjs";
 import {AppointmentServiceProvider} from "../../providers/appointment-service/appointment-service";
+import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
+import {LoggedProfessional} from "../../classes/logged-class";
 
 
 /**
@@ -49,6 +51,7 @@ export class CalendarPage implements OnInit {
   servicesAvail = [];
   customers: CustomerClass[];
   customerId: CustomerClass;
+  loggedUser: LoggedProfessional;
   customerAppnt:  CustomerClass;
   customer$: Observable<CustomerClass>;
 
@@ -90,7 +93,8 @@ export class CalendarPage implements OnInit {
               private appointmentService: AppointmentServiceProvider,
               private scheduleServiceProvider: ScheduleServiceProvider,
               private platform: Platform,
-              public preferencesProvider: PreferencesServiceProvider) {
+              public preferencesProvider: PreferencesServiceProvider,
+              private globalService: GlobalsServiceProvider) {
 
       dragulaService.createGroup('SERVICE', {
         copy: (el, source) => {
@@ -134,10 +138,35 @@ export class CalendarPage implements OnInit {
   }
 
   ngOnInit() {
+
     console.log('Plataforma:' + this.platform.platforms());
+    console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
+    this.loggedUser = this.globalService.getLoggedProffessionalData();
+    if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
+      return;
+    };
+
     this.loadEvents();
     this.getServices();
     this.getCustomers();
+
+  }
+
+  ionViewWillEnter() {
+    this.loggedUser = this.globalService.getLoggedProffessionalData();
+    if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
+      let alert = this.alertCtrl.create({
+        title: 'Errro de Ingreso',
+        subTitle: 'Debe ingresar sus credenciales antes de poder ver la agenda',
+        buttons: ['Dismiss']
+      })
+      alert.present();
+      this.navCtrl.push('LoginPage');
+    } else if (this.servicesAvail.length == 0) {
+      this.loadEvents();
+      this.getServices();
+      this.getCustomers();
+    }
 
   }
 
@@ -165,7 +194,7 @@ export class CalendarPage implements OnInit {
   }
 
   updateEvent(event) {
-    let modal = this.modalCtrl.create('EventModalPage', {selectedDay: event.startTime, eventSelected: event, customerSelected: event.customerId});
+    let modal = this.modalCtrl.create('EventModalPage', {selectedDay: event.startTime, eventSelected: event, customerSelected: event.customerId, professional: this.loggedUser});
     modal.present();
     modal.onDidDismiss(data => {
       if (data) {
@@ -192,7 +221,8 @@ export class CalendarPage implements OnInit {
         selectedDay: this.selectedDay,
         eventSelected: null,
         customerSelected: this.customerId,
-        service: service
+        service: service,
+        professional: this.loggedUser
       });
       modal.present();
       modal.onDidDismiss(data => {
@@ -202,6 +232,7 @@ export class CalendarPage implements OnInit {
           eventData.endTime = new Date(data.endTime);
           eventData.status = 'Agendada';
           eventData = this.preferencesProvider.getColor(eventData);
+          eventData.professional = this.loggedUser.userId;
           let events = this.eventSource;
           events.push(eventData);
           this.eventCollection.push(eventData);
@@ -289,7 +320,7 @@ export class CalendarPage implements OnInit {
     console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
     */
 
-    this.scheduleServiceProvider.getSchedule('5b9b35508365b87a63f45aee').subscribe( data => {
+    this.scheduleServiceProvider.getSchedule(this.loggedUser.idSchedule).subscribe( data => {
       console.log("datos de Agenda Queyr:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];
       console.log('DatosAgenda:' + JSON.stringify(this.eventSource));

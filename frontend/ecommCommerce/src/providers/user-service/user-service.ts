@@ -12,6 +12,8 @@ import {Observable} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
 import {ProfessionalClass} from "../../classes/ProfessionalClass";
+import {GlobalsServiceProvider} from "../globals-service/globals-service";
+
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -24,7 +26,8 @@ export class UserServiceProvider {
 
 
   constructor(public alertCtrl: AlertController, private afAuth: AngularFireAuth,
-              public storage: Storage, private afDataBase: AngularFireDatabase,public http: HttpClient) {
+              public storage: Storage, private afDataBase: AngularFireDatabase,public http: HttpClient,
+              private globalService: GlobalsServiceProvider) {
     this.items = this.afDataBase.list("/users")
   }
 
@@ -42,6 +45,9 @@ export class UserServiceProvider {
       .then(loggedOut => {
         this.displayAlert('Logged Out', null);
         this.storageControl('delete');
+        this.storageControl('delete', 'idSchedule');
+        this.storageControl('delete', 'uid');
+        this.globalService.reSetProfessionalLoginData();
       })
       .catch(err => this.displayAlert('Error Logged Out', err));
   }
@@ -155,9 +161,11 @@ export class UserServiceProvider {
     this.storageControl('set', 'uid', jsonProfesional['uid']);
 
     this.storage.ready().then(() => {
-      this.storage.get('uid').then((test)=>{
-          console.log('testing of sqlite was ' + test); //this is always null, even though I just set it to true.
-          //...
+      this.storage.get('uid').then((uidData) =>{
+          this.storage.get('idSchedule').then (idSched => {
+            this.globalService.setProfessionalLoginData(uidData, idSched);
+            console.log('LoggedSingleltonUpdates ' + JSON.stringify(this.globalService.getLoggedProffessionalData())); //this is always null, even though I just set it to true.
+          });
         });
     });
 }
