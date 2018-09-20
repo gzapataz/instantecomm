@@ -146,7 +146,7 @@ export class UserServiceProvider {
     {
       console.log("key: " + key + ", value: " + obj[key])
       this.storage.ready().then(() => {
-         this.storageControl('set', key, obj[key]);
+         this.storageControl('set', key.toString(), obj[key]);
       })
     }
     this.storage.ready().then(() => {
