@@ -8,7 +8,7 @@ var NotificationMessageService = require('../services/notificationMessage');
  * @param {*} res 
  */
 exports.getNotificationMessages = function(req, res){  
-  var notificationMessages = NotificationMessageService.findAllNotifications();
+  var notificationMessages = NotificationMessageService.findAllNotificationMessages();
   notificationMessages.exec(
     (err, notificationMessages) => {
       if(err)

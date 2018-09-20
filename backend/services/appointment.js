@@ -1,7 +1,6 @@
 'use strict'
 // Cargamos los modelos para usarlos posteriormente
 var Appointment = require('../models/appointment');
-var ObjectID = require('mongodb').ObjectID;
 
 /**
  * Guardar una cita.
