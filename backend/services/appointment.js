@@ -9,7 +9,6 @@ var ObjectID = require('mongodb').ObjectID;
  */
 exports.saveAppointment = async function(req){
   var appointment = new Appointment();
-  appointment._id          = new ObjectID(req.body.idAppointment);
   appointment.startTime  = req.body.startTime;
   appointment.endTime    = req.body.endTime;
   appointment.durationTime = req.body.durationTime;

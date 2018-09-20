@@ -66,6 +66,7 @@ exports.getProfessionalScheduleBy_id = function(req, res){
 exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
     var appointment = AppointmentService.saveAppointment(req);
     appointment.then((appoint) => {
+      console.log(appoint);
       var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.body.idSchedule);
       professionalSchedule.exec().then((results) => {
         var professionalSchedule = ProfessionalScheduleService.saveProfessionalScheduleAppointment(results,appoint);
@@ -73,7 +74,7 @@ exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
           if(results.errors)
             return res.status(500).send({message: 'Ha ocurrido un error al agregar una cita a la agenda ' + results});
           else{
-            res.json(results); 
+            res.json(appoint); 
           }       
         });  
       });
