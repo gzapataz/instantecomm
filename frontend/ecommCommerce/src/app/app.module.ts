@@ -44,7 +44,6 @@ import { MessageServiceProvider } from '../providers/message-service/message-ser
 import { AppointmentServiceProvider } from '../providers/appointment-service/appointment-service';
 import { CustomerPage } from "../pages/customer/customer";
 
-
 @NgModule({
   declarations: [
     MyApp,
@@ -62,14 +61,24 @@ import { CustomerPage } from "../pages/customer/customer";
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    IonicStorageModule.forRoot(),
+
+
     DragulaModule,
     BrowserAnimationsModule,
     NgCalendarModule,
     HttpClientModule,
     //HttpClientInMemoryWebApiModule,
     //HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {dataEncapsulation: false}),
-    ComponentsModule
+    ComponentsModule,
+
+   // IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: '__mydb',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
+    DragulaModule
+
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
