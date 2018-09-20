@@ -11,6 +11,8 @@ import { CustomerServiceProvider } from "../../providers/customer-service/custom
 import { CustomerClass } from "../../classes/customer-class";
 import localCo from '@angular/common/locales/es-CO';
 import { registerLocaleData } from "@angular/common";
+import { PreferencesServiceProvider } from "../../providers/preferences-service/preferences-service";
+
 registerLocaleData(localCo);
 
 import { CustomerSearchComponent } from "../../components/customer-search/customer-search";
@@ -87,13 +89,14 @@ export class CalendarPage implements OnInit {
               private customerService: CustomerServiceProvider,
               private appointmentService: AppointmentServiceProvider,
               private scheduleServiceProvider: ScheduleServiceProvider,
-              private platform: Platform) {
+              private platform: Platform,
+              public preferencesProvider: PreferencesServiceProvider) {
 
       dragulaService.createGroup('SERVICE', {
         copy: (el, source) => {
-          console.log('A Crear 1' + el.id);
-
-
+          console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
+          this.addEvent(el.id);
+          /*
           let eventData = {
             title: el.id,
             startTime: new Date(),
@@ -108,6 +111,7 @@ export class CalendarPage implements OnInit {
           setTimeout(() => {
             this.eventSource = events;
           });
+          */
           return source.id === 'left';
         },
         copyItem: (servAval: String) => {
@@ -131,9 +135,10 @@ export class CalendarPage implements OnInit {
 
   ngOnInit() {
     console.log('Plataforma:' + this.platform.platforms());
+    this.loadEvents();
     this.getServices();
     this.getCustomers();
-    this.loadEvents();
+
   }
 
   getServices() {
@@ -163,24 +168,16 @@ export class CalendarPage implements OnInit {
     let modal = this.modalCtrl.create('EventModalPage', {selectedDay: event.startTime, eventSelected: event, customerSelected: event.customerId});
     modal.present();
     modal.onDidDismiss(data => {
-      this.customerAppnt = undefined;
       if (data) {
         let events = this.eventSource;
-        let eventData = events.find(x => x.idAppointment == data.idAppointment) ;
+        let eventData = events.find(x => x._id == data._id) ;
         eventData.title = data.title;
         eventData.startTime = new Date(data.startTime);
         eventData.endTime = new Date(data.endTime);
-        if (event.status == 'Confirmada') {
-          eventData.eventColor =  '#3bdb01';
-        }
-        else {
-          eventData.eventColor= '#db5614';
-        }
+        eventData = this.preferencesProvider.getColor(eventData);
         this.eventSelected = false;
         this.eventSource = [];
-
         setTimeout(() => {
-
           this.eventSource = events;
         });
       }
@@ -188,30 +185,47 @@ export class CalendarPage implements OnInit {
   }
 
 
-  addEvent() {
-    let modal = this.modalCtrl.create('EventModalPage', {selectedDay: this.selectedDay, eventSelected: null, customerSelected: this.customerId});
-    modal.present();
-    modal.onDidDismiss(data => {
-      if (data) {
-        let eventData = data;
-        eventData.startTime = new Date(data.startTime);
-        eventData.endTime = new Date(data.endTime);
-        eventData.eventColor= '#db5614';
-        eventData.status = 'Agendada';
-        let events = this.eventSource;
-        events.push(eventData);
-        this.eventCollection.push(eventData);
-        console.log('EVENTOS:' + JSON.stringify(this.eventCollection))
-        this.appointmentService.addAppointment(eventData).subscribe(data => {
-          console.log('Datos Salvados:' + JSON.stringify(data));
-        });
-        this.eventSource = [];
-        this.eventSelected = false;
-        setTimeout(() => {
-          this.eventSource = events;
-        });
-      }
-    });
+  addEvent(service: string = undefined) {
+    console.log('En Add-Service:' + service);
+    if (this.customerId) {
+      let modal = this.modalCtrl.create('EventModalPage', {
+        selectedDay: this.selectedDay,
+        eventSelected: null,
+        customerSelected: this.customerId,
+        service: service
+      });
+      modal.present();
+      modal.onDidDismiss(data => {
+        if (data) {
+          let eventData = data;
+          eventData.startTime = new Date(data.startTime);
+          eventData.endTime = new Date(data.endTime);
+          eventData.status = 'Agendada';
+          eventData = this.preferencesProvider.getColor(eventData);
+          let events = this.eventSource;
+          events.push(eventData);
+          this.eventCollection.push(eventData);
+          this.appointmentService.addAppointment(eventData).subscribe(data => {
+            eventData._id = data._id;
+             console.log('Datos Salvados:' + JSON.stringify(eventData ));
+
+          });
+          this.eventSource = [];
+          this.eventSelected = false;
+          setTimeout(() => {
+            this.eventSource = events;
+          });
+        }
+      });
+    }
+    else {
+      let alert = this.alertCtrl.create({
+        title: 'Busqueda de Paciente',
+        subTitle: 'Debe seleccionar un paciente en Buscar',
+        buttons: ['Dismiss']
+      })
+      alert.present();
+    }
   }
 
 
@@ -232,7 +246,7 @@ export class CalendarPage implements OnInit {
   onTimeSelected(ev) {
     console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
     this.selectedDay = ev.selectedTime;
-    if (!this.eventSelected) {
+    if (!this.eventSelected && this.calendar.mode == 'day' ) {
       if (this.customerId) {
         this.addEvent();
       }
@@ -253,7 +267,7 @@ export class CalendarPage implements OnInit {
   }
 
   loadEvents() {
-
+/*
     this.eventSource = [{"_id":"5b988ef96db10564e1aba5f7","startTime":"2018-09-19T20:00:00.000Z",
       "endTime":"2018-09-19T21:00:00.000Z","durationTime":60,"status":"Agendada","title":"Cita Nueva",
       "client":{"_id":"5b986a57843030601ca3db1a","clientSince":"2018-09-12T01:22:31.694Z","lastVisit":"2018-09-12T01:22:31.694Z",
@@ -273,12 +287,13 @@ export class CalendarPage implements OnInit {
     this.eventSource[0].endTime = new Date(this.eventSource[0].endTime);
     this.eventSource[0].eventColor = 'green';
     console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
-    /*
+    */
+
     this.scheduleServiceProvider.getSchedule('5b9b35508365b87a63f45aee').subscribe( data => {
+      console.log("datos de Agenda Queyr:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];
       console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
     });
-    */
     //Cargar eventos
   }
 
@@ -288,7 +303,7 @@ export class CalendarPage implements OnInit {
 
   markDisabled = (date:Date) => {
     var current = new Date();
-    current.setHours(0, 0, 0);
+    current.setHours(2, 0, 0);
     return date < current;
   };
 }

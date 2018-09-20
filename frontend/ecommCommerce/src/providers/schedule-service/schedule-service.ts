@@ -6,6 +6,7 @@ import { AppointmentClass } from "../../classes/appointment-class";
 import { of } from "rxjs/observable/of";
 import { MessageServiceProvider } from "../message-service/message-service";
 import { environment } from "../../environment";
+import { PreferencesServiceProvider } from "../preferences-service/preferences-service";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,7 +23,8 @@ const httpOptions = {
 export class ScheduleServiceProvider {
   appntUrl = environment.baseUrl + '/professionalsSchedule';
 
-  constructor(public http: HttpClient, private messageService: MessageServiceProvider) {
+  constructor(public http: HttpClient, private messageService: MessageServiceProvider,
+              public preferencesProvider: PreferencesServiceProvider) {
     console.log('Hello ScheduleServiceProvider Provider');
   }
 
@@ -32,20 +34,16 @@ export class ScheduleServiceProvider {
 
   getSchedule(professionaId): Observable<AppointmentClass[]> {
     return this.http.get<AppointmentClass[]>(this.appntUrl + '/' + professionaId).pipe(
-      map(data => {
-        console.log('Aqui1:' + JSON.stringify(data['appointments']));
-        let events = data['appointments'];
-        for (var i in events) {
-          let event = events[i];
-          events[i].startTime = new Date(events[i].startTime);
-          events[i].endTime = new Date(events[i].endTime);
-          events[i].eventColor = 'green';
-          console.log('Aqui2:' + JSON.stringify(event));
-        }
-        console.log('Aqui3:' + JSON.stringify(events));
-        return events;
-      }),
-      catchError(this.handleError('getAppointments', []))
+      map(result => {
+        const appointments = <AppointmentClass[]>result;
+        appointments.forEach(appointment => {
+          appointment.startTime = new Date(appointment.startTime);
+          appointment.endTime = new Date(appointment.endTime);
+          appointment = this.preferencesProvider.getColor(appointment);
+          console.log('MapAgenda:' + JSON.stringify(appointment));
+        })
+        return appointments;
+      })
     );
   }
 

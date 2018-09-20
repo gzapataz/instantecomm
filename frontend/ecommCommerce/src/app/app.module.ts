@@ -44,6 +44,7 @@ import { MessageServiceProvider } from '../providers/message-service/message-ser
 import { AppointmentServiceProvider } from '../providers/appointment-service/appointment-service';
 import { CustomerPage } from "../pages/customer/customer";
 import { ScheduleServiceProvider } from '../providers/schedule-service/schedule-service';
+import { PreferencesServiceProvider } from '../providers/preferences-service/preferences-service';
 
 
 @NgModule({
@@ -94,7 +95,8 @@ import { ScheduleServiceProvider } from '../providers/schedule-service/schedule-
     MessageServiceProvider,
     CustomerSearchComponent,
     AppointmentServiceProvider,
-    ScheduleServiceProvider
+    ScheduleServiceProvider,
+    PreferencesServiceProvider
   ]
 })
 export class AppModule {}

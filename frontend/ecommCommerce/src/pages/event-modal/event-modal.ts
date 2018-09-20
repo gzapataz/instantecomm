@@ -5,6 +5,10 @@ import { UUID } from 'angular2-uuid';
 import { ServiceServiceProvider } from "../../providers/service-service/service-service";
 import { IAppointment, AppointmentClass } from "../../classes/appointment-class";
 import {CustomerClass} from "../../classes/customer-class";
+import {Observable} from "rxjs";
+import {map, filter} from "rxjs/operators";
+import {observableToBeFn} from "rxjs/testing/TestScheduler";
+import {ServiceClass} from "../../classes/service-class";
 
 @IonicPage()
 @Component({
@@ -15,6 +19,7 @@ export class EventModalPage implements OnInit {
 
   eventColor = 'default';
   servicesAvail = [];
+  servicesAvailAux$: Observable<any[]>;
   customerSelected: CustomerClass;
   eventSelected: '';
   professional = {
@@ -23,6 +28,7 @@ export class EventModalPage implements OnInit {
   }
 
   event: IAppointment;
+  prevEventImage: IAppointment = undefined;
 
 
   minDate = new Date().toISOString();
@@ -32,28 +38,45 @@ export class EventModalPage implements OnInit {
     this.customerSelected = this.navParams.get('customerSelected');
     if (this.navParams.get('eventSelected')) {
       this.event = this.navParams.get('eventSelected');
+      this.prevEventImage = Object.assign({}, this.event);
       this.event.startTime =moment(this.event.startTime).format();
-      this.event.endTime = moment(this.event.startTime).format();
+      this.event.endTime = moment(this.event.endTime).format();
     }
     else {
       let preselectedDate = moment(this.navParams.get('selectedDay')).format();
-      this.event = new AppointmentClass(UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,null, null, this.customerSelected._id, this.customerSelected.name, this.professional._id, null, null);
+      let thsService = this.navParams.get('service');
+      this.event = new AppointmentClass(null, UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,null, null, this.customerSelected._id, this.customerSelected.name, this.professional._id, thsService, null);
+      this.event.startTime = preselectedDate;
+      if (thsService !== undefined) {
+        this.event.service = thsService;
+        this.getServicesId(thsService).subscribe(data => {
+          this.event.endTime = moment(this.event.startTime).add(data[0].averageTime, 'm').format();
+          this.event.durationTime = data[0].averageTime;
+        });
+      }
     }
   }
 
 
   ngOnInit() {
+    console.log('Me volvi a disparar');
     this.eventSelected = this.navParams.get('eventSelected');
     this.getServices()
   }
 
   getServices() {
-    this.servicesService.getServices().subscribe(servicesAvail => this.servicesAvail = servicesAvail);
+    this.servicesService.getServices().subscribe(servicesAvail =>
+    {
+      this.servicesAvail = servicesAvail
+    });
+  }
+
+  getServicesId(id): Observable<ServiceClass[]> {
+    return this.servicesService.getServices().map(services => services.filter(result => result._id == id))
   }
 
   onServiceSelected() {
-    //this.event.endTime = moment(this.event.startTime).add(this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime, 'm').format();
-    //this.event.finalDate = moment(this.event.startTime).add(this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.serviceId).averageTime, 'm').toDate();
+    this.event.endTime = moment(this.event.startTime).add(this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.service).averageTime, 'm').format();
     this.event.durationTime = this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.service).averageTime;
   }
 
@@ -63,7 +86,10 @@ export class EventModalPage implements OnInit {
   }
 
   cancel() {
-    this.viewCtrl.dismiss();
+    if (this.navParams.get('eventSelected')) {
+      this.event.service = this.prevEventImage.service;
+    }
+    this.viewCtrl.dismiss(this.prevEventImage);
   }
 
   save() {
