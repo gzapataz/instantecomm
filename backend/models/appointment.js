@@ -10,7 +10,7 @@ var appointmentSchema   = new Schema({
     durationTime: {type: Number, required: true},
     status: {
         type: String,
-        enum: Object.values(AppointmentStatus),
+        enum: Object.values(AppointmentStatus)
     },
     client:{
         type: mongoose.Schema.Types.ObjectId,
@@ -33,5 +33,14 @@ var appointmentSchema   = new Schema({
         ref: 'Notification'
     }]
 });
+
+
+appointmentSchema.set('toObject', { virtuals: true })
+appointmentSchema.set('toJSON', { virtuals: true })
+
+appointmentSchema.virtual('idAppointment')
+  .get(function() {
+    return this._id;
+  })
 
 module.exports = mongoose.model('Appointment', appointmentSchema);

@@ -52,8 +52,9 @@ exports.getProfessionalScheduleBy_id = function(req, res){
       return res.status(500).send({message: 'Error en la petición: ' + err});
     if(!professionalSchedule) 
       return res.status(404).send({message: 'No existe esta agenda'});
-    else
-      return res.json(professionalSchedule);
+    else{
+      return res.json(professionalSchedule.appointments);
+    }  
   });
 }
 

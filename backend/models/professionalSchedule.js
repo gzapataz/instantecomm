@@ -14,4 +14,12 @@ var professionalSchedule   = new Schema({
     }],*/
 });
 
+professionalSchedule.set('toObject', { virtuals: true })
+professionalSchedule.set('toJSON', { virtuals: true })
+
+professionalSchedule.virtual('idSchedule')
+  .get(function() {
+    return this._id;
+  })
+
 module.exports = mongoose.model('ProfessionalSchedule', professionalSchedule);
