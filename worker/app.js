@@ -12,6 +12,7 @@ redisClient.on('connect', function () {
 });
 
 redisClient.on('error', function (err) {
+    
     console.log('Redis error encountered', err);
 });
 
