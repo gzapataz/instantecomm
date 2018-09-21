@@ -28,11 +28,31 @@ exports.saveAppointment = async function(req){
 
 /**
  * 
+ * @param {*} req 
+ */
+exports.updateAppointment = async function(req){
+  try{
+    var appointment = Appointment.findOneAndUpdate(
+      {_id: req.params._id},
+      { "$set": { "status": req.query.status } },
+      {safe: true, upsert: true, new: true}
+    );
+  }  
+  catch(error){
+    return error;
+  }    
+  return appointment;
+} 
+
+
+/**
+ * 
  * @param {*} appointment 
  * @param {*} notification
  */
 exports.saveAppointmentNotification =  async function(appointment,notification){
   try{
+    console.log(notification);
     return await Appointment.findOneAndUpdate(
       {_id : appointment._id},
       {$push: { notifications: notification } },

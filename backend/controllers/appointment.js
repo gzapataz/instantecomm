@@ -46,6 +46,23 @@ exports.setAppointment = function(req, res){
  * @param {*} req 
  * @param {*} res 
  */
+exports.setAppointmentUpdate = function(req, res){
+  // save the appointment and check for errors
+  var appointment = AppointmentService.updateAppointment(req);
+  appointment.then((results) => {
+  if(results.errors)
+    return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la cita ' + results});
+  else{
+      res.json("Su Cita ha sido confirmada");      
+      }
+  });    
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getAppointmentBy_id = function(req, res){
   var appointment = AppointmentService.findAppointmentBy_id(req.params._id);
   appointment.exec(function(err, appointment) {

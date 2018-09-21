@@ -80,7 +80,7 @@ exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
             if(results.errors)
               return res.status(500).send({message: 'Ha ocurrido un error al asociar la notificación a la cita ' + results});
             else{
-              res.json(appoint); 
+              res.json(results); 
             }   
           });   
         });  
