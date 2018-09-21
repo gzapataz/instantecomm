@@ -1,11 +1,36 @@
 #!/usr/bin/env node
 var redis = require('redis');
-var client = redis.createClient(process.env.REDIS_URL, {no_ready_check: true});
 var kue = require('kue-scheduler');
-var Queue = kue.createQueue();
 const mongoist = require('mongoist');
 var dateFormat = require('dateformat');
 const db = mongoist(process.env.MONGODB_URI, { useNewUrlParser: true });
+
+app.redisClient = redis.createClient(process.env.REDIS_URL, {no_ready_check: true});
+
+app.redisClient.on('connect', function () {
+    console.info('successful connection to redis server');
+});
+
+app.redisClient.on('error', function (err) {
+    console.log('Redis error encountered', err);
+});
+
+app.redisClient.on('end', function() {
+    console.log('Redis connection closed');
+});
+
+kue.app.listen(config.kuePort);
+
+var Queue = app.jobs = kue.createQueue({
+    redis: {
+        createClientFactory: function(){
+            return app.redisClient;
+        }
+    }
+});
+
+//var Queue = kue.createQueue();
+
 var NotificationService = require('./services/notification');
 var AppointmentService = require('./services/appointment');
 var NotificationMessageService = require('./services/notificationMessage');
