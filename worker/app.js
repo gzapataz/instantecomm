@@ -19,7 +19,7 @@ redisClient.on('end', function() {
     console.log('Redis connection closed');
 });
 
-kue.app.listen(64359);
+kue.app.listen("64359");
 
 jobs = kue.createQueue({
     redis: {
