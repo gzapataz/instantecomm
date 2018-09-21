@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+var redis = require('redis');
+var client = redis.createClient(process.env.REDIS_URL, {no_ready_check: true});
 var kue = require('kue-scheduler');
 var Queue = kue.createQueue();
 const mongoist = require('mongoist');
@@ -11,6 +13,8 @@ var ClientService = require('./services/client');
 var PersonService = require('./services/person');
 var WhatsappService = require('./services/whatsapp');
 var herokuURL = "https://ecommercealinstante.herokuapp.com/appointments/confirm/";
+
+
 
 var jobName = "sendNotification";
 // Create a job instance in the queue.
