@@ -35,7 +35,6 @@ exports.sendNotification = async function(phone, message, notificationId, arrayA
 
     for(i=0;i<arrayApointment.length;i++){
         var comodin = "{"+i+"}";
-        console.log(comodin + arrayApointment[i]);
         message = message.replace(comodin, arrayApointment[i]);
     }
 
