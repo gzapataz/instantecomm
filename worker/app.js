@@ -5,27 +5,26 @@ const mongoist = require('mongoist');
 var dateFormat = require('dateformat');
 const db = mongoist(process.env.MONGODB_URI, { useNewUrlParser: true });
 
-var app;
-app.redisClient = redis.createClient(process.env.REDIS_URL, {no_ready_check: true});
+var redisClient = redis.createClient(process.env.REDIS_URL, {no_ready_check: true});
 
-app.redisClient.on('connect', function () {
+redisClient.on('connect', function () {
     console.info('successful connection to redis server');
 });
 
-app.redisClient.on('error', function (err) {
+redisClient.on('error', function (err) {
     console.log('Redis error encountered', err);
 });
 
-app.redisClient.on('end', function() {
+redisClient.on('end', function() {
     console.log('Redis connection closed');
 });
 
-kue.app.listen(config.kuePort);
+kue.listen(config.kuePort);
 
-app.jobs = kue.createQueue({
+jobs = kue.createQueue({
     redis: {
         createClientFactory: function(){
-            return app.redisClient;
+            return redisClient;
         }
     }
 });
@@ -44,7 +43,7 @@ var herokuURL = "https://ecommercealinstante.herokuapp.com/appointments/confirm/
 
 var jobName = "sendNotification";
 // Create a job instance in the queue.
-var job = app.jobs
+var job = jobs
             .createJob(jobName)
             .priority('normal')
             .removeOnComplete(true);
