@@ -31,7 +31,7 @@ var options = {
  * @param {*} req 
  * @param {*} person 
  */
-exports.sendNotification = async function(phone, message, notificationId, arrayApointment , db){
+exports.sendNotification = async function(phone, message, notification, arrayApointment , db){
 
     for(i=0;i<arrayApointment.length;i++){
         var comodin = "{"+i+"}";
@@ -55,8 +55,8 @@ exports.sendNotification = async function(phone, message, notificationId, arrayA
             console.log(chunk);
         });
         if(response.statusCode == 200){
-            NotificationService.updateStatusReport(db, notificationId, 'sent').then((results) => {
-                console.log(results);
+            NotificationService.updateStatusReport(db, notification._id, 'sent').then((results) => {
+
             });    
             console.log('Se actualiza el estado de notificación a enviada');
         }

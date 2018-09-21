@@ -1,37 +1,9 @@
 #!/usr/bin/env node
-var redis = require('redis');
 var kue = require('kue-scheduler');
+var Queue = kue.createQueue();
 const mongoist = require('mongoist');
 var dateFormat = require('dateformat');
 const db = mongoist(process.env.MONGODB_URI, { useNewUrlParser: true });
-
-var redisClient = redis.createClient(process.env.REDIS_URL, {no_ready_check: true});
-
-redisClient.on('connect', function () {
-    console.info('successful connection to redis server');
-});
-
-redisClient.on('error', function (err) {
-    
-    console.log('Redis error encountered', err);
-});
-
-redisClient.on('end', function() {
-    console.log('Redis connection closed');
-});
-
-kue.app.listen("64359");
-
-jobs = kue.createQueue({
-    redis: {
-        createClientFactory: function(){
-            return redisClient;
-        }
-    }
-});
-
-//var Queue = kue.createQueue();
-
 var NotificationService = require('./services/notification');
 var AppointmentService = require('./services/appointment');
 var NotificationMessageService = require('./services/notificationMessage');
@@ -40,20 +12,18 @@ var PersonService = require('./services/person');
 var WhatsappService = require('./services/whatsapp');
 var herokuURL = "https://ecommercealinstante.herokuapp.com/appointments/confirm/";
 
-
-
 var jobName = "sendNotification";
+
 // Create a job instance in the queue.
-var job = jobs
+var job = Queue
             .createJob(jobName)
             .priority('normal')
             .removeOnComplete(true);
 
 // Schedule it to run every 60 minutes. Function every(interval, job) accepts interval in either a human-interval String format or a cron String format.
-jobs.every('10 seconds', job);
+Queue.every('10 seconds', job);
 
-jobs.process(jobName, sendNotification);   
-
+Queue.process(jobName, sendNotification);
 
 async function sendNotification(job, done) {
     const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial");
@@ -81,4 +51,4 @@ async function sendNotification(job, done) {
         });  
     });
     done();
-}    
+}
