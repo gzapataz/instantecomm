@@ -49,9 +49,9 @@ var job = jobs
             .removeOnComplete(true);
 
 // Schedule it to run every 60 minutes. Function every(interval, job) accepts interval in either a human-interval String format or a cron String format.
-Queue.every('10 seconds', job);
+jobs.every('10 seconds', job);
 
-Queue.process(jobName, sendNotification);   
+jobs.process(jobName, sendNotification);   
 
 
 async function sendNotification(job, done) {
