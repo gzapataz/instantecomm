@@ -8,8 +8,7 @@
         "start": "ionic-app-scripts serve",
         "clean": "ionic-app-scripts clean",
         "build": "ionic-app-scripts build",
-        "lint": "ionic-app-scripts lint",
-        "postinstall": "cd frontend/ecommCommerce"
+        "lint": "ionic-app-scripts lint"
     },
     "dependencies": {
         "@angular/animations": "^5.2.11",
@@ -63,9 +62,7 @@
         "@ionic/app-scripts": "3.2.0",
         "typescript": "~2.6.2"
     },
-    "devDependencies": {
-
-    },
+    "devDependencies": {},
     "description": "An Ionic project",
     "cordova": {
         "plugins": {
