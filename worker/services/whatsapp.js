@@ -41,7 +41,6 @@ exports.sendNotification = async function(phone, message, notificationId, arrayA
 
     var mensajePreparado = {number: phone, message: message};
     console.log(mensajePreparado);
-
     jsonPayload = JSON.stringify(mensajePreparado);
     options.headers["Content-Length"] = Buffer.byteLength(jsonPayload);
 
