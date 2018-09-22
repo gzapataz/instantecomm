@@ -3,7 +3,7 @@
 var ProfessionalScheduleService = require('../services/professionalSchedule');
 var AppointmentService = require('../services/appointment');
 var NotificationService = require('../services/notification');
-var NotificationMessageService = require('../services/notificationMessage');
+var ProfessionalService = require('../services/professional');
 const constants = require('../constants/ECAIConstants');
 const NotificationState = require('../enums/notificationState');
 
@@ -68,26 +68,30 @@ exports.getProfessionalScheduleBy_id = function(req, res){
  */
 exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
   console.log("El post que llega es el siguiente: Cliente: " + req.body.client + " y la cita: " + req.body.idSchedule);
-  var notification = NotificationService.saveNotification(constants.FIRST_MESSAGE, NotificationState.INITIAL);
-  notification.then((notif) => {
-    console.log("Se crea la notificación: " + notif );
-    var appointment = AppointmentService.saveAppointment(req);
-    appointment.then((appoint) => {
-      console.log("Se crea la cita: " + appoint );
-      var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.body.idSchedule);
-      professionalSchedule.exec().then((results) => {
-        var professionalSchedule = ProfessionalScheduleService.saveProfessionalScheduleAppointment(results,appoint);
-        professionalSchedule.then((results) => {
-          var appointmentService = AppointmentService.saveAppointmentNotification(appoint,notif);
-          appointmentService.then((results) => {
-            if(results.errors)
-              return res.status(500).send({message: 'Ha ocurrido un error al asociar la notificación a la cita ' + results});
-            else{
-              res.json(results); 
-            }   
-          });   
-        });  
+  var professional = ProfessionalService.findProfessionalBySchedule(req.body.idSchedule);
+  professional.then((prof) => {
+    var notification = NotificationService.saveNotification(constants.FIRST_MESSAGE, NotificationState.INITIAL);
+    notification.then((notif) => {
+      console.log("Se crea la notificación: " + notif );
+      var appointment = AppointmentService.saveAppointment(req);
+      appointment.then((appoint) => {
+        console.log("Se crea la cita: " + appoint );
+        var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.body.idSchedule);
+        professionalSchedule.exec().then((results) => {
+          var professionalSchedule = ProfessionalScheduleService.saveProfessionalScheduleAppointment(results,appoint);
+          professionalSchedule.then((results) => {
+            appoint.professional = prof._id;
+            var appointmentService = AppointmentService.saveAppointmentNotification(appoint,notif);
+            appointmentService.then((results) => {
+              if(results.errors)
+                return res.status(500).send({message: 'Ha ocurrido un error al asociar la notificación a la cita ' + results});
+              else{
+                res.json(results); 
+              }   
+            });   
+          });  
+        });
       });
-    });
-  });  
+    });  
+  });
 }

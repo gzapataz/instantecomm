@@ -65,6 +65,14 @@ exports.findProfessionalByUid = function(uid){
   return professional;
 }
 
+/**
+ * Buscar profesional por schedule
+ * @param {*} schedule 
+ */
+exports.findProfessionalBySchedule = function(professionalSchedule){
+  var professional = Professional.findOne({professionalSchedule:professionalSchedule});
+  return professional;
+}
 
 /**
  * Buscar profesional por _id

@@ -107,6 +107,7 @@ exports.getProfessionalBy_id = function(req, res){
   });
 }
 
+
 /**
  * 
  * @param {*} req 
