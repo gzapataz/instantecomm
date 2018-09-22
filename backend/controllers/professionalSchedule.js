@@ -73,6 +73,7 @@ exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
     var notification = NotificationService.saveNotification(constants.FIRST_MESSAGE, NotificationState.INITIAL);
     notification.then((notif) => {
       console.log("Se crea la notificación: " + notif );
+      req.body.professional = prof._id;
       var appointment = AppointmentService.saveAppointment(req);
       appointment.then((appoint) => {
         console.log("Se crea la cita: " + appoint );
@@ -80,7 +81,6 @@ exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
         professionalSchedule.exec().then((results) => {
           var professionalSchedule = ProfessionalScheduleService.saveProfessionalScheduleAppointment(results,appoint);
           professionalSchedule.then((results) => {
-            appoint.professional = prof._id;
             var appointmentService = AppointmentService.saveAppointmentNotification(appoint,notif);
             appointmentService.then((results) => {
               if(results.errors)
