@@ -67,6 +67,7 @@ exports.getProfessionalScheduleBy_id = function(req, res){
  * @param {*} res 
  */
 exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
+  console.log("El post que lleha es el siguiente:" + req);
   var notification = NotificationService.saveNotification(constants.FIRST_MESSAGE, NotificationState.INITIAL);
   notification.then((notif) => {
     var appointment = AppointmentService.saveAppointment(req);
