@@ -238,7 +238,7 @@ export class CalendarPage implements OnInit {
           this.eventCollection.push(eventData);
           this.appointmentService.addAppointment(eventData).subscribe(data => {
             eventData._id = data._id;
-             console.log('Datos Salvados:' + JSON.stringify(eventData ));
+             console.log('Datos Salvados:' + JSON.stringify(data ));
 
           });
           this.eventSource = [];

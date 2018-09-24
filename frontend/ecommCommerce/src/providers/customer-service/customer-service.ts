@@ -38,7 +38,7 @@ export class CustomerServiceProvider {
   }
 
   searchCustomers(term: string): Observable<CustomerClass[]> {
-    console.log('En Busqueda');
+    console.log('En Busqueda:' + term);
     if (!term.trim()) {
       // if not search term, return empty hero array.
       return of([]);

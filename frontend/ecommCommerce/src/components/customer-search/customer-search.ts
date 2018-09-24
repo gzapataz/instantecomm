@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Pipe  } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CustomerClass } from "../../classes/customer-class";
 import { CustomerServiceProvider } from "../../providers/customer-service/customer-service";
@@ -9,6 +9,11 @@ import {
 } from 'rxjs/operators';
 import {ModalController} from "ionic-angular";
 import {CustomerModalPage} from "../../pages/customer-modal/customer-modal";
+
+// Tell Angular2 we're creating a Pipe with TypeScript decorators
+@Pipe({
+  name: 'RegexPipe'
+})
 
 /**
  * Generated class for the CustomerSearchComponent component.
@@ -43,6 +48,23 @@ export class CustomerSearchComponent implements OnInit {
     this.searchTerms.next(term);
   }
 
+  //Filter de array based in the pattern args
+  transform(value, args?) {
+    // ES6 array destructuring
+    let [pattern] = args;
+    return value.filter(task => {
+      console.log('CUSTOMERLIST:'+ JSON.stringify(task));
+      let reg = new RegExp(pattern);
+      console.log('FOUNDREG:'+ JSON.stringify(reg) + ' PATTER ' + pattern);
+      let found = reg.test(task.person.personName.lastName);
+      if (!found) {
+        found = reg.test(task.person.personName.firstName);
+      }
+      console.log('FOUND:'+ JSON.stringify(found));
+      return found;
+    });
+  }
+
   selectedName(id, name, customer) {
     console.log('Seleccionado:' + id + ' ');
     this.show = false;
@@ -56,7 +78,7 @@ export class CustomerSearchComponent implements OnInit {
     console.log ('OnInput Search:' +ev.target.value);
     if (ev.target.value != undefined && ev.target.value !== '' && !this.openAlready) {
       this.customerService.searchCustomers(ev.target.value).subscribe(customers => {
-          this.customerTest = customers;
+          this.customerTest = this.transform(customers, ev.target.value);
           console.log('CusotmerOnInput:' + JSON.stringify(this.customerTest))
           this.modal = this.modalCtrl.create('CustomerModalPage', {customerList: this.customerTest});
           this.modal.present();
