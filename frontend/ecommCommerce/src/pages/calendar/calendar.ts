@@ -20,6 +20,7 @@ import {Observable} from "rxjs";
 import {AppointmentServiceProvider} from "../../providers/appointment-service/appointment-service";
 import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
 import {LoggedProfessional} from "../../classes/logged-class";
+import {AppointmentClass} from "../../classes/appointment-class";
 
 
 /**
@@ -54,6 +55,7 @@ export class CalendarPage implements OnInit {
   loggedUser: LoggedProfessional;
   customerAppnt:  CustomerClass;
   customer$: Observable<CustomerClass>;
+  theColor = 'white'
 
   calendar = {
     mode: 'day',
@@ -130,7 +132,10 @@ export class CalendarPage implements OnInit {
     });
   }
 
-
+  onSelect() {
+    console.log('DISP');
+    this.theColor = 'black';
+  }
 
   receiveMessage($event) {
     console.log('Mensaje Recibido:' + $event);
@@ -163,10 +168,10 @@ export class CalendarPage implements OnInit {
       alert.present();
       this.navCtrl.push('LoginPage');
     } else if (this.servicesAvail.length == 0) {
-      this.loadEvents();
-      this.getServices();
+        this.getServices();
       this.getCustomers();
     }
+    this.loadEvents();
 
   }
 
@@ -216,13 +221,23 @@ export class CalendarPage implements OnInit {
 
   addEvent(service: string = undefined) {
     console.log('En Add-Service:' + service);
+    console.log('En SelectedDate:' + this.selectedDay + ' ' + this.selectedDay.getFullYear() + this.selectedDay.getMonth() + this.selectedDay.getDate() );
+    let fromDateMls = new Date(this.selectedDay.toDateString()).getTime();
+    let toDateMls = fromDateMls;
+    fromDateMls -= 24 * 60 * 60 * 1000;
+    toDateMls += 24 * 60 * 60 * 1000;
+    let fromDate = new Date(fromDateMls);
+    let toDate = new Date(toDateMls);
+
+    let dayEvents = this.filterEvents(fromDate, toDate);
     if (this.customerId) {
       let modal = this.modalCtrl.create('EventModalPage', {
         selectedDay: this.selectedDay,
         eventSelected: null,
         customerSelected: this.customerId,
         service: service,
-        professional: this.loggedUser
+        professional: this.loggedUser,
+        events: dayEvents
       });
       modal.present();
       modal.onDidDismiss(data => {
@@ -238,7 +253,7 @@ export class CalendarPage implements OnInit {
           this.eventCollection.push(eventData);
           this.appointmentService.addAppointment(eventData).subscribe(data => {
             eventData._id = data._id;
-             console.log('Datos Salvados:' + JSON.stringify(data ));
+            console.log('Datos Salvados:' + JSON.stringify(data));
 
           });
           this.eventSource = [];
@@ -259,6 +274,25 @@ export class CalendarPage implements OnInit {
     }
   }
 
+  validateSlotTime(currentEvent): boolean {
+
+    let auxEvent = this.eventSource.filter( eventDate => {
+      return currentEvent.startTime >= eventDate.startTime && currentEvent.endTime >= eventDate.endTime && currentEvent.startTime <= eventDate.endTime
+    });
+
+    if (auxEvent.length > 0 ) {
+      return false
+    }
+    return true;
+
+  }
+
+  filterEvents(fromDate, toDate): AppointmentClass[] {
+
+    return this.eventSource.filter( eventDate => {
+      return fromDate <= eventDate.startTime && eventDate.endTime <= toDate
+    });
+  }
 
   today() {
     this.calendar.currentDate = new Date();
@@ -275,6 +309,7 @@ export class CalendarPage implements OnInit {
   }
 
   onTimeSelected(ev) {
+    this.theColor = 'blue';
     console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
     this.selectedDay = ev.selectedTime;
     if (!this.eventSelected && this.calendar.mode == 'day' ) {
@@ -297,29 +332,8 @@ export class CalendarPage implements OnInit {
     console.log('ionViewDidLoad CalendarPage');
   }
 
-  loadEvents() {
-/*
-    this.eventSource = [{"_id":"5b988ef96db10564e1aba5f7","startTime":"2018-09-19T20:00:00.000Z",
-      "endTime":"2018-09-19T21:00:00.000Z","durationTime":60,"status":"Agendada","title":"Cita Nueva",
-      "client":{"_id":"5b986a57843030601ca3db1a","clientSince":"2018-09-12T01:22:31.694Z","lastVisit":"2018-09-12T01:22:31.694Z",
-        "status":"A","person":{"personName":{"firstName":"Valentina","lastName":"Mahecha"},"_id":"5b986a56843030601ca3db19",
-          "creationDate":"2018-09-12T01:22:30.852Z","idType":"RC","gender":"F","birthdate":"2017-10-04T00:00:00.000Z","phone":"7782415",
-          "mobile":"573123033470","email":"valen@valen.com","identification":"10900002341","__v":0},"__v":0},
-      "professional":{"_id":"5b986c2e6775906044a08d5e","professionalSince":"2018-09-12T01:30:22.501Z",
-        "lastVisit":"2018-09-12T01:30:22.501Z","status":"A",
-        "person":{"personName":{"firstName":"Pedro","lastName":"Picapiedra"},"_id":"5b986c2e6775906044a08d5d",
-          "creationDate":"2018-09-12T01:30:22.171Z","idType":"CC","gender":"M","birthdate":"1960-08-08T00:00:00.000Z",
-          "phone":"573223513582","mobile":"573223513582","email":"p.picapiedra@uniandes.edu.co","identification":"562312","__v":0},
-        "professionalSchedule":"5b9b35508365b87a63f45aee","uid":"qLDKHOrxq4d3zKimy9bGQ6YO4q83","__v":0},
-      "service":{"_id":"5b95e37e5837d923570f4ed9","name":"Periodoncia","description":"Es el área que trata todo tipo de afecciones en los casos que involucran los tejidos del periodonto del diente, tales como encía, hueso y ligamento periodontal",
-        "averageTime":60,"__v":0},"__v":0},
-    ]
-    this.eventSource[0].startTime = new Date(this.eventSource[0].startTime);
-    this.eventSource[0].endTime = new Date(this.eventSource[0].endTime);
-    this.eventSource[0].eventColor = 'green';
-    console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
-    */
 
+  loadEvents() {
     this.scheduleServiceProvider.getSchedule(this.loggedUser.idSchedule).subscribe( data => {
       console.log("datos de Agenda Queyr:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];

@@ -14,15 +14,24 @@
       </ion-col>
     </div>
       <ion-col col-12 col-sm-12 col-md-8 col-lg-8>
-       <ion-title>
-         {{ viewTitle }}
-       </ion-title>
+        <div align-items-start>
+          <ion-title>
+            {{ viewTitle }}
+          </ion-title>
+        </div>
+        <!--ion-buttons end>
+          {{ viewTitle }}
+          <button ion-button (click)="loadEvents()"><ion-icon name="refresh"></ion-icon></button>
+        </ion-buttons-->
+
+
      <ion-navbar color="primary">
-       <ion-buttons end>
+       <ion-buttons>
          <button ion-button [disabled]="isToday" (click)="today()">Hoy</button>
          <button ion-button (click)="changeMode('month')">Mes</button>
          <button ion-button (click)="changeMode('week')">Semana</button>
          <button ion-button (click)="changeMode('day')">Dia</button>
+         <button ion-button (click)="loadEvents()"><ion-icon name="refresh"></ion-icon></button>
        </ion-buttons>
        <ion-buttons end>
          <button ion-button icon-only (click)="addEvent()">

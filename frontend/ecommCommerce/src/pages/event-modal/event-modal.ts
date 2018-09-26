@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { ServiceServiceProvider } from "../../providers/service-service/service-service";
@@ -24,6 +24,7 @@ export class EventModalPage implements OnInit {
   customerSelected: CustomerClass;
   eventSelected: '';
   professional: LoggedProfessional;
+  events: AppointmentClass[] = [];
 
   event: IAppointment;
   prevEventImage: IAppointment = undefined;
@@ -32,9 +33,11 @@ export class EventModalPage implements OnInit {
   minDate = new Date().toISOString();
 
   constructor(public navCtrl: NavController, private navParams: NavParams, public viewCtrl: ViewController,
-              private servicesService: ServiceServiceProvider ) {
+              private servicesService: ServiceServiceProvider,
+              private alertCtrl: AlertController) {
     this.customerSelected = this.navParams.get('customerSelected');
     this.professional = this.navParams.get('professional');
+    this.events = this.navParams.get('events');
     if (this.navParams.get('eventSelected')) {
       this.event = this.navParams.get('eventSelected');
       this.prevEventImage = Object.assign({}, this.event);
@@ -56,6 +59,16 @@ export class EventModalPage implements OnInit {
     }
   }
 
+  validateSlotTime(currentEvent): boolean {
+    let auxEvent = this.events.filter( eventDate => {
+      return moment(currentEvent.startTime).toDate() >= eventDate.startTime && moment(currentEvent.endTime).toDate() >= eventDate.endTime && moment(currentEvent.startTime).toDate() <= eventDate.endTime
+    });
+    if (auxEvent.length > 0 ) {
+      return false
+    }
+    return true;
+
+  }
 
   ngOnInit() {
     console.log('Me volvi a disparar');
@@ -93,9 +106,23 @@ export class EventModalPage implements OnInit {
 
   save() {
     if (this.event.service) {
-      console.log('obteniendo dato:' + JSON.stringify(this.event));
       this.event.title = this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.service).name + ': ' + this.event.clientName;
-      this.viewCtrl.dismiss(this.event);
+      if (this.validateSlotTime(this.event)) {
+        this.viewCtrl.dismiss(this.event);
+      }
+      else {
+        let alert = this.alertCtrl.create({
+          title: 'Espacio Ocupado',
+          subTitle: 'El espacio seleccionado ya tiene una cita agendada: Presione Agendar para permitir la doble agenda o Deshacer para no ingresar la cita',
+          buttons: [{text: 'Deshacer'},
+            { text: 'Agendar',
+              handler: () => {
+                this.viewCtrl.dismiss(this.event);
+              }
+            }]
+        })
+        alert.present();
+      }
     }
     else {
       this.eventColor = 'danger';
