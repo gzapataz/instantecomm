@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 var kue = require('kue-scheduler');
-var Queue = kue.createQueue();
 const mongoist = require('mongoist');
 var dateFormat = require('dateformat');
 const db = mongoist(process.env.MONGODB_URI, { useNewUrlParser: true });
@@ -11,6 +10,12 @@ var ClientService = require('./services/client');
 var PersonService = require('./services/person');
 var WhatsappService = require('./services/whatsapp');
 var herokuURL = "https://ecommercealinstante.herokuapp.com/appointments/confirm/";
+var redisUrl =  process.env.REDISCLOUD_URL;
+
+var Queue = kue.createQueue({
+    redis: redisUrl
+  });
+
 
 var jobName = "sendNotification";
 
