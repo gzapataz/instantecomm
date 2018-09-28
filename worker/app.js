@@ -45,9 +45,9 @@ async function sendNotification(job, done) {
                                 var day = dateFormat(appointment.startTime, "yyyy-mm-dd");
                                 var url = herokuURL + appointment._id + "?status=Confirmada";
                                 var arrayAppointment = [day, startTime, endTime, url];
-                                WhatsappService.sendNotification(person.mobile,message.message,notification,arrayAppointment,db).then((results) => {
+                                /*WhatsappService.sendNotification(person.mobile,message.message,notification,arrayAppointment,db).then((results) => {
                                     //console.log(results);
-                                });    
+                                });*/    
                                 
                             });  
                         }  
