@@ -11,15 +11,13 @@ var PersonService = require('./services/person');
 var WhatsappService = require('./services/whatsapp');
 var herokuURL = "https://ecommercealinstante.herokuapp.com/appointments/confirm/";
 var redisUrl =  process.env.REDISCLOUD_URL;
-var express = require('express');
+var http = require('http');
 
-var app = express();
-var port = process.env.PORT | 8000;
-
-app.listen(port, '0.0.0.0', function() {
-    console.log("Listening on Port "+port);
-    });
-
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.write('Hello World!');
+  res.end();
+}).listen(process.env.PORT || 6000);
 
 var Queue = kue.createQueue({
     redis: redisUrl
@@ -42,7 +40,6 @@ Queue.process(jobName, sendNotification);
 async function sendNotification(job, done) {
     const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial");
     notificationCollection.forEach(notification => {
-        console.log(notification);
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
             AppointmentService.getAppointmentByNotification_id(db, notification._id).then((appointment) => {
                 if(appointment != null && appointment != undefined){
