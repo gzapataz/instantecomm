@@ -20,6 +20,28 @@ exports.saveNotification = async function(notificationMesagge, notificationState
 } 
 
 /**
+ * Actualizar una notificación.
+ * @param {*} req
+ */
+exports.updateNotification = function(notificationId, notificationState){
+  console.log(notificationId);
+  try{
+    var notification = Notification.findOneAndUpdate(
+      {_id: notificationId},
+      { "$set": { 
+                  notificationState: notificationState
+                } 
+      },
+      {safe: true, upsert: true, new: true}
+    );
+  }  
+  catch(error){
+    return error;
+  }
+  return notification;
+} 
+
+/**
  * Buscar una notificación por _id
  * @param {*} _id 
  */

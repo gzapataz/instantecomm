@@ -46,6 +46,23 @@ exports.setAppointment = function(req, res){
  * @param {*} req 
  * @param {*} res 
  */
+exports.setStatusAppointmentUpdate = function(req, res){
+  // save the appointment and check for errors
+  var appointment = AppointmentService.updateStatusAppointment(req);
+  appointment.then((results) => {
+  if(results.errors)
+    return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar el estado la cita ' + results});
+  else{
+      res.json("Su Cita ha sido confirmada");      
+      }
+  });    
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.setAppointmentUpdate = function(req, res){
   // save the appointment and check for errors
   var appointment = AppointmentService.updateAppointment(req);
@@ -53,10 +70,17 @@ exports.setAppointmentUpdate = function(req, res){
   if(results.errors)
     return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la cita ' + results});
   else{
-      res.json("Su Cita ha sido confirmada");      
+    for(var i=0;i<results.notifications.length; i++){
+        var notifications = NotificationService.updateNotification(results.notifications[i], NotificationState.INITIAL);
+        notifications.then((notif) => {
+          console.log(notif);
+        });  
       }
+      res.json(results);    
+    }    
   });    
 }
+
 
 /**
  * 

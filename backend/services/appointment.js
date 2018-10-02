@@ -30,7 +30,33 @@ exports.saveAppointment = async function(req){
  * 
  * @param {*} req 
  */
-exports.updateAppointment = async function(req){
+exports.updateAppointment = function(req){
+  try{
+    var appointment = Appointment.findOneAndUpdate(
+      {_id: req.params._id},
+      { "$set": { 
+                  status:       req.body.status,  
+                  startTime:    req.body.startTime,
+                  endTime:      req.body.endTime,
+                  durationTime: req.body.durationTime,
+                  title:        req.body.title,
+                  service:      req.body.service
+                } 
+      },
+      {safe: true, upsert: true, new: true}
+    );
+  }  
+  catch(error){
+    return error;
+  }
+  return appointment;
+} 
+
+/**
+ * 
+ * @param {*} req 
+ */
+exports.updateStatusAppointment = async function(req){
   try{
     var appointment = Appointment.findOneAndUpdate(
       {_id: req.params._id},
@@ -43,7 +69,6 @@ exports.updateAppointment = async function(req){
   }    
   return appointment;
 } 
-
 
 /**
  * 

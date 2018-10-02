@@ -6,6 +6,8 @@ router.get('/', AppointmentController.getAppointments);
 router.post('/', AppointmentController.setAppointment);
 //router.post('/notification/', AppointmentController.setNotificationAppointmentBy_id);
 router.get('/:_id', AppointmentController.getAppointmentBy_id);
-router.get('/confirm/:_id', AppointmentController.setAppointmentUpdate);
+router.put('/:_id', AppointmentController.setAppointmentUpdate);
+router.get('/confirm/:_id', AppointmentController.setStatusAppointmentUpdate);
+
 
 module.exports = router;
