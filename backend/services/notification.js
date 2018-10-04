@@ -24,7 +24,6 @@ exports.saveNotification = async function(notificationMesagge, notificationState
  * @param {*} req
  */
 exports.updateNotification = function(notificationId, notificationState){
-  console.log(notificationId);
   try{
     var notification = Notification.findOneAndUpdate(
       {_id: notificationId},

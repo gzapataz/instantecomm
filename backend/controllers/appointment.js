@@ -4,6 +4,7 @@ var AppointmentService = require('../services/appointment');
 var NotificationService = require('../services/notification');
 const constants = require('../constants/ECAIConstants');
 const NotificationState = require('../enums/notificationState');
+const AppointmentState = require('../enums/appointmentStatus');
 
 /**
  * Conseguir datos de todas las citas
@@ -70,12 +71,14 @@ exports.setAppointmentUpdate = function(req, res){
   if(results.errors)
     return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la cita ' + results});
   else{
-    for(var i=0;i<results.notifications.length; i++){
-        var notifications = NotificationService.updateNotification(results.notifications[i], NotificationState.INITIAL);
-        notifications.then((notif) => {
-          console.log(notif);
-        });  
-      }
+    if(results.status == AppointmentState.AGENDADA){
+      for(var i=0;i<results.notifications.length; i++){
+          var notifications = NotificationService.updateNotification(results.notifications[i], NotificationState.INITIAL);
+          notifications.then((notif) => {
+            console.log(notif);
+          });  
+        }
+    }
       res.json(results);    
     }    
   });    

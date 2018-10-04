@@ -49,7 +49,7 @@ exports.setProfessionalSchedule = function(req, res){
  * @param {*} res 
  */
 exports.getProfessionalScheduleBy_id = function(req, res){
-  var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.params._id);
+  var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req);
   professionalSchedule.exec(function(err, professionalSchedule) {
     if(err)
       return res.status(500).send({message: 'Error en la petición: ' + err});

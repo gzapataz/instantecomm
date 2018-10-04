@@ -1,8 +1,8 @@
 'use strict'
 // Cargamos los modelos para usarlos posteriormente
 var ProfessionalSchedule = require('../models/professionalSchedule');
-
-
+const AppointmentState = require('../enums/appointmentStatus');
+var DateUtil = require('../utils/dateUtil');
 
 /**
  * Guardar una agenda.
@@ -39,13 +39,22 @@ exports.saveProfessionalScheduleAppointment =  async function(professionalSchedu
 
 /**
  * Buscar una agenda de profesional por _id
- * @param {*} _id 
+ * @param {*} req 
  */
-exports.findProfessionalScheduleBy_id = function(_id){
-  var professionalSchedule = ProfessionalSchedule.findOne({_id:_id})
-  .populate({path:'appointments', select: {'_id':1, 'startTime':1, 'endTime':1, 'durationTime':1, 
-            'status': 1, 'client': 1, 'professional': 1, 'service':1, 'title':1}});
+exports.findProfessionalScheduleBy_id = function(req){
 
+  var dateUtil = new DateUtil(req.query.year, req.query.month, req.query.day);
+  var matchObj;
+
+  if(dateUtil.getEndDate() != "" && dateUtil.getStartDate() != ""){
+    matchObj = {"startTime": {"$gte": dateUtil.getStartDate(), "$lt": dateUtil.getEndDate()}};
+  }
+  var professionalSchedule = ProfessionalSchedule.findOne({_id:req.params._id})
+    .populate({path:'appointments', select: {'_id':1, 'startTime':1, 'endTime':1, 'durationTime':1, 
+            'status': 1, 'client': 1, 'professional': 1, 'service':1, 'title':1},
+             match: {"status": { "$ne": AppointmentState.CANCELADA}},    
+             match: matchObj
+          });
   return professionalSchedule;
 }  
   // TODO Notifications .populate({path: 'notifications', match: { _id: { $gte: _id }}})
