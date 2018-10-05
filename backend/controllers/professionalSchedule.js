@@ -61,6 +61,7 @@ exports.getProfessionalScheduleBy_id = function(req, res){
   });
 }
 
+
 /**
  * 
  * @param {*} req 

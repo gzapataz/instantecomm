@@ -15,12 +15,24 @@ module.exports = class DateUtil {
       return new Date(this.year, this.month, 0).getDate();
   }
 
+  /**
+   * 
+   */
   getStartDate(){
-    if((this.year != null && this.year != undefined) && (this.month != null && this.month != undefined) && (this.day != null && this.day != undefined)){
+    if(this.day != null && this.day != undefined){
+      if(this.year == undefined){
+        this.year = new Date().getFullYear();
+      }
+      if(this.month == undefined){
+        this.month = new Date().getMonth() + 1;
+      }
       var startDate = new Date(this.year,this.month - 1,this.day);
       return startDate;
     }
-    else if((this.year != null && this.year != undefined) && (this.month != null && this.month != undefined)){
+    else if(this.month != null && this.month != undefined){
+      if(this.year == undefined){
+        this.year = new Date().getFullYear();
+      }      
       var startDate = new Date(this.year,this.month - 1,1);
       return startDate;
     }
@@ -34,11 +46,20 @@ module.exports = class DateUtil {
   }
 
   getEndDate(){
-    if((this.year != null && this.year != undefined) && (this.month != null && this.month != undefined) && (this.day != null && this.day != undefined)){
+    if(this.day != null && this.day != undefined){
+      if(this.year == undefined){
+        this.year = new Date().getFullYear();
+      }
+      if(this.month == undefined){
+        this.month = new Date().getMonth() + 1;
+      }
       var endDate = new Date(this.year,this.month - 1,this.day, 11, 59, 59);
       return endDate;
     }
-    else if((this.year != null && this.year != undefined) && (this.month != null && this.month != undefined)){
+    else if(this.month != null && this.month != undefined){
+      if(this.year == undefined){
+        this.year = new Date().getFullYear();
+      }  
       var endDate = new Date(this.year,this.month - 1,this.daysInAMonth(), 11, 59, 59);
       return endDate;
     }

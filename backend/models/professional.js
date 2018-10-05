@@ -24,6 +24,10 @@ var professionalSchema   = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Rating',
     }],*/
+    services:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service',
+    }],
     uid: { type: String, index: { unique: true }}
 });
 

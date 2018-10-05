@@ -72,12 +72,12 @@ exports.setAppointmentUpdate = function(req, res){
     return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la cita ' + results});
   else{
     if(results.status == AppointmentState.AGENDADA){
-      for(var i=0;i<results.notifications.length; i++){
-          var notifications = NotificationService.updateNotification(results.notifications[i], NotificationState.INITIAL);
-          notifications.then((notif) => {
-            console.log(notif);
-          });  
-        }
+        for(var i=0;i<results.notifications.length; i++){
+            var notifications = NotificationService.updateNotification(results.notifications[i], NotificationState.INITIAL);
+            notifications.then((notif) => {
+              console.log(notif);
+            });  
+          }
     }
       res.json(results);    
     }    

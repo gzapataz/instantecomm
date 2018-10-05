@@ -107,6 +107,48 @@ exports.getProfessionalBy_id = function(req, res){
   });
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getServicesProfessionalByUid = function(req, res){
+  var professional = ProfessionalService.findServicesProfessionalByUid(req.params.uid);
+  professional.exec(function(err, professional) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!professional) 
+      return res.status(404).send({message: 'No existe este profesional'});
+    else{
+      console.log(professional);
+      if(professional.services.length == 0){
+        return res.status(404).send({message: 'Este profesional no tiene servicios configurados'});
+      }
+      else{
+        return res.json(professional.services);
+      }  
+    }  
+  });
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
+  var professional = ProfessionalService.findAppointmentsScheduleByProfessionalUid(req);
+  professional.exec(function(err, professional) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!professional) 
+      return res.status(404).send({message: 'No existe este profesional'});
+    else{
+        return res.json(professional.professionalSchedule.appointments);
+    }        
+  });
+}
+
 
 /**
  * 
