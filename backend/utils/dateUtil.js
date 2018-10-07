@@ -2,10 +2,11 @@
 
 
 module.exports = class DateUtil {
-  constructor(year, month, day) {
+  constructor(year, month, day, week) {
       this.year = year;
       this.month = month;
       this.day = day;
+      this.week = Boolean(week);
   }
 
   /**
@@ -27,6 +28,11 @@ module.exports = class DateUtil {
         this.month = new Date().getMonth() + 1;
       }
       var startDate = new Date(this.year,this.month - 1,this.day);
+
+      if(this.week){
+        startDate = this.startOfWeek(startDate);
+      }
+
       return startDate;
     }
     else if(this.month != null && this.month != undefined){
@@ -54,6 +60,11 @@ module.exports = class DateUtil {
         this.month = new Date().getMonth() + 1;
       }
       var endDate = new Date(this.year,this.month - 1,this.day, 11, 59, 59);
+
+      if(this.week){
+        endDate = this.endOfWeek(endDate);
+      }
+
       return endDate;
     }
     else if(this.month != null && this.month != undefined){
@@ -72,4 +83,16 @@ module.exports = class DateUtil {
     }
   }
 
+  startOfWeek(date)
+  {
+    var diff = date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1);
+    return new Date(date.setDate(diff));
+  }
+
+  endOfWeek(date)
+  {
+    return new Date(date.setDate(date.getDate() - date.getDay() + 6));
+  }  
+
 }
+

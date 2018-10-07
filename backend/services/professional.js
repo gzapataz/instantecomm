@@ -90,7 +90,7 @@ exports.findServicesProfessionalByUid = function(uid){
  * @param {*} req 
  */
 exports.findAppointmentsScheduleByProfessionalUid = function(req){
-  var dateUtil = new DateUtil(req.query.year, req.query.month, req.query.day);
+  var dateUtil = new DateUtil(req.query.year, req.query.month, req.query.day, req.query.week);
   var matchObj;
 
   if(dateUtil.getEndDate() != "" && dateUtil.getStartDate() != ""){
