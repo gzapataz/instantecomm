@@ -5,7 +5,8 @@ const AppointmentStatus = Object.freeze({
     SALA_ESPERA: "Sala de Espera",
     CONFIRMADA: "Confirmada",
     NO_CONFIRMADA: "No Confirmada",
-    ATENDIDA: "Atendida"
+    ATENDIDA: "Atendida",
+    CANCELADA: "Cancelada"
   });
 
 module.exports =  AppointmentStatus;

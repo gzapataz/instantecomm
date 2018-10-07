@@ -10,7 +10,7 @@ var RatingService = require('../services/rating');
  * @param {*} res 
  */
 exports.getClients = function(req, res){
-  if(req.query.email  == undefined){  
+  if(req.query.email  == undefined){ 
     var clients = ClientService.findAllClients();
     clients.exec(
       (err, clients) => {

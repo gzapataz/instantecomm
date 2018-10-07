@@ -15,6 +15,8 @@ var servicesRouter = require('./routes/service');
 var serviceConditionsRouter = require('./routes/serviceCondition');
 var appointmentsRouter = require('./routes/appointment');
 var professionalsScheduleRouter = require('./routes/professionalSchedule');
+var notificationsRouter = require('./routes/notification');
+var notificationMessagesRouter = require('./routes/notificationMessage');
 
 var app = express();
 
@@ -28,21 +30,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/persons', personsRouter);
-app.use("/clients", clientsRouter);
-app.use("/professionals", professionalsRouter);
-app.use("/ratings", ratingsRouter);
-app.use("/clinics", clinicsRouter);
-app.use("/services", servicesRouter);
-app.use("/serviceConditions", serviceConditionsRouter);
-app.use("/appointments", appointmentsRouter);
-app.use("/professionalsSchedule", professionalsScheduleRouter);
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.setHeader('Access-Control-Allow-Credentials', true); // If needed
+  next();
 });
 
 // error handler
@@ -55,5 +49,19 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/persons', personsRouter);
+app.use("/clients", clientsRouter);
+app.use("/professionals", professionalsRouter);
+app.use("/ratings", ratingsRouter);
+app.use("/clinics", clinicsRouter);
+app.use("/services", servicesRouter);
+app.use("/serviceConditions", serviceConditionsRouter);
+app.use("/appointments", appointmentsRouter);
+app.use("/professionalsSchedule", professionalsScheduleRouter);
+app.use("/notifications", notificationsRouter);
+app.use("/notificationMessages", notificationMessagesRouter);
 
 module.exports = app;

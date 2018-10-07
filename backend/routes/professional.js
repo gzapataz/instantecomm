@@ -6,5 +6,7 @@ router.get('/', ProfessionalController.getProfessionals);
 router.post('/', ProfessionalController.setProfessional);
 router.post('/rating/', ProfessionalController.setRatingProfessionalByEmail);
 router.get('/:_id', ProfessionalController.getProfessionalBy_id);
+router.get('/:uid/services/', ProfessionalController.getServicesProfessionalByUid);
+router.get('/:uid/professionalsSchedule/appointments/', ProfessionalController.getAppointmentsScheduleByProfessionalUid);
 
 module.exports = router;

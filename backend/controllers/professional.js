@@ -10,7 +10,13 @@ var RatingService = require('../services/rating');
  * @param {*} res 
  */
 exports.getProfessionals = function(req, res){
-  if(req.query.email  == undefined){   
+  if(req.query.email  != undefined){   
+    exports.getProfessionalByEmail(req, res);
+  } 
+  else if(req.query.uid  != undefined){
+    exports.getProfessionalByUid(req, res);
+  }
+  else{
     var professionals = ProfessionalService.findAllProfessionals();
     professionals.exec(
       (err, professionals) => {
@@ -22,10 +28,7 @@ exports.getProfessionals = function(req, res){
           return res.json(professionals);
       }
     );
-  }
-  else{
-    exports.getProfessionalByEmail(req, res);
-  }  
+  } 
 }
 
 /**
@@ -74,6 +77,24 @@ exports.getProfessionalByEmail = function(req, res){
  * @param {*} req 
  * @param {*} res 
  */
+exports.getProfessionalByUid = function(req, res){
+  var professional = ProfessionalService.findProfessionalByUid(req.query.uid);
+  professional.exec(function(err, professional) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!professional) 
+      return res.status(404).send({message: 'No existe este profesional'});
+    else
+      return res.json(professional);
+  });
+}
+
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getProfessionalBy_id = function(req, res){
   var professional = ProfessionalService.findProfessionalBy_id(req.params._id);
   professional.exec(function(err, professional) {
@@ -85,6 +106,49 @@ exports.getProfessionalBy_id = function(req, res){
       return res.json(professional);
   });
 }
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getServicesProfessionalByUid = function(req, res){
+  var professional = ProfessionalService.findServicesProfessionalByUid(req.params.uid);
+  professional.exec(function(err, professional) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!professional) 
+      return res.status(404).send({message: 'No existe este profesional'});
+    else{
+      console.log(professional);
+      if(professional.services.length == 0){
+        return res.status(404).send({message: 'Este profesional no tiene servicios configurados'});
+      }
+      else{
+        return res.json(professional.services);
+      }  
+    }  
+  });
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
+  var professional = ProfessionalService.findAppointmentsScheduleByProfessionalUid(req);
+  professional.exec(function(err, professional) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!professional) 
+      return res.status(404).send({message: 'No existe este profesional'});
+    else{
+        return res.json(professional.professionalSchedule.appointments);
+    }        
+  });
+}
+
 
 /**
  * 

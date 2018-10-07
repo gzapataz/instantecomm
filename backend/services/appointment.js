@@ -1,7 +1,6 @@
 'use strict'
 // Cargamos los modelos para usarlos posteriormente
 var Appointment = require('../models/appointment');
-var ObjectID = require('mongodb').ObjectID;
 
 /**
  * Guardar una cita.
@@ -9,9 +8,8 @@ var ObjectID = require('mongodb').ObjectID;
  */
 exports.saveAppointment = async function(req){
   var appointment = new Appointment();
-  appointment._id          = new ObjectID(req.body.idAppointment);
-  appointment.initialDate  = req.body.initialDate;
-  appointment.finalDate    = req.body.finalDate;
+  appointment.startTime  = req.body.startTime;
+  appointment.endTime    = req.body.endTime;
   appointment.durationTime = req.body.durationTime;
   appointment.status       = req.body.status;
   appointment.title        = req.body.title;
@@ -30,11 +28,56 @@ exports.saveAppointment = async function(req){
 
 /**
  * 
+ * @param {*} req 
+ */
+exports.updateAppointment = function(req){
+  try{
+    var appointment = Appointment.findOneAndUpdate(
+      {_id: req.params._id},
+      { "$set": { 
+                  status:       req.body.status,  
+                  startTime:    req.body.startTime,
+                  endTime:      req.body.endTime,
+                  durationTime: req.body.durationTime,
+                  title:        req.body.title,
+                  service:      req.body.service
+                } 
+      },
+      {safe: true, upsert: true, new: true}
+    );
+  }  
+  catch(error){
+    return error;
+  }
+  return appointment;
+} 
+
+/**
+ * 
+ * @param {*} req 
+ */
+exports.updateStatusAppointment = async function(req){
+  try{
+    var appointment = Appointment.findOneAndUpdate(
+      {_id: req.params._id},
+      { "$set": { "status": req.query.status } },
+      {safe: true, upsert: true, new: true}
+    );
+  }  
+  catch(error){
+    return error;
+  }    
+  return appointment;
+} 
+
+/**
+ * 
  * @param {*} appointment 
  * @param {*} notification
  */
-/*exports.saveAppointmentNotification =  async function(appointment,notification){
+exports.saveAppointmentNotification =  async function(appointment,notification){
   try{
+    console.log(notification);
     return await Appointment.findOneAndUpdate(
       {_id : appointment._id},
       {$push: { notifications: notification } },
@@ -44,7 +87,7 @@ exports.saveAppointment = async function(req){
   catch(error){
     return error;
   }  
-}*/
+}
 
 /**
  * Buscar una cita por _id
