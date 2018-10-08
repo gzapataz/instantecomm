@@ -2,7 +2,7 @@
 // Cargamos los modelos para usarlos posteriormente
 var Professional = require('../models/professional');
 const AppointmentState = require('../enums/appointmentStatus');
-var DateUtil = require('../utils/dateUtil');
+var SimpleDateUtil = require('../utils/simpleDateUtil');
 
 /**
  * Guardar un profesional. Guarda el profesional y la persona.
@@ -90,11 +90,11 @@ exports.findServicesProfessionalByUid = function(uid){
  * @param {*} req 
  */
 exports.findAppointmentsScheduleByProfessionalUid = function(req){
-  var dateUtil = new DateUtil(req.query.year, req.query.month, req.query.day, req.query.week);
+  var simpleDateUtil = new SimpleDateUtil(req.query.startTime, req.query.endTime);
   var matchObj;
 
-  if(dateUtil.getEndDate() != "" && dateUtil.getStartDate() != ""){
-    matchObj = {"startTime": {"$gte": dateUtil.getStartDate(), "$lt": dateUtil.getEndDate()}};
+  if(simpleDateUtil.getEndDate() != "" && simpleDateUtil.getStartDate() != ""){
+    matchObj = {"startTime": {"$gte": simpleDateUtil.getStartDate(), "$lt": simpleDateUtil.getEndDate()}};
   }
   var professional = Professional.findOne({uid:req.params.uid})
     .populate({

@@ -1,12 +1,16 @@
 'use strict'
 
-
 module.exports = class DateUtil {
   constructor(year, month, day, week) {
       this.year = year;
       this.month = month;
       this.day = day;
       this.week = Boolean(week);
+  }
+
+  constructor(startTime, endTime){
+    this.startTime = startTime;
+    this.endTime = endTime;
   }
 
   /**
