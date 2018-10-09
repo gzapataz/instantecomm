@@ -120,7 +120,6 @@ exports.getServicesProfessionalByUid = function(req, res){
     if(!professional) 
       return res.status(404).send({message: 'No existe este profesional'});
     else{
-      console.log(professional);
       if(professional.services.length == 0){
         return res.status(404).send({message: 'Este profesional no tiene servicios configurados'});
       }
@@ -145,6 +144,24 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
       return res.status(404).send({message: 'No existe este profesional'});
     else{
         return res.json(professional.professionalSchedule.appointments);
+    }        
+  });
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getClientsByProfessionalUid = function(req, res){ 
+  var professional = ProfessionalService.findClientsByProfessionalUid(req);
+  professional.exec(function(err, professional) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!professional) 
+      return res.status(404).send({message: 'No existe este profesional'});
+    else{
+        return res.json(professional.clients);
     }        
   });
 }

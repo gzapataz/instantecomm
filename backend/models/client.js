@@ -1,13 +1,13 @@
 //person.js
 
 var mongoose              = require('mongoose');
-const ActivationState     = require('../enums/activationState');
+const ActivationStatus     = require('../enums/activationStatus');
 var Schema                = mongoose.Schema;
 
 var clientSchema   = new Schema({
     status: {
         type: String,
-        enum: Object.values(ActivationState),
+        enum: Object.values(ActivationStatus),
     },
     clientSince:{ type: Date, default: Date.now },  
     lastVisit:{ type: Date, default: Date.now },

@@ -2,6 +2,7 @@
 // Cargamos los modelos para usarlos posteriormente
 var Professional = require('../models/professional');
 const AppointmentState = require('../enums/appointmentStatus');
+const ActivationStatus = require('../enums/activationStatus');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
 
 /**
@@ -107,6 +108,16 @@ exports.findAppointmentsScheduleByProfessionalUid = function(req){
         match: matchObj
       }
     });
+  return professional;  
+} 
+
+/**
+ * Buscar todos los pacientes de un profesional por uid
+ * @param {*} req 
+ */
+exports.findClientsByProfessionalUid = function(req){
+  var professional = Professional.findOne({uid:req.params.uid})
+    .populate({path:'clients', populate: {path:'person'}});
   return professional;  
 } 
 

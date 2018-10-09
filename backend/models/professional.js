@@ -1,13 +1,13 @@
 //person.js
 
 var mongoose              = require('mongoose');
-const ActivationState     = require('../enums/activationState');
+const ActivationStatus     = require('../enums/activationStatus');
 var Schema                = mongoose.Schema;
 
 var professionalSchema   = new Schema({
     status: {
         type: String,
-        enum: Object.values(ActivationState),
+        enum: Object.values(ActivationStatus),
     },
     professionalSince:{ type: Date, default: Date.now },  
     lastVisit:{ type: Date, default: Date.now },
@@ -27,6 +27,10 @@ var professionalSchema   = new Schema({
     services:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Service',
+    }],
+    clients:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Client',
     }],
     uid: { type: String, index: { unique: true }}
 });
