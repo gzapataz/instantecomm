@@ -77,7 +77,6 @@ exports.updateStatusAppointment = async function(req){
  */
 exports.saveAppointmentNotification =  async function(appointment,notification){
   try{
-    console.log(notification);
     return await Appointment.findOneAndUpdate(
       {_id : appointment._id},
       {$push: { notifications: notification } },

@@ -166,6 +166,24 @@ exports.getClientsByProfessionalUid = function(req, res){
   });
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getExceptionsScheduleByProfessionalUid = function(req, res){ 
+  var professional = ProfessionalService.findExceptionsScheduleByProfessionalUid(req);
+  professional.exec(function(err, professional) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!professional) 
+      return res.status(404).send({message: 'No existe este profesional'});
+    else{
+        return res.json(professional.professionalSchedule.exceptions);
+    }        
+  });
+}
+
 
 /**
  * 

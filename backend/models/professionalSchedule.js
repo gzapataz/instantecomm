@@ -1,4 +1,4 @@
-//service.js
+//professionalSchedule.js
 
 var mongoose              = require('mongoose');
 var Schema                = mongoose.Schema;
@@ -8,10 +8,10 @@ var professionalSchedule   = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Appointment'
     }],
-    /*exceptionsSchedule: [{
+    exceptions: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ExceptionSchedule'
-    }],*/
+    }]
 });
 
 professionalSchedule.set('toObject', { virtuals: true })

@@ -17,6 +17,7 @@ var appointmentsRouter = require('./routes/appointment');
 var professionalsScheduleRouter = require('./routes/professionalSchedule');
 var notificationsRouter = require('./routes/notification');
 var notificationMessagesRouter = require('./routes/notificationMessage');
+var exceptionsRouter = require('./routes/exceptionSchedule');
 
 var app = express();
 
@@ -63,5 +64,6 @@ app.use("/appointments", appointmentsRouter);
 app.use("/professionalsSchedule", professionalsScheduleRouter);
 app.use("/notifications", notificationsRouter);
 app.use("/notificationMessages", notificationMessagesRouter);
+app.use("/exceptions", exceptionsRouter);
 
 module.exports = app;

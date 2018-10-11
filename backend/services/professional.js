@@ -121,6 +121,15 @@ exports.findClientsByProfessionalUid = function(req){
   return professional;  
 } 
 
+/**
+ * Buscar todas las excepciones de la agenda de un profesional por uid
+ * @param {*} req 
+ */
+exports.findExceptionsScheduleByProfessionalUid = function(req){
+  var professional = Professional.findOne({uid:req.params.uid})
+    .populate({path:'professionalSchedule', populate: {path:'exceptions'}});
+  return professional;  
+} 
 
 /**
  * Buscar profesional por _id
