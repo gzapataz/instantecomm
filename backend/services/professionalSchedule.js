@@ -37,11 +37,11 @@ exports.saveProfessionalScheduleAppointment =  async function(professionalSchedu
 }
 
 /**
- * Buscar una agenda de profesional por _id
+ * Buscar la agenda de profesional por _id
  * @param {*} req 
  */
-exports.findProfessionalScheduleBy_id = function(req){
-  var professionalSchedule = ProfessionalSchedule.findOne({_id:req.params._id})
+exports.findProfessionalScheduleBy_id = function(idSchedule){
+  var professionalSchedule = ProfessionalSchedule.findOne({_id:idSchedule})
     .populate({path:'appointments', select: {'_id':1, 'startTime':1, 'endTime':1, 'durationTime':1, 
             'status': 1, 'client': 1, 'professional': 1, 'service':1, 'title':1},
              match: {"status": { "$ne": AppointmentState.CANCELADA}}

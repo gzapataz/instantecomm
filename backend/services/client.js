@@ -45,7 +45,30 @@ exports.saveRatingClient =  async function(client,rating){
  */
 exports.findClientByEmail = function(email){
   var client = Client.findOne()
-  .populate({path: 'person', match: { email: { $gte: email }}}).populate('clientGrades');
+  .populate({path: 'person', match: { email: { $gte: email }}});
+  return client;
+}
+
+/**
+ * Buscar cliente por identificación
+ * @param {*} idType 
+ * @param {*} identification 
+ */
+exports.findClientByIdentification = function(idType, identification){
+  var client = Client.findOne()
+  .populate({path: 'person', 
+    match: { idType: { $gte: idType }},
+    match: { identification: {$gte: identification}}
+  });
+  return client;
+}
+
+/**
+ * Buscar clientes por person
+ * @param {*} personId 
+ */
+exports.findClientByPersonId = function(personId){
+  var client = Client.findOne({person:personId});
   return client;
 }
 

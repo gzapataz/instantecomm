@@ -10,7 +10,13 @@ var RatingService = require('../services/rating');
  * @param {*} res 
  */
 exports.getClients = function(req, res){
-  if(req.query.email  == undefined){ 
+  if(req.query.email  != undefined){
+    exports.getClientByEmail(req, res);
+  }
+  else if(req.query.idType != undefined && req.query.identification != undefined){
+    exports.getClientByIdentification(req, res);
+  }
+  else{
     var clients = ClientService.findAllClients();
     clients.exec(
       (err, clients) => {
@@ -22,9 +28,6 @@ exports.getClients = function(req, res){
           return res.json(clients);
       }
     )
-  }
-  else{
-    exports.getClientByEmail(req, res);
   }
 }
 
@@ -68,6 +71,24 @@ exports.getClientByEmail = function(req, res){
       return res.json(client);
   });
 }
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.getClientByIdentification = function(req, res){
+  var client = ClientService.findClientByIdentification(req.query.idType, req.query.identification);
+  client.exec(function(err, client) {
+    if(err)
+      return res.status(500).send({message: 'Error en la petición: ' + err});
+    if(!client) 
+      return res.status(404).send({message: 'No existe este cliente'});
+    else
+      return res.json(client);
+  });
+}
+
 
 /**
  * 

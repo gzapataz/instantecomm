@@ -13,8 +13,12 @@ var personSchema   = new Schema({
     idType: {
         type: String,
         enum: Object.values(IdType),
+        required: true
     },
-    identification: String,
+    identification: {
+        type: String,
+        required: true
+    },    
     gender: {
         type: String,
         enum: Object.values(Gender),
@@ -26,4 +30,5 @@ var personSchema   = new Schema({
     email: { type: String, required: true, index: { unique: true }}
 });
 
+personSchema.index({ idType: 1, identification: 1}, { unique: true }); 
 module.exports = mongoose.model('Person', personSchema);

@@ -3,6 +3,7 @@
 var PersonService = require('../services/person');
 var ProfessionalService = require('../services/professional');
 var RatingService = require('../services/rating');
+var ClientService = require('../services/client');
 
 /**
  * Conseguir datos de todos los profesionales
@@ -183,6 +184,50 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
     }        
   });
 }
+
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.setClientProfessionalByUid = function(req, res){
+  var person = PersonService.findPersonByIdentification(req.body.idType, req.body.identification);
+  person.then((person) => {
+    if(person != undefined && person != null){
+      //Buscar cliente por persona
+      var client = ClientService.findClientByPersonId(person) 
+      client.then((client) => {
+        if(client != undefined && client != null){
+        } 
+        else{
+          //Crear cliente
+        }
+      });  
+
+    }
+    else{
+      //crear cliente y persona
+    }
+
+  });  
+  var client = ClientService.findClientByIdentification(req.body.idType, req.body.identification);
+  client.then((client) => {
+    var crearPersona = false;
+    if(client != undefined && client != null){
+      if(client.person != undefined && client.person != null && client.person != ""){
+        return res.status(500).send({message: 'El cliente que esta intentando crear ya existe'});
+      }
+      else{
+        crearPersona = true; 
+      }
+    }
+    else{
+      //Se crea cliente y persona
+    }
+  });
+}  
+
 
 
 /**

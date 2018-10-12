@@ -104,7 +104,7 @@ exports.findAppointmentsScheduleByProfessionalUid = function(req){
         path:'appointments', 
         select: {'_id':1, 'startTime':1, 'endTime':1, 'durationTime':1, 
             'status': 1, 'client': 1, 'professional': 1, 'service':1, 'title':1},
-        match: {"status": { "$ne": AppointmentState.CANCELADA}},    
+        match: {"status": { "$ne": ActivationStatus.CANCELADA}},    
         match: matchObj
       }
     });
@@ -117,7 +117,12 @@ exports.findAppointmentsScheduleByProfessionalUid = function(req){
  */
 exports.findClientsByProfessionalUid = function(req){
   var professional = Professional.findOne({uid:req.params.uid})
-    .populate({path:'clients', populate: {path:'person'}});
+    .populate({path:'clients', 
+      populate: {
+        path:'person',
+        match: {"status": { "$ne": ActivationStatus.INACTIVE}},
+      }
+    });
   return professional;  
 } 
 

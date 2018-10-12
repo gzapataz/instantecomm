@@ -68,16 +68,13 @@ exports.getProfessionalScheduleBy_id = function(req, res){
  * @param {*} res 
  */
 exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
-  console.log("El post que llega es el siguiente: Cliente: " + req.body.client + " y la cita: " + req.body.idSchedule);
   var professional = ProfessionalService.findProfessionalBySchedule(req.body.idSchedule);
   professional.then((prof) => {
     var notification = NotificationService.saveNotification(constants.FIRST_MESSAGE, NotificationState.INITIAL);
     notification.then((notif) => {
-      console.log("Se crea la notificación: " + notif );
       req.body.professional = prof._id;
       var appointment = AppointmentService.saveAppointment(req);
       appointment.then((appoint) => {
-        console.log("Se crea la cita: " + appoint );
         var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.body.idSchedule);
         professionalSchedule.exec().then((results) => {
           var professionalSchedule = ProfessionalScheduleService.saveProfessionalScheduleAppointment(results,appoint);
