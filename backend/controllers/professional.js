@@ -4,6 +4,7 @@ var PersonService = require('../services/person');
 var ProfessionalService = require('../services/professional');
 var RatingService = require('../services/rating');
 var ClientService = require('../services/client');
+const ActivationStatus = require('../enums/activationStatus');
 
 /**
  * Conseguir datos de todos los profesionales
@@ -192,40 +193,56 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
  * @param {*} res 
  */
 exports.setClientProfessionalByUid = function(req, res){
-  var person = PersonService.findPersonByIdentification(req.body.idType, req.body.identification);
-  person.then((person) => {
-    if(person != undefined && person != null){
-      //Buscar cliente por persona
-      var client = ClientService.findClientByPersonId(person) 
-      client.then((client) => {
-        if(client != undefined && client != null){
-        } 
-        else{
-          //Crear cliente
-        }
-      });  
-
-    }
-    else{
-      //crear cliente y persona
-    }
-
-  });  
-  var client = ClientService.findClientByIdentification(req.body.idType, req.body.identification);
-  client.then((client) => {
-    var crearPersona = false;
-    if(client != undefined && client != null){
-      if(client.person != undefined && client.person != null && client.person != ""){
-        return res.status(500).send({message: 'El cliente que esta intentando crear ya existe'});
+  if(req.body.idType != undefined && req.body.identification != undefined){
+    req.body.status = ActivationStatus.ACTIVE;
+    var person = PersonService.findPersonByIdentification(req.body.idType, req.body.identification);
+    person.then((person) => {
+      if(person != undefined && person != null){
+        //Buscar cliente por persona
+        var client = ClientService.findClientByPersonId(person) 
+        client.then((client) => {
+          if(client != undefined && client != null){
+            return res.status(404).send({message: 'El cliente con ' + req.body.idType + ' ' + req.body.identification  + ' ya existe'});
+          } 
+          else{
+            var clientService = ClientService.saveClient(req, person)
+            clientService.then((results) => {
+              if(results.errors != null && results.errors != undefined){
+                return res.status(404).send(results.errors);
+              }
+              else{
+                var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
+                professional.then((results) => {
+                  return res.status(200).send({message: 'Cliente asociado al profesional'});
+                });                 
+              } 
+            });  
+          }
+        });  
       }
       else{
-        crearPersona = true; 
+        //crear cliente y persona
+        var personService = PersonService.savePerson(req);
+        personService.then((person) => {
+          var clientService = ClientService.saveClient(req, person)
+          clientService.then((results) => {
+            if(results.errors != null && results.errors != undefined){
+              return res.status(404).send(results.errors);
+            }
+            else{
+              var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
+              professional.then((results) => {
+                return res.status(200).send({message: 'Cliente asociado al profesional'});
+              }); 
+            }
+          }); 
+        });  
       }
-    }
-    else{
-      //Se crea cliente y persona
-    }
-  });
+    });  
+  }
+  else{
+    return res.status(500).send({message: 'El tipo de documento y la identificación son requeridos'});
+  }
 }  
 
 

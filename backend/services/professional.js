@@ -44,6 +44,23 @@ exports.saveRatingProfessional =  async function(professional,rating){
 }
 
 /**
+ * 
+ * @param {*} professionalUid 
+ */
+exports.saveClientProfessional =  async function(professionalUid, client){
+  try{
+    return await Professional.findOneAndUpdate(
+      {uid : professionalUid},
+      {$addToSet: {clients: client}},
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }    
+}  
+
+/**
  * Buscar profesional por email
  * @param {*} email 
  */

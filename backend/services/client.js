@@ -10,8 +10,8 @@ var Client = require('../models/client');
 exports.saveClient = async function(req, person){
   var client = new Client();
   client.status = req.body.status;
-  client.person = person;
   client.uid    = req.body.uid;
+  client.person = person;
   try{
     await client.save();
   }

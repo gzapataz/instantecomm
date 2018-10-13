@@ -10,5 +10,6 @@ router.get('/:uid/services/', ProfessionalController.getServicesProfessionalByUi
 router.get('/:uid/professionalsSchedule/appointments/', ProfessionalController.getAppointmentsScheduleByProfessionalUid);
 router.get('/:uid/clients/', ProfessionalController.getClientsByProfessionalUid);
 router.get('/:uid/professionalsSchedule/exceptions/', ProfessionalController.getExceptionsScheduleByProfessionalUid);
+router.post('/:uid/clients/', ProfessionalController.setClientProfessionalByUid);
 
 module.exports = router;
