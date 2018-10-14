@@ -49,12 +49,12 @@ exports.setProfessionalSchedule = function(req, res){
  * @param {*} res 
  */
 exports.getProfessionalScheduleBy_id = function(req, res){
-  var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req);
+  var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.params._id);
   professionalSchedule.exec(function(err, professionalSchedule) {
     if(err)
       return res.status(500).send({message: 'Error en la petición: ' + err});
     if(!professionalSchedule) 
-      return res.status(404).send({message: 'No existe esta agenda'});
+      return res.status(404).send({message: 'La agenda aún no contiene citas'});
     else{
       return res.json(professionalSchedule.appointments);
     }  

@@ -1,8 +1,8 @@
 //gender.js
 
 const Gender = Object.freeze({
-    MASCULINO: "M",
-    FEMENINO: "F"
+    MASCULINO: "Masculino",
+    FEMENINO: "Femenino"
   });
 
 module.exports =  Gender;
