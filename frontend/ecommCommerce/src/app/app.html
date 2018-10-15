@@ -1,1 +1,17 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="mycontent" >
+  <ion-content >
+    <ion-icon name="contact"></ion-icon>
+    <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">
+    <p>Hola!</p>
+    {{loggedIn}}
+    <p>Bienvenid@</p>
+
+    <ion-list>
+      <ion-item menuClose detail-none>Home</ion-item>
+      <ion-item menuClose detail-none>Agenda</ion-item>
+      <ion-item menuClose detail-none>Pacientes</ion-item>
+      <ion-item menuClose detail-none outline small (click)="signOff()">Salir</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-nav #mycontent [root]="rootPage"></ion-nav>

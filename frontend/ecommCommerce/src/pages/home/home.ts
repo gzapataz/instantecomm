@@ -37,4 +37,8 @@ export class HomePage {
 
   */
 
+  signOff() {
+    this.userService.logOut();
+    this.loggedIn = '';
+  }
 }
