@@ -25,7 +25,7 @@ export class HomePage {
     });
   }
 
-  showPlatform() {
+/*  showPlatform() {
     let text = 'Corriendo en: ' + this.platform.platforms();
     let alert = this.alertCtrl.create({
       title: 'Home',
@@ -35,9 +35,6 @@ export class HomePage {
     alert.present();
   }
 
-  signOff() {
-    this.userService.logOut();
-    this.loggedIn = '';
-  }
+  */
 
 }
