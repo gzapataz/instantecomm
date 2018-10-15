@@ -145,6 +145,11 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
     if(!professional) 
       return res.status(404).send({message: 'No existe este profesional'});
     else{
+        var exceptions = ProfessionalService.findExceptionsScheduleByProfessionalUid(req);
+        exceptions.exec(function(err, exceptions) {
+          console.log(professional.professionalSchedule.appointments.concat(exceptions.professionalSchedule.exceptions));
+        });
+        console.log(professional.professionalSchedule.exceptions);
         return res.json(professional.professionalSchedule.appointments);
     }        
   });

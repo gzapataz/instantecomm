@@ -5,6 +5,7 @@ var router = express.Router();
 router.get('/', ProfessionalSchedule.getProfessionalsSchedule);
 router.post('/', ProfessionalSchedule.setProfessionalSchedule);
 router.post('/appointment/', ProfessionalSchedule.setProfessionalScheduleAppointmentBy_id);
+router.put('/appointment/', ProfessionalSchedule.setProfessionalScheduleAppointmentUpdate);
 router.get('/:_id', ProfessionalSchedule.getProfessionalScheduleBy_id);
 
 module.exports = router;
