@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from "../../providers/user-service/user-service";
 import { HomePage } from "../home/home";
+import {TabsPage} from "../tabs/tabs";
 
 /**
  * Generated class for the LoginPage page.
@@ -37,13 +38,13 @@ export class LoginPage {
 
   signOn() {
     if (!this.login.email || !this.login.password) {
-      this.userService.displayAlert('Error',  "Ingresar usuario y password");
+      this.userService.displayAlert('Error',  "Ingresar correo electronico y password");
     }
     else {
       this.userService.logOn(this.login)
         .then(returned => {
           if (this.userService.success) {
-            this.navCtrl.push(HomePage);
+            this.navCtrl.push(TabsPage);
           }
           else {
             this.login.email = '';
