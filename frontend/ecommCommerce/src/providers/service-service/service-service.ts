@@ -23,7 +23,11 @@ const httpOptions = {
 @Injectable()
 export class ServiceServiceProvider {
 
-  serviceUrl = environment.baseUrl + '/services';
+  //http[s]://url_servidor:[puerto]/professionals/:uid/services
+
+  serviceUrl = environment.baseUrl + '/professionals';
+
+  //serviceUrl = environment.baseUrl + '/services';
 
 
   constructor(public http: HttpClient, private messageService: MessageServiceProvider) {
@@ -34,9 +38,10 @@ export class ServiceServiceProvider {
     this.messageService.add(`ServicesService: ${message}`);
   }
 
-  getServices(): Observable<ServiceClass[]> {
-    //return of (SERVICES);
-   return this.http.get<ServiceClass[]>(this.serviceUrl, httpOptions).pipe(
+  getServices(professionalUID): Observable<ServiceClass[]> {
+   var finalURL = this.serviceUrl +  '/' + professionalUID + '/services';
+   console.log('ServicesURL:' + finalURL);
+   return this.http.get<ServiceClass[]>(finalURL,  httpOptions).pipe(
       catchError(this.handleError('getServices', []))
     );
   }

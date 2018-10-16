@@ -57,8 +57,19 @@ export class CalendarPage implements OnInit {
   customer$: Observable<CustomerClass>;
   theColor = 'white'
 
+  markDisabled = (date:Date) => {
+    var val = true;
+    var current = new Date();
+    console.log('Fechas desde Disabled:' + date.getDay());
+    val = !(date.getDay() != 0 && date.getDay() != 6);
+    console.log('Rango Cerrado:' + val);
+    return val;
+    //return date < current;
+  };
+
   calendar = {
-    mode: 'day',
+    mode: 'week',
+    queryMode: 'remote',
     locale: localCo[0],
     currentDate: new Date(),
       onTimePress(event) {
@@ -79,6 +90,9 @@ export class CalendarPage implements OnInit {
     onMoveDown(event) {
       //console.log('Down Fired' +  event.movementX + ' ' + event.movementY)
 
+    },
+    onRangeChanged(ev) {
+      console.log('RangeEstamos en Drop:' + ev)
     },
     onDrop(){
       console.log('Estamos en Drop')
@@ -151,9 +165,8 @@ export class CalendarPage implements OnInit {
       return;
     };
 
-    this.loadEvents();
-    this.getServices();
-    this.getCustomers();
+    this.getServices(this.loggedUser.userId);
+    this.getCustomers(this.loggedUser.userId);
 
   }
 
@@ -168,30 +181,31 @@ export class CalendarPage implements OnInit {
       alert.present();
       this.navCtrl.push('LoginPage');
     } else if (this.servicesAvail.length == 0) {
-        this.getServices();
-      this.getCustomers();
+        this.getServices(this.loggedUser.userId);
+      this.getCustomers(this.loggedUser.userId);
     }
-    this.loadEvents();
+    //this.loadEvents(this.loggedUser.userId);
 
   }
 
-  getServices() {
-    this.servicesService.getServices().subscribe(servicesAvail => this.servicesAvail = servicesAvail);
+  getServices(professionalUID) {
+    this.servicesService.getServices(professionalUID).subscribe(servicesAvail => this.servicesAvail = servicesAvail);
   }
 
-  getCustomers() {
-    this.customerService.getCustomers().subscribe(customers => {
+  getCustomers(professionalUID) {
+    this.customerService.getCustomers(professionalUID).subscribe(customers => {
       this.customers = customers;
       console.log('Customers' + JSON.stringify(this.customers));
       console.log('CustomersName:' + customers[0].person.personName.firstName);
     });
   }
 
-  getCustomer(id: string) {
+  getCustomer(id: string){
+    var theCustomer;
     console.log('Buscando cliente:' + id);
-    this.customerService.getCustomer(id).subscribe(customer => {
-        return customer;
-    });
+    this.customerService.getCustomer(id).subscribe(customer => theCustomer = customer);
+    return theCustomer;
+
   }
 
   changeMode(newMode) {
@@ -199,17 +213,31 @@ export class CalendarPage implements OnInit {
   }
 
   updateEvent(event) {
-    let modal = this.modalCtrl.create('EventModalPage', {selectedDay: event.startTime, eventSelected: event, customerSelected: event.customerId, professional: this.loggedUser});
+    var appntCustomer = this.getCustomer(event.client);
+    let modal = this.modalCtrl.create('EventModalPage', {selectedDay: event.startTime, eventSelected: event, customerSelected: appntCustomer, professional: this.loggedUser});
     modal.present();
     modal.onDidDismiss(data => {
       if (data) {
         let events = this.eventSource;
         let eventData = events.find(x => x._id == data._id) ;
-        eventData.title = data.title;
-        eventData.startTime = new Date(data.startTime);
-        eventData.endTime = new Date(data.endTime);
-        eventData = this.preferencesProvider.getColor(eventData);
-        this.eventSelected = false;
+        if (data.status !== 'Cancelada' ) {
+          eventData.title = data.title;
+          eventData.startTime = new Date(data.startTime);
+          eventData.endTime = new Date(data.endTime);
+          eventData = this.preferencesProvider.getColor(eventData);
+          this.eventSelected = false;
+        }
+        else {
+          const index: number = events.indexOf(eventData);
+          if (index !== -1) {
+            events.splice(index, 1);
+          }
+        }
+        this.appointmentService.updateAppointment(eventData).subscribe(data => {
+          eventData._id = data._id;
+          console.log('Datos Salvados:' + JSON.stringify(data));
+
+        });
         this.eventSource = [];
         setTimeout(() => {
           this.eventSource = events;
@@ -333,10 +361,11 @@ export class CalendarPage implements OnInit {
   }
 
 
-  loadEvents() {
-    this.scheduleServiceProvider.getSchedule(this.loggedUser.idSchedule).subscribe( data => {
-      console.log("datos de Agenda Queyr:" + JSON.stringify(data))
+  loadEvents(professionalUID, startTime, endTime) {
+    this.scheduleServiceProvider.getSchedule(professionalUID, startTime, endTime).subscribe( data => {
+      //console.log("datos de Agenda Queyr:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];
+      this.eventSource = this.eventSource.filter(data => data.status !== 'Cancelada');
       console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
     });
     //Cargar eventos
@@ -344,11 +373,9 @@ export class CalendarPage implements OnInit {
 
   onRangeChanged(ev) {
     console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
+    console.log('Leer eventos del servidor');
+    this.loadEvents(this.loggedUser.userId, moment(ev.startTime).format(), moment(ev.endTime).format());
   }
 
-  markDisabled = (date:Date) => {
-    var current = new Date();
-    current.setHours(2, 0, 0);
-    return date < current;
-  };
+
 }

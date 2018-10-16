@@ -59,3 +59,4 @@ export class CustomerClass {
   status: string;
 
 }
+

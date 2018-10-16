@@ -44,6 +44,18 @@ export class AppointmentServiceProvider {
     );
   }
 
+  /** PUT: update Appointment to the server */
+  updateAppointment (event: AppointmentClass): Observable<AppointmentClass> {
+    console.log('Service: addAppointment:' + JSON.stringify(event));
+    return this.http.put<AppointmentClass>(this.appntUrl + '/appointment/', event, httpOptions).pipe(
+      tap((event: AppointmentClass) => {
+        console.log('EN POST');
+        this.log(`added appointment w/ id=${event.idAppointment}`)
+      }),
+      catchError(this.handleError<AppointmentClass>('addAppointment'))
+    );
+  }
+
   getAppointment(): Observable<AppointmentClass[]> {
     return this.http.get<AppointmentClass[]>(this.appntUrl).pipe(
       catchError(this.handleError('getAppointments', []))

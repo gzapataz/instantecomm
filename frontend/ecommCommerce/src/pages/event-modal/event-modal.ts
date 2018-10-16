@@ -11,13 +11,14 @@ import {observableToBeFn} from "rxjs/testing/TestScheduler";
 import {ServiceClass} from "../../classes/service-class";
 import {LoggedProfessional} from "../../classes/logged-class";
 
+
 @IonicPage()
 @Component({
   selector: 'page-event-modal',
   templateUrl: 'event-modal.html',
 })
 export class EventModalPage implements OnInit {
-
+  messageTest = '';
   eventColor = 'default';
   servicesAvail = [];
   servicesAvailAux$: Observable<any[]>;
@@ -36,6 +37,7 @@ export class EventModalPage implements OnInit {
               private servicesService: ServiceServiceProvider,
               private alertCtrl: AlertController) {
     this.customerSelected = this.navParams.get('customerSelected');
+    console.log(`this.customerSelected ` + JSON.stringify(this.customerSelected));
     this.professional = this.navParams.get('professional');
     this.events = this.navParams.get('events');
     if (this.navParams.get('eventSelected')) {
@@ -47,7 +49,7 @@ export class EventModalPage implements OnInit {
     else {
       let preselectedDate = moment(this.navParams.get('selectedDay')).format();
       let thsService = this.navParams.get('service');
-      this.event = new AppointmentClass(null, UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,null, null, this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
+      this.event = new AppointmentClass(null, UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,0, 'Agendada', this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
       this.event.startTime = preselectedDate;
       if (thsService !== undefined) {
         this.event.service = thsService;
@@ -57,6 +59,9 @@ export class EventModalPage implements OnInit {
         });
       }
     }
+    this.messageTest = 'Buenas tardes, su cita de: ' + this.event.title + ' para el dia: ' + this.event.startTime +
+      ' Por favor para confirmar presione el siguiente link:' +
+      'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada'
   }
 
   validateSlotTime(currentEvent): boolean {
@@ -77,14 +82,14 @@ export class EventModalPage implements OnInit {
   }
 
   getServices() {
-    this.servicesService.getServices().subscribe(servicesAvail =>
+    this.servicesService.getServices(this.professional.userId).subscribe(servicesAvail =>
     {
       this.servicesAvail = servicesAvail
     });
   }
 
   getServicesId(id): Observable<ServiceClass[]> {
-    return this.servicesService.getServices().map(services => services.filter(result => result._id == id))
+    return this.servicesService.getServices(this.professional.userId).map(services => services.filter(result => result._id == id))
   }
 
   onServiceSelected() {
@@ -102,6 +107,11 @@ export class EventModalPage implements OnInit {
       this.event.service = this.prevEventImage.service;
     }
     this.viewCtrl.dismiss(this.prevEventImage);
+  }
+
+  newStartDate() {
+    console.log(`Cambio la fecha de Inicio ${this.event.startTime}` );
+    this.event.endTime = moment(this.event.startTime).add(this.event.durationTime, 'm').format();
   }
 
   save() {

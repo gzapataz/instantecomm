@@ -21,7 +21,7 @@ const httpOptions = {
 */
 @Injectable()
 export class ScheduleServiceProvider {
-  appntUrl = environment.baseUrl + '/professionalsSchedule';
+  appntUrl = environment.baseUrl + '/professionals';
 
   constructor(public http: HttpClient, private messageService: MessageServiceProvider,
               public preferencesProvider: PreferencesServiceProvider) {
@@ -32,8 +32,13 @@ export class ScheduleServiceProvider {
     this.messageService.add(`AppointmentService: ${message}`);
   }
 
-  getSchedule(professionaId): Observable<AppointmentClass[]> {
-    return this.http.get<AppointmentClass[]>(this.appntUrl + '/' + professionaId).pipe(
+  getSchedule(professionalUID, startTime, endTime): Observable<AppointmentClass[]> {
+
+
+    var finalURL = this.appntUrl + '/' + professionalUID + '/professionalsSchedule/appointments/?startTime=' + startTime + '&' + 'endTime=' + endTime;
+    console.log('SchedulePorRangoURL:' + finalURL );
+
+    return this.http.get<AppointmentClass[]>(finalURL).pipe(
       map(result => {
         const appointments = <AppointmentClass[]>result;
         appointments.forEach(appointment => {

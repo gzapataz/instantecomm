@@ -3,6 +3,7 @@ import {Injectable, OnInit} from '@angular/core';
 import { LoggedProfessional } from "../../classes/logged-class";
 import { Observable } from "rxjs";
 import { Storage } from "@ionic/storage";
+import {CustomerClass} from "../../classes/customer-class";
 
 /*
   Generated class for the GlobalsServiceProvider provider.
@@ -13,6 +14,7 @@ import { Storage } from "@ionic/storage";
 @Injectable()
 export class GlobalsServiceProvider implements OnInit {
   public loggedProfessional = new LoggedProfessional;
+  public loadedCustomers: CustomerClass[];
 
   constructor(public http: HttpClient, private storage: Storage) {
     console.log('Hello GlobalsServiceProvider Provider');
@@ -20,7 +22,6 @@ export class GlobalsServiceProvider implements OnInit {
   }
 
   ngOnInit() {
-    console.log('DISPARADO');
     this.readFromStorageProfessionalData();
 
   }
@@ -56,4 +57,17 @@ export class GlobalsServiceProvider implements OnInit {
     this.loggedProfessional.idSchedule = '';
   }
 
+  /* Guarda la lista de clientes de un profesional en el cache */
+
+  getCustomerLocalList() {
+    return this.loadedCustomers;
+  }
+
+  setCustomerList(customerList) {
+    this.loadedCustomers = customerList;
+    console.log('Set Customer Global List:' + JSON.stringify(this.loadedCustomers));
+  }
+  resetCustomerList() {
+    this.loadedCustomers = [];
+  }
 }

@@ -9,6 +9,8 @@ import {
 } from 'rxjs/operators';
 import {ModalController} from "ionic-angular";
 import {CustomerModalPage} from "../../pages/customer-modal/customer-modal";
+import {LoggedProfessional} from "../../classes/logged-class";
+import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
 
 // Tell Angular2 we're creating a Pipe with TypeScript decorators
 @Pipe({
@@ -36,12 +38,14 @@ export class CustomerSearchComponent implements OnInit {
   show = true;
   custId$: Observable<string>;
   customerTest = [];
+  loggedUser: LoggedProfessional;
 
   @Output() messageEvent = new EventEmitter<CustomerClass>();
 
 
   constructor(private customerService: CustomerServiceProvider,
-              private modalCtrl: ModalController) {}
+              private modalCtrl: ModalController,
+              private globalService: GlobalsServiceProvider) {}
 
   // Push a search term into the observable stream.
   search(term: string): void {
@@ -77,7 +81,7 @@ export class CustomerSearchComponent implements OnInit {
   onInput(ev: any) {
     console.log ('OnInput Search:' +ev.target.value);
     if (ev.target.value != undefined && ev.target.value !== '' && !this.openAlready) {
-      this.customerService.searchCustomers(ev.target.value).subscribe(customers => {
+      this.customerService.searchCustomers(ev.target.value, this.loggedUser.userId).subscribe(customers => {
           this.customerTest = this.transform(customers, ev.target.value);
           console.log('CusotmerOnInput:' + JSON.stringify(this.customerTest))
           this.modal = this.modalCtrl.create('CustomerModalPage', {customerList: this.customerTest});
@@ -106,5 +110,6 @@ export class CustomerSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loggedUser = this.globalService.getLoggedProffessionalData();
   }
 }
