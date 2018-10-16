@@ -32,8 +32,8 @@ export class CustomerPage implements OnInit {
               private globalService: GlobalsServiceProvider) {
   }
 
-  getCustomers() {
-    this.customerService.getCustomers().subscribe(data => this.myCustomers = data);
+  getCustomers(professionaUID) {
+    this.customerService.getCustomers(professionaUID).subscribe(data => this.myCustomers = data);
   }
 
   ngOnInit() {
@@ -43,7 +43,7 @@ export class CustomerPage implements OnInit {
       return;
     };
 
-    this.getCustomers();
+    this.getCustomers(userLogged.userId);
   }
 
   ionViewWillEnter () {
@@ -57,7 +57,7 @@ export class CustomerPage implements OnInit {
       alert.present();
       this.navCtrl.push('LoginPage');
     } else if (this.myCustomers.length == 0) {
-      this.getCustomers();
+      this.getCustomers(userLogged.userId);
     }
   }
 

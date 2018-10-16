@@ -84,6 +84,8 @@
 
        <calendar [eventSource]="eventSource"
                  [calendarMode]="calendar.mode"
+                 [markDisabled]="markDisabled"
+                 [queryMode]="calendar.queryMode"
                  [currentDate]="calendar.currentDate"
                  (press)="calendar.onTimePress($event)"
                  (click)="calendar.onClick()"
@@ -95,6 +97,7 @@
                  (onEventSelected)="onEventSelected($event)"
                  (onTitleChanged)="onViewTitleChanged($event)"
                  (onTimeSelected)="onTimeSelected($event)"
+                 (onRangeChanged)="onRangeChanged($event)"
                  [locale]="calendar.locale"
                  [dayviewNormalEventTemplate]="template3"
                  [weekviewNormalEventTemplate]="template2"

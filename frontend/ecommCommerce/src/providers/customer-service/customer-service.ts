@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
 import { CustomerClass } from "../../classes/customer-class";
-import {of} from "rxjs/observable/of";
+import { of } from "rxjs/observable/of";
 import { MessageServiceProvider } from "../message-service/message-service";
 import { environment } from "../../environment";
+import { GlobalsServiceProvider } from "../globals-service/globals-service";
 
 /*
   Generated class for the CustomerServiceProvider provider.
@@ -21,9 +22,10 @@ const httpOptions = {
 
 @Injectable()
 export class CustomerServiceProvider {
-  customerUrl = environment.baseUrl + '/clients';
+  customerUrl = environment.baseUrl + '/professionals/';
 
-  constructor(public http: HttpClient, private messageService: MessageServiceProvider) {
+  constructor(public http: HttpClient, private messageService: MessageServiceProvider,
+              private globalsServiceProvider: GlobalsServiceProvider) {
     console.log('Hello CustomerServiceProvider Provider');
   }
 
@@ -31,19 +33,24 @@ export class CustomerServiceProvider {
     this.messageService.add(`HeroService: ${message}`);
   }
 
-  getCustomers(): Observable<CustomerClass[]> {
-    return this.http.get<CustomerClass[]>(this.customerUrl, httpOptions).pipe(
+  /* Gets customer Lists and also add them to the global array of customer for performance */
+  getCustomers(professionalUID): Observable<CustomerClass[]> {
+    var finalURL = this.customerUrl + professionalUID + '/clients/';
+    console.log('Customer-finalURL:' + finalURL);
+    return this.http.get<CustomerClass[]>(finalURL, httpOptions).pipe(
+      tap(data => this.globalsServiceProvider.setCustomerList(data)),
       catchError(this.handleError('getCustomers', []))
     );
   }
 
-  searchCustomers(term: string): Observable<CustomerClass[]> {
+  searchCustomers(term: string, professionalUID): Observable<CustomerClass[]> {
     console.log('En Busqueda:' + term);
     if (!term.trim()) {
       // if not search term, return empty hero array.
       return of([]);
     }
-    return this.http.get<CustomerClass[]>(`${this.customerUrl}/?name=${term}`).pipe(
+    var finalURL = this.customerUrl + professionalUID + '/clients/';
+    return this.http.get<CustomerClass[]>(`${finalURL}`).pipe(
       tap(_ => this.log(`found heroes matching "${term}"`)),
       catchError(this.handleError<CustomerClass[]>('searchCustomers', []))
     );
@@ -51,9 +58,19 @@ export class CustomerServiceProvider {
 
   getCustomer(id: string): Observable<CustomerClass> {
     let _id = id;
-
     const url = `${this.customerUrl}/${id}`;
-    console.log('URL:' + url);
+    console.log('Get Customer by Id URL:' + url);
+    /* Fist query de customer in the local Array */
+    let localList = this.globalsServiceProvider.getCustomerLocalList();
+    console.log('Local Customer by List:' + JSON.stringify(localList));
+    let customerLocal = localList.find(customer => customer._id === id );
+    console.log('Local Customer Single:' + JSON.stringify(customerLocal));
+    if (customerLocal) {
+      var customerLocal$ = of(customerLocal)
+      console.log('Encontrado Cache' + JSON.stringify(customerLocal$));
+      return customerLocal$;
+    }
+
     return this.http.get<CustomerClass>(url).pipe(
       tap(_ => this.log(`fetched customer id=${_id}`)),
       catchError(this.handleError<CustomerClass>(`getHero id=${_id}`))
