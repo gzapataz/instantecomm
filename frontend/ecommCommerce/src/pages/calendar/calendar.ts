@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import * as moment from 'moment';
 import { DragulaService } from "ng2-dragula";
-import { Platform } from 'ionic-angular'
+import { Platform } from 'ionic-angular';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 
 import { ServiceServiceProvider } from "../../providers/service-service/service-service";
@@ -55,7 +56,9 @@ export class CalendarPage implements OnInit {
   loggedUser: LoggedProfessional;
   customerAppnt:  CustomerClass;
   customer$: Observable<CustomerClass>;
-  theColor = 'white'
+  theColor = 'white';
+  fromDate = null;
+  toDate = null;
 
   markDisabled = (date:Date) => {
     var val = true;
@@ -110,7 +113,8 @@ export class CalendarPage implements OnInit {
               private scheduleServiceProvider: ScheduleServiceProvider,
               private platform: Platform,
               public preferencesProvider: PreferencesServiceProvider,
-              private globalService: GlobalsServiceProvider) {
+              private globalService: GlobalsServiceProvider,
+              public screenOrientation: ScreenOrientation) {
 
       dragulaService.createGroup('SERVICE', {
         copy: (el, source) => {
@@ -214,6 +218,7 @@ export class CalendarPage implements OnInit {
 
   updateEvent(event) {
     var appntCustomer = this.getCustomer(event.client);
+    console.log('Entrando a Cita Update:' + JSON.stringify(appntCustomer));
     let modal = this.modalCtrl.create('EventModalPage', {selectedDay: event.startTime, eventSelected: event, customerSelected: appntCustomer, professional: this.loggedUser});
     modal.present();
     modal.onDidDismiss(data => {
@@ -360,6 +365,10 @@ export class CalendarPage implements OnInit {
     console.log('ionViewDidLoad CalendarPage');
   }
 
+  refreshView() {
+    this.loadEvents(this.loggedUser.userId, moment(this.fromDate).format(), moment(this.toDate).format());
+  }
+
 
   loadEvents(professionalUID, startTime, endTime) {
     this.scheduleServiceProvider.getSchedule(professionalUID, startTime, endTime).subscribe( data => {
@@ -374,6 +383,8 @@ export class CalendarPage implements OnInit {
   onRangeChanged(ev) {
     console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
     console.log('Leer eventos del servidor');
+    this.fromDate = ev.startTime;
+    this.toDate = ev.endTime;
     this.loadEvents(this.loggedUser.userId, moment(ev.startTime).format(), moment(ev.endTime).format());
   }
 

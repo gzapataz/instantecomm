@@ -6,7 +6,7 @@
 <ion-content>
   <customer-search (messageEvent)="receiveMessage($event)"></customer-search>
   <ion-row>
-    <div *ngIf="platform.is('tablet') || platform.is('core')">
+    <div *ngIf="platform.is('tablet') || platform.is('core') || screenOrientation.type == 'landscape-secondary'">
       <ion-col col-4 col-md-4 col-lg-6 >
         <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">
           <ion-item *ngFor="let service of servicesAvail" id={{service._id}}>{{service.name}}</ion-item>
@@ -31,7 +31,7 @@
          <button ion-button (click)="changeMode('month')">Mes</button>
          <button ion-button (click)="changeMode('week')">Semana</button>
          <button ion-button (click)="changeMode('day')">Dia</button>
-         <button ion-button (click)="loadEvents()"><ion-icon name="refresh"></ion-icon></button>
+         <button ion-button (click)="refreshView()"><ion-icon name="refresh"></ion-icon></button>
        </ion-buttons>
        <ion-buttons end>
          <button ion-button icon-only (click)="addEvent()">

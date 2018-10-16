@@ -16,6 +16,7 @@ import { DragulaService } from "ng2-dragula";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgCalendarModule  } from 'ionic2-calendar';
 import { HttpClientModule } from '@angular/common/http';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { ComponentsModule } from "../components/components.module";
 import { CustomerSearchComponent } from "../components/customer-search/customer-search";
@@ -105,7 +106,8 @@ import { GlobalsServiceProvider } from '../providers/globals-service/globals-ser
     AppointmentServiceProvider,
     ScheduleServiceProvider,
     PreferencesServiceProvider,
-    GlobalsServiceProvider
+    GlobalsServiceProvider,
+    ScreenOrientation
   ]
 })
 export class AppModule {}
