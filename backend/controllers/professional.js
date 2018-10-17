@@ -172,7 +172,7 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
             exceptionsStr = exceptionsStr.replace(/\n/g, '');
           }
 
-          return res.json(citas.concat(exceptionsStr));
+          return res.json(citas);
         });
         
     }        
