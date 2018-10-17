@@ -31,5 +31,6 @@ export class CustomerDetailPage implements OnInit {
     this.customer = this.navParams.get('customer');
     console.log('Detail:' + JSON.stringify(this.customer));
     this.title = this.customer.person.personName.firstName + ' ' + this.customer.person.personName.lastName;
+
   }
 }

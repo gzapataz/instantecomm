@@ -16,6 +16,7 @@ import {GlobalsServiceProvider} from "../../providers/globals-service/globals-se
 @Component({
   selector: 'page-customer',
   templateUrl: 'customer.html',
+
 })
 export class CustomerPage implements OnInit {
 
