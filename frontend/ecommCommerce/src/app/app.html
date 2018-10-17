@@ -1,1 +1,19 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="mycontent" persistent="true" >
+  <ion-content >
+    <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">
+    <p>Hola!</p>
+    {{loggedIn}}
+    <p>Bienvenid@</p>
+    <button ion-button  menuClose detail-none (click)="signOff()">
+      Salir
+    </button>
+
+    <ion-list>
+
+      <ion-item menuClose detail-none *ngFor="let p of pages" (click)="openPage(p)">{{ p.title }}</ion-item>
+
+
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-nav #mycontent [root]="rootPage"></ion-nav>

@@ -1,8 +1,9 @@
 page-login {
   text-align: center;
-  p {
-    color: color($colors, light);
+  h1 {
+    color: white;
   }
+  body {background-color: white;}
   ion-toolbar {
     text-align: center;
   }

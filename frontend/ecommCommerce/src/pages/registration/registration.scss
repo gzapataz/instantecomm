@@ -1,6 +1,10 @@
 page-registration {
   text-align: center;
-  ion-input {
-      color: color($colors, dark);
+  h1 {
+    color: white;
+  }
+  body {background-color: white;}
+  ion-toolbar {
+    text-align: center;
   }
 }

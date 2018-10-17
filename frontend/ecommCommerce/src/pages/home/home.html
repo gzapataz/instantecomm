@@ -1,17 +1,12 @@
 <ion-header>
-  <ion-toolbar *ngIf="!loggedIn" color="light">
-    <button ion-button color="secondary" small outline [navPush]="loginPage">Ingresar</button>
-  </ion-toolbar>
-  <ion-toolbar *ngIf="loggedIn" color="light">
-    <button ion-button icon-left clear small color="dark">
-      <ion-icon name="contact"></ion-icon>
-      {{loggedIn}}
+
+  <ion-navbar  color="primary" >
+    <ion-title>Home</ion-title>
+    <button ion-button icon-only menuToggle start>
+      <img src="../assets/images/navicon.png" width="20" height="20" >
     </button>
-    <button ion-button color="dark" outline small (click)="signOff()">Salir</button>
-    <button ion-button outline small color="dark" right (click)="showPlatform()">Plataforma</button>
-  </ion-toolbar>
+  </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-
+aqui va la agenda del dia
 </ion-content>

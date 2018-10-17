@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-
+<ion-title>Inicio- e-Commerce</ion-title>
   </ion-toolbar>
 
 </ion-header>
@@ -8,14 +8,14 @@
 
 <ion-content>
   <ion-item>
-    <ion-label color="danger">eMail</ion-label>
+    <ion-label color="facebook">Correo electronico</ion-label>
     <ion-input type="email" [(ngModel)]="login.email" name="email"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label color="danger">Password</ion-label>
+    <ion-label color="facebook">Password</ion-label>
     <ion-input type="password" [(ngModel)]="login.password" name="password"></ion-input>
   </ion-item>
   <button ion-button color="secondary" (click)="signOn()">Ingresar</button>
-  <p>Crear una cuenta</p>
-  <button ion-button color="danger" [navPush]="registrationPage">Registrarse</button>
+  <p>¿Todavia no perteneces a e-Commerce al instante?</p>
+  <button ion-button color="secondary" [navPush]="registrationPage">Registrarse aquí</button>
 </ion-content>

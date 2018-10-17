@@ -1,9 +1,13 @@
-
-
 <ion-header>
+  <ion-navbar  color="primary">
+    <ion-title>Mi Agenda</ion-title>
+    <button ion-button icon-only [menuToggle] start>
+      <img src="../assets/images/navicon.png" width="20" height="20" >
+    </button>
+  </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <customer-search (messageEvent)="receiveMessage($event)"></customer-search>
   <ion-row>
     <div *ngIf="platform.is('tablet') || platform.is('core') || screenOrientation.type == 'landscape-secondary' || screenOrientation.type == 'landscape-primary'">

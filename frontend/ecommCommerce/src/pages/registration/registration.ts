@@ -48,7 +48,7 @@ export class RegistrationPage {
 
   registerAccoun() {
     if (this.reg.password != this.reg.password2) {
-      this.displayAlert('Problema Passwerd', 'Los password no coinciden');
+      this.displayAlert('Problema con el Password', 'No hay coincidencia con los passwords');
       this.reg.password = '';
       this.reg.password2 = '';
     }

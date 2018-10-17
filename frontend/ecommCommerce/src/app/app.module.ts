@@ -31,7 +31,7 @@ import { CalendarModule, CalendarDateFormatter, CalendarEventTitleFormatter, Dat
 import { CalendarWeekHoursViewModule } from "angular-calendar-week-hours-view";
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 */
-
+import {LoginPage} from "../pages/login/login";
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -50,6 +50,7 @@ import { GlobalsServiceProvider } from '../providers/globals-service/globals-ser
 
 @NgModule({
   declarations: [
+    LoginPage,
     MyApp,
     HomePage,
     CalendarPage,
@@ -84,6 +85,7 @@ import { GlobalsServiceProvider } from '../providers/globals-service/globals-ser
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    LoginPage,
     MyApp,
     HomePage,
     CalendarPage,
