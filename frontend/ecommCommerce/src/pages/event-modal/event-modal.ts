@@ -10,6 +10,9 @@ import {map, filter} from "rxjs/operators";
 import {observableToBeFn} from "rxjs/testing/TestScheduler";
 import {ServiceClass} from "../../classes/service-class";
 import {LoggedProfessional} from "../../classes/logged-class";
+import localCo from '@angular/common/locales/es-CO';
+import { registerLocaleData } from "@angular/common";
+registerLocaleData(localCo);
 
 
 @IonicPage()
@@ -40,6 +43,7 @@ export class EventModalPage implements OnInit {
     console.log(`this.customerSelected ` + JSON.stringify(this.customerSelected));
     this.professional = this.navParams.get('professional');
     this.events = this.navParams.get('events');
+    console.log('Tosos los events:'+ JSON.stringify(this.events))
     if (this.navParams.get('eventSelected')) {
       this.event = this.navParams.get('eventSelected');
       this.prevEventImage = Object.assign({}, this.event);
@@ -59,12 +63,18 @@ export class EventModalPage implements OnInit {
         });
       }
     }
-    this.messageTest = 'Buenas tardes, su cita de: ' + this.event.title + ' para el dia: ' + this.event.startTime +
+    this.messageTest = 'Buenas tardes ' + this.customerSelected.person.personName.firstName + ' su cita de ' +
+      this.event.title.slice(0, this.event.title.indexOf(':')) + ' para el dia ' + moment(this.event.startTime).locale(localCo.toLocaleString()).format('LLLL') +
       ' Por favor para confirmar presione el siguiente link:' +
       'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada'
+
+    console.log('MESSAGE : ' + this.messageTest);
+
   }
 
   validateSlotTime(currentEvent): boolean {
+    console.log('EventsFilter:' + JSON.stringify(this.events));
+    console.log('Evento:' + JSON.stringify(currentEvent));
     let auxEvent = this.events.filter( eventDate => {
       return moment(currentEvent.startTime).toDate() >= eventDate.startTime && moment(currentEvent.endTime).toDate() >= eventDate.endTime && moment(currentEvent.startTime).toDate() <= eventDate.endTime
     });
@@ -116,7 +126,7 @@ export class EventModalPage implements OnInit {
 
   save() {
     if (this.event.service) {
-      this.event.title = this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.service).name + ': ' + this.event.clientName;
+      this.event.title = this.servicesAvail.find(serviceAvail => serviceAvail._id == this.event.service).name + ': ' + this.customerSelected.person.personName.lastName + ' ' + this.customerSelected.person.personName.firstName;
       if (this.validateSlotTime(this.event)) {
         this.viewCtrl.dismiss(this.event);
       }

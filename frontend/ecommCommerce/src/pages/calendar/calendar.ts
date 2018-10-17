@@ -219,7 +219,7 @@ export class CalendarPage implements OnInit {
   updateEvent(event) {
     var appntCustomer = this.getCustomer(event.client);
     console.log('Entrando a Cita Update:' + JSON.stringify(appntCustomer));
-    let modal = this.modalCtrl.create('EventModalPage', {selectedDay: event.startTime, eventSelected: event, customerSelected: appntCustomer, professional: this.loggedUser});
+    let modal = this.modalCtrl.create('EventModalPage', {selectedDay: event.startTime, eventSelected: event, customerSelected: appntCustomer, professional: this.loggedUser, events: this.eventSource });
     modal.present();
     modal.onDidDismiss(data => {
       if (data) {

@@ -6,7 +6,7 @@
 <ion-content>
   <customer-search (messageEvent)="receiveMessage($event)"></customer-search>
   <ion-row>
-    <div *ngIf="platform.is('tablet') || platform.is('core') || screenOrientation.type == 'landscape-secondary'">
+    <div *ngIf="platform.is('tablet') || platform.is('core') || screenOrientation.type == 'landscape-secondary' || screenOrientation.type == 'landscape-primary'">
       <ion-col col-4 col-md-4 col-lg-6 >
         <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">
           <ion-item *ngFor="let service of servicesAvail" id={{service._id}}>{{service.name}}</ion-item>
