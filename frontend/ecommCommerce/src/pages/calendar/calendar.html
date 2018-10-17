@@ -1,9 +1,13 @@
-
-
 <ion-header>
+  <ion-navbar  color="primary">
+    <ion-title>Mi Agenda</ion-title>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu" ></ion-icon>
+    </button>
+  </ion-navbar>
 </ion-header>
-
-<ion-content>
+kljlk
+<ion-content padding>
   <customer-search (messageEvent)="receiveMessage($event)"></customer-search>
   <ion-row>
     <div *ngIf="platform.is('tablet') || platform.is('core')">
