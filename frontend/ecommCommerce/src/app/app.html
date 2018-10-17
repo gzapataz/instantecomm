@@ -4,12 +4,15 @@
     <p>Hola!</p>
     {{loggedIn}}
     <p>Bienvenid@</p>
+    <button ion-button  menuClose detail-none (click)="signOff()">
+      Salir
+    </button>
 
     <ion-list>
-      <ion-item menuClose detail-none>Home</ion-item>
-      <ion-item menuClose detail-none>Agenda</ion-item>
-      <ion-item menuClose detail-none>Pacientes</ion-item>
-      <ion-item menuClose detail-none  (click)="signOff()">Salir</ion-item>
+     
+      <ion-item menuClose detail-none *ngFor="let p of pages" (click)="openPage(p)">{{ p.title }}</ion-item>
+
+
     </ion-list>
   </ion-content>
 </ion-menu>
