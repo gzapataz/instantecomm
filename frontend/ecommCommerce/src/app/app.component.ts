@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 
 import { LoginPage } from '../pages/login/login';
+import { TabsPage } from '../pages/tabs/tabs';
 import {AngularFireAuth} from "angularfire2/auth";
 import {UserServiceProvider} from "../providers/user-service/user-service";
 
@@ -14,7 +15,7 @@ import {UserServiceProvider} from "../providers/user-service/user-service";
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage:any = LoginPage;
+  rootPage:any = TabsPage;
 
   loginPage: any;
   loggedIn: any;
@@ -23,7 +24,7 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
+      //statusBar.styleDefault();
       splashScreen.hide();
       this.loginPage = 'LoginPage';
       this.afAuth.auth.onAuthStateChanged(user => {

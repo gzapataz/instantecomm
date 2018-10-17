@@ -1,6 +1,5 @@
-<ion-menu [content]="mycontent" >
+<ion-menu [content]="mycontent" persistent="true" >
   <ion-content >
-    <ion-icon name="contact"></ion-icon>
     <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">
     <p>Hola!</p>
     {{loggedIn}}
@@ -14,4 +13,4 @@
     </ion-list>
   </ion-content>
 </ion-menu>
-<ion-nav #mycontent [root]="rootPage">qqq</ion-nav>
+<ion-nav #mycontent [root]="rootPage"></ion-nav>
