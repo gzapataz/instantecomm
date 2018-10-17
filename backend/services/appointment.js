@@ -32,8 +32,15 @@ exports.saveAppointment = async function(req){
  */
 exports.updateAppointment = function(req){
   try{
+    var _id;
+    if(req.params._id != null && req.params._id != undefined){
+      _id = req.params._id;
+    }
+    else{
+      _id = req.body._id;
+    }
     var appointment = Appointment.findOneAndUpdate(
-      {_id: req.params._id},
+      {_id: _id},
       { "$set": { 
                   status:       req.body.status,  
                   startTime:    req.body.startTime,

@@ -10,7 +10,11 @@ exports.saveExceptionSchedule = async function(req){
   var exceptionSchedule = new ExceptionSchedule();
   exceptionSchedule.startTime   = req.body.startTime;
   exceptionSchedule.endTime     = req.body.endTime;
-  exceptionSchedule.description = req.body.description;
+  exceptionSchedule.title       = req.body.title;
+  exceptionSchedule.startDate   = req.body.startDate;
+  exceptionSchedule.endDate     = req.body.endDate;
+  exceptionSchedule.type        = req.body.type;
+  exceptionSchedule.weekday     = req.body.weekday;
   try{
     await exceptionSchedule.save();
   }
@@ -55,7 +59,7 @@ exports.findExceptionScheduleBy_id = function(_id){
 /**
  * buscar todas las excepciones
  */
-exports.findAllExceptionSchedule = function(){
+exports.findAllExceptionsSchedule = function(){
   var exceptionsSchedule = ExceptionSchedule.find();
   return exceptionsSchedule;
 }
