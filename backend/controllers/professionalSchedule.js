@@ -6,6 +6,8 @@ var NotificationService = require('../services/notification');
 var ProfessionalService = require('../services/professional');
 const constants = require('../constants/ECAIConstants');
 const NotificationState = require('../enums/notificationState');
+const AppointmentStatus = require('../enums/appointmentStatus');
+
 
 /**
  * Conseguir datos de todas las citas
@@ -49,18 +51,17 @@ exports.setProfessionalSchedule = function(req, res){
  * @param {*} res 
  */
 exports.getProfessionalScheduleBy_id = function(req, res){
-  var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req);
+  var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.params._id);
   professionalSchedule.exec(function(err, professionalSchedule) {
     if(err)
       return res.status(500).send({message: 'Error en la petición: ' + err});
     if(!professionalSchedule) 
-      return res.status(404).send({message: 'No existe esta agenda'});
+      return res.status(404).send({message: 'La agenda aún no contiene citas'});
     else{
       return res.json(professionalSchedule.appointments);
     }  
   });
 }
-
 
 /**
  * 
@@ -92,4 +93,28 @@ exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
       });
     });  
   });
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.setProfessionalScheduleAppointmentUpdate = function(req, res){
+  // save the appointment and check for errors
+  var appointment = AppointmentService.updateAppointment(req);
+  appointment.then((results) => {
+    if(results.errors)
+      return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la cita ' + results});
+    else{
+      if(results.status == AppointmentStatus.AGENDADA){
+        for(var i=0;i<results.notifications.length; i++){
+          var notifications = NotificationService.updateNotification(results.notifications[i], NotificationState.INITIAL);
+          notifications.then((notif) => {
+          });  
+        }
+      }
+      res.json(results);    
+    }    
+  });    
 }

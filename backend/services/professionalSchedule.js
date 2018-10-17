@@ -42,24 +42,12 @@ exports.saveProfessionalScheduleAppointment =  async function(professionalSchedu
  */
 exports.findProfessionalScheduleBy_id = function(idSchedule){
   var professionalSchedule = ProfessionalSchedule.findOne({_id:idSchedule})
-    .populate({path:'appointments', select: {'_id':1, 'startTime':1, 'endTime':1, 'durationTime':1, 
+   .populate({path:'appointments', select: {'_id':1, 'startTime':1, 'endTime':1, 'durationTime':1, 
             'status': 1, 'client': 1, 'professional': 1, 'service':1, 'title':1},
              match: {"status": { "$ne": AppointmentState.CANCELADA}}
-          });
+          }).populate({path:'exceptions'});
   return professionalSchedule;
 }  
-
-  // TODO Notifications .populate({path: 'notifications', match: { _id: { $gte: _id }}})
-  
-
-/* exports.findProfessionalScheduleBy_id = function(_id){
-  var professionalSchedule = ProfessionalSchedule.findOne({_id:_id})
-  .populate({path: 'appointments', populate: {path: 'professional', populate: {path: 'person'}}})
-  .populate({path: 'appointments', populate: {path: 'client', populate: {path: 'person'}}})
-  .populate({path: 'appointments', populate: {path:'service'}});
-  // TODO Notifications .populate({path: 'notifications', match: { _id: { $gte: _id }}})
-  return professionalSchedule;
-}*/
 
 /**
  * buscar todas los citas

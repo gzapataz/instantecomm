@@ -5,6 +5,7 @@ var ProfessionalService = require('../services/professional');
 var RatingService = require('../services/rating');
 var ClientService = require('../services/client');
 const ActivationStatus = require('../enums/activationStatus');
+var SimpleDateUtil = require('../utils/simpleDateUtil');
 
 /**
  * Conseguir datos de todos los profesionales
@@ -145,7 +146,35 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
     if(!professional) 
       return res.status(404).send({message: 'No existe este profesional'});
     else{
-        return res.json(professional.professionalSchedule.appointments);
+        var citas = professional.professionalSchedule.appointments;
+        var exceptions = ProfessionalService.findExceptionsScheduleByProfessionalUid(req);
+        exceptions.exec(function(err, exceptions) {
+          var simpleDateUtil = new SimpleDateUtil(req.query.startTime, req.query.endTime);
+          var exceptionsStr="";
+          var entraABucle = false;
+          if(exceptions.professionalSchedule.exceptions.length > 0){
+            for(var day=simpleDateUtil.getStartFormatDate();day<=simpleDateUtil.getEndFormatDate();day.setDate(day.getDate()+1)){
+              
+              var exception = exceptions.professionalSchedule.exceptions[0];
+              var startTimeTmp = new Date(exception.startTime);
+              var endTimeTmp = new Date(exception.endTime);
+              var startTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), startTimeTmp.getHours());
+              var endTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), endTimeTmp.getHours());
+              exception.startTime = startTime;
+              exception.endTime = endTime;
+
+              if(entraABucle)
+                exceptionsStr= exceptionsStr + "," + exception;   //mergeJSON.merge(exceptionsStr,exception);
+              else
+                 exceptionsStr=exception;  
+              entraABucle = true; 
+            }
+            exceptionsStr = exceptionsStr.replace(/\n/g, '');
+          }
+
+          return res.json(citas.concat(exceptionsStr));
+        });
+        
     }        
   });
 }

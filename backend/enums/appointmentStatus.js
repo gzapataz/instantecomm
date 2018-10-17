@@ -1,4 +1,4 @@
-//idType.js
+//appointmentStatus.js
 
 const AppointmentStatus = Object.freeze({
     AGENDADA: "Agendada",
@@ -6,7 +6,8 @@ const AppointmentStatus = Object.freeze({
     CONFIRMADA: "Confirmada",
     NO_CONFIRMADA: "No Confirmada",
     ATENDIDA: "Atendida",
-    CANCELADA: "Cancelada"
+    CANCELADA: "Cancelada",
+    EXCEPCION: "Excepción"
   });
 
 module.exports =  AppointmentStatus;

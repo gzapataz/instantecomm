@@ -1,7 +1,7 @@
 'use strict'
 // Cargamos los modelos para usarlos posteriormente
 var Professional = require('../models/professional');
-const AppointmentState = require('../enums/appointmentStatus');
+const AppointmentStatus = require('../enums/appointmentStatus');
 const ActivationStatus = require('../enums/activationStatus');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
 
@@ -116,13 +116,13 @@ exports.findAppointmentsScheduleByProfessionalUid = function(req){
   }
   var professional = Professional.findOne({uid:req.params.uid})
     .populate({
-      path: 'professionalSchedule', 
+      path: 'professionalSchedule',
       populate: {
         path:'appointments', 
         select: {'_id':1, 'startTime':1, 'endTime':1, 'durationTime':1, 
             'status': 1, 'client': 1, 'professional': 1, 'service':1, 'title':1},
         match: {"status": { "$ne": ActivationStatus.CANCELADA}},    
-        match: matchObj
+        match: matchObj 
       }
     });
   return professional;  
@@ -148,8 +148,19 @@ exports.findClientsByProfessionalUid = function(req){
  * @param {*} req 
  */
 exports.findExceptionsScheduleByProfessionalUid = function(req){
+  var currentDate = new Date()
+  var matchStartDate = {'startDate': {'$lt':currentDate}};
+  var matchEndDate = {'endDate': {'$gte':currentDate}};
   var professional = Professional.findOne({uid:req.params.uid})
-    .populate({path:'professionalSchedule', populate: {path:'exceptions'}});
+    .populate({
+      path:'professionalSchedule', 
+      populate: {
+        path:'exceptions',
+        select: {'_id':1, 'startTime':1, 'endTime':1,'title':1,'status':1,'type':1},
+        match: matchStartDate, 
+        match: matchEndDate
+      }
+    });
   return professional;  
 } 
 
