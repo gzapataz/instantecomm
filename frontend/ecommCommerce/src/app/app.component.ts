@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-import {AlertController, Platform} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {AlertController, Nav, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
+
 import { LoginPage } from '../pages/login/login';
 import {AngularFireAuth} from "angularfire2/auth";
 import {UserServiceProvider} from "../providers/user-service/user-service";
@@ -14,6 +13,7 @@ import {UserServiceProvider} from "../providers/user-service/user-service";
   templateUrl: 'app.html'
 })
 export class MyApp {
+  @ViewChild(Nav) nav: Nav;
   rootPage:any = LoginPage;
 
   loginPage: any;
@@ -48,6 +48,7 @@ export class MyApp {
   signOff() {
     this.userService.logOut();
     this.loggedIn = '';
+    this.nav.push(LoginPage);
   }
 }
 
