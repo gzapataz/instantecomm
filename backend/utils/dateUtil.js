@@ -8,10 +8,6 @@ module.exports = class DateUtil {
       this.week = Boolean(week);
   }
 
-  constructor(startTime, endTime){
-    this.startTime = startTime;
-    this.endTime = endTime;
-  }
 
   /**
    * Devuelve el número de días de un mes

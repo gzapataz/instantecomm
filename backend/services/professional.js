@@ -156,7 +156,7 @@ exports.findExceptionsScheduleByProfessionalUid = function(req){
       path:'professionalSchedule', 
       populate: {
         path:'exceptions',
-        //match: {"timestamp":{"$gte": 'startDate', "$lt": 'endDate'}}
+        select: {'_id':1, 'startTime':1, 'endTime':1,'title':1,'status':1,'type':1},
         match: matchStartDate, 
         match: matchEndDate
       }
