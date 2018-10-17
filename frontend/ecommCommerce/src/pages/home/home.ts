@@ -13,11 +13,9 @@ import { UserServiceProvider } from "../../providers/user-service/user-service";
 })
 export class HomePage {
 
-
   constructor(public navCtrl: NavController, private afAuth: AngularFireAuth, private userService: UserServiceProvider,
               private alertCtrl: AlertController, private platform: Platform) {
 
   }
-
 
 }
