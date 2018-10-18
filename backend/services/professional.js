@@ -1,7 +1,6 @@
 'use strict'
 // Cargamos los modelos para usarlos posteriormente
 var Professional = require('../models/professional');
-const AppointmentStatus = require('../enums/appointmentStatus');
 const ActivationStatus = require('../enums/activationStatus');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
 
@@ -147,16 +146,20 @@ exports.findClientsByProfessionalUid = function(req){
  * Buscar todas las excepciones de la agenda de un profesional por uid
  * @param {*} req 
  */
-exports.findExceptionsScheduleByProfessionalUid = function(req){
+exports.findExceptionsScheduleByProfessionalUid = function(req, type){
   var currentDate = new Date()
   var matchStartDate = {'startDate': {'$lt':currentDate}};
   var matchEndDate = {'endDate': {'$gte':currentDate}};
+  var matchType;
+  if(type != null && type != undefined){
+    matchType = type;
+  }
   var professional = Professional.findOne({uid:req.params.uid})
     .populate({
       path:'professionalSchedule', 
       populate: {
         path:'exceptions',
-        select: {'_id':1, 'startTime':1, 'endTime':1,'title':1,'status':1,'type':1},
+        type: matchType,
         match: matchStartDate, 
         match: matchEndDate
       }

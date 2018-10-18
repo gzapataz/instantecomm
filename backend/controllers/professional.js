@@ -6,6 +6,8 @@ var RatingService = require('../services/rating');
 var ClientService = require('../services/client');
 const ActivationStatus = require('../enums/activationStatus');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
+var ObjectId = require('mongodb').ObjectID
+const ExceptionType = require('../enums/exceptionType');
 
 /**
  * Conseguir datos de todos los profesionales
@@ -146,35 +148,38 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
     if(!professional) 
       return res.status(404).send({message: 'No existe este profesional'});
     else{
-        var citas = professional.professionalSchedule.appointments;
-        var exceptions = ProfessionalService.findExceptionsScheduleByProfessionalUid(req);
+        var appointments = professional.professionalSchedule.appointments;
+        var exceptions = ProfessionalService.findExceptionsScheduleByProfessionalUid(req,ExceptionType.BREAK_TIME);
         exceptions.exec(function(err, exceptions) {
+          var exceptions = exceptions.professionalSchedule.exceptions;
           var simpleDateUtil = new SimpleDateUtil(req.query.startTime, req.query.endTime);
-          var exceptionsStr="";
-          var entraABucle = false;
-          if(exceptions.professionalSchedule.exceptions.length > 0){
+          var exceptionsArray=new Array();
+          if(exceptions.length > 0){
             for(var day=simpleDateUtil.getStartFormatDate();day<=simpleDateUtil.getEndFormatDate();day.setDate(day.getDate()+1)){
-              
-              var exception = exceptions.professionalSchedule.exceptions[0];
+              for(var i=0;i<exceptions.length;i++){
+              var exception = exceptions[i];
               var startTimeTmp = new Date(exception.startTime);
               var endTimeTmp = new Date(exception.endTime);
               var startTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), startTimeTmp.getHours());
               var endTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), endTimeTmp.getHours());
-              exception.startTime = startTime;
-              exception.endTime = endTime;
-
-              if(entraABucle)
-                exceptionsStr= exceptionsStr + "," + exception;   //mergeJSON.merge(exceptionsStr,exception);
-              else
-                 exceptionsStr=exception;  
-              entraABucle = true; 
+              exceptionsArray.push({
+                startTime : startTime,
+                endTime : endTime,
+                title : exception.title,
+                status : exception.status,
+                _id : new ObjectId()
+              });
             }
-            exceptionsStr = exceptionsStr.replace(/\n/g, '');
+            }
           }
-
-          return res.json(citas);
+          if(exceptionsArray.length > 0){
+            var appointmentsWithExceptions = appointments.concat(exceptionsArray);
+            res.json(appointmentsWithExceptions);
+          }
+          else{  
+            return res.json(appointments);  
+          }  
         });
-        
     }        
   });
 }
