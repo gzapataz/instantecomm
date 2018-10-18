@@ -160,8 +160,8 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
               var exception = exceptions[i];
               var startTimeTmp = new Date(exception.startTime);
               var endTimeTmp = new Date(exception.endTime);
-              var startTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), startTimeTmp.getHours());
-              var endTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), endTimeTmp.getHours());
+              var startTime = new Date(day.getFullYear(), day.getMonth() - 1, day.getDate(), startTimeTmp.getHours());
+              var endTime = new Date(day.getFullYear(), day.getMonth() - 1, day.getDate(), endTimeTmp.getHours());
               exceptionsArray.push({
                 startTime : startTime,
                 endTime : endTime,
