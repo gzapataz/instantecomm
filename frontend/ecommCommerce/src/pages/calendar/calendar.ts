@@ -22,6 +22,9 @@ import {GlobalsServiceProvider} from "../../providers/globals-service/globals-se
 import {LoggedProfessional} from "../../classes/logged-class";
 import {AppointmentClass} from "../../classes/appointment-class";
 import { ExceptionServiceProvider } from "../../providers/exception-service/exception-service";
+import {TabsPage} from "../tabs/tabs";
+import { LoginPage } from "../login/login";
+import {HomePage} from "../home/home";
 
 
 /**
@@ -123,38 +126,39 @@ export class CalendarPage implements OnInit {
               public screenOrientation: ScreenOrientation,
               private exceptionServiceProvider: ExceptionServiceProvider) {
 
-      dragulaService.createGroup('SERVICE', {
-        copy: (el, source) => {
-          //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
-          this.addEvent(el.id);
-          /*
-          let eventData = {
-            title: el.id,
-            startTime: new Date(),
-            endTime: new Date(),
-            eventColor: 'red'
-          };
+    this.dragulaService.createGroup('SERVICE', {
+            copy: (el, source) => {
+              //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
+              this.addEvent(el.id);
+              /*
+              let eventData = {
+                title: el.id,
+                startTime: new Date(),
+                endTime: new Date(),
+                eventColor: 'red'
+              };
 
-          let events = this.eventSource;
-          events.push(eventData);
-          //console.log('Source' + events);
-          this.eventSource = [];
-          setTimeout(() => {
-            this.eventSource = events;
+              let events = this.eventSource;
+              events.push(eventData);
+              //console.log('Source' + events);
+              this.eventSource = [];
+              setTimeout(() => {
+                this.eventSource = events;
+              });
+              */
+              return source.id === 'left';
+            },
+            copyItem: (servAval: String) => {
+              //console.log('A Crear 2');
+              return servAval;
+            },
+            accepts: (el, target, source, sibling) => {
+              // To avoid dragging from right to left container
+              //console.log('A Crear 3');
+              return target.id !== 'left';
+            }
           });
-          */
-          return source.id === 'left';
-        },
-        copyItem: (servAval: String) => {
-          //console.log('A Crear 2');
-          return servAval;
-        },
-        accepts: (el, target, source, sibling) => {
-          // To avoid dragging from right to left container
-          //console.log('A Crear 3');
-          return target.id !== 'left';
-        }
-    });
+
   }
 
   onSelect() {
@@ -172,15 +176,19 @@ export class CalendarPage implements OnInit {
     //console.log('Plataforma:' + this.platform.platforms());
     //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
     this.loggedUser = this.globalService.getLoggedProffessionalData();
-    this.startHour = this.loggedUser.startHour;
-    this.endHour = this.loggedUser.endHour;
+
+    console.log('LEGGED USER:' + JSON.stringify(this.loggedUser))
     if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
+      console.log('SALIENDO:' + JSON.stringify(this.loggedUser))
+      this.navCtrl.push('LoginPage');
       return;
-    };
+    } else {
+      this.startHour = this.loggedUser.startHour;
+      this.endHour = this.loggedUser.endHour;
 
-    this.getServices(this.loggedUser.userId);
-    this.getCustomers(this.loggedUser.userId);
-
+      this.getServices(this.loggedUser.userId);
+      this.getCustomers(this.loggedUser.userId);
+    }
   }
 
   ionViewWillEnter() {

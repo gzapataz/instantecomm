@@ -68,7 +68,7 @@ export class MyApp {
   signOff() {
     this.userService.logOut();
     this.loggedIn = '';
-    this.nav.push(LoginPage);
+    this.nav.push('LoginPage');
   }
 
   openPage(page: PageInterface) {

@@ -51,7 +51,6 @@ import { ExceptionServiceProvider } from '../providers/exception-service/excepti
 
 @NgModule({
   declarations: [
-    LoginPage,
     MyApp,
     HomePage,
     CalendarPage,
@@ -86,7 +85,6 @@ import { ExceptionServiceProvider } from '../providers/exception-service/excepti
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    LoginPage,
     MyApp,
     HomePage,
     CalendarPage,
