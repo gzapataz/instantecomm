@@ -29,6 +29,10 @@ export class PreferencesServiceProvider {
         appointment.eventColor = '#db1c2c';
         break;
       }
+      case 'Excepción': {
+        appointment.eventColor = '#88888d';
+        break;
+      }
       default: {
         appointment.eventColor = '#4027db';
         break;

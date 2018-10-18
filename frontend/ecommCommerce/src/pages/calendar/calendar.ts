@@ -5,7 +5,6 @@ import { DragulaService } from "ng2-dragula";
 import { Platform } from 'ionic-angular';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
-
 import { ServiceServiceProvider } from "../../providers/service-service/service-service";
 import { ScheduleServiceProvider } from "../../providers/schedule-service/schedule-service";
 import { CustomerServiceProvider } from "../../providers/customer-service/customer-service";
@@ -22,6 +21,7 @@ import {AppointmentServiceProvider} from "../../providers/appointment-service/ap
 import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
 import {LoggedProfessional} from "../../classes/logged-class";
 import {AppointmentClass} from "../../classes/appointment-class";
+import { ExceptionServiceProvider } from "../../providers/exception-service/exception-service";
 
 
 /**
@@ -48,6 +48,7 @@ export class CalendarPage implements OnInit {
   eventCollection = [];
   eventSelected = false;
   eventSource = [];
+  eventExceptions = [];
   viewTitle: string;
   selectedDay = new Date();
   servicesAvail = [];
@@ -59,11 +60,16 @@ export class CalendarPage implements OnInit {
   theColor = 'white';
   fromDate = null;
   toDate = null;
+  startHour = "9";
+  endHour = '20';
 
   markDisabled = (date:Date) => {
     var val = true;
     var current = new Date();
-    console.log('Fechas desde Disabled:' + date.getDay());
+
+
+
+    console.log('Fechas desde Disabled:' + date.getDay() + ' DATE ' + date.toString());
     val = !(date.getDay() != 0 && date.getDay() != 6);
     console.log('Rango Cerrado:' + val);
     return val;
@@ -79,29 +85,29 @@ export class CalendarPage implements OnInit {
         if (this.isEventSelected) {
           return;
         }
-        console.log('Aqui vamos en evento')
+        //console.log('Aqui vamos en evento')
       },
 
     onClick() {
-      console.log('Aqui vamos en evento Click')
+      //console.log('Aqui vamos en evento Click')
 
     },
     onMove(event) {
-      //console.log('MVX ' +  event.movementX + ' ' + event.movementY)
-      //console.log('Region ' +  event.region)
+      ////console.log('MVX ' +  event.movementX + ' ' + event.movementY)
+      ////console.log('Region ' +  event.region)
     },
     onMoveDown(event) {
-      //console.log('Down Fired' +  event.movementX + ' ' + event.movementY)
+      ////console.log('Down Fired' +  event.movementX + ' ' + event.movementY)
 
     },
     onRangeChanged(ev) {
-      console.log('RangeEstamos en Drop:' + ev)
+      //console.log('RangeEstamos en Drop:' + ev)
     },
     onDrop(){
-      console.log('Estamos en Drop')
+      //console.log('Estamos en Drop')
     },
     onDoubleClick(){
-      console.log('Doble Click')
+      //console.log('Doble Click')
     }
   };
 
@@ -114,11 +120,12 @@ export class CalendarPage implements OnInit {
               private platform: Platform,
               public preferencesProvider: PreferencesServiceProvider,
               private globalService: GlobalsServiceProvider,
-              public screenOrientation: ScreenOrientation) {
+              public screenOrientation: ScreenOrientation,
+              private exceptionServiceProvider: ExceptionServiceProvider) {
 
       dragulaService.createGroup('SERVICE', {
         copy: (el, source) => {
-          console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
+          //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
           this.addEvent(el.id);
           /*
           let eventData = {
@@ -130,7 +137,7 @@ export class CalendarPage implements OnInit {
 
           let events = this.eventSource;
           events.push(eventData);
-          console.log('Source' + events);
+          //console.log('Source' + events);
           this.eventSource = [];
           setTimeout(() => {
             this.eventSource = events;
@@ -139,32 +146,34 @@ export class CalendarPage implements OnInit {
           return source.id === 'left';
         },
         copyItem: (servAval: String) => {
-          console.log('A Crear 2');
+          //console.log('A Crear 2');
           return servAval;
         },
         accepts: (el, target, source, sibling) => {
           // To avoid dragging from right to left container
-          console.log('A Crear 3');
+          //console.log('A Crear 3');
           return target.id !== 'left';
         }
     });
   }
 
   onSelect() {
-    console.log('DISP');
+    //console.log('DISP');
     this.theColor = 'black';
   }
 
   receiveMessage($event) {
-    console.log('Mensaje Recibido:' + $event);
+    //console.log('Mensaje Recibido:' + $event);
     this.customerId = $event
   }
 
   ngOnInit() {
 
-    console.log('Plataforma:' + this.platform.platforms());
-    console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
+    //console.log('Plataforma:' + this.platform.platforms());
+    //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
     this.loggedUser = this.globalService.getLoggedProffessionalData();
+    this.startHour = this.loggedUser.startHour;
+    this.endHour = this.loggedUser.endHour;
     if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
       return;
     };
@@ -199,14 +208,14 @@ export class CalendarPage implements OnInit {
   getCustomers(professionalUID) {
     this.customerService.getCustomers(professionalUID).subscribe(customers => {
       this.customers = customers;
-      console.log('Customers' + JSON.stringify(this.customers));
-      console.log('CustomersName:' + customers[0].person.personName.firstName);
+      //console.log('Customers' + JSON.stringify(this.customers));
+      //console.log('CustomersName:' + customers[0].person.personName.firstName);
     });
   }
 
   getCustomer(id: string){
     var theCustomer;
-    console.log('Buscando cliente:' + id);
+    //console.log('Buscando cliente:' + id);
     this.customerService.getCustomer(id).subscribe(customer => theCustomer = customer);
     return theCustomer;
 
@@ -218,7 +227,7 @@ export class CalendarPage implements OnInit {
 
   updateEvent(event) {
     var appntCustomer = this.getCustomer(event.client);
-    console.log('Entrando a Cita Update:' + JSON.stringify(appntCustomer));
+    //console.log('Entrando a Cita Update:' + JSON.stringify(appntCustomer));
     let modal = this.modalCtrl.create('EventModalPage', {selectedDay: event.startTime, eventSelected: event, customerSelected: appntCustomer, professional: this.loggedUser, events: this.eventSource });
     modal.present();
     modal.onDidDismiss(data => {
@@ -240,7 +249,7 @@ export class CalendarPage implements OnInit {
         }
         this.appointmentService.updateAppointment(eventData).subscribe(data => {
           eventData._id = data._id;
-          console.log('Datos Salvados:' + JSON.stringify(data));
+          //console.log('Datos Salvados:' + JSON.stringify(data));
 
         });
         this.eventSource = [];
@@ -253,8 +262,8 @@ export class CalendarPage implements OnInit {
 
 
   addEvent(service: string = undefined) {
-    console.log('En Add-Service:' + service);
-    console.log('En SelectedDate:' + this.selectedDay + ' ' + this.selectedDay.getFullYear() + this.selectedDay.getMonth() + this.selectedDay.getDate() );
+    //console.log('En Add-Service:' + service);
+    //console.log('En SelectedDate:' + this.selectedDay + ' ' + this.selectedDay.getFullYear() + this.selectedDay.getMonth() + this.selectedDay.getDate() );
     let fromDateMls = new Date(this.selectedDay.toDateString()).getTime();
     let toDateMls = fromDateMls;
     fromDateMls -= 24 * 60 * 60 * 1000;
@@ -286,7 +295,7 @@ export class CalendarPage implements OnInit {
           this.eventCollection.push(eventData);
           this.appointmentService.addAppointment(eventData).subscribe(data => {
             eventData._id = data._id;
-            console.log('Datos Salvados:' + JSON.stringify(data));
+            //console.log('Datos Salvados:' + JSON.stringify(data));
 
           });
           this.eventSource = [];
@@ -337,15 +346,17 @@ export class CalendarPage implements OnInit {
 
   onEventSelected(event) {
     console.log('Event onEventSelected ' + JSON.stringify(event))
-    this.eventSelected = true;
-    this.updateEvent(event);
+    if (event.status !== 'Excepción') {
+      this.eventSelected = true;
+      this.updateEvent(event);
+    }
   }
 
   onTimeSelected(ev) {
     this.theColor = 'blue';
-    console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
+    //console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
     this.selectedDay = ev.selectedTime;
-    if (!this.eventSelected && this.calendar.mode == 'day' ) {
+    if (!this.eventSelected && (this.calendar.mode == 'day' || this.calendar.mode == 'week') ) {
       if (this.customerId) {
         this.addEvent();
       }
@@ -362,30 +373,42 @@ export class CalendarPage implements OnInit {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CalendarPage');
+    //console.log('ionViewDidLoad CalendarPage');
   }
 
   refreshView() {
     this.loadEvents(this.loggedUser.userId, moment(this.fromDate).format(), moment(this.toDate).format());
+    this.loadExceptions(this.loggedUser.userId, moment(this.fromDate).format(), moment(this.toDate).format());
   }
 
 
   loadEvents(professionalUID, startTime, endTime) {
+
     this.scheduleServiceProvider.getSchedule(professionalUID, startTime, endTime).subscribe( data => {
-      //console.log("datos de Agenda Queyr:" + JSON.stringify(data))
+      ////console.log("datos de Agenda Queyr:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];
       this.eventSource = this.eventSource.filter(data => data.status !== 'Cancelada');
       console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
+    });
+    console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
+    //Cargar eventos
+  }
+
+  loadExceptions(professionalUID, startTime, endTime) {
+    this.exceptionServiceProvider.getException(professionalUID, startTime, endTime).subscribe( data => {
+      ////console.log("datos de Agenda Queyr:" + JSON.stringify(data))
+      this.eventExceptions = data; //['appointments'];
     });
     //Cargar eventos
   }
 
   onRangeChanged(ev) {
-    console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
-    console.log('Leer eventos del servidor');
+    //console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
+    //console.log('Leer eventos del servidor');
     this.fromDate = ev.startTime;
     this.toDate = ev.endTime;
     this.loadEvents(this.loggedUser.userId, moment(ev.startTime).format(), moment(ev.endTime).format());
+    this.loadExceptions(this.loggedUser.userId, moment(ev.startTime).format(), moment(ev.endTime).format());
   }
 
 

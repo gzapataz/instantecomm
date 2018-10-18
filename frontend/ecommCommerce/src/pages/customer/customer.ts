@@ -38,7 +38,7 @@ export class CustomerPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
+    //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
     let userLogged = this.globalService.getLoggedProffessionalData();
     if (userLogged.userId === '' || userLogged.userId == null) {
       return;
@@ -63,14 +63,14 @@ export class CustomerPage implements OnInit {
   }
 
   addNewAppointment(customer) {
-    console.log(`Clicked customer:` + JSON.stringify(customer));
+    //console.log(`Clicked customer:` + JSON.stringify(customer));
     this.addEvent(customer);
 
   }
 
   customerSelected(customer) {
     this.navCtrl.push('CustomerDetailPage', {customer: customer});
-    console.log(`Clicked customer:` + customer)
+    //console.log(`Clicked customer:` + customer)
   }
 
   addEvent(customer) {
@@ -86,7 +86,7 @@ export class CustomerPage implements OnInit {
         let events = this.eventSource;
         events.push(eventData);
         /*this.appointmentService.addAppointment(eventData).subscribe(data => {
-          console.log('Datos Salvados:' + JSON.stringify(data));
+          //console.log('Datos Salvados:' + JSON.stringify(data));
         });*/
         this.eventSource = [];
         this.eventSelected = false;
@@ -98,7 +98,7 @@ export class CustomerPage implements OnInit {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CustomerPage');
+    //console.log('ionViewDidLoad CustomerPage');
   }
 
   startChat(mobile) {

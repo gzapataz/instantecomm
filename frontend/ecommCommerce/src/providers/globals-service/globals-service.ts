@@ -26,9 +26,11 @@ export class GlobalsServiceProvider implements OnInit {
 
   }
 
-  setProfessionalLoginData(UID, idSchedule) {
+  setProfessionalLoginData(UID, idSchedule, startHour, endHour) {
     this.loggedProfessional.userId = UID;
     this.loggedProfessional.idSchedule = idSchedule;
+    this.loggedProfessional.startHour = startHour;
+      this.loggedProfessional.endHour = endHour;
   }
 
   readFromStorageProfessionalData(): Promise<LoggedProfessional> {
@@ -36,7 +38,7 @@ export class GlobalsServiceProvider implements OnInit {
         this.storage.ready().then(() => {
           this.storage.get('uid').then((uidData) => {
             this.loggedProfessional.userId = uidData
-            console.log('testing of sqlite was ' + uidData);
+            //console.log('testing of sqlite was ' + uidData);
             this.storage.get('idSchedule').then(idSched => {
               this.loggedProfessional.idSchedule = idSched;
               resolve();
@@ -65,7 +67,7 @@ export class GlobalsServiceProvider implements OnInit {
 
   setCustomerList(customerList) {
     this.loadedCustomers = customerList;
-    console.log('Set Customer Global List:' + JSON.stringify(this.loadedCustomers));
+    //console.log('Set Customer Global List:' + JSON.stringify(this.loadedCustomers));
   }
   resetCustomerList() {
     this.loadedCustomers = [];

@@ -64,7 +64,9 @@ export class EventModalPage implements OnInit {
       }
     }
     this.messageTest = 'Buenas tardes ' + this.customerSelected.person.personName.firstName + ' su cita de ' +
-      this.event.title.slice(0, this.event.title.indexOf(':')) + ' para el dia ' + moment(this.event.startTime).locale(localCo.toLocaleString()).format('LLLL') +
+      //this.event.title.slice(0, this.event.title.indexOf(':'))
+      this.event.title
+      + ' para el dia ' + moment(this.event.startTime).locale(localCo.toLocaleString()).format('LLLL') +
       ' Por favor para confirmar presione el siguiente link:' +
       'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada'
 

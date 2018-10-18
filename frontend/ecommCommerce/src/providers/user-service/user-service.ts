@@ -47,6 +47,8 @@ export class UserServiceProvider {
         this.storageControl('delete');
         this.storageControl('delete', 'idSchedule');
         this.storageControl('delete', 'uid');
+        this.storageControl('delete', 'startHour');
+        this.storageControl('delete', 'endHour');
         this.globalService.reSetProfessionalLoginData();
       })
       .catch(err => this.displayAlert('Error Logged Out', err));
@@ -155,16 +157,22 @@ export class UserServiceProvider {
       this.storageControl('set', key.toString(), obj[key]);
 
     }
-
+    console.log('Horas:' + jsonProfesional['startHour'] + ' Y ' + jsonProfesional['endHour'])
     var obj2 = jsonProfesional['professionalSchedule'];
     this.storageControl('set', 'idSchedule', obj2['idSchedule']);
+    this.storageControl('set', 'startHour', jsonProfesional['startHour']);
+    this.storageControl('set', 'endHour', jsonProfesional['endHour']);
     this.storageControl('set', 'uid', jsonProfesional['uid']);
 
     this.storage.ready().then(() => {
       this.storage.get('uid').then((uidData) =>{
           this.storage.get('idSchedule').then (idSched => {
-            this.globalService.setProfessionalLoginData(uidData, idSched);
-            console.log('LoggedSingleltonUpdates ' + JSON.stringify(this.globalService.getLoggedProffessionalData())); //this is always null, even though I just set it to true.
+            this.storage.get('startHour').then (startHour => {
+              this.storage.get('endHour').then (endHour => {
+                this.globalService.setProfessionalLoginData(uidData, idSched, startHour, endHour);
+                console.log('LoggedSingleltonUpdates ' + JSON.stringify(this.globalService.getLoggedProffessionalData())); //this is always null, even though I just set it to true.
+              });
+            });
           });
         });
     });

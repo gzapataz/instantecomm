@@ -8,4 +8,6 @@ export class ProfessionalClass {
   mobile: string;
   email: string;
   identification: string;
+  startHour: string = "9";
+  endHour: string = "19";
 }

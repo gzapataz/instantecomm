@@ -26,7 +26,7 @@ export class CustomerServiceProvider {
 
   constructor(public http: HttpClient, private messageService: MessageServiceProvider,
               private globalsServiceProvider: GlobalsServiceProvider) {
-    console.log('Hello CustomerServiceProvider Provider');
+    //console.log('Hello CustomerServiceProvider Provider');
   }
 
   private log(message: String) {
@@ -36,7 +36,7 @@ export class CustomerServiceProvider {
   /* Gets customer Lists and also add them to the global array of customer for performance */
   getCustomers(professionalUID): Observable<CustomerClass[]> {
     var finalURL = this.customerUrl + professionalUID + '/clients/';
-    console.log('Customer-finalURL:' + finalURL);
+    //console.log('Customer-finalURL:' + finalURL);
     return this.http.get<CustomerClass[]>(finalURL, httpOptions).pipe(
       tap(data => this.globalsServiceProvider.setCustomerList(data)),
       catchError(this.handleError('getCustomers', []))
@@ -44,7 +44,7 @@ export class CustomerServiceProvider {
   }
 
   searchCustomers(term: string, professionalUID): Observable<CustomerClass[]> {
-    console.log('En Busqueda:' + term);
+    //console.log('En Busqueda:' + term);
     if (!term.trim()) {
       // if not search term, return empty hero array.
       return of([]);
@@ -59,15 +59,15 @@ export class CustomerServiceProvider {
   getCustomer(id: string): Observable<CustomerClass> {
     let _id = id;
     const url = `${this.customerUrl}/${id}`;
-    console.log('Get Customer by Id URL:' + url);
+    //console.log('Get Customer by Id URL:' + url);
     /* Fist query de customer in the local Array */
     let localList = this.globalsServiceProvider.getCustomerLocalList();
-    console.log('Local Customer by List:' + JSON.stringify(localList));
+    //console.log('Local Customer by List:' + JSON.stringify(localList));
     let customerLocal = localList.find(customer => customer._id === id );
-    console.log('Local Customer Single:' + JSON.stringify(customerLocal));
+    //console.log('Local Customer Single:' + JSON.stringify(customerLocal));
     if (customerLocal) {
       var customerLocal$ = of(customerLocal)
-      console.log('Encontrado Cache' + JSON.stringify(customerLocal$));
+      //console.log('Encontrado Cache' + JSON.stringify(customerLocal$));
       return customerLocal$;
     }
 
@@ -90,7 +90,7 @@ export class CustomerServiceProvider {
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      console.log(`${operation} failed: ${error.message}`);
+      //console.log(`${operation} failed: ${error.message}`);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);
