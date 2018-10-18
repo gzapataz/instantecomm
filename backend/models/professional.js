@@ -32,7 +32,12 @@ var professionalSchema   = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Rating',
     }],*/    
-    uid: { type: String, index: { unique: true }}
+    uid: { type: String, index: { unique: true }},
+    startHour: {
+        type: String,
+    }, 
+    endHour: {
+        type: String,
+    }    
 });
-
 module.exports = mongoose.model('Professional', professionalSchema);
