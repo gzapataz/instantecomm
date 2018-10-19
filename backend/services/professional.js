@@ -2,6 +2,7 @@
 // Cargamos los modelos para usarlos posteriormente
 var Professional = require('../models/professional');
 const ActivationStatus = require('../enums/activationStatus');
+const ExceptionType = require('../enums/exceptionType');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
 
 /**
@@ -152,16 +153,24 @@ exports.findExceptionsScheduleByProfessionalUid = function(req, type){
   var matchEndDate = {'endDate': {'$gte':currentDate}};
   var matchType;
   if(type != null && type != undefined){
-    matchType = type;
+    matchType = {'type': {'$eq':type}};
+    if(type != ExceptionType.BREAK_TIME){
+      matchType = {  
+        $and: [{'type': {'$ne':ExceptionType.BREAK_TIME }}],
+        $and: [{'type': {'$eq':type}}]
+      };
+    }
+  }else{
+    matchType = {'type': {'$ne':ExceptionType.BREAK_TIME }};
   }
   var professional = Professional.findOne({uid:req.params.uid})
     .populate({
       path:'professionalSchedule', 
       populate: {
         path:'exceptions',
-        type: matchType,
         match: matchStartDate, 
-        match: matchEndDate
+        match: matchEndDate,
+        match: matchType
       }
     });
   return professional;  

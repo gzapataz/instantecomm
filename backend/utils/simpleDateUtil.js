@@ -11,18 +11,18 @@ module.exports = class SimpleDateUtil {
   getStartFormatDate() {
     var date = new Date(this.startTime);
     var yyyy = date.getFullYear();
-    var mm = date.getMonth()+1; // getMonth() is zero-based
+    var mm = date.getMonth(); // getMonth() is zero-based
     var dd  = date.getDate();
     return new Date(yyyy,mm,dd); // Leading zeros for mm and dd
   }
 
- getEndFormatDate() {
-  var date = new Date(this.endTime);
-  var yyyy = date.getFullYear();
-  var mm = date.getMonth()+1; // getMonth() is zero-based
-  var dd  = date.getDate();
-  return new Date(yyyy,mm,dd); // Leading zeros for mm and dd
-}
+  getEndFormatDate() {
+    var date = new Date(this.endTime);
+    var yyyy = date.getFullYear();
+    var mm = date.getMonth(); // getMonth() is zero-based
+    var dd  = date.getDate();
+    return new Date(yyyy,mm,dd); // Leading zeros for mm and dd
+  }
 
   /**
    * 
