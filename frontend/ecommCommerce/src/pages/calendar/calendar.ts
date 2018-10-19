@@ -69,15 +69,20 @@ export class CalendarPage implements OnInit {
   markDisabled = (date:Date) => {
     var val = true;
     var current = new Date();
-
-
-
-    console.log('Fechas desde Disabled:' + date.getDay() + ' DATE ' + date.toString());
-    val = !(date.getDay() != 0 && date.getDay() != 6);
-    console.log('Rango Cerrado:' + val);
-    return val;
-    //return date < current;
+    //return this.findException(date);
+    return date < current;
   };
+
+  findException(date): boolean {
+    var fest = this.eventExceptions.filter ( exceptionList => {
+      console.log ('COMPARANDO:' + moment(exceptionList.startTime).format("YYYYMMDD") + ' AND ' + moment(date).format("YYYYMMDD"));
+      return moment(exceptionList.startTime).format("YYYYMMDD") === moment(date).format("YYYYMMDD")
+    })
+    console.log('fest:' + JSON.stringify(fest));
+    if (fest.length > 0)
+      return true;
+    return false;
+  }
 
   calendar = {
     mode: 'week',
@@ -365,14 +370,38 @@ export class CalendarPage implements OnInit {
     //console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
     this.selectedDay = ev.selectedTime;
     if (!this.eventSelected && (this.calendar.mode == 'day' || this.calendar.mode == 'week') ) {
-      if (this.customerId) {
-        this.addEvent();
-      }
-      else {
+      if (!this.findException(this.selectedDay)) {
+        if (this.customerId) {
+          this.addEvent();
+        }
+        else {
+          let alert = this.alertCtrl.create({
+            title: 'Busqueda de Paciente',
+            subTitle: 'Debe seleccionar un paciente en Buscar',
+            buttons: ['Dismiss']
+          })
+          alert.present();
+        }
+      } else {
         let alert = this.alertCtrl.create({
-          title: 'Busqueda de Paciente',
-          subTitle: 'Debe seleccionar un paciente en Buscar',
-          buttons: ['Dismiss']
+          title: 'Excepción',
+          subTitle: 'El dia es festivo o de excepción, desea agendar de todos modos?',
+          buttons: [{text: 'NO'},
+            { text: 'SI',
+              handler: () => {
+                if (this.customerId) {
+                  this.addEvent();
+                }
+                else {
+                  let alert = this.alertCtrl.create({
+                    title: 'Busqueda de Paciente',
+                    subTitle: 'Debe seleccionar un paciente en Buscar',
+                    buttons: ['Dismiss']
+                  })
+                  alert.present();
+                }
+              }
+            }]
         })
         alert.present();
       }
@@ -405,10 +434,14 @@ export class CalendarPage implements OnInit {
   loadExceptions(professionalUID, startTime, endTime) {
     this.exceptionServiceProvider.getException(professionalUID, startTime, endTime).subscribe( data => {
       ////console.log("datos de Agenda Queyr:" + JSON.stringify(data))
+      console.log('DATAExcepciones:' + JSON.stringify(data));
       this.eventExceptions = data; //['appointments'];
+      console.log('Excepciones:' + JSON.stringify(this.eventExceptions))
     });
     //Cargar eventos
   }
+
+
 
   onRangeChanged(ev) {
     //console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);

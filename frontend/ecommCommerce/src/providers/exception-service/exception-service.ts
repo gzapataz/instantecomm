@@ -38,11 +38,12 @@ export class ExceptionServiceProvider {
     this.messageService.add(`AppointmentService: ${message}`);
   }
 
-  getException(professionalUID, startTime, endTime): Observable<AppointmentClass[]> {
+  getException(professionalUID, startTime, endTime): Observable<any[]> {
     var finalURL = this.exceptionUrl + '/' + professionalUID + '/professionalsSchedule/exceptions/?startTime=' + startTime + '&' + 'endTime=' + endTime;
-    console.log('SchedulePorRangoURL:' + finalURL );
-    return this.http.get<AppointmentClass[]>(this.exceptionUrl).pipe(
-      catchError(this.handleError('getAppointments', []))
+    return this.http.get<any[]>(finalURL).pipe(
+      map(data => {
+        return data;
+      })
     );
   }
 
