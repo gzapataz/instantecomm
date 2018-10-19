@@ -2,17 +2,12 @@
   <ion-navbar color="primary">
     <ion-buttons start>
       <button ion-button icon-only (click)="cancel()">
-        <ion-icon name="close"></ion-icon>
+        <ion-icon name="close">x</ion-icon>
       </button>
 
     </ion-buttons>
-    <ion-title>Cita: {{customerSelected.person.personName.lastName}} {{customerSelected.person.personName.firstName}}</ion-title>
+    <ion-title>Cita: {{event.clientName}}</ion-title>
   </ion-navbar>
-  <ion-buttons end>
-    <button ion-button color="secondary" small><a href="tel:{{customerSelected.person.phone}}"><ion-icon name="call"></ion-icon> </a></button>
-    <button ion-button color="secondary" small><a href="https://wa.me/{{customerSelected.person.phone}}?text={{messageTest}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>
-    <button ion-button color="secondary" small><a href="mailto:{{customerSelected.person.email}}?subject=Su Próxima Cita&body={{messageTest}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>
-  </ion-buttons>
 </ion-header>
 
 <ion-content>
@@ -26,7 +21,7 @@
 
     <ion-item>
       <ion-label>Inicio</ion-label>
-      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" (ionChange)="newStartDate()"></ion-datetime>
+      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime"></ion-datetime>
     </ion-item>
 
     <ion-item>
