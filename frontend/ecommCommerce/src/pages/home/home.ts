@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
-import * as moment from 'moment';
-//import { DragulaService } from "ng2-dragula";
 import { Platform } from 'ionic-angular'
 
 
