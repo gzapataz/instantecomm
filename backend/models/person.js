@@ -13,11 +13,11 @@ var personSchema   = new Schema({
     idType: {
         type: String,
         enum: Object.values(IdType),
-        required: true
+        //required: true
     },
     identification: {
         type: String,
-        required: true
+        //required: true
     },    
     gender: {
         type: String,

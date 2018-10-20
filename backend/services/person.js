@@ -31,3 +31,12 @@ exports.findPersonByIdentification = function(idType, identification){
   var person = Person.findOne({idType:idType, identification:identification});
   return person;
 }
+
+/**
+ * Buscar persona por email
+ * @param {*} email 
+ */
+exports.findPersonByEmail = function(email){
+  var person = Person.findOne({email:email});
+  return person;
+}

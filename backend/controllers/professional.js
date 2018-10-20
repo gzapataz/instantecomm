@@ -286,16 +286,17 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
  * @param {*} res 
  */
 exports.setClientProfessionalByUid = function(req, res){
-  if(req.body.idType != undefined && req.body.identification != undefined){
+  //if(req.body.idType != undefined && req.body.identification != undefined){
+    if(req.body.email!= undefined && req.body.email!= null ){
     req.body.status = ActivationStatus.ACTIVE;
-    var person = PersonService.findPersonByIdentification(req.body.idType, req.body.identification);
+    var person = PersonService.findPersonByEmail(req.body.email);
     person.then((person) => {
       if(person != undefined && person != null){
         //Buscar cliente por persona
         var client = ClientService.findClientByPersonId(person) 
         client.then((client) => {
           if(client != undefined && client != null){
-            return res.status(404).send({message: 'El cliente con ' + req.body.idType + ' ' + req.body.identification  + ' ya existe'});
+            return res.status(404).send({message: 'El cliente con email: ' + req.body.email + ' ya existe'});
           } 
           else{
             var clientService = ClientService.saveClient(req, person)
@@ -334,7 +335,7 @@ exports.setClientProfessionalByUid = function(req, res){
     });  
   }
   else{
-    return res.status(500).send({message: 'El tipo de documento y la identificación son requeridos'});
+    return res.status(500).send({message: 'El email es requerido'});
   }
 }  
 
