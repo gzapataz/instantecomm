@@ -1,1 +1,1 @@
-web: npm run build && npm startgit add .
+web: node server.js
