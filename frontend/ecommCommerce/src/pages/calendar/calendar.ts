@@ -86,7 +86,9 @@ export class CalendarPage implements OnInit {
 
   calendar = {
     mode: 'week',
+
     queryMode: 'remote',
+
     locale: localCo[0],
     currentDate: new Date(),
       onTimePress(event) {

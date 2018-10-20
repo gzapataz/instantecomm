@@ -6,6 +6,7 @@ import { AppointmentClass } from "../../classes/appointment-class";
 import { of } from "rxjs/observable/of";
 import { MessageServiceProvider } from "../message-service/message-service";
 import { environment } from "../../environment";
+import {Person} from "../../classes/customer-class";
 
 /*
   Generated class for the CustomerAddServiceProvider provider.
@@ -22,33 +23,28 @@ const httpOptions = {
 @Injectable()
 export class CustomerAddServiceProvider {
 
-  appntUrl = environment.baseUrl + '/professionalsSchedule';
+  appntUrl = environment.baseUrl + '/professionals';
 
   constructor(public http: HttpClient, private messageService: MessageServiceProvider) {
-    console.log('Hello AppointmentServiceProvider Provider');
+    console.log('Hello CustomerAddServiceProvider Provider');
   }
 
   private log(message: String) {
-    this.messageService.add(`AppointmentService: ${message}`);
+    this.messageService.add(`CustomerAddServiceProvider: ${message}`);
   }
 
   /** POST: add a new Appointment to the server */
-  addAppointment (event: AppointmentClass): Observable<AppointmentClass> {
-    console.log('Service: addAppointment:' + JSON.stringify(event));
-    return this.http.post<AppointmentClass>(this.appntUrl + '/appointment/', event, httpOptions).pipe(
-      tap((event: AppointmentClass) => {
+  addACustomer (event: Person,uid:string): Observable<Person> {
+    console.log('Service: addACustomer:' + JSON.stringify(event));
+    return this.http.post<Person>(this.appntUrl + '/'+uid+"/clients/", event, httpOptions).pipe(
+      tap((event: Person) => {
         console.log('EN POST');
-        this.log(`added appointment w/ id=${event.idAppointment}`)
+        this.log(`added appointment w/ id=${event._id}`)
       }),
-      catchError(this.handleError<AppointmentClass>('addAppointment'))
+      catchError(this.handleError<Person>('addACustomer'))
     );
   }
 
-  getAppointment(): Observable<AppointmentClass[]> {
-    return this.http.get<AppointmentClass[]>(this.appntUrl).pipe(
-      catchError(this.handleError('getAppointments', []))
-    );
-  }
 
 
   /**
