@@ -46,6 +46,7 @@ import { CustomerPage } from "../pages/customer/customer";
 import { ScheduleServiceProvider } from '../providers/schedule-service/schedule-service';
 import { PreferencesServiceProvider } from '../providers/preferences-service/preferences-service';
 import { GlobalsServiceProvider } from '../providers/globals-service/globals-service';
+import {CustomerAddServiceProvider} from "../providers/customer-add-service/customer-add-service";
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { GlobalsServiceProvider } from '../providers/globals-service/globals-ser
     AppointmentServiceProvider,
     ScheduleServiceProvider,
     PreferencesServiceProvider,
-    GlobalsServiceProvider
+    GlobalsServiceProvider,
+    CustomerAddServiceProvider
   ]
 })
 export class AppModule {}

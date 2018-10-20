@@ -19,7 +19,7 @@ export class PersonName {
 };
 
 export class Person {
-  _id: string;
+  _id: any;
   personName: PersonName;
   idType: string;
   birthdate: Date;
@@ -27,7 +27,7 @@ export class Person {
   phone: any;
   mobile: any;
   email: string;
-  identication: string;
+  identification: string;
 
 };
 
