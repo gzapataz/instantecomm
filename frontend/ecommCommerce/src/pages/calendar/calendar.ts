@@ -58,7 +58,7 @@ export class CalendarPage implements OnInit {
   theColor = 'white'
 
   calendar = {
-    mode: 'day',
+    mode: 'week',
     locale: localCo[0],
     currentDate: new Date(),
       onTimePress(event) {

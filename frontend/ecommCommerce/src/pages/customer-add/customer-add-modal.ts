@@ -53,6 +53,7 @@ professional: LoggedProfessional;
   cancel() {
 
     this.viewCtrl.dismiss(this.person);
+    location.reload();
   }
 
 
@@ -62,7 +63,7 @@ professional: LoggedProfessional;
     this.person=this.persona;
     console.log(this.person);
     if(!this.person.personName.firstName||!this.person.personName.lastName||!this.person.gender||!this.person.email||!this.person.mobile
-    ||!this.person.phone||!this.person.identification){
+    ||!this.person.phone){
       let theAlert = this.alertCtrl.create({
         title: "Campos incompletos",
         subTitle: "Por favor ingresa los datos de tu paciente",
@@ -73,8 +74,8 @@ professional: LoggedProfessional;
       this.customerAddServiceProvider.addACustomer(this.person,this.professional.userId).subscribe(data => {
         console.log('Datos Salvados:' + JSON.stringify(data));
         let theAlert = this.alertCtrl.create({
-          title: "Datos Salvados",
-          subTitle: "Su paciente se ha creado",
+          title: "Creacion de cliente",
+          subTitle: JSON.stringify(data),
           buttons: ['OK']
         });
         theAlert.present();

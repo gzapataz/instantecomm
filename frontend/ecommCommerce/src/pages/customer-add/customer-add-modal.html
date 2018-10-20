@@ -13,12 +13,12 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-label >Nombre</ion-label>
+      <ion-label >Nombre (*)</ion-label>
       <ion-input  type="text" placeholder="Jon" id="name"[(ngModel)]="persona.personName.firstName" name="name" required="required">
     </ion-input>
     </ion-item>
     <ion-item>
-      <ion-label >Apellido</ion-label>
+      <ion-label >Apellido (*)</ion-label>
       <ion-input  type="text" placeholder="Doe" id="lastname" [(ngModel)]="persona.personName.lastName" name="lastname" required="required">
       </ion-input>
     </ion-item>
@@ -28,7 +28,7 @@
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-label >Genero</ion-label>
+      <ion-label >Genero (*)</ion-label>
       <ion-select  type="text" placeholder="Sexo"  [(ngModel)]="persona.gender" name="gender" required="required">
         <ion-option   value="Femenino">Femenino</ion-option>
         <ion-option   value="Masculino">Masculino</ion-option>
@@ -36,19 +36,23 @@
 
     </ion-item>
     <ion-item>
-      <ion-label >E-mail</ion-label>
+      <ion-label >E-mail (*)</ion-label>
       <ion-input  type="email" placeholder="jon@gmail.com" id="email" [(ngModel)]="persona.email" name="email" required="required">
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-label >Celular</ion-label>
-      <ion-input  type="tel" placeholder="345123456" id="mobile" [(ngModel)]="persona.mobile" name="mobile" required="required">
+      <ion-label >Celular (*)</ion-label>
+      <ion-input  type="number" placeholder="345123456" id="mobile" [(ngModel)]="persona.mobile" name="mobile" required="required">
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Telefono Fijo</ion-label>
-      <ion-input  type="tel" placeholder="0312345" id="phone"[(ngModel)]="persona.phone" name="phone" required="required">
+      <ion-label>Telefono Fijo (*)</ion-label>
+      <ion-input  type="number" placeholder="0312345" id="phone"[(ngModel)]="persona.phone" name="phone" required="required">
       </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Campos obligatorios (*)</ion-label>
+
     </ion-item>
 
   </ion-list>
