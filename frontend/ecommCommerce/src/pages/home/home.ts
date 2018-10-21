@@ -76,6 +76,7 @@ private appointmentService: AppointmentServiceProvider,
               private platform: Platform,
               public screenOrientation: ScreenOrientation) {
 
+
   }
 
   onSelect() {
