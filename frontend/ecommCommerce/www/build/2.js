@@ -1,6 +1,6 @@
 webpackJsonp([2],{
 
-/***/ 893:
+/***/ 892:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78,7 +78,7 @@ var ScrollHomePage = /** @class */ (function () {
     };
     ScrollHomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-scroll-home',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/scroll-home/scroll-home.html"*/'<!--\n  Generated template for the ScrollCalendarPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>ScrollHome</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  <!--mbsc-form>\n    <div class="mbsc-form-group">\n      <div class="mbsc-form-group-title">Multiple date selection</div>\n      <label>\n        Multi-day\n        <input [(ngModel)]="demo" mbsc-calendar [mbsc-options]="demoSettings" placeholder="Please select..." />\n      </label>\n      <label>\n        Max days\n        <input [(ngModel)]="max" mbsc-calendar [mbsc-options]="maxSettings" placeholder="Please select..." />\n      </label>\n      <label>\n        Counter\n        <input [(ngModel)]="count" mbsc-calendar [mbsc-options]="countSettings" placeholder="Please select..." />\n      </label>\n    </div>\n  </mbsc-form-->\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/scroll-home/scroll-home.html"*/,
+            selector: 'page-scroll-home',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/scroll-home/scroll-home.html"*/'<!--\n  Generated template for the ScrollCalendarPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>ScrollHome</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  <!--mbsc-form>\n    <div class="mbsc-form-group">\n      <div class="mbsc-form-group-title">Multiple date selection</div>\n      <label>\n        Multi-day\n        <input [(ngModel)]="demo" mbsc-calendar [mbsc-options]="demoSettings" placeholder="Please select..." />\n      </label>\n      <label>\n        Max days\n        <input [(ngModel)]="max" mbsc-calendar [mbsc-options]="maxSettings" placeholder="Please select..." />\n      </label>\n      <label>\n        Counter\n        <input [(ngModel)]="count" mbsc-calendar [mbsc-options]="countSettings" placeholder="Please select..." />\n      </label>\n    </div>\n  </mbsc-form-->\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/scroll-home/scroll-home.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
     ], ScrollHomePage);
