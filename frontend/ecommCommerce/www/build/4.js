@@ -1,14 +1,14 @@
 webpackJsonp([4],{
 
-/***/ 882:
+/***/ 890:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomerModalPageModule", function() { return CustomerModalPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegistrationPageModule", function() { return RegistrationPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_modal__ = __webpack_require__(890);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration__ = __webpack_require__(902);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,33 +18,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CustomerModalPageModule = /** @class */ (function () {
-    function CustomerModalPageModule() {
+var RegistrationPageModule = /** @class */ (function () {
+    function RegistrationPageModule() {
     }
-    CustomerModalPageModule = __decorate([
+    RegistrationPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__customer_modal__["a" /* CustomerModalPage */],
+                __WEBPACK_IMPORTED_MODULE_2__registration__["a" /* RegistrationPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__customer_modal__["a" /* CustomerModalPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__registration__["a" /* RegistrationPage */]),
             ],
         })
-    ], CustomerModalPageModule);
-    return CustomerModalPageModule;
+    ], RegistrationPageModule);
+    return RegistrationPageModule;
 }());
 
-//# sourceMappingURL=customer-modal.module.js.map
+//# sourceMappingURL=registration.module.js.map
 
 /***/ }),
 
-/***/ 890:
+/***/ 902:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerModalPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegistrationPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_home__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angularfire2_auth__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_user_service_user_service__ = __webpack_require__(173);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -56,47 +59,71 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
+
 /**
- * Generated class for the CustomerModalPage page.
+ * Generated class for the RegistrationPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var CustomerModalPage = /** @class */ (function () {
-    function CustomerModalPage(navCtrl, navParams, viewCtrl) {
+var RegistrationPage = /** @class */ (function () {
+    function RegistrationPage(navCtrl, navParams, alertCtrl, afAuth, userService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.viewCtrl = viewCtrl;
-        this.customers = [];
-        this.customers = this.navParams.get('customerList');
-        console.log('Clientes: ' + JSON.stringify(this.customers[0]));
+        this.alertCtrl = alertCtrl;
+        this.afAuth = afAuth;
+        this.userService = userService;
+        this.reg = {
+            name: '',
+            lastName: '',
+            email: '',
+            password: '',
+            password2: ''
+        };
     }
-    CustomerModalPage.prototype.selectedName = function (id, name, customer) {
-        customer.name = name;
-        console.log('ReturnedCust:' + JSON.stringify(customer));
-        this.viewCtrl.dismiss(customer);
-        //this.show = false;
-        //this.myInput = name;
-        //this.custId$ = id;
-        //this.messageEvent.emit(customer);
+    RegistrationPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad RegistrationPage');
     };
-    CustomerModalPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad CustomerModalPage');
+    RegistrationPage.prototype.displayAlert = function (alertTitle, alertSub) {
+        var theAlert = this.alertCtrl.create({
+            title: alertTitle,
+            subTitle: alertSub,
+            buttons: ['OK']
+        });
+        theAlert.present();
     };
-    CustomerModalPage.prototype.cancel = function () {
-        this.viewCtrl.dismiss(undefined);
+    RegistrationPage.prototype.registerAccoun = function () {
+        var _this = this;
+        if (this.reg.password != this.reg.password2) {
+            this.displayAlert('Problema con el Password', 'No hay coincidencia con los passwords');
+            this.reg.password = '';
+            this.reg.password2 = '';
+        }
+        else {
+            this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(this.reg.email, this.reg.password)
+                .then(function (res) { return _this.regSuccess(res); })
+                .catch(function (err) { return _this.displayAlert('Error!', err); });
+        }
     };
-    CustomerModalPage = __decorate([
+    RegistrationPage.prototype.regSuccess = function (result) {
+        var _this = this;
+        this.userService.logOn(this.reg)
+            .then(function (res) { return _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__home_home__["a" /* HomePage */]); });
+    };
+    RegistrationPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-customer-modal',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/'<!--\n  Generated template for the CustomerModalPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary" >\n    <ion-title>Búsqueda de Clientes</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list *ngFor="let customer of customers">\n    <ion-item (click)="selectedName(customer._id, customer.person.personName.lastName + \' \' + customer.person.personName.firstName, customer)">\n      {{customer.person.personName.lastName}} {{customer.person.personName.firstName}}\n    </ion-item>\n  </ion-list>\n  <button ion-button full icon-left (click)="cancel()">\n    <ion-icon name="checkmark"></ion-icon> Cancelar\n  </button>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/,
+            selector: 'page-registration',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/'<ion-header>\n  <ion-toolbar color="primary">\n    <ion-title>Registro- e-Commerce</ion-title>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-item>\n    <ion-label color="facebook">Nombre</ion-label>\n    <ion-input type="text" [(ngModel)] = "reg.name" name="name"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Apellido</ion-label>\n    <ion-input type="text" [(ngModel)] = "reg.lastName" name="lastName"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Correo electronico</ion-label>\n    <ion-input type="email" [(ngModel)] = "reg.email" name="email"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password" name="password"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Repetir Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password2" name="password2"></ion-input>\n  </ion-item>\n  <button ion-button color="secondary" (click)="registerAccoun()">Registrar</button>\n\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */]])
-    ], CustomerModalPage);
-    return CustomerModalPage;
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_3_angularfire2_auth__["a" /* AngularFireAuth */],
+            __WEBPACK_IMPORTED_MODULE_4__providers_user_service_user_service__["a" /* UserServiceProvider */]])
+    ], RegistrationPage);
+    return RegistrationPage;
 }());
 
-//# sourceMappingURL=customer-modal.js.map
+//# sourceMappingURL=registration.js.map
 
 /***/ })
 

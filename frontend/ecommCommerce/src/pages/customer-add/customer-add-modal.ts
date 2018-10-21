@@ -73,12 +73,13 @@ professional: LoggedProfessional;
     }else{
       this.customerAddServiceProvider.addACustomer(this.person,this.professional.userId).subscribe(data => {
         console.log('Datos Salvados:' + JSON.stringify(data));
-        let theAlert = this.alertCtrl.create({
+        /*let theAlert = this.alertCtrl.create({
           title: "Creacion de cliente",
           subTitle: JSON.stringify(data),
           buttons: ['OK']
         });
-        theAlert.present();
+        theAlert.present();*/
+        this.viewCtrl.dismiss();
       });
     }
 

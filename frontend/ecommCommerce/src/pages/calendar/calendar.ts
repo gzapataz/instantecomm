@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import * as moment from 'moment';
 import { DragulaService } from "ng2-dragula";
@@ -46,7 +46,7 @@ class Product {
   templateUrl: 'calendar.html',
   providers: [ScheduleServiceProvider]
 })
-export class CalendarPage implements OnInit {
+export class CalendarPage implements OnInit, OnDestroy {
 
   eventCollection = [];
   eventSelected = false;
@@ -72,6 +72,89 @@ export class CalendarPage implements OnInit {
     //return this.findException(date);
     return date < current;
   };
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
+              private modalCtrl: ModalController, private dragulaService: DragulaService,
+              private servicesService: ServiceServiceProvider,
+              private customerService: CustomerServiceProvider,
+              private appointmentService: AppointmentServiceProvider,
+              private scheduleServiceProvider: ScheduleServiceProvider,
+              private platform: Platform,
+              public preferencesProvider: PreferencesServiceProvider,
+              private globalService: GlobalsServiceProvider,
+              public screenOrientation: ScreenOrientation,
+              private exceptionServiceProvider: ExceptionServiceProvider) {
+  }
+
+  onSelect() {
+    //console.log('DISP');
+    this.theColor = 'black';
+  }
+
+  receiveMessage($event) {
+    //console.log('Mensaje Recibido:' + $event);
+    this.customerId = $event
+  }
+
+  ngOnInit() {
+
+    //console.log('Plataforma:' + this.platform.platforms());
+    //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
+    this.loggedUser = this.globalService.getLoggedProffessionalData();
+
+    if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
+      console.log('SALIENDO:' + JSON.stringify(this.loggedUser))
+      this.navCtrl.push('LoginPage');
+      return;
+    } else {
+      this.startHour = this.loggedUser.startHour;
+      this.endHour = this.loggedUser.endHour;
+      try {
+        this.dragulaService.destroy('SERVICE');
+        this.dragulaService.createGroup('SERVICE', {
+          copy: (el, source) => {
+            //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
+            this.addEvent(el.id);
+            /*
+            let eventData = {
+              title: el.id,
+              startTime: new Date(),
+              endTime: new Date(),
+              eventColor: 'red'
+            };
+
+            let events = this.eventSource;
+            events.push(eventData);
+            //console.log('Source' + events);
+            this.eventSource = [];
+            setTimeout(() => {
+              this.eventSource = events;
+            });
+            */
+            return source.id === 'left';
+          },
+          copyItem: (servAval: String) => {
+            //console.log('A Crear 2');
+            return servAval;
+          },
+          accepts: (el, target, source, sibling) => {
+            // To avoid dragging from right to left container
+            //console.log('A Crear 3');
+            return target.id !== 'left';
+          }
+        });
+      }
+      catch(e) {
+        console.log('DRAGULA ERROR:'+ e.toString());
+      }
+      this.getServices(this.loggedUser.userId);
+      this.getCustomers(this.loggedUser.userId);
+    }
+  }
+
+  ngOnDestroy() {
+    console.log('DESTROYENDO');
+  }
 
   findException(date): boolean {
     var fest = this.eventExceptions.filter ( exceptionList => {
@@ -120,83 +203,6 @@ export class CalendarPage implements OnInit {
       //console.log('Doble Click')
     }
   };
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
-              private modalCtrl: ModalController, private dragulaService: DragulaService,
-              private servicesService: ServiceServiceProvider,
-              private customerService: CustomerServiceProvider,
-              private appointmentService: AppointmentServiceProvider,
-              private scheduleServiceProvider: ScheduleServiceProvider,
-              private platform: Platform,
-              public preferencesProvider: PreferencesServiceProvider,
-              private globalService: GlobalsServiceProvider,
-              public screenOrientation: ScreenOrientation,
-              private exceptionServiceProvider: ExceptionServiceProvider) {
-
-    this.dragulaService.createGroup('SERVICE', {
-            copy: (el, source) => {
-              //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
-              this.addEvent(el.id);
-              /*
-              let eventData = {
-                title: el.id,
-                startTime: new Date(),
-                endTime: new Date(),
-                eventColor: 'red'
-              };
-
-              let events = this.eventSource;
-              events.push(eventData);
-              //console.log('Source' + events);
-              this.eventSource = [];
-              setTimeout(() => {
-                this.eventSource = events;
-              });
-              */
-              return source.id === 'left';
-            },
-            copyItem: (servAval: String) => {
-              //console.log('A Crear 2');
-              return servAval;
-            },
-            accepts: (el, target, source, sibling) => {
-              // To avoid dragging from right to left container
-              //console.log('A Crear 3');
-              return target.id !== 'left';
-            }
-          });
-
-  }
-
-  onSelect() {
-    //console.log('DISP');
-    this.theColor = 'black';
-  }
-
-  receiveMessage($event) {
-    //console.log('Mensaje Recibido:' + $event);
-    this.customerId = $event
-  }
-
-  ngOnInit() {
-
-    //console.log('Plataforma:' + this.platform.platforms());
-    //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
-    this.loggedUser = this.globalService.getLoggedProffessionalData();
-
-    console.log('LEGGED USER:' + JSON.stringify(this.loggedUser))
-    if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
-      console.log('SALIENDO:' + JSON.stringify(this.loggedUser))
-      this.navCtrl.push('LoginPage');
-      return;
-    } else {
-      this.startHour = this.loggedUser.startHour;
-      this.endHour = this.loggedUser.endHour;
-
-      this.getServices(this.loggedUser.userId);
-      this.getCustomers(this.loggedUser.userId);
-    }
-  }
 
   ionViewWillEnter() {
     this.loggedUser = this.globalService.getLoggedProffessionalData();

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, ModalController }
 import { Platform } from 'ionic-angular'
 //import { ServiceServiceProvider } from "../../providers/service-service/service-service";
 import { ScheduleServiceProvider } from "../../providers/schedule-service/schedule-service";
+import * as moment from 'moment';
 
 import localCo from '@angular/common/locales/es-CO';
 import { registerLocaleData } from "@angular/common";
@@ -157,9 +158,11 @@ private appointmentService: AppointmentServiceProvider,
 
   }
 
-
   loadEvents() {
-    this.scheduleServiceProvider.getSchedule(this.loggedUser.idSchedule).subscribe( data => {
+    let fromDate = moment(new Date().setHours(0,0,0,0)).format();
+    let toDate = moment(new Date().setHours(11,59,59,59)).format();
+
+    this.scheduleServiceProvider.getSchedule(this.loggedUser.userId, fromDate, toDate).subscribe( data => {
       //console.log("datos de Agenda Quey2:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];
       console.log('DatosAgenda2:' + JSON.stringify(this.eventSource));
