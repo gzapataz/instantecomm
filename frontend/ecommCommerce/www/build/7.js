@@ -1,6 +1,6 @@
 webpackJsonp([7],{
 
-/***/ 883:
+/***/ 884:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63,26 +63,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Ionic pages and navigation.
  */
 var CustomerDetailPage = /** @class */ (function () {
-    function CustomerDetailPage(navCtrl, navParams) {
+    function CustomerDetailPage(navCtrl, navParams, viewCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.title = '';
+        this.viewCtrl = viewCtrl;
+        this.name = '';
+        this.email = '';
+        this.phone = '';
+        this.mobile = '';
+        this.gender = '';
+        this.customer = this.navParams.get('customer');
+        console.log('Detail:' + JSON.stringify(this.customer));
+        if (this.customer != undefined) {
+            this.name = this.customer.person.personName.firstName + ' ' + this.customer.person.personName.lastName;
+            this.email = this.customer.person.email;
+            this.phone = this.customer.person.phone;
+            this.mobile = this.customer.person.mobile;
+            this.gender = this.customer.person.gender;
+        }
     }
     CustomerDetailPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad CustomerDetailPage');
     };
     CustomerDetailPage.prototype.ngOnInit = function () {
-        this.customer = this.navParams.get('customer');
-        console.log('Detail:' + JSON.stringify(this.customer));
-        this.title = this.customer.person.personName.firstName + ' ' + this.customer.person.personName.lastName;
+    };
+    CustomerDetailPage.prototype.cancel = function () {
+        this.viewCtrl.dismiss();
     };
     CustomerDetailPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-customer-detail',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>{{title}}</ion-title>\n    <!--<button ion-button icon-only [menuToggle] start>\n      <img src="../assets/images/navicon.png" width="20" height="20" >\n    </button>-->\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/,
+            selector: 'page-customer-detail',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Información de contacto</ion-title>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-label >Nombre del paciente: {{name}}</ion-label>\n  <ion-label >Genero: {{gender}}</ion-label>\n  <ion-label >Telefono fijo: {{phone}}</ion-label>\n  <ion-label >Telefono celular: {{mobile}}</ion-label>\n  <ion-label >Correo electronico: {{email}}</ion-label>\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */]) === "function" && _c || Object])
     ], CustomerDetailPage);
     return CustomerDetailPage;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=customer-detail.js.map

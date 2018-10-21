@@ -21,7 +21,7 @@ import {LoggedProfessional} from "../../classes/logged-class";
 })
 export class CustomerPage implements OnInit {
   loggedUser: LoggedProfessional;
-
+customer:CustomerClass;
   eventSelected = false;
   eventSource = [];
   myCustomers: CustomerClass[] = [];
@@ -71,8 +71,13 @@ export class CustomerPage implements OnInit {
   }
 
   customerSelected(customer) {
-    this.navCtrl.push('CustomerDetailPage', {customer: customer});
+    this.customer=customer;
+    //this.navCtrl.push('CustomerDetailPage', {customer: customer});
     //console.log(`Clicked customer:` + customer)
+    let modal = this.modalCtrl.create('CustomerDetailPage', {
+    customer: customer
+    });
+    modal.present();
   }
 
   addEvent(customer) {

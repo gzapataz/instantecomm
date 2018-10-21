@@ -1,12 +1,20 @@
 <ion-header>
   <ion-navbar  color="primary">
-    <ion-title>{{title}}</ion-title>
-    <!--<button ion-button icon-only [menuToggle] start>
-      <img src="../assets/images/navicon.png" width="20" height="20" >
-    </button>-->
-    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>
+    <ion-title>Información de contacto</ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+
+  <ion-label >Nombre del paciente: {{name}}</ion-label>
+  <ion-label >Genero: {{gender}}</ion-label>
+  <ion-label >Telefono fijo: {{phone}}</ion-label>
+  <ion-label >Telefono celular: {{mobile}}</ion-label>
+  <ion-label >Correo electronico: {{email}}</ion-label>
 </ion-content>
