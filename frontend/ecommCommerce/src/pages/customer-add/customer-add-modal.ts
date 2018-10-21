@@ -63,7 +63,7 @@ professional: LoggedProfessional;
     this.person=this.persona;
     console.log(this.person);
     if(!this.person.personName.firstName||!this.person.personName.lastName||!this.person.gender||!this.person.email||!this.person.mobile
-    ||!this.person.phone){
+    ){
       let theAlert = this.alertCtrl.create({
         title: "Campos incompletos",
         subTitle: "Por favor ingresa los datos de tu paciente",
