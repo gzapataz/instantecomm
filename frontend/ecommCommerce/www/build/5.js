@@ -1,6 +1,6 @@
 webpackJsonp([5],{
 
-/***/ 889:
+/***/ 890:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -102,7 +102,7 @@ var LoginPage = /** @class */ (function () {
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/login/login.html"*/'<ion-header>\n  <ion-toolbar color="primary">\n<ion-title>Inicio- e-Commerce</ion-title>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content>\n  <ion-item>\n    <ion-label color="facebook">Correo electronico</ion-label>\n    <ion-input type="email" [(ngModel)]="login.email" name="email"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Password</ion-label>\n    <ion-input type="password" [(ngModel)]="login.password" name="password"></ion-input>\n  </ion-item>\n  <button ion-button color="secondary" (click)="signOn()">Ingresar</button>\n  <p>¿Todavia no perteneces a e-Commerce al instante?</p>\n  <button ion-button color="secondary" [navPush]="registrationPage">Registrarse aquí</button>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/login/login.html"*/,
+            selector: 'page-login',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/login/login.html"*/'<ion-header>\n  <ion-toolbar color="primary">\n<ion-title>Inicio- e-Commerce</ion-title>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content>\n  <ion-item>\n    <ion-label color="facebook">Correo electronico</ion-label>\n    <ion-input type="email" [(ngModel)]="login.email" name="email"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Password</ion-label>\n    <ion-input type="password" [(ngModel)]="login.password" name="password"></ion-input>\n  </ion-item>\n  <button ion-button color="secondary" (click)="signOn()">Ingresar</button>\n  <p>¿Todavia no perteneces a e-Commerce al instante?</p>\n  <button ion-button color="secondary" [navPush]="registrationPage">Registrarse aquí</button>\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/login/login.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_2__providers_user_service_user_service__["a" /* UserServiceProvider */]])

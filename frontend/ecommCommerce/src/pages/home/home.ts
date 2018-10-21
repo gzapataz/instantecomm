@@ -164,10 +164,14 @@ private appointmentService: AppointmentServiceProvider,
 
   loadEvents() {
     let fromDate = moment(new Date().setHours(0,0,0,0)).format();
-    let toDate = moment(new Date().setHours(11,59,59,59)).format();
 
+    var tomorrow = new Date();
+    tomorrow.setDate(new Date().getDate()+1);
+
+    let toDate = moment(tomorrow.setHours(0,5,0,0)).format();
+    console.log('DatosAgenda tiempo2:' + fromDate+" end "+toDate);
     this.scheduleServiceProvider.getSchedule(this.loggedUser.userId, fromDate, toDate).subscribe( data => {
-      //console.log("datos de Agenda Quey2:" + JSON.stringify(data))
+      console.log("datos de Agenda Quey2:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];
       console.log('DatosAgenda2:' + JSON.stringify(this.eventSource));
     });
