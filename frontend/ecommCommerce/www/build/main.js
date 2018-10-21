@@ -1270,6 +1270,7 @@ var CustomerPage = /** @class */ (function () {
     CustomerPage.prototype.startChat = function (mobile) {
     };
     CustomerPage.prototype.addCustomer = function () {
+        var _this = this;
         var userLogged = this.globalService.getLoggedProffessionalData();
         if (userLogged.userId === '' || userLogged.userId == null) {
             var alert = this.alertCtrl.create({
@@ -1285,6 +1286,7 @@ var CustomerPage = /** @class */ (function () {
             });
             modal.present();
             modal.onDidDismiss(function (data) {
+                _this.navCtrl.setRoot(_this.navCtrl.getActive().component);
             });
         }
     };

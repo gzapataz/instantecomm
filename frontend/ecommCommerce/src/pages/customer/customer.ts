@@ -127,6 +127,8 @@ customer:CustomerClass;
       });
       modal.present();
       modal.onDidDismiss(data => {
+        this.navCtrl.setRoot(this.navCtrl.getActive().component);
+        
     });
     }
 }

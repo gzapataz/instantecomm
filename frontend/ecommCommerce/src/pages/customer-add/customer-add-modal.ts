@@ -53,7 +53,7 @@ professional: LoggedProfessional;
   cancel() {
 
     this.viewCtrl.dismiss(this.person);
-    location.reload();
+
   }
 
 
@@ -79,7 +79,7 @@ professional: LoggedProfessional;
           buttons: ['OK']
         });
         theAlert.present();*/
-        this.viewCtrl.dismiss();
+        this.cancel();
       });
     }
 
