@@ -16,6 +16,7 @@ registerLocaleData(localCo);
 import {AppointmentServiceProvider} from "../../providers/appointment-service/appointment-service";
 import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
 import {LoggedProfessional} from "../../classes/logged-class";
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 
 
@@ -59,9 +60,9 @@ export class HomePage implements OnInit {
       //console.log('Down Fired' +  event.movementX + ' ' + event.movementY)
 
     },
-    onDrop(){
-      console.log('Estamos en Drop')
-    },
+    //onDrop(){
+      //console.log('Estamos en Drop')
+    //},
     onDoubleClick(){
       console.log('Doble Click')
     }
@@ -71,7 +72,9 @@ export class HomePage implements OnInit {
               private modalCtrl: ModalController,
 private appointmentService: AppointmentServiceProvider,
               private scheduleServiceProvider: ScheduleServiceProvider,
-              private globalService: GlobalsServiceProvider) {
+              private globalService: GlobalsServiceProvider,
+              private platform: Platform,
+              public screenOrientation: ScreenOrientation) {
 
   }
 

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar  color="primary">
-    <ion-title>  {{ viewTitle }}</ion-title>
+    <ion-title>  Mi agenda diaria</ion-title>
     <!--<button ion-button icon-only [menuToggle] start>
       <img src="../assets/images/navicon.png" width="20" height="20" >
     </button>-->
@@ -13,7 +13,21 @@
 
   <ion-row>
 
+    <div *ngIf="platform.is('tablet') || platform.is('core') || screenOrientation.type == 'landscape-secondary' || screenOrientation.type == 'landscape-primary'">
+
+    </div>
     <ion-col col-12 col-sm-12 col-md-8 col-lg-8>
+
+      <ion-navbar color="primary">
+        <ion-buttons>
+
+          <button ion-button >Hoy es {{viewTitle}}</button>
+
+
+
+        </ion-buttons>
+      </ion-navbar>
+
       <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">
         <div class="calendar-event-inner"
              [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white'}"
