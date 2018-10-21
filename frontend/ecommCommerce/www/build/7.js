@@ -1,6 +1,6 @@
 webpackJsonp([7],{
 
-/***/ 883:
+/***/ 884:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -92,7 +92,7 @@ var CustomerDetailPage = /** @class */ (function () {
     };
     CustomerDetailPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-customer-detail',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Información de contacto</ion-title>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-label >Nombre del paciente: {{name}}</ion-label>\n  <ion-label >Genero: {{gender}}</ion-label>\n  <ion-label >Telefono fijo: {{phone}}</ion-label>\n  <ion-label >Telefono celular: {{mobile}}</ion-label>\n  <ion-label >Correo electronico: {{email}}</ion-label>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/,
+            selector: 'page-customer-detail',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Información de contacto</ion-title>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n  <ion-label >Nombre del paciente: {{name}}</ion-label>\n  <ion-label >Genero: {{gender}}</ion-label>\n  <ion-label >Telefono fijo: {{phone}}</ion-label>\n  <ion-label >Telefono celular: {{mobile}}</ion-label>\n  <ion-label >Correo electronico: {{email}}</ion-label>\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */]])
     ], CustomerDetailPage);

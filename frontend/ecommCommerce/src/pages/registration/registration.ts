@@ -6,6 +6,7 @@ import { AngularFireAuth } from "angularfire2/auth";
 import * as firebase from 'firebase/app';
 
 import { UserServiceProvider } from "../../providers/user-service/user-service";
+import {TabsPage} from "../tabs/tabs";
 
 /**
  * Generated class for the RegistrationPage page.
@@ -61,7 +62,7 @@ export class RegistrationPage {
 
   regSuccess(result) {
     this.userService.logOn(this.reg)
-      .then(res => this.navCtrl.push(HomePage));
+      .then(res => this.navCtrl.push(TabsPage));
   }
 
 }
