@@ -84,6 +84,44 @@ export class CalendarPage implements OnInit, OnDestroy {
               private globalService: GlobalsServiceProvider,
               public screenOrientation: ScreenOrientation,
               private exceptionServiceProvider: ExceptionServiceProvider) {
+    try {
+      this.dragulaService.destroy('SERVICE');
+      this.dragulaService.createGroup('SERVICE', {
+        copy: (el, source) => {
+          //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
+          this.addEvent(el.id);
+          /*
+          let eventData = {
+            title: el.id,
+            startTime: new Date(),
+            endTime: new Date(),
+            eventColor: 'red'
+          };
+
+          let events = this.eventSource;
+          events.push(eventData);
+          //console.log('Source' + events);
+          this.eventSource = [];
+          setTimeout(() => {
+            this.eventSource = events;
+          });
+          */
+          return source.id === 'left';
+        },
+        copyItem: (servAval: String) => {
+          //console.log('A Crear 2');
+          return servAval;
+        },
+        accepts: (el, target, source, sibling) => {
+          // To avoid dragging from right to left container
+          //console.log('A Crear 3');
+          return target.id !== 'left';
+        }
+      });
+    }
+    catch(e) {
+      console.log('DRAGULA ERROR:'+ e.toString());
+    }
   }
 
   onSelect() {
@@ -109,44 +147,7 @@ export class CalendarPage implements OnInit, OnDestroy {
     } else {
       this.startHour = this.loggedUser.startHour;
       this.endHour = this.loggedUser.endHour;
-      try {
-        this.dragulaService.destroy('SERVICE');
-        this.dragulaService.createGroup('SERVICE', {
-          copy: (el, source) => {
-            //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
-            this.addEvent(el.id);
-            /*
-            let eventData = {
-              title: el.id,
-              startTime: new Date(),
-              endTime: new Date(),
-              eventColor: 'red'
-            };
 
-            let events = this.eventSource;
-            events.push(eventData);
-            //console.log('Source' + events);
-            this.eventSource = [];
-            setTimeout(() => {
-              this.eventSource = events;
-            });
-            */
-            return source.id === 'left';
-          },
-          copyItem: (servAval: String) => {
-            //console.log('A Crear 2');
-            return servAval;
-          },
-          accepts: (el, target, source, sibling) => {
-            // To avoid dragging from right to left container
-            //console.log('A Crear 3');
-            return target.id !== 'left';
-          }
-        });
-      }
-      catch(e) {
-        console.log('DRAGULA ERROR:'+ e.toString());
-      }
       this.getServices(this.loggedUser.userId);
       this.getCustomers(this.loggedUser.userId);
     }

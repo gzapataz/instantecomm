@@ -349,181 +349,6 @@ var ServiceServiceProvider = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_schedule_service_schedule_service__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common_locales_es_CO__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_common__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_appointment_service_appointment_service__ = __webpack_require__(143);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_globals_service_globals_service__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_screen_orientation__ = __webpack_require__(144);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-//import { ServiceServiceProvider } from "../../providers/service-service/service-service";
-
-
-
-
-Object(__WEBPACK_IMPORTED_MODULE_5__angular_common__["k" /* registerLocaleData */])(__WEBPACK_IMPORTED_MODULE_4__angular_common_locales_es_CO__["a" /* default */]);
-
-
-
-var HomePage = /** @class */ (function () {
-    function HomePage(navParams, alertCtrl, modalCtrl, appointmentService, scheduleServiceProvider, globalService, platform, screenOrientation) {
-        this.navParams = navParams;
-        this.alertCtrl = alertCtrl;
-        this.modalCtrl = modalCtrl;
-        this.appointmentService = appointmentService;
-        this.scheduleServiceProvider = scheduleServiceProvider;
-        this.globalService = globalService;
-        this.platform = platform;
-        this.screenOrientation = screenOrientation;
-        this.eventSelected = false;
-        this.eventSource = [];
-        this.selectedDay = new Date();
-        this.theColor = 'white';
-        this.calendar = {
-            mode: 'day',
-            locale: __WEBPACK_IMPORTED_MODULE_4__angular_common_locales_es_CO__["a" /* default */][0],
-            currentDate: new Date(),
-            onTimePress: function (event) {
-                if (this.isEventSelected) {
-                    return;
-                }
-                console.log('Aqui vamos en evento');
-            },
-            onClick: function () {
-                console.log('Aqui vamos en evento Click');
-            },
-            onMove: function (event) {
-                //console.log('MVX ' +  event.movementX + ' ' + event.movementY)
-                //console.log('Region ' +  event.region)
-            },
-            onMoveDown: function (event) {
-                //console.log('Down Fired' +  event.movementX + ' ' + event.movementY)
-            },
-            //onDrop(){
-            //console.log('Estamos en Drop')
-            //},
-            onDoubleClick: function () {
-                console.log('Doble Click');
-            }
-        };
-        this.markDisabled = function (date) {
-            var current = new Date();
-            current.setHours(2, 0, 0);
-            return date < current;
-        };
-    }
-    HomePage.prototype.onSelect = function () {
-        console.log('DISP');
-        this.theColor = 'black';
-    };
-    HomePage.prototype.ngOnInit = function () {
-        console.log('LOGGED CALENDAR1:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
-        var userLogged = this.globalService.getLoggedProffessionalData();
-        if (userLogged.userId === '' || userLogged.userId == null) {
-            console.log("datos de Agenda Quey11 return 1:");
-            return;
-        }
-        ;
-        this.initdata();
-    };
-    HomePage.prototype.initdata = function () {
-        this.loggedUser = this.globalService.getLoggedProffessionalData();
-        this.loadEvents();
-    };
-    HomePage.prototype.ionViewWillEnter = function () {
-        var userLogged = this.globalService.getLoggedProffessionalData();
-        if (userLogged.userId === '' || userLogged.userId == null) {
-            console.log("datos de Agenda Quey11 return 2:");
-            return;
-        }
-        ;
-        console.log("datos de Agenda Quey22 user:" + userLogged.userId);
-        this.initdata();
-    };
-    HomePage.prototype.validateSlotTime = function (currentEvent) {
-        var auxEvent = this.eventSource.filter(function (eventDate) {
-            return currentEvent.startTime >= eventDate.startTime && currentEvent.endTime >= eventDate.endTime && currentEvent.startTime <= eventDate.endTime;
-        });
-        if (auxEvent.length > 0) {
-            return false;
-        }
-        return true;
-    };
-    HomePage.prototype.today = function () {
-        this.calendar.currentDate = new Date();
-    };
-    HomePage.prototype.onViewTitleChanged = function (title) {
-        this.viewTitle = title;
-    };
-    HomePage.prototype.onEventSelected = function (event) {
-        console.log('Event onEventSelected ' + JSON.stringify(event));
-        this.eventSelected = true;
-        //  this.updateEvent(event);
-    };
-    HomePage.prototype.onTimeSelected = function (ev) {
-        this.theColor = 'blue';
-        console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
-        this.selectedDay = ev.selectedTime;
-        if (!this.eventSelected && this.calendar.mode == 'day') {
-        }
-    };
-    HomePage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad CalendarPage');
-    };
-    HomePage.prototype.loadEvents = function () {
-        var _this = this;
-        var fromDate = __WEBPACK_IMPORTED_MODULE_3_moment__(new Date().setHours(0, 0, 0, 0)).format();
-        var toDate = __WEBPACK_IMPORTED_MODULE_3_moment__(new Date().setHours(11, 59, 59, 59)).format();
-        this.scheduleServiceProvider.getSchedule(this.loggedUser.userId, fromDate, toDate).subscribe(function (data) {
-            //console.log("datos de Agenda Quey2:" + JSON.stringify(data))
-            _this.eventSource = data; //['appointments'];
-            console.log('DatosAgenda2:' + JSON.stringify(_this.eventSource));
-        });
-        //Cargar eventos
-    };
-    HomePage.prototype.onRangeChanged = function (ev) {
-        console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
-    };
-    HomePage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>  Mi agenda diaria</ion-title>\n    <!--<button ion-button icon-only [menuToggle] start>\n      <img src="../assets/images/navicon.png" width="20" height="20" >\n    </button>-->\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n\n  <ion-row>\n\n    <div *ngIf="platform.is(\'tablet\') || platform.is(\'core\') || screenOrientation.type == \'landscape-secondary\' || screenOrientation.type == \'landscape-primary\'">\n\n    </div>\n    <ion-col col-12 col-sm-12 col-md-8 col-lg-8>\n\n      <ion-navbar color="primary">\n        <ion-buttons>\n\n          <button ion-button >Hoy es {{viewTitle}}</button>\n\n\n\n        </ion-buttons>\n      </ion-navbar>\n\n      <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">\n        <div class="calendar-event-inner"\n             [ngStyle]="{\'background-color\': displayEvent.event.eventColor, color: \'white\'}"\n             [style.top]="(37*displayEvent.startOffset/hourParts)+\'px\'"\n             [style.left]="100/displayEvent.overlapNumber*displayEvent.position+\'%\'"\n             [style.width]="100/displayEvent.overlapNumber+\'%\'"\n             [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + \'px\'">\n          {{displayEvent.event.title}}\n          <br>\n          {{displayEvent.event.status}}\n        </div>\n      </ng-template>\n\n      <ng-template #template2 let-displayEvent="displayEvent" let-hourParts="hourParts">\n        <div class="calendar-event-inner"\n             [ngStyle]="{\'background-color\': displayEvent.event.eventColor, color: \'white\'}"\n             [style.top]="(37*displayEvent.startOffset/hourParts)+\'px\'"\n             [style.left]="100/displayEvent.overlapNumber*displayEvent.position+\'%\'"\n             [style.width]="100/displayEvent.overlapNumber+\'%\'"\n             [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + \'px\'">\n          {{displayEvent.event.title}}\n          <br>\n          {{displayEvent.event.status}}\n        </div>\n      </ng-template>\n\n      <ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">\n        <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">\n          <ion-item *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">\n                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: \'HH:mm\'}}\n                            -\n                            {{event.endTime|date: \'HH:mm\'}}\n                        </span>\n            <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>\n            <span class="event-detail">  |  {{event.title}} - {{event.status}}</span>\n          </ion-item>\n          <ion-item *ngIf="selectedDate?.events.length==0">\n            <div class="no-events-label">No hay Citas programadas</div>\n          </ion-item>\n        </ion-list>\n      </ng-template>\n\n      <calendar [eventSource]="eventSource"\n                [calendarMode]="calendar.mode"\n                [currentDate]="calendar.currentDate"\n                (press)="calendar.onTimePress($event)"\n                (click)="calendar.onClick()"\n                (doubleclick)="calendar.onDoubleClick()"\n                (mousemove)="calendar.onMove($event)"\n                (mousedown)="calendar.onMoveDown($event)"\n                (drop)="calendar.onDrop()"\n                (dragover)="calendar.onDrop()"\n                (onEventSelected)="onEventSelected($event)"\n                (onTitleChanged)="onViewTitleChanged($event)"\n                (onTimeSelected)="onTimeSelected($event)"\n                [locale]="calendar.locale"\n                [dayviewNormalEventTemplate]="template3"\n                [weekviewNormalEventTemplate]="template2"\n                [monthviewEventDetailTemplate]="template1"\n                step="30"\n                startHour="9"\n                endHour="20"\n                class="calendar">\n      </calendar>\n\n\n\n\n    </ion-col>\n  </ion-row>\n\n</ion-content>\n\n\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/home/home.html"*/,
-            providers: [__WEBPACK_IMPORTED_MODULE_2__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */]]
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* ModalController */],
-            __WEBPACK_IMPORTED_MODULE_6__providers_appointment_service_appointment_service__["a" /* AppointmentServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_7__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */],
-            __WEBPACK_IMPORTED_MODULE_8__ionic_native_screen_orientation__["a" /* ScreenOrientation */]])
-    ], HomePage);
-    return HomePage;
-}());
-
-//# sourceMappingURL=home.js.map
-
-/***/ }),
-
-/***/ 174:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
@@ -710,6 +535,54 @@ var UserServiceProvider = /** @class */ (function () {
 
 /***/ }),
 
+/***/ 174:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabsPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_home__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customer_customer__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(18);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+//import { ScrollCalendarPage } from "../scroll-calendar/scroll-calendar";
+var TabsPage = /** @class */ (function () {
+    function TabsPage(navCtrl, alertCtrl, platform, navParams) {
+        this.navCtrl = navCtrl;
+        this.alertCtrl = alertCtrl;
+        this.platform = platform;
+        this.tab1Root = __WEBPACK_IMPORTED_MODULE_1__home_home__["a" /* HomePage */];
+        this.tab2Root = __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__["a" /* CalendarPage */];
+        this.tab3Root = __WEBPACK_IMPORTED_MODULE_3__customer_customer__["a" /* CustomerPage */];
+        this.myIndex = navParams.data.tabIndex || 0;
+    }
+    TabsPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/'<ion-tabs [selectedIndex]="myIndex">\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="Mi Agenda" tabIcon="calendar"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Mis Pacientes" tabIcon="contacts"></ion-tab>\n\n  <!--ion-tab [root]="tab3Root" tabTitle="Mi Scroll" tabIcon="calendar"></ion-tab-->\n</ion-tabs>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["h" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["i" /* NavParams */]])
+    ], TabsPage);
+    return TabsPage;
+}());
+
+//# sourceMappingURL=tabs.js.map
+
+/***/ }),
+
 /***/ 175:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -864,12 +737,17 @@ var CustomerPage = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabsPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_home__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__ = __webpack_require__(178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customer_customer__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_schedule_service_schedule_service__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common_locales_es_CO__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_common__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_appointment_service_appointment_service__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_globals_service_globals_service__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_screen_orientation__ = __webpack_require__(144);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -882,29 +760,151 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+//import { ServiceServiceProvider } from "../../providers/service-service/service-service";
 
 
-//import { ScrollCalendarPage } from "../scroll-calendar/scroll-calendar";
-var TabsPage = /** @class */ (function () {
-    function TabsPage(navCtrl, alertCtrl, platform, navParams) {
-        this.navCtrl = navCtrl;
+
+
+Object(__WEBPACK_IMPORTED_MODULE_5__angular_common__["k" /* registerLocaleData */])(__WEBPACK_IMPORTED_MODULE_4__angular_common_locales_es_CO__["a" /* default */]);
+
+
+
+var HomePage = /** @class */ (function () {
+    function HomePage(navParams, alertCtrl, modalCtrl, appointmentService, scheduleServiceProvider, globalService, platform, screenOrientation) {
+        this.navParams = navParams;
         this.alertCtrl = alertCtrl;
+        this.modalCtrl = modalCtrl;
+        this.appointmentService = appointmentService;
+        this.scheduleServiceProvider = scheduleServiceProvider;
+        this.globalService = globalService;
         this.platform = platform;
-        this.tab1Root = __WEBPACK_IMPORTED_MODULE_1__home_home__["a" /* HomePage */];
-        this.tab2Root = __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__["a" /* CalendarPage */];
-        this.tab3Root = __WEBPACK_IMPORTED_MODULE_3__customer_customer__["a" /* CustomerPage */];
-        this.myIndex = navParams.data.tabIndex || 0;
+        this.screenOrientation = screenOrientation;
+        this.eventSelected = false;
+        this.eventSource = [];
+        this.selectedDay = new Date();
+        this.theColor = 'white';
+        this.calendar = {
+            mode: 'day',
+            locale: __WEBPACK_IMPORTED_MODULE_4__angular_common_locales_es_CO__["a" /* default */][0],
+            currentDate: new Date(),
+            onTimePress: function (event) {
+                if (this.isEventSelected) {
+                    return;
+                }
+                console.log('Aqui vamos en evento');
+            },
+            onClick: function () {
+                console.log('Aqui vamos en evento Click');
+            },
+            onMove: function (event) {
+                //console.log('MVX ' +  event.movementX + ' ' + event.movementY)
+                //console.log('Region ' +  event.region)
+            },
+            onMoveDown: function (event) {
+                //console.log('Down Fired' +  event.movementX + ' ' + event.movementY)
+            },
+            //onDrop(){
+            //console.log('Estamos en Drop')
+            //},
+            onDoubleClick: function () {
+                console.log('Doble Click');
+            }
+        };
+        this.markDisabled = function (date) {
+            var current = new Date();
+            current.setHours(2, 0, 0);
+            return date < current;
+        };
     }
-    TabsPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/'<ion-tabs [selectedIndex]="myIndex">\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="Mi Agenda" tabIcon="calendar"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Mis Pacientes" tabIcon="contacts"></ion-tab>\n\n  <!--ion-tab [root]="tab3Root" tabTitle="Mi Scroll" tabIcon="calendar"></ion-tab-->\n</ion-tabs>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/
+    HomePage.prototype.onSelect = function () {
+        console.log('DISP');
+        this.theColor = 'black';
+    };
+    HomePage.prototype.ngOnInit = function () {
+        console.log('LOGGED CALENDAR1:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
+        var userLogged = this.globalService.getLoggedProffessionalData();
+        if (userLogged.userId === '' || userLogged.userId == null) {
+            console.log("datos de Agenda Quey11 return 1:");
+            return;
+        }
+        ;
+        this.initdata();
+    };
+    HomePage.prototype.initdata = function () {
+        this.loggedUser = this.globalService.getLoggedProffessionalData();
+        this.loadEvents();
+    };
+    HomePage.prototype.ionViewWillEnter = function () {
+        var userLogged = this.globalService.getLoggedProffessionalData();
+        if (userLogged.userId === '' || userLogged.userId == null) {
+            console.log("datos de Agenda Quey11 return 2:");
+            return;
+        }
+        ;
+        console.log("datos de Agenda Quey22 user:" + userLogged.userId);
+        this.initdata();
+    };
+    HomePage.prototype.validateSlotTime = function (currentEvent) {
+        var auxEvent = this.eventSource.filter(function (eventDate) {
+            return currentEvent.startTime >= eventDate.startTime && currentEvent.endTime >= eventDate.endTime && currentEvent.startTime <= eventDate.endTime;
+        });
+        if (auxEvent.length > 0) {
+            return false;
+        }
+        return true;
+    };
+    HomePage.prototype.today = function () {
+        this.calendar.currentDate = new Date();
+    };
+    HomePage.prototype.onViewTitleChanged = function (title) {
+        this.viewTitle = title;
+    };
+    HomePage.prototype.onEventSelected = function (event) {
+        console.log('Event onEventSelected ' + JSON.stringify(event));
+        this.eventSelected = true;
+        //  this.updateEvent(event);
+    };
+    HomePage.prototype.onTimeSelected = function (ev) {
+        this.theColor = 'blue';
+        console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
+        this.selectedDay = ev.selectedTime;
+        if (!this.eventSelected && this.calendar.mode == 'day') {
+        }
+    };
+    HomePage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad CalendarPage');
+    };
+    HomePage.prototype.loadEvents = function () {
+        var _this = this;
+        var fromDate = __WEBPACK_IMPORTED_MODULE_3_moment__(new Date().setHours(0, 0, 0, 0)).format();
+        var toDate = __WEBPACK_IMPORTED_MODULE_3_moment__(new Date().setHours(11, 59, 59, 59)).format();
+        this.scheduleServiceProvider.getSchedule(this.loggedUser.userId, fromDate, toDate).subscribe(function (data) {
+            //console.log("datos de Agenda Quey2:" + JSON.stringify(data))
+            _this.eventSource = data; //['appointments'];
+            console.log('DatosAgenda2:' + JSON.stringify(_this.eventSource));
+        });
+        //Cargar eventos
+    };
+    HomePage.prototype.onRangeChanged = function (ev) {
+        console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
+    };
+    HomePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-home',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>  Mi agenda diaria</ion-title>\n    <!--<button ion-button icon-only [menuToggle] start>\n      <img src="../assets/images/navicon.png" width="20" height="20" >\n    </button>-->\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n\n  <ion-row>\n\n    <div *ngIf="platform.is(\'tablet\') || platform.is(\'core\') || screenOrientation.type == \'landscape-secondary\' || screenOrientation.type == \'landscape-primary\'">\n\n    </div>\n    <ion-col col-12 col-sm-12 col-md-8 col-lg-8>\n\n      <ion-navbar color="primary">\n        <ion-buttons>\n\n          <button ion-button >Hoy es {{viewTitle}}</button>\n\n\n\n        </ion-buttons>\n      </ion-navbar>\n\n      <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">\n        <div class="calendar-event-inner"\n             [ngStyle]="{\'background-color\': displayEvent.event.eventColor, color: \'white\'}"\n             [style.top]="(37*displayEvent.startOffset/hourParts)+\'px\'"\n             [style.left]="100/displayEvent.overlapNumber*displayEvent.position+\'%\'"\n             [style.width]="100/displayEvent.overlapNumber+\'%\'"\n             [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + \'px\'">\n          {{displayEvent.event.title}}\n          <br>\n          {{displayEvent.event.status}}\n        </div>\n      </ng-template>\n\n      <ng-template #template2 let-displayEvent="displayEvent" let-hourParts="hourParts">\n        <div class="calendar-event-inner"\n             [ngStyle]="{\'background-color\': displayEvent.event.eventColor, color: \'white\'}"\n             [style.top]="(37*displayEvent.startOffset/hourParts)+\'px\'"\n             [style.left]="100/displayEvent.overlapNumber*displayEvent.position+\'%\'"\n             [style.width]="100/displayEvent.overlapNumber+\'%\'"\n             [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + \'px\'">\n          {{displayEvent.event.title}}\n          <br>\n          {{displayEvent.event.status}}\n        </div>\n      </ng-template>\n\n      <ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">\n        <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">\n          <ion-item *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">\n                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: \'HH:mm\'}}\n                            -\n                            {{event.endTime|date: \'HH:mm\'}}\n                        </span>\n            <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>\n            <span class="event-detail">  |  {{event.title}} - {{event.status}}</span>\n          </ion-item>\n          <ion-item *ngIf="selectedDate?.events.length==0">\n            <div class="no-events-label">No hay Citas programadas</div>\n          </ion-item>\n        </ion-list>\n      </ng-template>\n\n      <calendar [eventSource]="eventSource"\n                [calendarMode]="calendar.mode"\n                [currentDate]="calendar.currentDate"\n                (press)="calendar.onTimePress($event)"\n                (click)="calendar.onClick()"\n                (doubleclick)="calendar.onDoubleClick()"\n                (mousemove)="calendar.onMove($event)"\n                (mousedown)="calendar.onMoveDown($event)"\n                (drop)="calendar.onDrop()"\n                (dragover)="calendar.onDrop()"\n                (onEventSelected)="onEventSelected($event)"\n                (onTitleChanged)="onViewTitleChanged($event)"\n                (onTimeSelected)="onTimeSelected($event)"\n                [locale]="calendar.locale"\n                [dayviewNormalEventTemplate]="template3"\n                [weekviewNormalEventTemplate]="template2"\n                [monthviewEventDetailTemplate]="template1"\n                step="30"\n                startHour="9"\n                endHour="20"\n                class="calendar">\n      </calendar>\n\n\n\n\n    </ion-col>\n  </ion-row>\n\n</ion-content>\n\n\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/home/home.html"*/,
+            providers: [__WEBPACK_IMPORTED_MODULE_2__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */]]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["i" /* NavParams */]])
-    ], TabsPage);
-    return TabsPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* ModalController */],
+            __WEBPACK_IMPORTED_MODULE_6__providers_appointment_service_appointment_service__["a" /* AppointmentServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_7__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */],
+            __WEBPACK_IMPORTED_MODULE_8__ionic_native_screen_orientation__["a" /* ScreenOrientation */]])
+    ], HomePage);
+    return HomePage;
 }());
 
-//# sourceMappingURL=tabs.js.map
+//# sourceMappingURL=home.js.map
 
 /***/ }),
 
@@ -966,6 +966,7 @@ var Product = /** @class */ (function () {
 }());
 var CalendarPage = /** @class */ (function () {
     function CalendarPage(navCtrl, navParams, alertCtrl, modalCtrl, dragulaService, servicesService, customerService, appointmentService, scheduleServiceProvider, platform, preferencesProvider, globalService, screenOrientation, exceptionServiceProvider) {
+        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.alertCtrl = alertCtrl;
@@ -1028,6 +1029,44 @@ var CalendarPage = /** @class */ (function () {
                 //console.log('Doble Click')
             }
         };
+        try {
+            this.dragulaService.destroy('SERVICE');
+            this.dragulaService.createGroup('SERVICE', {
+                copy: function (el, source) {
+                    //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
+                    _this.addEvent(el.id);
+                    /*
+                    let eventData = {
+                      title: el.id,
+                      startTime: new Date(),
+                      endTime: new Date(),
+                      eventColor: 'red'
+                    };
+          
+                    let events = this.eventSource;
+                    events.push(eventData);
+                    //console.log('Source' + events);
+                    this.eventSource = [];
+                    setTimeout(() => {
+                      this.eventSource = events;
+                    });
+                    */
+                    return source.id === 'left';
+                },
+                copyItem: function (servAval) {
+                    //console.log('A Crear 2');
+                    return servAval;
+                },
+                accepts: function (el, target, source, sibling) {
+                    // To avoid dragging from right to left container
+                    //console.log('A Crear 3');
+                    return target.id !== 'left';
+                }
+            });
+        }
+        catch (e) {
+            console.log('DRAGULA ERROR:' + e.toString());
+        }
     }
     CalendarPage.prototype.onSelect = function () {
         //console.log('DISP');
@@ -1038,7 +1077,6 @@ var CalendarPage = /** @class */ (function () {
         this.customerId = $event;
     };
     CalendarPage.prototype.ngOnInit = function () {
-        var _this = this;
         //console.log('Plataforma:' + this.platform.platforms());
         //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
         this.loggedUser = this.globalService.getLoggedProffessionalData();
@@ -1050,44 +1088,6 @@ var CalendarPage = /** @class */ (function () {
         else {
             this.startHour = this.loggedUser.startHour;
             this.endHour = this.loggedUser.endHour;
-            try {
-                this.dragulaService.destroy('SERVICE');
-                this.dragulaService.createGroup('SERVICE', {
-                    copy: function (el, source) {
-                        //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
-                        _this.addEvent(el.id);
-                        /*
-                        let eventData = {
-                          title: el.id,
-                          startTime: new Date(),
-                          endTime: new Date(),
-                          eventColor: 'red'
-                        };
-            
-                        let events = this.eventSource;
-                        events.push(eventData);
-                        //console.log('Source' + events);
-                        this.eventSource = [];
-                        setTimeout(() => {
-                          this.eventSource = events;
-                        });
-                        */
-                        return source.id === 'left';
-                    },
-                    copyItem: function (servAval) {
-                        //console.log('A Crear 2');
-                        return servAval;
-                    },
-                    accepts: function (el, target, source, sibling) {
-                        // To avoid dragging from right to left container
-                        //console.log('A Crear 3');
-                        return target.id !== 'left';
-                    }
-                });
-            }
-            catch (e) {
-                console.log('DRAGULA ERROR:' + e.toString());
-            }
             this.getServices(this.loggedUser.userId);
             this.getCustomers(this.loggedUser.userId);
         }
@@ -1843,7 +1843,7 @@ var environment = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_database__ = __webpack_require__(454);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_auth__ = __webpack_require__(98);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__environment__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_user_service_user_service__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_user_service_user_service__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_storage__ = __webpack_require__(140);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ng2_dragula__ = __webpack_require__(150);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__angular_platform_browser_animations__ = __webpack_require__(865);
@@ -1853,8 +1853,8 @@ var environment = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_components_module__ = __webpack_require__(878);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_customer_search_customer_search__ = __webpack_require__(505);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__app_component__ = __webpack_require__(879);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_home_home__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_tabs_tabs__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_home_home__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_tabs_tabs__ = __webpack_require__(174);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_calendar_calendar__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__providers_custom_event_tittle_formatter_custom_event_tittle_formatter__ = __webpack_require__(880);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__providers_custom_date_formatter_custom_date_formatter__ = __webpack_require__(881);
@@ -2426,9 +2426,9 @@ var ComponentsModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(503);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(502);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__ = __webpack_require__(174);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angularfire2_auth__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_user_service_user_service__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_user_service_user_service__ = __webpack_require__(173);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
