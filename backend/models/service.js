@@ -11,12 +11,12 @@ var serviceSchema   = new Schema({
     },    
     description: {
         type: String,
-        required: true
+        //required: true
     },
     //serviceValue: Schema.Types.Decimal128,
     averageTime: {
         type: Number,
-        required: true
+        //required: true
     }, 
     /*serviceConditions:[{
         type: mongoose.Schema.Types.ObjectId,
