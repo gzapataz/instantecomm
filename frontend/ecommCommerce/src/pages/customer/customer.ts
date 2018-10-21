@@ -3,6 +3,7 @@ import { CustomerServiceProvider } from "../../providers/customer-service/custom
 import {AlertController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import { CustomerClass } from "../../classes/customer-class";
 import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
+import {LoggedProfessional} from "../../classes/logged-class";
 
 
 /**
@@ -19,7 +20,7 @@ import {GlobalsServiceProvider} from "../../providers/globals-service/globals-se
 
 })
 export class CustomerPage implements OnInit {
-
+  loggedUser: LoggedProfessional;
 
   eventSelected = false;
   eventSource = [];
@@ -40,6 +41,7 @@ export class CustomerPage implements OnInit {
   ngOnInit() {
     //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
     let userLogged = this.globalService.getLoggedProffessionalData();
+    this.loggedUser= this.globalService.getLoggedProffessionalData();
     if (userLogged.userId === '' || userLogged.userId == null) {
       return;
     };
@@ -103,5 +105,24 @@ export class CustomerPage implements OnInit {
 
   startChat(mobile) {
   }
+  addCustomer(){
+    let userLogged = this.globalService.getLoggedProffessionalData();
 
+    if (userLogged.userId === '' || userLogged.userId == null) {
+      let alert = this.alertCtrl.create({
+        title: 'Errro de Ingreso',
+        subTitle: 'Debe ingresar sus credenciales antes agregar un paciente',
+        buttons: ['Dismiss']
+      })
+      alert.present();
+    }
+  else {
+      let modal = this.modalCtrl.create('CustomerAddModalPage', {
+        professional: this.loggedUser
+      });
+      modal.present();
+      modal.onDidDismiss(data => {
+    });
+    }
+}
 }

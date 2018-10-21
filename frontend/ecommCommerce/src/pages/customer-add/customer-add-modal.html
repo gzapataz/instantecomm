@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+
+    </ion-buttons>
+    <ion-title>Agregar paciente</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label >Nombre (*)</ion-label>
+      <ion-input  type="text" placeholder="Jon" id="name"[(ngModel)]="persona.personName.firstName" name="name" required="required">
+    </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label >Apellido (*)</ion-label>
+      <ion-input  type="text" placeholder="Doe" id="lastname" [(ngModel)]="persona.personName.lastName" name="lastname" required="required">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label >Numero identificacion</ion-label>
+      <ion-input  type="number" placeholder="123456789" id="identificacion" [(ngModel)]="persona.identification" name="identificacion">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label >Genero (*)</ion-label>
+      <ion-select  type="text" placeholder="Sexo"  [(ngModel)]="persona.gender" name="gender" required="required">
+        <ion-option   value="Femenino">Femenino</ion-option>
+        <ion-option   value="Masculino">Masculino</ion-option>
+      </ion-select>
+
+    </ion-item>
+    <ion-item>
+      <ion-label >E-mail (*)</ion-label>
+      <ion-input  type="email" placeholder="jon@gmail.com" id="email" [(ngModel)]="persona.email" name="email" required="required">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label >Celular (*)</ion-label>
+      <ion-input  type="number" placeholder="345123456" id="mobile" [(ngModel)]="persona.mobile" name="mobile" required="required">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Telefono Fijo (*)</ion-label>
+      <ion-input  type="number" placeholder="0312345" id="phone"[(ngModel)]="persona.phone" name="phone" required="required">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Campos obligatorios (*)</ion-label>
+
+    </ion-item>
+
+  </ion-list>
+  <ion-buttons >
+    <button ion-button full icon-left color="secondary" (click)="save()">
+      <ion-icon name="checkmark"></ion-icon> Adicionar Cita
+    </button>
+  </ion-buttons>
+
+</ion-content>

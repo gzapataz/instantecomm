@@ -1,4 +1,17 @@
 
+$font-path: "../assets/fonts";
+
+
+// The app direction is used to include
+// rtl styles in your app. For more info, please see:
+// http://ionicframework.com/docs/theming/rtl-support/
+$app-direction: ltr;
+
+
+@import "../../node_modules/ionic-angular/themes/ionic.globals";
+
+
+
 $background-color: #fff;
 $card-ios-margin-left: 10px;
 $card-ios-margin-right: 10px;
@@ -25,3 +38,27 @@ $card-md-margin-right: 10px;
 
 
 
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "../../node_modules/ionic-angular/themes/ionic.theme.default";
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/ionicons/
+
+@import "../../node_modules/ionic-angular/themes/ionic.ionicons";
+
+
+// Fonts
+// --------------------------------------------------
+
+@import "../../www/assets/fonts/roboto";
+@import "../../www/assets/fonts/noto-sans";

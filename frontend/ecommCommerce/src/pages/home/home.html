@@ -1,12 +1,90 @@
 <ion-header>
-
-  <ion-navbar  color="primary" >
-    <ion-title>Home</ion-title>
-    <button ion-button icon-only menuToggle start>
+  <ion-navbar  color="primary">
+    <ion-title>  {{ viewTitle }}</ion-title>
+    <!--<button ion-button icon-only [menuToggle] start>
       <img src="../assets/images/navicon.png" width="20" height="20" >
-    </button>
+    </button>-->
+    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>
   </ion-navbar>
 </ion-header>
+
 <ion-content padding>
-En construcción, lista de citas del current day.
+
+
+  <ion-row>
+
+    <ion-col col-12 col-sm-12 col-md-8 col-lg-8>
+      <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">
+        <div class="calendar-event-inner"
+             [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white'}"
+             [style.top]="(37*displayEvent.startOffset/hourParts)+'px'"
+             [style.left]="100/displayEvent.overlapNumber*displayEvent.position+'%'"
+             [style.width]="100/displayEvent.overlapNumber+'%'"
+             [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + 'px'">
+          {{displayEvent.event.title}}
+          <br>
+          {{displayEvent.event.status}}
+        </div>
+      </ng-template>
+
+      <ng-template #template2 let-displayEvent="displayEvent" let-hourParts="hourParts">
+        <div class="calendar-event-inner"
+             [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white'}"
+             [style.top]="(37*displayEvent.startOffset/hourParts)+'px'"
+             [style.left]="100/displayEvent.overlapNumber*displayEvent.position+'%'"
+             [style.width]="100/displayEvent.overlapNumber+'%'"
+             [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + 'px'">
+          {{displayEvent.event.title}}
+          <br>
+          {{displayEvent.event.status}}
+        </div>
+      </ng-template>
+
+      <ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+        <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+          <ion-item *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
+                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
+                            -
+                            {{event.endTime|date: 'HH:mm'}}
+                        </span>
+            <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>
+            <span class="event-detail">  |  {{event.title}} - {{event.status}}</span>
+          </ion-item>
+          <ion-item *ngIf="selectedDate?.events.length==0">
+            <div class="no-events-label">No hay Citas programadas</div>
+          </ion-item>
+        </ion-list>
+      </ng-template>
+
+      <calendar [eventSource]="eventSource"
+                [calendarMode]="calendar.mode"
+                [currentDate]="calendar.currentDate"
+                (press)="calendar.onTimePress($event)"
+                (click)="calendar.onClick()"
+                (doubleclick)="calendar.onDoubleClick()"
+                (mousemove)="calendar.onMove($event)"
+                (mousedown)="calendar.onMoveDown($event)"
+                (drop)="calendar.onDrop()"
+                (dragover)="calendar.onDrop()"
+                (onEventSelected)="onEventSelected($event)"
+                (onTitleChanged)="onViewTitleChanged($event)"
+                (onTimeSelected)="onTimeSelected($event)"
+                [locale]="calendar.locale"
+                [dayviewNormalEventTemplate]="template3"
+                [weekviewNormalEventTemplate]="template2"
+                [monthviewEventDetailTemplate]="template1"
+                step="30"
+                startHour="9"
+                endHour="20"
+                class="calendar">
+      </calendar>
+
+
+
+
+    </ion-col>
+  </ion-row>
+
 </ion-content>
+
+
