@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import {Injectable, OnInit} from '@angular/core';
 import { LoggedProfessional } from "../../classes/logged-class";
-import { Observable } from "rxjs";
 import { Storage } from "@ionic/storage";
 import {CustomerClass} from "../../classes/customer-class";
 

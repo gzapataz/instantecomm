@@ -2,11 +2,6 @@ import { Component, OnInit, Output, EventEmitter, Pipe  } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { CustomerClass } from "../../classes/customer-class";
 import { CustomerServiceProvider } from "../../providers/customer-service/customer-service";
-import {of} from "rxjs/observable/of";
-
-import {
-  debounceTime, distinctUntilChanged, switchMap
-} from 'rxjs/operators';
 import {ModalController} from "ionic-angular";
 import {CustomerModalPage} from "../../pages/customer-modal/customer-modal";
 import {LoggedProfessional} from "../../classes/logged-class";
@@ -32,7 +27,6 @@ export class CustomerSearchComponent implements OnInit {
   modal: any;
   openAlready: boolean = false;
   srcTitle = "Busqueda de Paciente"
-  customers$: Observable<CustomerClass[]>;
   private searchTerms = new Subject<string>();
   public myInput: string;
   show = true;

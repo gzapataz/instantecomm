@@ -6,8 +6,6 @@ import { ServiceServiceProvider } from "../../providers/service-service/service-
 import { IAppointment, AppointmentClass } from "../../classes/appointment-class";
 import {CustomerClass} from "../../classes/customer-class";
 import {Observable} from "rxjs";
-import {map, filter} from "rxjs/operators";
-import {observableToBeFn} from "rxjs/testing/TestScheduler";
 import {ServiceClass} from "../../classes/service-class";
 import {LoggedProfessional} from "../../classes/logged-class";
 import localCo from '@angular/common/locales/es-CO';
@@ -39,38 +37,38 @@ export class EventModalPage implements OnInit {
   constructor(public navCtrl: NavController, private navParams: NavParams, public viewCtrl: ViewController,
               private servicesService: ServiceServiceProvider,
               private alertCtrl: AlertController) {
-    this.customerSelected = this.navParams.get('customerSelected');
-    console.log(`this.customerSelected ` + JSON.stringify(this.customerSelected));
-    this.professional = this.navParams.get('professional');
-    this.events = this.navParams.get('events');
-    console.log('Tosos los events:'+ JSON.stringify(this.events))
-    if (this.navParams.get('eventSelected')) {
-      this.event = this.navParams.get('eventSelected');
-      this.prevEventImage = Object.assign({}, this.event);
-      this.event.startTime =moment(this.event.startTime).format();
-      this.event.endTime = moment(this.event.endTime).format();
-    }
-    else {
-      let preselectedDate = moment(this.navParams.get('selectedDay')).format();
-      let thsService = this.navParams.get('service');
-      this.event = new AppointmentClass(null, UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,0, 'Agendada', this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
-      this.event.startTime = preselectedDate;
-      if (thsService !== undefined) {
-        this.event.service = thsService;
-        this.getServicesId(thsService).subscribe(data => {
-          this.event.endTime = moment(this.event.startTime).add(data[0].averageTime, 'm').format();
-          this.event.durationTime = data[0].averageTime;
-        });
+      this.customerSelected = this.navParams.get('customerSelected');
+      console.log(`this.customerSelected ` + JSON.stringify(this.customerSelected));
+      this.professional = this.navParams.get('professional');
+      this.events = this.navParams.get('events');
+      console.log('Tosos los events:'+ JSON.stringify(this.events))
+      if (this.navParams.get('eventSelected')) {
+        this.event = this.navParams.get('eventSelected');
+        this.prevEventImage = Object.assign({}, this.event);
+        this.event.startTime =moment(this.event.startTime).format();
+        this.event.endTime = moment(this.event.endTime).format();
       }
-    }
-    this.messageTest = 'Buenas tardes ' + this.customerSelected.person.personName.firstName + ' su cita de ' +
-      //this.event.title.slice(0, this.event.title.indexOf(':'))
-      this.event.title
-      + ' para el dia ' + moment(this.event.startTime).locale(localCo.toLocaleString()).format('LLLL') +
-      ' Por favor para confirmar presione el siguiente link:' +
-      'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada'
+      else {
+        let preselectedDate = moment(this.navParams.get('selectedDay')).format();
+        let thsService = this.navParams.get('service');
+        this.event = new AppointmentClass(null, UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,0, 'Agendada', this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
+        this.event.startTime = preselectedDate;
+        if (thsService !== undefined) {
+          this.event.service = thsService;
+          this.getServicesId(thsService).subscribe(data => {
+            this.event.endTime = moment(this.event.startTime).add(data[0].averageTime, 'm').format();
+            this.event.durationTime = data[0].averageTime;
+          });
+        }
+      }
+      this.messageTest = 'Buenas tardes ' + this.customerSelected.person.personName.firstName + ' su cita de ' +
+        //this.event.title.slice(0, this.event.title.indexOf(':'))
+        this.event.title
+        + ' para el dia ' + moment(this.event.startTime).locale(localCo.toLocaleString()).format('LLLL') +
+        ' Por favor para confirmar presione el siguiente link:' +
+        'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada'
 
-    console.log('MESSAGE : ' + this.messageTest);
+      console.log('MESSAGE : ' + this.messageTest);
 
   }
 

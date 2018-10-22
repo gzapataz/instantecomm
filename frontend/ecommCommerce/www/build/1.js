@@ -1,14 +1,14 @@
 webpackJsonp([1],{
 
-/***/ 886:
+/***/ 887:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventModalPageModule", function() { return EventModalPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegistrationPageModule", function() { return RegistrationPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__event_modal__ = __webpack_require__(899);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration__ = __webpack_require__(896);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,124 +18,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var EventModalPageModule = /** @class */ (function () {
-    function EventModalPageModule() {
+var RegistrationPageModule = /** @class */ (function () {
+    function RegistrationPageModule() {
     }
-    EventModalPageModule = __decorate([
+    RegistrationPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__event_modal__["a" /* EventModalPage */],
+                __WEBPACK_IMPORTED_MODULE_2__registration__["a" /* RegistrationPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__event_modal__["a" /* EventModalPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__registration__["a" /* RegistrationPage */]),
             ],
         })
-    ], EventModalPageModule);
-    return EventModalPageModule;
+    ], RegistrationPageModule);
+    return RegistrationPageModule;
 }());
 
-//# sourceMappingURL=event-modal.module.js.map
+//# sourceMappingURL=registration.module.js.map
 
 /***/ }),
 
-/***/ 894:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var UUID = (function () {
-    function UUID() {
-        // no-op
-    }
-    UUID.UUID = function () {
-        if (typeof (window) !== "undefined" && typeof (window.crypto) !== "undefined" && typeof (window.crypto.getRandomValues) !== "undefined") {
-            // If we have a cryptographically secure PRNG, use that
-            // http://stackoverflow.com/questions/6906916/collisions-when-generating-uuids-in-javascript
-            var buf = new Uint16Array(8);
-            window.crypto.getRandomValues(buf);
-            return (this.pad4(buf[0]) + this.pad4(buf[1]) + "-" + this.pad4(buf[2]) + "-" + this.pad4(buf[3]) + "-" + this.pad4(buf[4]) + "-" + this.pad4(buf[5]) + this.pad4(buf[6]) + this.pad4(buf[7]));
-        }
-        else {
-            // Otherwise, just use Math.random
-            // https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-            // https://stackoverflow.com/questions/11605068/why-does-jshint-argue-against-bitwise-operators-how-should-i-express-this-code
-            return this.random4() + this.random4() + "-" + this.random4() + "-" + this.random4() + "-" +
-                this.random4() + "-" + this.random4() + this.random4() + this.random4();
-        }
-    };
-    UUID.pad4 = function (num) {
-        var ret = num.toString(16);
-        while (ret.length < 4) {
-            ret = "0" + ret;
-        }
-        return ret;
-    };
-    UUID.random4 = function () {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    };
-    return UUID;
-}());
-exports.UUID = UUID;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
-/***/ 895:
+/***/ 896:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppointmentClass; });
-;
-var AppointmentClass = /** @class */ (function () {
-    function AppointmentClass(_id, idAppointment, idSchedule, startTime, endTime, durationTime, status, client, clientName, professional, service, title) {
-        this._id = _id;
-        this.idAppointment = idAppointment;
-        this.idSchedule = idSchedule;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.durationTime = durationTime;
-        this.status = status;
-        this.client = client;
-        this.clientName = clientName;
-        this.professional = professional;
-        this.service = service;
-        this.title = title;
-        this._id = _id;
-        this.idAppointment = idAppointment;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.durationTime = durationTime;
-        this.status = status;
-        this.client = client;
-        this.clientName = clientName;
-        this.professional = professional;
-        this.service = service;
-        this.title = title;
-    }
-    return AppointmentClass;
-}());
-
-//# sourceMappingURL=appointment-class.js.map
-
-/***/ }),
-
-/***/ 899:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EventModalPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegistrationPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_uuid__ = __webpack_require__(894);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_uuid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular2_uuid__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_service_service_service_service__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__classes_appointment_class__ = __webpack_require__(895);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_common_locales_es_CO__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_common__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_user_service_user_service__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tabs_tabs__ = __webpack_require__(171);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -150,137 +62,68 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
-
-Object(__WEBPACK_IMPORTED_MODULE_7__angular_common__["k" /* registerLocaleData */])(__WEBPACK_IMPORTED_MODULE_6__angular_common_locales_es_CO__["a" /* default */]);
-var EventModalPage = /** @class */ (function () {
-    function EventModalPage(navCtrl, navParams, viewCtrl, servicesService, alertCtrl) {
-        var _this = this;
+/**
+ * Generated class for the RegistrationPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var RegistrationPage = /** @class */ (function () {
+    function RegistrationPage(navCtrl, navParams, alertCtrl, afAuth, userService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.viewCtrl = viewCtrl;
-        this.servicesService = servicesService;
         this.alertCtrl = alertCtrl;
-        this.messageTest = '';
-        this.eventColor = 'default';
-        this.servicesAvail = [];
-        this.events = [];
-        this.prevEventImage = undefined;
-        this.minDate = new Date().toISOString();
-        this.customerSelected = this.navParams.get('customerSelected');
-        console.log("this.customerSelected " + JSON.stringify(this.customerSelected));
-        this.professional = this.navParams.get('professional');
-        this.events = this.navParams.get('events');
-        console.log('Tosos los events:' + JSON.stringify(this.events));
-        if (this.navParams.get('eventSelected')) {
-            this.event = this.navParams.get('eventSelected');
-            this.prevEventImage = Object.assign({}, this.event);
-            this.event.startTime = __WEBPACK_IMPORTED_MODULE_2_moment__(this.event.startTime).format();
-            this.event.endTime = __WEBPACK_IMPORTED_MODULE_2_moment__(this.event.endTime).format();
-        }
-        else {
-            var preselectedDate = __WEBPACK_IMPORTED_MODULE_2_moment__(this.navParams.get('selectedDay')).format();
-            var thsService = this.navParams.get('service');
-            this.event = new __WEBPACK_IMPORTED_MODULE_5__classes_appointment_class__["a" /* AppointmentClass */](null, __WEBPACK_IMPORTED_MODULE_3_angular2_uuid__["UUID"].UUID(), this.professional.idSchedule, preselectedDate, preselectedDate, 0, 'Agendada', this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
-            this.event.startTime = preselectedDate;
-            if (thsService !== undefined) {
-                this.event.service = thsService;
-                this.getServicesId(thsService).subscribe(function (data) {
-                    _this.event.endTime = __WEBPACK_IMPORTED_MODULE_2_moment__(_this.event.startTime).add(data[0].averageTime, 'm').format();
-                    _this.event.durationTime = data[0].averageTime;
-                });
-            }
-        }
-        this.messageTest = 'Buenas tardes ' + this.customerSelected.person.personName.firstName + ' su cita de ' +
-            //this.event.title.slice(0, this.event.title.indexOf(':'))
-            this.event.title
-            + ' para el dia ' + __WEBPACK_IMPORTED_MODULE_2_moment__(this.event.startTime).locale(__WEBPACK_IMPORTED_MODULE_6__angular_common_locales_es_CO__["a" /* default */].toLocaleString()).format('LLLL') +
-            ' Por favor para confirmar presione el siguiente link:' +
-            'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada';
-        console.log('MESSAGE : ' + this.messageTest);
+        this.afAuth = afAuth;
+        this.userService = userService;
+        this.reg = {
+            name: '',
+            lastName: '',
+            email: '',
+            password: '',
+            password2: ''
+        };
     }
-    EventModalPage.prototype.validateSlotTime = function (currentEvent) {
-        console.log('EventsFilter:' + JSON.stringify(this.events));
-        console.log('Evento:' + JSON.stringify(currentEvent));
-        var auxEvent = this.events.filter(function (eventDate) {
-            return __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() >= eventDate.startTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.endTime).toDate() >= eventDate.endTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() <= eventDate.endTime;
+    RegistrationPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad RegistrationPage');
+    };
+    RegistrationPage.prototype.displayAlert = function (alertTitle, alertSub) {
+        var theAlert = this.alertCtrl.create({
+            title: alertTitle,
+            subTitle: alertSub,
+            buttons: ['OK']
         });
-        if (auxEvent.length > 0) {
-            return false;
-        }
-        return true;
+        theAlert.present();
     };
-    EventModalPage.prototype.ngOnInit = function () {
-        console.log('Me volvi a disparar');
-        this.eventSelected = this.navParams.get('eventSelected');
-        this.getServices();
-    };
-    EventModalPage.prototype.getServices = function () {
+    RegistrationPage.prototype.registerAccoun = function () {
         var _this = this;
-        this.servicesService.getServices(this.professional.userId).subscribe(function (servicesAvail) {
-            _this.servicesAvail = servicesAvail;
-        });
-    };
-    EventModalPage.prototype.getServicesId = function (id) {
-        return this.servicesService.getServices(this.professional.userId).map(function (services) { return services.filter(function (result) { return result._id == id; }); });
-    };
-    EventModalPage.prototype.onServiceSelected = function () {
-        var _this = this;
-        this.event.endTime = __WEBPACK_IMPORTED_MODULE_2_moment__(this.event.startTime).add(this.servicesAvail.find(function (serviceAvail) { return serviceAvail._id == _this.event.service; }).averageTime, 'm').format();
-        this.event.durationTime = this.servicesAvail.find(function (serviceAvail) { return serviceAvail._id == _this.event.service; }).averageTime;
-    };
-    EventModalPage.prototype.confirmAppnt = function (status) {
-        this.event.status = status;
-        this.viewCtrl.dismiss(this.event);
-    };
-    EventModalPage.prototype.cancel = function () {
-        if (this.navParams.get('eventSelected')) {
-            this.event.service = this.prevEventImage.service;
-        }
-        this.viewCtrl.dismiss(this.prevEventImage);
-    };
-    EventModalPage.prototype.newStartDate = function () {
-        console.log("Cambio la fecha de Inicio " + this.event.startTime);
-        this.event.endTime = __WEBPACK_IMPORTED_MODULE_2_moment__(this.event.startTime).add(this.event.durationTime, 'm').format();
-    };
-    EventModalPage.prototype.save = function () {
-        var _this = this;
-        if (this.event.service) {
-            this.event.title = this.servicesAvail.find(function (serviceAvail) { return serviceAvail._id == _this.event.service; }).name + ': ' + this.customerSelected.person.personName.lastName + ' ' + this.customerSelected.person.personName.firstName;
-            if (this.validateSlotTime(this.event)) {
-                this.viewCtrl.dismiss(this.event);
-            }
-            else {
-                var alert_1 = this.alertCtrl.create({
-                    title: 'Espacio Ocupado',
-                    subTitle: 'El espacio seleccionado ya tiene una cita agendada: Presione Agendar para permitir la doble agenda o Deshacer para no ingresar la cita',
-                    buttons: [{ text: 'Deshacer' },
-                        { text: 'Agendar',
-                            handler: function () {
-                                _this.viewCtrl.dismiss(_this.event);
-                            }
-                        }]
-                });
-                alert_1.present();
-            }
+        if (this.reg.password != this.reg.password2) {
+            this.displayAlert('Problema con el Password', 'No hay coincidencia con los passwords');
+            this.reg.password = '';
+            this.reg.password2 = '';
         }
         else {
-            this.eventColor = 'danger';
+            this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(this.reg.email, this.reg.password)
+                .then(function (res) { return _this.regSuccess(res); })
+                .catch(function (err) { return _this.displayAlert('Error!', err); });
         }
     };
-    EventModalPage = __decorate([
+    RegistrationPage.prototype.regSuccess = function (result) {
+        var _this = this;
+        this.userService.logOn(this.reg)
+            .then(function (res) { return _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__tabs_tabs__["a" /* TabsPage */]); });
+    };
+    RegistrationPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-event-modal',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/event-modal/event-modal.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n    <ion-title>Cita: {{customerSelected.person.personName.lastName}} {{customerSelected.person.personName.firstName}}</ion-title>\n  </ion-navbar>\n  <ion-buttons end>\n    <button ion-button color="secondary" small><a href="tel:{{customerSelected.person.phone}}"><ion-icon name="call"></ion-icon> </a></button>\n    <button ion-button color="secondary" small><a href="https://wa.me/{{customerSelected.person.phone}}?text={{messageTest}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>\n    <button ion-button color="secondary" small><a href="mailto:{{customerSelected.person.email}}?subject=Su Próxima Cita&body={{messageTest}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>\n  </ion-buttons>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item>\n      <ion-label color={{eventColor}}>Servicio</ion-label>\n      <ion-select  type="text" placeholder="Tpo" [(ngModel)]="event.service" (ionChange)="onServiceSelected()">\n        <ion-option  *ngFor="let service of servicesAvail" value={{service._id}}>{{service.name}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Inicio</ion-label>\n      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" (ionChange)="newStartDate()"></ion-datetime>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Fin</ion-label>\n      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime"></ion-datetime>\n    </ion-item>\n    <ion-item>\n      <ion-label>Estado</ion-label>\n      <ion-label end>{{event.status}}</ion-label>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Todo el Día?</ion-label>\n      <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>\n    </ion-item>\n  </ion-list>\n  <ion-buttons *ngIf="!this.eventSelected">\n    <button ion-button full icon-left color="secondary" (click)="save()">\n      <ion-icon name="checkmark"></ion-icon> Adicionar Cita\n    </button>\n  </ion-buttons>\n  <ion-buttons *ngIf="this.eventSelected">\n    <button ion-button small (click)="save()">\n      <ion-icon name="checkmark"></ion-icon> Actualizar Cita\n    </button>\n    <button ion-button small color="secondary" icon-left (click)="confirmAppnt(\'Confirmada\')">\n      <ion-icon name="checkmark"></ion-icon>Confirmar\n    </button>\n    <button ion-button small icon-left color="danger" (click)="confirmAppnt(\'Cancelada\')">\n      <ion-icon name="checkmark"></ion-icon>Cancelar Cita\n    </button>\n  </ion-buttons>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/event-modal/event-modal.html"*/,
+            selector: 'page-registration',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/'<ion-header>\n  <ion-toolbar color="primary">\n    <ion-title>Registro- e-Commerce</ion-title>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-item>\n    <ion-label color="facebook">Nombre</ion-label>\n    <ion-input type="text" [(ngModel)] = "reg.name" name="name"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Apellido</ion-label>\n    <ion-input type="text" [(ngModel)] = "reg.lastName" name="lastName"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Correo electronico</ion-label>\n    <ion-input type="email" [(ngModel)] = "reg.email" name="email"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password" name="password"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Repetir Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password2" name="password2"></ion-input>\n  </ion-item>\n  <button ion-button color="secondary" (click)="registerAccoun()">Registrar</button>\n\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */],
-            __WEBPACK_IMPORTED_MODULE_4__providers_service_service_service_service__["a" /* ServiceServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
-    ], EventModalPage);
-    return EventModalPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__["a" /* AngularFireAuth */],
+            __WEBPACK_IMPORTED_MODULE_3__providers_user_service_user_service__["a" /* UserServiceProvider */]])
+    ], RegistrationPage);
+    return RegistrationPage;
 }());
 
-//# sourceMappingURL=event-modal.js.map
+//# sourceMappingURL=registration.js.map
 
 /***/ })
 

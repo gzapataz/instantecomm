@@ -1,11 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from "rxjs";
 import { of } from "rxjs/observable/of";
 import { MessageServiceProvider } from "../message-service/message-service";
 import { environment } from "../../environment";
-import {AppointmentClass} from "../../classes/appointment-class";
 
 /*
   Generated class for the AppointmentServiceProvider provider.
