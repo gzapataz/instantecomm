@@ -4,13 +4,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 
-import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
 import {AngularFireAuth} from "angularfire2/auth";
 import {UserServiceProvider} from "../providers/user-service/user-service";
-import {HomePage} from "../pages/home/home";
-import {CalendarPage} from "../pages/calendar/calendar";
-import {CustomerPage} from "../pages/customer/customer";
 
 export interface PageInterface {
   title: string;

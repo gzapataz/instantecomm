@@ -15,16 +15,12 @@ import { PreferencesServiceProvider } from "../../providers/preferences-service/
 
 registerLocaleData(localCo);
 
-import { CustomerSearchComponent } from "../../components/customer-search/customer-search";
-import {Observable} from "rxjs";
 import {AppointmentServiceProvider} from "../../providers/appointment-service/appointment-service";
 import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
 import {LoggedProfessional} from "../../classes/logged-class";
 import {AppointmentClass} from "../../classes/appointment-class";
 import { ExceptionServiceProvider } from "../../providers/exception-service/exception-service";
-import {TabsPage} from "../tabs/tabs";
-import { LoginPage } from "../login/login";
-import {HomePage} from "../home/home";
+
 
 
 /**
@@ -58,8 +54,6 @@ export class CalendarPage implements OnInit, OnDestroy {
   customers: CustomerClass[];
   customerId: CustomerClass;
   loggedUser: LoggedProfessional;
-  customerAppnt:  CustomerClass;
-  customer$: Observable<CustomerClass>;
   theColor = 'white';
   fromDate = null;
   toDate = null;
@@ -84,6 +78,28 @@ export class CalendarPage implements OnInit, OnDestroy {
               private globalService: GlobalsServiceProvider,
               public screenOrientation: ScreenOrientation,
               private exceptionServiceProvider: ExceptionServiceProvider) {
+    try {
+      this.dragulaService.destroy('SERVICE');
+      this.dragulaService.createGroup('SERVICE', {
+        copy: (el, source) => {
+          this.addEvent(el.id);
+
+          return source.id === 'left';
+        },
+        copyItem: (servAval: String) => {
+          //console.log('A Crear 2');
+          return servAval;
+        },
+        accepts: (el, target, source, sibling) => {
+          // To avoid dragging from right to left container
+          //console.log('A Crear 3');
+          return target.id !== 'left';
+        }
+      });
+    }
+    catch(e) {
+      console.log('DRAGULA ERROR:'+ e.toString());
+    }
   }
 
   onSelect() {
@@ -109,59 +125,22 @@ export class CalendarPage implements OnInit, OnDestroy {
     } else {
       this.startHour = this.loggedUser.startHour;
       this.endHour = this.loggedUser.endHour;
-      try {
-        this.dragulaService.destroy('SERVICE');
-        this.dragulaService.createGroup('SERVICE', {
-          copy: (el, source) => {
-            //console.log('A Crear 1' + JSON.stringify(el.id) + ' Source ' + JSON.stringify(source));
-            this.addEvent(el.id);
-            /*
-            let eventData = {
-              title: el.id,
-              startTime: new Date(),
-              endTime: new Date(),
-              eventColor: 'red'
-            };
 
-            let events = this.eventSource;
-            events.push(eventData);
-            //console.log('Source' + events);
-            this.eventSource = [];
-            setTimeout(() => {
-              this.eventSource = events;
-            });
-            */
-            return source.id === 'left';
-          },
-          copyItem: (servAval: String) => {
-            //console.log('A Crear 2');
-            return servAval;
-          },
-          accepts: (el, target, source, sibling) => {
-            // To avoid dragging from right to left container
-            //console.log('A Crear 3');
-            return target.id !== 'left';
-          }
-        });
-      }
-      catch(e) {
-        console.log('DRAGULA ERROR:'+ e.toString());
-      }
       this.getServices(this.loggedUser.userId);
       this.getCustomers(this.loggedUser.userId);
     }
   }
 
   ngOnDestroy() {
-    console.log('DESTROYENDO');
+    //console.log('DESTROYENDO');
   }
 
   findException(date): boolean {
     var fest = this.eventExceptions.filter ( exceptionList => {
-      console.log ('COMPARANDO:' + moment(exceptionList.startTime).format("YYYYMMDD") + ' AND ' + moment(date).format("YYYYMMDD"));
+      //console.log ('COMPARANDO:' + moment(exceptionList.startTime).format("YYYYMMDD") + ' AND ' + moment(date).format("YYYYMMDD"));
       return moment(exceptionList.startTime).format("YYYYMMDD") === moment(date).format("YYYYMMDD")
     })
-    console.log('fest:' + JSON.stringify(fest));
+    //console.log('fest:' + JSON.stringify(fest));
     if (fest.length > 0)
       return true;
     return false;
@@ -433,9 +412,9 @@ export class CalendarPage implements OnInit, OnDestroy {
       ////console.log("datos de Agenda Queyr:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];
       this.eventSource = this.eventSource.filter(data => data.status !== 'Cancelada');
-      console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
+      //console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
     });
-    console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
+    //console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
     //Cargar eventos
   }
 

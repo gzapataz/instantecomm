@@ -7,9 +7,6 @@ import { ServiceClass } from "../../classes/service-class";
 import { MessageServiceProvider } from "../message-service/message-service";
 import { environment } from "../../environment";
 
-import { SERVICES } from '../../mock/services-mock';
-
-
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -23,12 +20,7 @@ const httpOptions = {
 @Injectable()
 export class ServiceServiceProvider {
 
-  //http[s]://url_servidor:[puerto]/professionals/:uid/services
-
   serviceUrl = environment.baseUrl + '/professionals';
-
-  //serviceUrl = environment.baseUrl + '/services';
-
 
   constructor(public http: HttpClient, private messageService: MessageServiceProvider) {
     console.log('Hello ServiceServiceProvider Provider');

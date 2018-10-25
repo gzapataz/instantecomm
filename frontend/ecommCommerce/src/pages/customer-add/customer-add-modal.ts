@@ -1,13 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {AppointmentServiceProvider} from "../../providers/appointment-service/appointment-service";
-import { PersonName, Person } from "../../classes/customer-class";
-import {Observable} from "rxjs";
-import {map, filter} from "rxjs/operators";
-import {observableToBeFn} from "rxjs/testing/TestScheduler";
+import {Person } from "../../classes/customer-class";
 import {LoggedProfessional} from "../../classes/logged-class";
 import {CustomerAddServiceProvider} from "../../providers/customer-add-service/customer-add-service";
-import {LoginPage} from "../login/login";
 
 @IonicPage()
 @Component({
@@ -39,21 +34,16 @@ professional: LoggedProfessional;
   constructor(public navCtrl: NavController, private navParams: NavParams, public viewCtrl: ViewController,
               private customerAddServiceProvider:CustomerAddServiceProvider,
               private alertCtrl: AlertController) {
-    this.professional = this.navParams.get('professional');
-
-    console.log(this.professional);
-
   }
 
   ngOnInit() {
-    console.log('Me volvi a disparar');
+    this.professional = this.navParams.get('professional');
+    console.log(this.professional);
   }
 
 
   cancel() {
-
     this.viewCtrl.dismiss(this.person);
-
   }
 
 
@@ -73,12 +63,6 @@ professional: LoggedProfessional;
     }else{
       this.customerAddServiceProvider.addACustomer(this.person,this.professional.userId).subscribe(data => {
         console.log('Datos Salvados:' + JSON.stringify(data));
-        /*let theAlert = this.alertCtrl.create({
-          title: "Creacion de cliente",
-          subTitle: JSON.stringify(data),
-          buttons: ['OK']
-        });
-        theAlert.present();*/
         this.cancel();
       });
     }

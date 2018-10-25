@@ -22,7 +22,6 @@ const httpOptions = {
 @Injectable()
 export class ScheduleServiceProvider {
   appntUrl = environment.baseUrl + '/professionals';
-
   constructor(public http: HttpClient, private messageService: MessageServiceProvider,
               public preferencesProvider: PreferencesServiceProvider) {
     console.log('Hello ScheduleServiceProvider Provider');

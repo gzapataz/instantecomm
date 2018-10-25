@@ -1,14 +1,14 @@
 webpackJsonp([3],{
 
-/***/ 892:
+/***/ 881:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ScrollCalendarPageModule", function() { return ScrollCalendarPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomerModalPageModule", function() { return CustomerModalPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scroll_calendar__ = __webpack_require__(903);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_modal__ = __webpack_require__(890);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,33 +18,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var ScrollCalendarPageModule = /** @class */ (function () {
-    function ScrollCalendarPageModule() {
+var CustomerModalPageModule = /** @class */ (function () {
+    function CustomerModalPageModule() {
     }
-    ScrollCalendarPageModule = __decorate([
+    CustomerModalPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__scroll_calendar__["a" /* ScrollCalendarPage */],
+                __WEBPACK_IMPORTED_MODULE_2__customer_modal__["a" /* CustomerModalPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__scroll_calendar__["a" /* ScrollCalendarPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__customer_modal__["a" /* CustomerModalPage */]),
             ],
         })
-    ], ScrollCalendarPageModule);
-    return ScrollCalendarPageModule;
+    ], CustomerModalPageModule);
+    return CustomerModalPageModule;
 }());
 
-//# sourceMappingURL=scroll-calendar.module.js.map
+//# sourceMappingURL=customer-modal.module.js.map
 
 /***/ }),
 
-/***/ 903:
+/***/ 890:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ScrollCalendarPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerModalPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(22);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -56,36 +56,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-//import { mobiscroll, MbscCalendarOptions } from '@mobiscroll/angular';
-/*
-mobiscroll.settings = {
-  theme: 'ios'
-};
-*/
 /**
- * Generated class for the ScrollCalendarPage page.
+ * Generated class for the CustomerModalPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var ScrollCalendarPage = /** @class */ (function () {
-    function ScrollCalendarPage(navCtrl, navParams) {
+var CustomerModalPage = /** @class */ (function () {
+    function CustomerModalPage(navCtrl, navParams, viewCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
+        this.viewCtrl = viewCtrl;
+        this.customers = [];
+        this.customers = this.navParams.get('customerList');
+        console.log('Clientes: ' + JSON.stringify(this.customers[0]));
     }
-    ScrollCalendarPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad ScrollCalendarPage');
+    CustomerModalPage.prototype.selectedName = function (id, name, customer) {
+        customer.name = name;
+        console.log('ReturnedCust:' + JSON.stringify(customer));
+        this.viewCtrl.dismiss(customer);
+        //this.show = false;
+        //this.myInput = name;
+        //this.custId$ = id;
+        //this.messageEvent.emit(customer);
     };
-    ScrollCalendarPage = __decorate([
+    CustomerModalPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad CustomerModalPage');
+    };
+    CustomerModalPage.prototype.cancel = function () {
+        this.viewCtrl.dismiss(undefined);
+    };
+    CustomerModalPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-scroll-calendar',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/scroll-calendar/scroll-calendar.html"*/'<!--\n  Generated template for the ScrollCalendarPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>ScrollCalendar</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  <!--mbsc-form>\n    <div class="mbsc-form-group">\n      <div class="mbsc-form-group-title">Multiple date selection</div>\n      <label>\n        Multi-day\n        <input [(ngModel)]="demo" mbsc-calendar [mbsc-options]="demoSettings" placeholder="Please select..." />\n      </label>\n      <label>\n        Max days\n        <input [(ngModel)]="max" mbsc-calendar [mbsc-options]="maxSettings" placeholder="Please select..." />\n      </label>\n      <label>\n        Counter\n        <input [(ngModel)]="count" mbsc-calendar [mbsc-options]="countSettings" placeholder="Please select..." />\n      </label>\n    </div>\n  </mbsc-form-->\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/scroll-calendar/scroll-calendar.html"*/,
+            selector: 'page-customer-modal',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/'<!--\n  Generated template for the CustomerModalPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary" >\n    <ion-title>Búsqueda de Clientes</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list *ngFor="let customer of customers">\n    <ion-item (click)="selectedName(customer._id, customer.person.personName.lastName + \' \' + customer.person.personName.firstName, customer)">\n      {{customer.person.personName.lastName}} {{customer.person.personName.firstName}}\n    </ion-item>\n  </ion-list>\n  <button ion-button full icon-left (click)="cancel()">\n    <ion-icon name="checkmark"></ion-icon> Cancelar\n  </button>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
-    ], ScrollCalendarPage);
-    return ScrollCalendarPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */]])
+    ], CustomerModalPage);
+    return CustomerModalPage;
 }());
 
-//# sourceMappingURL=scroll-calendar.js.map
+//# sourceMappingURL=customer-modal.js.map
 
 /***/ })
 
