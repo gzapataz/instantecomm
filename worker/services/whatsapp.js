@@ -55,13 +55,14 @@ exports.sendNotification = async function(phone, message, notification, arrayApo
             console.log(chunk);
         });
         if(response.statusCode == 200){
-            NotificationService.updateStatusReport(db, notification._id, 'sent').then((results) => {
-
-            });    
+            NotificationService.updateStatusReport(db, notification._id, 'Sent').then((results) => {
+            });   
             console.log('Se actualiza el estado de notificación a enviada');
         }
-        else{
-            console.log('No se actualiza el estado de notificación');
+        else if(response.statusCode == 471){
+            NotificationService.updateStatusReport(db, notification._id, 'Error', 'Status code: ' + response.statusCode).then((results) => {
+            });  
+            console.log('Se actualiza el estado error en el móvil');
         }
     });
     return respuesta;

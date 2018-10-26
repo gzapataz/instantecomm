@@ -12,6 +12,9 @@ var notificationSchema   = new Schema({
     notificationState: {
         type: String,
         enum: Object.values(NotificationState),
+    },
+    error: {
+        type: String
     }
 });
 
