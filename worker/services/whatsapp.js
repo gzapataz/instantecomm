@@ -32,9 +32,9 @@ var options = {
  * @param {*} person 
  */
 exports.sendNotification = async function(phone, message, notification, arrayApointment , db){
-
+    
     for(i=0;i<arrayApointment.length;i++){
-        var comodin = "{"+i+"}";
+        var comodin = "{"+i+"}"; 
         message = message.replace(comodin, arrayApointment[i]);
     }
 

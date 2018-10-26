@@ -13,6 +13,7 @@ var ProfessionalService = require('./services/professional');
 var WhatsappService = require('./services/whatsapp');
 var herokuURL = "https://ecommercealinstante.herokuapp.com/appointments/confirm/";
 var redisUrl =  process.env.REDISCLOUD_URL;
+var ObjectId = require('mongodb').ObjectID
 const initialNotification = "5ba1a970aedec9a5acbfc25e";
 const alarmNotification = "5bd12a8d1544111f28715083";
 
@@ -33,11 +34,12 @@ var job = Queue
 Queue.every('10 seconds', job);
 
 Queue.process(jobName, sendNotification);
-//Queue.process(jobName, sendNotificationAlarm);
+Queue.process(jobName, sendNotificationAlarm);
 
 async function sendNotification(job, done) {
-    const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", initialNotification);
+    const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", new ObjectId(initialNotification));
     notificationCollection.forEach(notification => {
+        console.log(notification);
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
             AppointmentService.getAppointmentByNotification_id(db, notification._id).then((appointment) => {
                 if(appointment != null && appointment != undefined){
@@ -68,7 +70,7 @@ async function sendNotification(job, done) {
 
 async function sendNotificationAlarm(job, done) {
     console.log("Envío de alarmas");
-    const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", alarmNotification);
+    const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", new ObjectId(alarmNotification));
     notificationCollection.forEach(notification => {
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
             AppointmentService.getAppointmentByNotification_id(db, notification._id).then((appointment) => {
@@ -93,7 +95,6 @@ async function sendNotificationAlarm(job, done) {
                                                 var professionalName = professionalPerson.personName.firstName + " " + professionalPerson.personName.lastName;
                                                 var professionalMobile = professionalPerson.mobile;
                                                 var arrayAppointment = [serviceName, day, startTime, endTime, url, professionalName, professionalMobile];
-                                                console.log(arrayAppointment);
                                                 WhatsappService.sendNotification(person.mobile,message.message,notification,arrayAppointment,db).then((results) => {
                                                     //console.log(results);
                                                 }); 
