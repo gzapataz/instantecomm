@@ -6,6 +6,11 @@ var RatingService = require('../services/rating');
 var ClientService = require('../services/client');
 const ActivationStatus = require('../enums/activationStatus');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
+var DayUtil = require('../utils/dayUtil');
+var ObjectId = require('mongodb').ObjectID
+const ExceptionType = require('../enums/exceptionType');
+const Weekday = require('../enums/weekday');
+var module = require('colombia-holidays');
 
 /**
  * Conseguir datos de todos los profesionales
@@ -146,35 +151,38 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
     if(!professional) 
       return res.status(404).send({message: 'No existe este profesional'});
     else{
-        var citas = professional.professionalSchedule.appointments;
-        var exceptions = ProfessionalService.findExceptionsScheduleByProfessionalUid(req);
+        var appointments = professional.professionalSchedule.appointments;
+        var exceptions = ProfessionalService.findExceptionsScheduleByProfessionalUid(req,ExceptionType.BREAK_TIME);
         exceptions.exec(function(err, exceptions) {
+          var exceptions = exceptions.professionalSchedule.exceptions;
           var simpleDateUtil = new SimpleDateUtil(req.query.startTime, req.query.endTime);
-          var exceptionsStr="";
-          var entraABucle = false;
-          if(exceptions.professionalSchedule.exceptions.length > 0){
+          var exceptionsArray=new Array();
+          if(exceptions.length > 0){
             for(var day=simpleDateUtil.getStartFormatDate();day<=simpleDateUtil.getEndFormatDate();day.setDate(day.getDate()+1)){
-              
-              var exception = exceptions.professionalSchedule.exceptions[0];
-              var startTimeTmp = new Date(exception.startTime);
-              var endTimeTmp = new Date(exception.endTime);
-              var startTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), startTimeTmp.getHours());
-              var endTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), endTimeTmp.getHours());
-              exception.startTime = startTime;
-              exception.endTime = endTime;
-
-              if(entraABucle)
-                exceptionsStr= exceptionsStr + "," + exception;   //mergeJSON.merge(exceptionsStr,exception);
-              else
-                 exceptionsStr=exception;  
-              entraABucle = true; 
+              for(var i=0;i<exceptions.length;i++){
+                var exception = exceptions[i];
+                var startTimeTmp = new Date(exception.startTime);
+                var endTimeTmp = new Date(exception.endTime);
+                var startTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), startTimeTmp.getHours());
+                var endTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), endTimeTmp.getHours());
+                exceptionsArray.push({
+                  startTime : startTime,
+                  endTime : endTime,
+                  title : exception.title,
+                  status : exception.status,
+                  _id : new ObjectId()
+                });
             }
-            exceptionsStr = exceptionsStr.replace(/\n/g, '');
+            }
           }
-
-          return res.json(citas.concat(exceptionsStr));
+          if(exceptionsArray.length > 0){
+            var appointmentsWithExceptions = appointments.concat(exceptionsArray);
+            res.json(appointmentsWithExceptions);
+          }
+          else{  
+            return res.json(appointments);  
+          }  
         });
-        
     }        
   });
 }
@@ -203,17 +211,73 @@ exports.getClientsByProfessionalUid = function(req, res){
  * @param {*} res 
  */
 exports.getExceptionsScheduleByProfessionalUid = function(req, res){ 
-  var professional = ProfessionalService.findExceptionsScheduleByProfessionalUid(req);
+  var type = req.query.type;
+  var professional = ProfessionalService.findExceptionsScheduleByProfessionalUid(req, type);
   professional.exec(function(err, professional) {
     if(err)
       return res.status(500).send({message: 'Error en la petición: ' + err});
     if(!professional) 
       return res.status(404).send({message: 'No existe este profesional'});
     else{
-        return res.json(professional.professionalSchedule.exceptions);
-    }        
-  });
-}
+      var exceptions = professional.professionalSchedule.exceptions;
+      if(exceptions.length > 0){
+        var simpleDateUtil = new SimpleDateUtil(req.query.startTime, req.query.endTime);
+        var exceptionsArray=new Array();
+        var holidaysArray = new Array();
+        var startYear = simpleDateUtil.getStartFormatDate().getFullYear();
+        var endYear = simpleDateUtil.getEndFormatDate().getFullYear();
+
+        if(startYear == endYear){
+          holidaysArray = module.getColombiaHolidaysByYear(startYear);
+        }
+        else{
+          holidaysArray = module.getColombiaHolidaysByYear(startYear).concat(module.getColombiaHolidaysByYear(endYear));
+        }
+        for(var i in exceptions){
+          var exception = exceptions[i];
+          for(var day=simpleDateUtil.getStartFormatDate();day<=simpleDateUtil.getEndFormatDate();day.setDate(day.getDate()+1)){
+            for (var i in holidaysArray) { 
+              if(exception.type == ExceptionType.COLOMBIAN_HOLIDAYS){
+                var holidayArray = holidaysArray[i].holiday.split("-");
+                var holiday = new Date(holidayArray[0],holidayArray[1]-1,holidayArray[2]);
+                var iterDay = new Date(day.getFullYear(), day.getMonth(),day.getDate());
+
+                if(holiday.getFullYear() == iterDay.getFullYear() 
+                  && holiday.getMonth() == iterDay.getMonth() 
+                  && holiday.getDate() == iterDay.getDate()){
+                    exceptionsArray.push({
+                      startTime : holiday,
+                      endTime : holiday,
+                      title : holidaysArray[i].celebration,
+                      status : exception.status,
+                      _id : new ObjectId()
+                    });
+                  }
+                }
+              }
+              if(exception.type == ExceptionType.DAY){
+                var dayUtil = new DayUtil(day);
+                if(dayUtil.getWeekDay() == exception.weekday){
+                  var startTimeTmp = new Date(exception.startTime);
+                  var endTimeTmp = new Date(exception.endTime);
+                  var startTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), startTimeTmp.getHours(), startTimeTmp.getMinutes(), endTimeTmp.getSeconds());
+                  var endTime = new Date(day.getFullYear(), day.getMonth(), day.getDate(), endTimeTmp.getHours(), endTimeTmp.getMinutes(), endTimeTmp.getSeconds());
+                  exceptionsArray.push({
+                    startTime : startTime,
+                    endTime : endTime,
+                    title : exception.title,
+                    status : exception.status,
+                    _id : new ObjectId()
+                  });
+                }
+              }
+            }
+          }
+        }
+      return res.json(exceptionsArray);
+      }
+    });
+  }
 
 
 /**
@@ -222,16 +286,17 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
  * @param {*} res 
  */
 exports.setClientProfessionalByUid = function(req, res){
-  if(req.body.idType != undefined && req.body.identification != undefined){
+  //if(req.body.idType != undefined && req.body.identification != undefined){
+    if(req.body.email!= undefined && req.body.email!= null ){
     req.body.status = ActivationStatus.ACTIVE;
-    var person = PersonService.findPersonByIdentification(req.body.idType, req.body.identification);
+    var person = PersonService.findPersonByEmail(req.body.email);
     person.then((person) => {
       if(person != undefined && person != null){
         //Buscar cliente por persona
         var client = ClientService.findClientByPersonId(person) 
         client.then((client) => {
           if(client != undefined && client != null){
-            return res.status(404).send({message: 'El cliente con ' + req.body.idType + ' ' + req.body.identification  + ' ya existe'});
+            return res.status(404).send({message: 'El cliente con email: ' + req.body.email + ' ya existe'});
           } 
           else{
             var clientService = ClientService.saveClient(req, person)
@@ -270,7 +335,7 @@ exports.setClientProfessionalByUid = function(req, res){
     });  
   }
   else{
-    return res.status(500).send({message: 'El tipo de documento y la identificación son requeridos'});
+    return res.status(500).send({message: 'El email es requerido'});
   }
 }  
 

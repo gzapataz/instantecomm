@@ -4,7 +4,8 @@ const NotificationState = Object.freeze({
     SENT: "Sent",
     RECEIVED: "Received",
     SEEN: "Seen",
-    INITIAL: "Initial"
+    INITIAL: "Initial",
+    ERROR: "Error"
   });
 
 module.exports =  NotificationState;

@@ -5,9 +5,14 @@ var Schema                = mongoose.Schema;
 const AppointmentStatus   = require('../enums/appointmentStatus');
 const ExceptionType       = require('../enums/exceptionType');
 const Weekday             = require('../enums/weekday');
+const TitleException      = require('../enums/titleException');
 
 var exceptionScheduleSchema   = new Schema({
-    title: {type: String, required: true},
+    title: {
+        type: String, 
+        enum: Object.values(TitleException),
+        required: true
+    },
     type: {
         type: String,
         enum: Object.values(ExceptionType),
