@@ -12,12 +12,12 @@
 
       <ion-item menuClose detail-none *ngFor="let p of pages" (click)="openPage(p)">{{ p.title }}</ion-item>
 
-
     </ion-list>
     <ion-label><a href="mailto:ecommercealinstante@gmail.com?subject=Hola, tengo la siguiente sugerencia para la aplicación"
                   target="_top"><ion-icon name="mail"></ion-icon> Dudas, comentarios, soporte</a>
 
     </ion-label>
+    <ion-item (click)="openPolicy()">Politica de Privacidad</ion-item>
 
   </ion-content>
 </ion-menu>

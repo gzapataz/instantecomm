@@ -4,9 +4,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 
+
 import { TabsPage } from '../pages/tabs/tabs';
 import {AngularFireAuth} from "angularfire2/auth";
 import {UserServiceProvider} from "../providers/user-service/user-service";
+
 
 export interface PageInterface {
   title: string;
@@ -27,7 +29,7 @@ export class MyApp {
 
     { title: 'Home', pageName: 'HomePage', tabComponent: 'HomePage', index: 0, icon: 'home' },
     { title: 'Mi Agenda', pageName: 'CalendarPage', tabComponent: 'CalendarPage', index: 1, icon: 'calendar' },
-    { title: 'Mis Pacientes', pageName: 'CustomerPage',tabComponent: 'CustomerPage', index: 2, icon: 'contacts' },
+    { title: 'Mis Pacientes', pageName: 'CustomerPage',tabComponent: 'CustomerPage', index: 2, icon: 'contacts' }
   ];
 
 
@@ -82,6 +84,14 @@ export class MyApp {
       // Tabs are not active, so reset the root page
       // In this case: moving to or from SpecialPage
       this.nav.setRoot(page.pageName, params);
+    }
+  }
+
+  openPolicy() {
+    let view = this.nav.getActive();
+    console.log(view);
+    if (view.name !== 'PrivatePolicyPage') {
+      this.nav.push('PrivatePolicyPage');
     }
   }
 
