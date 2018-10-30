@@ -219,10 +219,10 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
     if(!professional) 
       return res.status(404).send({message: 'No existe este profesional'});
     else{
+      var exceptionsArray=new Array();
       var exceptions = professional.professionalSchedule.exceptions;
       if(exceptions.length > 0){
         var simpleDateUtil = new SimpleDateUtil(req.query.startTime, req.query.endTime);
-        var exceptionsArray=new Array();
         var holidaysArray = new Array();
         var startYear = simpleDateUtil.getStartFormatDate().getFullYear();
         var endYear = simpleDateUtil.getEndFormatDate().getFullYear();

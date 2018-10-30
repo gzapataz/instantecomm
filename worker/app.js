@@ -39,9 +39,10 @@ Queue.process(jobName, sendNotificationAlarm);
 async function sendNotification(job, done) {
     const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", new ObjectId(initialNotification));
     notificationCollection.forEach(notification => {
-        console.log(notification);
+        
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
             AppointmentService.getAppointmentByNotification_id(db, notification._id).then((appointment) => {
+                console.log(JSON.stringify(notification) + " " + " " + appointment);
                 if(appointment != null && appointment != undefined){
                     ServiceService.getServiceBy_id(db,appointment.service).then((service)=> {
                         ClientService.getClientBy_id(db, appointment.client).then((client) => {
@@ -74,6 +75,7 @@ async function sendNotificationAlarm(job, done) {
     notificationCollection.forEach(notification => {
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
             AppointmentService.getAppointmentByNotification_id(db, notification._id).then((appointment) => {
+                console.log(JSON.stringify(notification) + " " + " " + appointment);
                 if(appointment != null && appointment != undefined){
                     ServiceService.getServiceBy_id(db,appointment.service).then((service)=> {
                         ProfessionalService.getProfessionalBy_id(db,appointment.professional).then((professional)=> {
