@@ -71,17 +71,17 @@ exports.getProfessionalScheduleBy_id = function(req, res){
 exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
   var professional = ProfessionalService.findProfessionalBySchedule(req.body.idSchedule);
   professional.then((prof) => {
-    var notification = NotificationService.saveNotification(constants.FIRST_MESSAGE, NotificationState.INITIAL);
-    notification.then((notif) => {
-      var alarmNotification = NotificationService.saveNotification(constants.ALARM_NOTIFICATION, NotificationState.INITIAL);
-      alarmNotification.then((alarm) => {
-        req.body.professional = prof._id;
-        var appointment = AppointmentService.saveAppointment(req);
-        appointment.then((appoint) => {
-          var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.body.idSchedule);
-          professionalSchedule.exec().then((results) => {
-            var professionalSchedule = ProfessionalScheduleService.saveProfessionalScheduleAppointment(results,appoint);
-            professionalSchedule.then((results) => {
+    req.body.professional = prof._id;
+    var appointment = AppointmentService.saveAppointment(req);
+    appointment.then((appoint) => {
+      var professionalSchedule = ProfessionalScheduleService.findProfessionalScheduleBy_id(req.body.idSchedule);
+      professionalSchedule.exec().then((schedule) => {
+        var professionalSchedule = ProfessionalScheduleService.saveProfessionalScheduleAppointment(schedule,appoint);
+        professionalSchedule.then((results) => {
+          var notification = NotificationService.saveNotification(constants.FIRST_MESSAGE, NotificationState.INITIAL);
+          notification.then((notif) => {
+            var alarmNotification = NotificationService.saveNotification(constants.ALARM_NOTIFICATION, NotificationState.INITIAL);
+            alarmNotification.then((alarm) => {  
               var appointmentService = AppointmentService.saveAppointmentNotification(appoint,notif);
               appointmentService.then((notificationResults) => {
                 if(notificationResults.errors)
@@ -92,17 +92,16 @@ exports.setProfessionalScheduleAppointmentBy_id = function(req, res){
                     if(alarmResults.errors)
                       return res.status(500).send({message: 'Ha ocurrido un error al asociar la alarma a la cita ' + alarmResults});
                     else{
-                      
                       res.json(alarmResults);
                     }  
                   });
                 }   
-              });   
-            });  
-          });
-        });
-      });  
-    });  
+              });
+            });
+          });  
+        });  
+      });
+    });
   });
 }
 
