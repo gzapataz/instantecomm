@@ -27,9 +27,9 @@ export class MyApp {
 
 
 
-    { title: 'Home', pageName: 'HomePage', tabComponent: 'HomePage', index: 0, icon: 'home' },
-    { title: 'Mi Agenda', pageName: 'CalendarPage', tabComponent: 'CalendarPage', index: 1, icon: 'calendar' },
-    { title: 'Mis Pacientes', pageName: 'CustomerPage',tabComponent: 'CustomerPage', index: 2, icon: 'contacts' }
+    { title: 'Mi Agenda', pageName: 'CalendarPage', tabComponent: 'CalendarPage', index: 0, icon: 'calendar' },
+    { title: 'Mis Pacientes', pageName: 'CustomerPage',tabComponent: 'CustomerPage', index: 1, icon: 'contacts' },
+    { title: 'Mis Servicios', pageName: 'ServicesPage',tabComponent: 'ServicesPage', index: 2, icon: 'clipboard' }
   ];
 
 
@@ -111,6 +111,14 @@ export class MyApp {
       return 'primary';
     }
     return;
+  }
+
+  goToProfessional() {
+    let view = this.nav.getActive();
+    console.log(view);
+    if (view.name !== 'ProfessionalDetailPage') {
+      this.nav.push('ProfessionalDetailPage');
+    }
   }
 
 }
