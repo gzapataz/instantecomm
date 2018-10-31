@@ -4,12 +4,12 @@ var PersonService = require('../services/person');
 var ProfessionalService = require('../services/professional');
 var RatingService = require('../services/rating');
 var ClientService = require('../services/client');
+var ProfessionalScheduleService = require('../services/professionalSchedule');
 const ActivationStatus = require('../enums/activationStatus');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
 var DayUtil = require('../utils/dayUtil');
 var ObjectId = require('mongodb').ObjectID
 const ExceptionType = require('../enums/exceptionType');
-const Weekday = require('../enums/weekday');
 var module = require('colombia-holidays');
 
 /**
@@ -45,22 +45,85 @@ exports.getProfessionals = function(req, res){
  * @param {*} res 
  */
 exports.setProfessional = function(req, res){
-  var person = PersonService.savePerson(req);
-  person.then((results) => {
-    if(results.errors)
-      return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona ' + results});
+  var startHour = req.body.startHour;
+  var endHour = req.body.endHour;
+  /**/
+  if(req.body.email != undefined && req.body.email != null){
+
+    if(startHour != undefined && startHour != null){
+      if(!Number.isInteger(Number(startHour))){
+        return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de inicio de jornada debe ser numerica '});
+      }
+    }
     else{
-      // save the professional and check for errors
-      var professional = ProfessionalService.saveProfessional(req, results);
-      professional.then((results) => {
-        if(results.errors)
-          return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
-        else{
-          res.json(results); 
+      return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional, La hora de inicio de jornada es requerida '});
+    }
+    if(endHour != undefined && endHour != null){
+      if(!Number.isInteger(Number(endHour))){
+        return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de fin de jornada debe ser numerica '});
+      }
+    }
+    else{
+      return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de fin de jornada es requerida '});
+    }
+
+    req.body.status = ActivationStatus.ACTIVE;
+    var personService = PersonService.findPersonByEmail(req.body.email);
+    personService.then((person) => {
+      if(person != undefined && person != null){
+        var professionalService = ProfessionalService.findProfessionalByPersonId(person) 
+          professionalService.then((professional) => {
+            if(professional != undefined && professional != null){
+              return res.status(404).send({message: 'El profesional con email: ' + req.body.email + ' ya existe'});
+            }
+            else{
+              var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
+              professionalScheduleService.then((professionalSchedule) => {
+                // save the professional and check for errors
+                if(professionalSchedule != undefined && professionalSchedule != null){
+                  req.body.professionalSchedule = professionalSchedule;
+                  var professional = ProfessionalService.saveProfessional(req, person);
+                  professional.then((results) => {
+                    if(results.errors)
+                      return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
+                    else{
+                      res.json(results); 
+                    }
+                  });
+                } 
+              }); 
+            }     
+          });  
         }
-      });    
-    }  
-  });
+        else{
+          var personService = PersonService.savePerson(req);
+          personService.then((results) => {
+            if(results.errors)
+              return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona ' + results});
+            else{
+              var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
+              professionalScheduleService.then((professionalSchedule) => {
+              // save the professional and check for errors
+              if(professionalSchedule != undefined && professionalSchedule != null){
+                  req.body.professionalSchedule = professionalSchedule;
+                  var professional = ProfessionalService.saveProfessional(req, results);
+                  professional.then((results) => {
+                    if(results.errors)
+                      return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
+                    else{
+                      res.json(results); 
+                    }
+                  });
+                } 
+              }); 
+            }  
+          });
+        } 
+    }); 
+  }
+  else{
+    return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional, el campo email es requerido '});
+  }
 }
 
 /**

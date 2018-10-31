@@ -16,6 +16,9 @@ exports.saveProfessional = async function(req, person){
   professional.person = person;
   professional.uid    = req.body.uid;
   professional.professionalSchedule = req.body.professionalSchedule; 
+  professional.startHour = req.body.startHour;
+  professional.endHour = req.body.endHour;
+
   try{
     await professional.save();
   }
@@ -82,6 +85,15 @@ exports.findProfessionalByUid = function(uid){
       path: 'professionalSchedule', populate: {path:'appointments', populate:{path: 'service'}}
     }
   );
+  return professional;
+}
+
+/**
+ * Buscar un profesional por person
+ * @param {*} personId 
+ */
+exports.findProfessionalByPersonId = function(personId){
+  var professional = Professional.findOne({person:personId});
   return professional;
 }
 
