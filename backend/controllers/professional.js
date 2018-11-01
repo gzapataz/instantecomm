@@ -25,7 +25,8 @@ exports.getProfessionals = function(req, res){
     exports.getProfessionalByUid(req, res);
   }
   else{
-    var professionals = ProfessionalService.findAllProfessionals();
+    return res.status(404).send({message: 'No hay filtros para esta consulta'});
+    /*var professionals = ProfessionalService.findAllProfessionals();
     professionals.exec(
       (err, professionals) => {
         if(err)
@@ -35,8 +36,8 @@ exports.getProfessionals = function(req, res){
         else
           return res.json(professionals);
       }
-    );
-  } 
+    );*/
+  }
 }
 
 /**
@@ -132,15 +133,29 @@ exports.setProfessional = function(req, res){
  * @param {*} res 
  */
 exports.getProfessionalByEmail = function(req, res){
-  var professional = ProfessionalService.findProfessionalByEmail(req.query.email);
-  professional.exec(function(err, professional) {
+
+  var personService = PersonService.findPersonByEmail(req.query.email);
+  personService.exec(function(err, person) {
     if(err)
       return res.status(500).send({message: 'Error en la petición: ' + err});
-    if(!professional) 
-      return res.status(404).send({message: 'No existe este profesional'});
-    else
-      return res.json(professional);
-  });
+    if(!person) {
+      return res.status(404).send({message: 'No existe el profesional con el email' + req.query.email});
+    }
+    else{
+      var professionalService = ProfessionalService.findProfessionalByPersonId(person);
+      professionalService.exec(function(err, professional) {
+        if(err){
+          return res.status(500).send({message: 'Error en la petición: ' + err});
+        }
+        if(!professional) {
+          return res.status(404).send({message: 'No existe el profesional con el email' + req.query.email});
+        } 
+        else{
+          return res.json(professional);
+        }
+      });  
+    }
+  });  
 }
 
 /**
@@ -409,7 +424,7 @@ exports.setClientProfessionalByUid = function(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-exports.setRatingProfessionalByEmail = function(req, res){
+/*exports.setRatingProfessionalByEmail = function(req, res){
   var rating = RatingService.saveRating(req.body.ratingValue);
   rating.then((rate) => {
     var professional = ProfessionalService.findProfessionalByEmail(req.body.email);
@@ -424,4 +439,4 @@ exports.setRatingProfessionalByEmail = function(req, res){
       });  
     });
   });
-}
+}*/

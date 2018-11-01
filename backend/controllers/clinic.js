@@ -61,7 +61,7 @@ exports.getClinicBy_id = function(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-exports.setProfessionalClinicByEmail = function(req, res){
+/*exports.setProfessionalClinicByEmail = function(req, res){
   var professional = ProfessionalService.findProfessionalByEmail(req.body.email);
   professional.exec(function(err, professional) {
     if(err)
@@ -82,4 +82,4 @@ exports.setProfessionalClinicByEmail = function(req, res){
       });
     }  
   });
-}
+}*/

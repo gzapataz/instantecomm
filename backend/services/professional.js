@@ -4,6 +4,7 @@ var Professional = require('../models/professional');
 const ActivationStatus = require('../enums/activationStatus');
 const ExceptionType = require('../enums/exceptionType');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
+var Person = require('../services/person');
 
 /**
  * Guardar un profesional. Guarda el profesional y la persona.
@@ -63,28 +64,16 @@ exports.saveClientProfessional =  async function(professionalUid, client){
   }    
 }  
 
-/**
- * Buscar profesional por email
- * @param {*} email 
- */
-exports.findProfessionalByEmail = function(email){
-  var professional = Professional.findOne()
-  .populate({path: 'person', match: { email: { $gte: email }}}).populate('professionalGrades');
-  return professional;
-}
 
 /**
  * Buscar profesional por uid
  * @param {*} uid 
  */
 exports.findProfessionalByUid = function(uid){
-  var professional = Professional.findOne({uid:uid})
-  .populate('person').populate('professionalGrades').populate('professionalSchedule')
-  .populate(
-    {
-      path: 'professionalSchedule', populate: {path:'appointments', populate:{path: 'service'}}
-    }
-  );
+  var professional = Professional.findOne({uid:uid}).select('professionalSince lastVisit status uid startHour endHour')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1}})
+  .populate({path:'professionalSchedule', select: {'idSchedule':1}});
   return professional;
 }
 
@@ -93,7 +82,10 @@ exports.findProfessionalByUid = function(uid){
  * @param {*} personId 
  */
 exports.findProfessionalByPersonId = function(personId){
-  var professional = Professional.findOne({person:personId});
+  var professional = Professional.findOne({person:personId}).select('professionalSince lastVisit status uid startHour endHour')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1}})
+  .populate({path:'professionalSchedule', select: {'idSchedule':1}});
   return professional;
 }
 
