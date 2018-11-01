@@ -34,6 +34,8 @@ import { GlobalsServiceProvider } from '../providers/globals-service/globals-ser
 import { ExceptionServiceProvider } from '../providers/exception-service/exception-service';
 import { CustomerAddServiceProvider } from "../providers/customer-add-service/customer-add-service";
 import { ServicesPage } from "../pages/services/services";
+import { AuthenticationServiceProvider } from '../providers/authentication-service/authentication-service';
+import { LoginPage } from "../pages/login/login";
 
 
 @NgModule({
@@ -88,7 +90,8 @@ import { ServicesPage } from "../pages/services/services";
     ScreenOrientation,
     ExceptionServiceProvider,
 
-    CustomerAddServiceProvider
+    CustomerAddServiceProvider,
+    AuthenticationServiceProvider
 
   ]
 })

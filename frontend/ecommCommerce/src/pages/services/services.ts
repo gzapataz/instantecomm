@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 import { ServiceServiceProvider } from "../../providers/service-service/service-service";
 import { GlobalsServiceProvider } from "../../providers/globals-service/globals-service";
+import {AuthenticationServiceProvider} from "../../providers/authentication-service/authentication-service";
 
 
 /**
@@ -21,9 +22,28 @@ export class ServicesPage implements OnInit {
   servicesAvail = [];
   loggedUser;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
+              private modalCtrl: ModalController,
               private servicesService: ServiceServiceProvider,
+              private authService: AuthenticationServiceProvider,
               private globalService: GlobalsServiceProvider) {
+  }
+
+  ionViewCanEnter() {
+    console.log('Validando Permisos');
+    if (!this.authService.isAuthenticated()) {
+      let alert = this.alertCtrl.create({
+        title: 'Errro de Ingreso',
+        subTitle: 'Debe ingresar sus credenciales antes de poder ver la agenda',
+        buttons: ['Dismiss']
+      })
+      alert.present();
+      this.navCtrl.pop();
+      this.navCtrl.push('LoginPage');
+      return false;
+    }
+    return true;
   }
 
   ngOnInit() {
@@ -47,6 +67,20 @@ export class ServicesPage implements OnInit {
 
   serviceSelected(service) {
 
+  }
+
+  addService() {
+    let modal = this.modalCtrl.create('ServicesAddPage');
+    modal.present();
+    modal.onDidDismiss(data => {
+      if (data) {
+        let serviceData = data;
+        this.servicesService.addService(this.loggedUser.userId, serviceData).subscribe(data => {
+          serviceData._id = data._id;
+        });
+      }
+
+    });
   }
 
 }

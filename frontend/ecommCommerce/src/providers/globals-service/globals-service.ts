@@ -17,12 +17,17 @@ export class GlobalsServiceProvider implements OnInit {
 
   constructor(public http: HttpClient, private storage: Storage) {
     console.log('Hello GlobalsServiceProvider Provider');
-    this.readFromStorageProfessionalData();
+    this.readFromStorageProfessionalData().then( data => {
+      console.log('loggedProfessionalConstructor:' + JSON.stringify(this.loggedProfessional))
+      return
+    });
+
+
   }
 
   ngOnInit() {
     this.readFromStorageProfessionalData();
-
+    console.log('loggedProfessional:' + JSON.stringify(this.loggedProfessional))
   }
 
   setProfessionalLoginData(UID, idSchedule, startHour, endHour) {
@@ -47,6 +52,22 @@ export class GlobalsServiceProvider implements OnInit {
     }).then(() => {return this.loggedProfessional},
       () => {return this.loggedProfessional}
       );
+  }
+
+  readFromStorageProfessionalId(): Promise<LoggedProfessional> {
+    return new Promise((resolve, reject ) => {
+      this.storage.ready().then(() => {
+        this.storage.get('uid').then((uidData) => {
+          if (uidData != null) {
+            this.loggedProfessional.userId = uidData
+            resolve();
+          }
+        })
+      });
+    }).then(() => {return this.loggedProfessional},
+      () => {return this.loggedProfessional}
+    );
+
   }
 
   getLoggedProffessionalData(): LoggedProfessional {

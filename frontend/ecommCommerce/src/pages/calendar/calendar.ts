@@ -20,6 +20,7 @@ import {GlobalsServiceProvider} from "../../providers/globals-service/globals-se
 import {LoggedProfessional} from "../../classes/logged-class";
 import {AppointmentClass} from "../../classes/appointment-class";
 import { ExceptionServiceProvider } from "../../providers/exception-service/exception-service";
+import {AuthenticationServiceProvider} from "../../providers/authentication-service/authentication-service";
 
 
 
@@ -106,6 +107,7 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
               private modalCtrl: ModalController, private dragulaService: DragulaService,
+              private authService: AuthenticationServiceProvider,
               private servicesService: ServiceServiceProvider,
               private customerService: CustomerServiceProvider,
               private appointmentService: AppointmentServiceProvider,
@@ -148,13 +150,29 @@ export class CalendarPage implements OnInit, OnDestroy {
     //console.log('Mensaje Recibido:' + $event);
     this.customerId = $event
   }
-
+/*
+  ionViewCanEnter() {
+    console.log('Validando Permisos');
+    if (!this.authService.isAuthenticated()) {
+      let alert = this.alertCtrl.create({
+        title: 'Errro de Ingreso',
+        subTitle: 'Debe ingresar sus credenciales antes de poder ver la agenda',
+        buttons: ['Dismiss']
+      })
+      alert.present();
+      this.navCtrl.pop();
+      //this.navCtrl.push('LoginPage');
+      return false;
+    }
+    return true;
+  }
+*/
   ngOnInit() {
 
     //console.log('Plataforma:' + this.platform.platforms());
     //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
     this.loggedUser = this.globalService.getLoggedProffessionalData();
-
+    /*
     if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
       console.log('SALIENDO:' + JSON.stringify(this.loggedUser))
       this.navCtrl.push('LoginPage');
@@ -166,6 +184,10 @@ export class CalendarPage implements OnInit, OnDestroy {
       this.getServices(this.loggedUser.userId);
       this.getCustomers(this.loggedUser.userId);
     }
+    */
+    console.log('ENTRANDO CALENDAR:')
+    this.getServices(this.loggedUser.userId);
+    this.getCustomers(this.loggedUser.userId);
   }
 
   ngOnDestroy() {
@@ -184,6 +206,7 @@ export class CalendarPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
+    /*
     this.loggedUser = this.globalService.getLoggedProffessionalData();
     if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
       let alert = this.alertCtrl.create({
@@ -198,7 +221,7 @@ export class CalendarPage implements OnInit, OnDestroy {
       this.getCustomers(this.loggedUser.userId);
     }
     //this.loadEvents(this.loggedUser.userId);
-
+  */
   }
 
   getServices(professionalUID) {
@@ -219,6 +242,9 @@ export class CalendarPage implements OnInit, OnDestroy {
     this.customerService.getCustomer(id).subscribe(customer => theCustomer = customer);
     return theCustomer;
 
+  }
+  goToActual() {
+    this.calendar.currentDate = new Date();
   }
 
   changeMode(newMode) {

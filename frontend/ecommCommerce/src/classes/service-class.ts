@@ -12,5 +12,6 @@ export class ServiceClass {
   }*/
   _id: string;
   name: string;
+  description: string;
   averageTime: number;
 }

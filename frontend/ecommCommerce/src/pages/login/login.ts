@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from "../../providers/user-service/user-service";
 import { TabsPage } from "../tabs/tabs";
+import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
 
 /**
  * Generated class for the LoginPage page.
@@ -27,7 +28,8 @@ export class LoginPage {
   registrationPage: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private userService: UserServiceProvider) {
+              private userService: UserServiceProvider,
+              private globalService: GlobalsServiceProvider) {
     this.registrationPage = 'RegistrationPage';
   }
 
@@ -42,10 +44,16 @@ export class LoginPage {
     else {
       this.userService.logOn(this.login)
         .then(returned => {
+          console.log('RETORNO LOGGED: ' + JSON.stringify(returned))
           if (this.userService.success) {
-            this.navCtrl.push(TabsPage);
+            this.globalService.readFromStorageProfessionalData().then( professionalData => {
+              console.log('DisparadoLOGIN0:' + JSON.stringify(professionalData))
+              console.log('Login Terminado')
+              this.navCtrl.push(TabsPage);
+            });
           }
           else {
+            console.log('elese error');
             this.login.email = '';
             this.login.password = '';
           }
