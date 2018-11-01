@@ -64,6 +64,22 @@ exports.saveClientProfessional =  async function(professionalUid, client){
   }    
 }  
 
+/**
+ * Agregar servicio a un profesional
+ * @param {*} professionalUid 
+ */
+exports.saveServiceProfessional =  async function(professionalUid, service){
+  try{
+    return await Professional.findOneAndUpdate(
+      {uid : professionalUid},
+      {$addToSet: {services: service}},
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }    
+} 
 
 /**
  * Buscar profesional por uid

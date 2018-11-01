@@ -1,6 +1,7 @@
 'use strict'
 // Cargamos los controladores para usarlos posteriormente
 var PersonService = require('../services/person');
+var ServiceService = require('../services/service');
 var ProfessionalService = require('../services/professional');
 var RatingService = require('../services/rating');
 var ClientService = require('../services/client');
@@ -26,17 +27,6 @@ exports.getProfessionals = function(req, res){
   }
   else{
     return res.status(404).send({message: 'No hay filtros para esta consulta'});
-    /*var professionals = ProfessionalService.findAllProfessionals();
-    professionals.exec(
-      (err, professionals) => {
-        if(err)
-          return res.status(500).send({message: 'Error en la petición ' + err});
-        if(!professionals) 
-          return res.status(404).send({message: 'No existen profesionales creados'});
-        else
-          return res.json(professionals);
-      }
-    );*/
   }
 }
 
@@ -417,7 +407,25 @@ exports.setClientProfessionalByUid = function(req, res){
   }
 }  
 
-
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.setServiceProfessionalByUid = function(req, res){
+  var serviceService = ServiceService.saveService(req);
+  serviceService.then((service) => {
+    if(service != null & service != undefined){
+      var professional = ProfessionalService.saveServiceProfessional(req.params.uid, service);
+      professional.then((results) => {
+        return res.status(200).send({message: 'Servicio asociado al profesional'});
+      }); 
+    }
+    else{
+      return res.status(500).send({message: 'El servicio no pudo ser creado'});
+    }
+  });  
+}  
 
 /**
  * 
