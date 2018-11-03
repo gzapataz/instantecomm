@@ -5,6 +5,7 @@ const ActivationStatus = require('../enums/activationStatus');
 const ExceptionType = require('../enums/exceptionType');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
 var Person = require('../services/person');
+var ObjectId = require('mongodb').ObjectID
 
 /**
  * Guardar un profesional. Guarda el profesional y la persona.
@@ -147,6 +148,17 @@ exports.findProfessionalBySchedule = function(professionalSchedule){
 exports.findServicesProfessionalByUid = function(uid){
   var professional = Professional.findOne({uid:uid})
     .populate({path:'services', options: { sort: 'name' }});
+  return professional;
+}
+
+/**
+ * Buscar si un profesional posee un servicio.
+ * @param {*} service_id 
+ * @param {*} professional_id 
+ */
+exports.findServicesProfessionalBy_id = function(service_id,professional_id){
+  console.log(service_id);
+  var professional = Professional.findOne({_id:professional_id, service: service_id})
   return professional;
 }
 

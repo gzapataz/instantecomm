@@ -32,7 +32,7 @@ exports.updatePerson = async function(req, personId){
  const updatedFields = {};
  Object.keys(req.body).forEach(key => {
    if (req.body[key]!=null && req.body[key]!=undefined) {
-     if(key != "email" && key != "uid"){
+     if(key != "email" && key != "uid" && key != "_id"){
         updatedFields[key] = req.body[key];
         console.log(key);
      }

@@ -460,6 +460,43 @@ exports.setServiceProfessionalByUid = function(req, res){
  * @param {*} req 
  * @param {*} res 
  */
+exports.setServiceProfessionalUpdateByUid = function(req, res){
+  var professionalService = ProfessionalService.findServicesProfessionalByUid(req.params.uid);
+  professionalService.then((professional) => {
+    var services = professional.services;
+    var isService = false;
+    if(services != null && services != undefined && services.length > 0){
+      for(var i in services){
+        var service = services[i];
+        if(service != undefined && service != null){
+          if(service._id == req.body._id){
+            isService = true;
+            break;
+          }
+        }
+      }  
+      if(isService){
+        var serviceService = ServiceService.updateService(req);
+        serviceService.then((service) => {
+          res.json(service); 
+        }); 
+      }
+      else{
+        return res.status(500).send({message: 'Servicio no existente o no asociado a este professional'});
+      }
+      
+    }  
+    else{
+      return res.status(500).send({message: 'El profesional no tiene servicios configurados'});
+    }
+  });  
+} 
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 /*exports.setRatingProfessionalByEmail = function(req, res){
   var rating = RatingService.saveRating(req.body.ratingValue);
   rating.then((rate) => {
