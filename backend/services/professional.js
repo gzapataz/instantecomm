@@ -30,6 +30,32 @@ exports.saveProfessional = async function(req, person){
 } 
 
 /**
+ * Actualiza un profesional. Actualiza el profesional y la persona.
+ * @param {*} req 
+ */
+exports.updateProfessional = async function(req){
+  const updatedFields = {};
+  Object.keys(req.body).forEach(key => {
+    if (req.body[key]!=null && req.body[key]!=undefined) {
+      if(key == "startHour" || key == "endHour"){
+        updatedFields[key] = req.body[key];
+      }  
+    }
+  });
+  try{
+    var professional = Professional.findOneAndUpdate(
+      {uid:req.body.uid},
+      {$set:updatedFields},     
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }
+  return professional;
+}
+
+/**
  * 
  * @param {*} professional 
  * @param {*} rating 
@@ -119,7 +145,8 @@ exports.findProfessionalBySchedule = function(professionalSchedule){
  * @param {*} uid 
  */
 exports.findServicesProfessionalByUid = function(uid){
-  var professional = Professional.findOne({uid:uid}).populate('services');
+  var professional = Professional.findOne({uid:uid})
+    .populate({path:'services', options: { sort: 'name' }});
   return professional;
 }
 

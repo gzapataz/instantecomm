@@ -117,13 +117,41 @@ exports.setProfessional = function(req, res){
   }
 }
 
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.setProfessionalUpdate = function(req, res){
+  if(req.body.uid != null && req.body.uid != undefined){
+    var professionalService = ProfessionalService.updateProfessional(req);
+    professionalService.then((profesional) => {
+      if(profesional.errors)
+        return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + profesional.errors});
+      else{
+        var personService = PersonService.updatePerson(req, profesional.person); 
+        personService.then((person) => {
+          if(person.errors)
+            return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + person.errors});
+          else{
+            return res.status(200).send({message: 'Profesional actualizado correctamente'});
+          }  
+        });
+      }  
+    });
+  }
+  else{
+    return res.status(500).send({message: 'El campo uid del profesional es obligatorio'});
+  }
+}
+
 /**
  * 
  * @param {*} req 
  * @param {*} res 
  */
 exports.getProfessionalByEmail = function(req, res){
-
   var personService = PersonService.findPersonByEmail(req.query.email);
   personService.exec(function(err, person) {
     if(err)

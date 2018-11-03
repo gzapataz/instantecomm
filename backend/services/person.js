@@ -22,6 +22,36 @@ exports.savePerson = async function(req){
   return person;
 }
 
+
+
+/**
+ * Actualiza una persona. Actualiza la persona.
+ * @param {*} req 
+ */
+exports.updatePerson = async function(req, personId){
+ const updatedFields = {};
+ Object.keys(req.body).forEach(key => {
+   if (req.body[key]!=null && req.body[key]!=undefined) {
+     if(key != "email" && key != "uid"){
+        updatedFields[key] = req.body[key];
+        console.log(key);
+     }
+   }
+ });
+
+  try{
+    var person = Person.findOneAndUpdate(
+      {_id:personId},
+      {$set:updatedFields},          
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }
+  return person;
+}
+
 /**
  * Buscar persona por identificación
  * @param {*} idType 

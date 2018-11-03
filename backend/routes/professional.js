@@ -4,6 +4,7 @@ var router = express.Router();
 
 router.get('/', ProfessionalController.getProfessionals);
 router.post('/', ProfessionalController.setProfessional);
+router.put('/', ProfessionalController.setProfessionalUpdate);
 //router.post('/rating/', ProfessionalController.setRatingProfessionalByEmail);
 router.get('/:_id', ProfessionalController.getProfessionalBy_id);
 router.get('/:uid/services/', ProfessionalController.getServicesProfessionalByUid);
