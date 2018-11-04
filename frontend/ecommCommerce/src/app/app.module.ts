@@ -21,7 +21,6 @@ import { ComponentsModule } from "../components/components.module";
 import { CustomerSearchComponent } from "../components/customer-search/customer-search";
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CalendarPage } from "../pages/calendar/calendar";
 import { ServiceServiceProvider } from '../providers/service-service/service-service';
@@ -33,16 +32,19 @@ import { ScheduleServiceProvider } from '../providers/schedule-service/schedule-
 import { PreferencesServiceProvider } from '../providers/preferences-service/preferences-service';
 import { GlobalsServiceProvider } from '../providers/globals-service/globals-service';
 import { ExceptionServiceProvider } from '../providers/exception-service/exception-service';
-import {CustomerAddServiceProvider} from "../providers/customer-add-service/customer-add-service";
+import { CustomerAddServiceProvider } from "../providers/customer-add-service/customer-add-service";
+import { ServicesPage } from "../pages/services/services";
+import { AuthenticationServiceProvider } from '../providers/authentication-service/authentication-service';
+import { LoginPage } from "../pages/login/login";
 
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
     CalendarPage,
     CustomerPage,
-    TabsPage
+    TabsPage,
+    ServicesPage
   ],
   imports: [ 
     FormsModule, 
@@ -51,8 +53,6 @@ import {CustomerAddServiceProvider} from "../providers/customer-add-service/cust
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-
-
     DragulaModule,
     BrowserAnimationsModule,
     NgCalendarModule,
@@ -67,10 +67,10 @@ import {CustomerAddServiceProvider} from "../providers/customer-add-service/cust
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
     CalendarPage,
     CustomerPage,
     TabsPage,
+    ServicesPage
   ],
   providers: [
     StatusBar,
@@ -90,7 +90,8 @@ import {CustomerAddServiceProvider} from "../providers/customer-add-service/cust
     ScreenOrientation,
     ExceptionServiceProvider,
 
-    CustomerAddServiceProvider
+    CustomerAddServiceProvider,
+    AuthenticationServiceProvider
 
   ]
 })

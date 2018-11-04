@@ -1,108 +1,6 @@
-webpackJsonp([9],{
+webpackJsonp([12],{
 
-/***/ 141:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ScheduleServiceProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__preferences_service_preferences_service__ = __webpack_require__(142);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-var httpOptions = {
-    headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({ 'Content-Type': 'application/json' })
-};
-/*
-
-/*
-  Generated class for the ScheduleServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-var ScheduleServiceProvider = /** @class */ (function () {
-    function ScheduleServiceProvider(http, messageService, preferencesProvider) {
-        this.http = http;
-        this.messageService = messageService;
-        this.preferencesProvider = preferencesProvider;
-        this.appntUrl = __WEBPACK_IMPORTED_MODULE_5__environment__["a" /* environment */].baseUrl + '/professionals';
-        console.log('Hello ScheduleServiceProvider Provider');
-    }
-    ScheduleServiceProvider.prototype.log = function (message) {
-        this.messageService.add("AppointmentService: " + message);
-    };
-    ScheduleServiceProvider.prototype.getSchedule = function (professionalUID, startTime, endTime) {
-        var _this = this;
-        var finalURL = this.appntUrl + '/' + professionalUID + '/professionalsSchedule/appointments/?startTime=' + startTime + '&' + 'endTime=' + endTime;
-        console.log('SchedulePorRangoURL:' + finalURL);
-        return this.http.get(finalURL).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["map"])(function (result) {
-            var appointments = result;
-            appointments.forEach(function (appointment) {
-                appointment.startTime = new Date(appointment.startTime);
-                appointment.endTime = new Date(appointment.endTime);
-                appointment = _this.preferencesProvider.getColor(appointment);
-            });
-            return appointments;
-        }));
-    };
-    ScheduleServiceProvider.prototype.addScheduledAppnt = function (event) {
-        var _this = this;
-        console.log('Service: addScheduledAppointment:' + JSON.stringify(event));
-        return this.http.post(this.appntUrl + '/', event, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["tap"])(function (event) {
-            _this.log("added appointment w/ id=" + event.id);
-        }), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(this.handleError('addAppointment')));
-    };
-    /**
-     * Handle Http operation that failed.
-     * Let the app continue.
-     * @param operation - name of the operation that failed
-     * @param result - optional value to return as the observable result
-     */
-    ScheduleServiceProvider.prototype.handleError = function (operation, result) {
-        if (operation === void 0) { operation = 'operation'; }
-        return function (error) {
-            // TODO: send the error to remote logging infrastructure
-            console.error(error); // log to console instead
-            // TODO: better job of transforming error for user consumption
-            console.log(operation + " failed: " + error.message);
-            // Let the app keep running by returning an empty result.
-            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["of"])(result);
-        };
-    };
-    ScheduleServiceProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__["a" /* MessageServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_6__preferences_service_preferences_service__["a" /* PreferencesServiceProvider */]])
-    ], ScheduleServiceProvider);
-    return ScheduleServiceProvider;
-}());
-
-//# sourceMappingURL=schedule-service.js.map
-
-/***/ }),
-
-/***/ 142:
+/***/ 148:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -173,18 +71,18 @@ var PreferencesServiceProvider = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angularfire2_database__ = __webpack_require__(451);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angularfire2_database__ = __webpack_require__(449);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Rx__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_Rx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_common_http__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_operators__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_operators__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_observable_of__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__globals_service_globals_service__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__globals_service_globals_service__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -362,11 +260,11 @@ var UserServiceProvider = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabsPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_home__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customer_customer__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ionic_angular__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_services__ = __webpack_require__(174);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -386,17 +284,17 @@ var TabsPage = /** @class */ (function () {
         this.navCtrl = navCtrl;
         this.alertCtrl = alertCtrl;
         this.platform = platform;
-        this.tab1Root = __WEBPACK_IMPORTED_MODULE_1__home_home__["a" /* HomePage */];
-        this.tab2Root = __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__["a" /* CalendarPage */];
-        this.tab3Root = __WEBPACK_IMPORTED_MODULE_3__customer_customer__["a" /* CustomerPage */];
+        this.tab1Root = __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__["a" /* CalendarPage */];
+        this.tab2Root = __WEBPACK_IMPORTED_MODULE_3__customer_customer__["a" /* CustomerPage */];
+        this.tab3Root = __WEBPACK_IMPORTED_MODULE_4__services_services__["a" /* ServicesPage */];
         this.myIndex = navParams.data.tabIndex || 0;
     }
     TabsPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/'<ion-tabs [selectedIndex]="myIndex">\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="Mi Agenda" tabIcon="calendar"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Mis Pacientes" tabIcon="contacts"></ion-tab>\n\n  <!--ion-tab [root]="tab3Root" tabTitle="Mi Scroll" tabIcon="calendar"></ion-tab-->\n</ion-tabs>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/'<ion-tabs [selectedIndex]="myIndex">\n  <ion-tab [root]="tab1Root" tabTitle="Mi Agenda" tabIcon="calendar"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="Mis Pacientes" tabIcon="contacts"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Mis Servicios" tabIcon="clipboard"></ion-tab>\n\n\n  <!--ion-tab [root]="tab3Root" tabTitle="Mi Scroll" tabIcon="calendar"></ion-tab-->\n</ion-tabs>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_4_ionic_angular__["h" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_4_ionic_angular__["i" /* NavParams */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_ionic_angular__["h" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["a" /* AlertController */],
+            __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["i" /* NavParams */]])
     ], TabsPage);
     return TabsPage;
 }());
@@ -412,8 +310,8 @@ var TabsPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_customer_service_customer_service__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -559,207 +457,22 @@ var CustomerPage = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ServiceServiceProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(51);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-var httpOptions = {
-    headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({ 'Content-Type': 'application/json' })
-};
-/*
-  Generated class for the ServiceServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-var ServiceServiceProvider = /** @class */ (function () {
-    function ServiceServiceProvider(http, messageService) {
-        this.http = http;
-        this.messageService = messageService;
-        this.serviceUrl = __WEBPACK_IMPORTED_MODULE_5__environment__["a" /* environment */].baseUrl + '/professionals';
-        console.log('Hello ServiceServiceProvider Provider');
-    }
-    ServiceServiceProvider.prototype.log = function (message) {
-        this.messageService.add("ServicesService: " + message);
-    };
-    ServiceServiceProvider.prototype.getServices = function (professionalUID) {
-        var finalURL = this.serviceUrl + '/' + professionalUID + '/services';
-        console.log('ServicesURL:' + finalURL);
-        return this.http.get(finalURL, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["catchError"])(this.handleError('getServices', [])));
-    };
-    /**
-     * Handle Http operation that failed.
-     * Let the app continue.
-     * @param operation - name of the operation that failed
-     * @param result - optional value to return as the observable result
-     */
-    ServiceServiceProvider.prototype.handleError = function (operation, result) {
-        if (operation === void 0) { operation = 'operation'; }
-        return function (error) {
-            // TODO: send the error to remote logging infrastructure
-            console.error(error); // log to console instead
-            // TODO: better job of transforming error for user consumption
-            console.log(operation + " failed: " + error.message);
-            // Let the app keep running by returning an empty result.
-            return Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__["of"])(result);
-        };
-    };
-    ServiceServiceProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__["a" /* MessageServiceProvider */]])
-    ], ServiceServiceProvider);
-    return ServiceServiceProvider;
-}());
-
-//# sourceMappingURL=service-service.js.map
-
-/***/ }),
-
-/***/ 175:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_schedule_service_schedule_service__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_locales_es_CO__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_common__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_globals_service_globals_service__ = __webpack_require__(52);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-Object(__WEBPACK_IMPORTED_MODULE_4__angular_common__["k" /* registerLocaleData */])(__WEBPACK_IMPORTED_MODULE_3__angular_common_locales_es_CO__["a" /* default */]);
-
-var HomePage = /** @class */ (function () {
-    function HomePage(scheduleServiceProvider, globalService) {
-        this.scheduleServiceProvider = scheduleServiceProvider;
-        this.globalService = globalService;
-        this.eventSelected = false;
-        this.eventSource = [];
-        this.selectedDay = new Date();
-        this.theColor = 'white';
-        this.calendar = {
-            mode: 'day',
-            locale: __WEBPACK_IMPORTED_MODULE_3__angular_common_locales_es_CO__["a" /* default */][0],
-            currentDate: new Date(),
-        };
-        this.markDisabled = function (date) {
-            var current = new Date();
-            current.setHours(2, 0, 0);
-            return date < current;
-        };
-    }
-    HomePage.prototype.ngOnInit = function () {
-        var userLogged = this.globalService.getLoggedProffessionalData();
-        if (userLogged.userId === '' || userLogged.userId == null) {
-            console.log("datos de Agenda Quey11 return 1:");
-            return;
-        }
-        ;
-        this.initdata();
-    };
-    HomePage.prototype.initdata = function () {
-        this.loggedUser = this.globalService.getLoggedProffessionalData();
-        this.loadEvents();
-    };
-    HomePage.prototype.ionViewWillEnter = function () {
-        var userLogged = this.globalService.getLoggedProffessionalData();
-        if (userLogged.userId === '' || userLogged.userId == null) {
-            console.log("datos de Agenda Quey11 return 2:");
-            return;
-        }
-        ;
-        console.log("datos de Agenda Quey22 user:" + userLogged.userId);
-        this.initdata();
-    };
-    HomePage.prototype.onViewTitleChanged = function (title) {
-        this.viewTitle = title;
-    };
-    HomePage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad CalendarPage');
-    };
-    HomePage.prototype.loadEvents = function () {
-        var _this = this;
-        var fromDate = __WEBPACK_IMPORTED_MODULE_2_moment__(new Date().setHours(0, 0, 0, 0)).format();
-        var tomorrow = new Date();
-        tomorrow.setDate(new Date().getDate() + 1);
-        var toDate = __WEBPACK_IMPORTED_MODULE_2_moment__(tomorrow.setHours(0, 5, 0, 0)).format();
-        //console.log('DatosAgenda tiempo2:' + fromDate+" end "+toDate);
-        this.scheduleServiceProvider.getSchedule(this.loggedUser.userId, fromDate, toDate).subscribe(function (data) {
-            //console.log("datos de Agenda Quey2:" + JSON.stringify(data))
-            _this.eventSource = data; //['appointments'];
-            //console.log('DatosAgenda2:' + JSON.stringify(this.eventSource));
-        });
-        //Cargar eventos
-    };
-    HomePage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>  Mi agenda diaria</ion-title>\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n\n  <ion-row>\n\n    <ion-col col-12 col-sm-12 col-md-8 col-lg-8>\n\n      <ion-navbar color="primary">\n        <ion-buttons>\n\n          <button ion-button >Hoy es {{viewTitle}}</button>\n\n        </ion-buttons>\n      </ion-navbar>\n\n      <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">\n        <div class="calendar-event-inner"\n             [ngStyle]="{\'background-color\': displayEvent.event.eventColor, color: \'white\'}"\n             [style.top]="(37*displayEvent.startOffset/hourParts)+\'px\'"\n             [style.left]="100/displayEvent.overlapNumber*displayEvent.position+\'%\'"\n             [style.width]="100/displayEvent.overlapNumber+\'%\'"\n             [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + \'px\'">\n          {{displayEvent.event.title}}\n          <br>\n          {{displayEvent.event.status}}\n        </div>\n      </ng-template>\n\n      <calendar [eventSource]="eventSource"\n                [calendarMode]="calendar.mode"\n                [currentDate]="calendar.currentDate"\n                (onTitleChanged)="onViewTitleChanged($event)"\n                [locale]="calendar.locale"\n                [dayviewNormalEventTemplate]="template3"\n                step="30"\n                startHour="9"\n                endHour="20"\n                class="calendar">\n      </calendar>\n    </ion-col>\n  </ion-row>\n\n</ion-content>\n\n\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/home/home.html"*/,
-            providers: [__WEBPACK_IMPORTED_MODULE_1__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */]]
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_5__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */]])
-    ], HomePage);
-    return HomePage;
-}());
-
-//# sourceMappingURL=home.js.map
-
-/***/ }),
-
-/***/ 176:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CalendarPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ng2_dragula__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_screen_orientation__ = __webpack_require__(459);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_service_service_service_service__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_schedule_service_schedule_service__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ng2_dragula__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_screen_orientation__ = __webpack_require__(457);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_service_service_service_service__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_schedule_service_schedule_service__ = __webpack_require__(459);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_customer_service_customer_service__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_common_locales_es_CO__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__angular_common__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_preferences_service_preferences_service__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__providers_appointment_service_appointment_service__ = __webpack_require__(461);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__providers_globals_service_globals_service__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_exception_service_exception_service__ = __webpack_require__(462);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_common_locales_es_CO__ = __webpack_require__(506);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__angular_common__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_preferences_service_preferences_service__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__providers_appointment_service_appointment_service__ = __webpack_require__(460);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__providers_globals_service_globals_service__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_exception_service_exception_service__ = __webpack_require__(461);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -824,14 +537,8 @@ var CalendarPage = /** @class */ (function () {
         this.toDate = null;
         this.startHour = "9";
         this.endHour = '20';
-        this.markDisabled = function (date) {
-            var val = true;
-            var current = new Date();
-            //return this.findException(date);
-            return date < current;
-        };
         this.calendar = {
-            mode: 'week',
+            mode: 'day',
             queryMode: 'remote',
             locale: __WEBPACK_IMPORTED_MODULE_8__angular_common_locales_es_CO__["a" /* default */][0],
             currentDate: new Date(),
@@ -860,6 +567,12 @@ var CalendarPage = /** @class */ (function () {
             onDoubleClick: function () {
                 //console.log('Doble Click')
             }
+        };
+        this.markDisabled = function (date) {
+            var val = true;
+            var current = new Date();
+            //return this.findException(date);
+            return date < current;
         };
         try {
             this.dragulaService.destroy('SERVICE');
@@ -912,10 +625,10 @@ var CalendarPage = /** @class */ (function () {
     };
     CalendarPage.prototype.findException = function (date) {
         var fest = this.eventExceptions.filter(function (exceptionList) {
-            //console.log ('COMPARANDO:' + moment(exceptionList.startTime).format("YYYYMMDD") + ' AND ' + moment(date).format("YYYYMMDD"));
+            console.log('COMPARANDO:' + __WEBPACK_IMPORTED_MODULE_2_moment__(exceptionList.startTime).format("YYYYMMDD") + ' AND ' + __WEBPACK_IMPORTED_MODULE_2_moment__(date).format("YYYYMMDD"));
             return __WEBPACK_IMPORTED_MODULE_2_moment__(exceptionList.startTime).format("YYYYMMDD") === __WEBPACK_IMPORTED_MODULE_2_moment__(date).format("YYYYMMDD");
         });
-        //console.log('fest:' + JSON.stringify(fest));
+        console.log('fest:' + JSON.stringify(fest));
         if (fest.length > 0)
             return true;
         return false;
@@ -1076,7 +789,7 @@ var CalendarPage = /** @class */ (function () {
     CalendarPage.prototype.onTimeSelected = function (ev) {
         var _this = this;
         this.theColor = 'blue';
-        //console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
+        console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
         this.selectedDay = ev.selectedTime;
         if (!this.eventSelected && (this.calendar.mode == 'day' || this.calendar.mode == 'week')) {
             if (!this.findException(this.selectedDay)) {
@@ -1127,10 +840,10 @@ var CalendarPage = /** @class */ (function () {
     CalendarPage.prototype.loadEvents = function (professionalUID, startTime, endTime) {
         var _this = this;
         this.scheduleServiceProvider.getSchedule(professionalUID, startTime, endTime).subscribe(function (data) {
-            ////console.log("datos de Agenda Queyr:" + JSON.stringify(data))
+            console.log("datos de Agenda Queyr:" + JSON.stringify(data));
             _this.eventSource = data; //['appointments'];
             _this.eventSource = _this.eventSource.filter(function (data) { return data.status !== 'Cancelada'; });
-            //console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
+            console.log('DatosAgenda:' + JSON.stringify(_this.eventSource));
         });
         //console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
         //Cargar eventos
@@ -1140,7 +853,10 @@ var CalendarPage = /** @class */ (function () {
         this.exceptionServiceProvider.getException(professionalUID, startTime, endTime).subscribe(function (data) {
             ////console.log("datos de Agenda Queyr:" + JSON.stringify(data))
             console.log('DATAExcepciones:' + JSON.stringify(data));
-            _this.eventExceptions = data; //['appointments'];
+            if (data)
+                _this.eventExceptions = data; //['appointments'];
+            else
+                _this.eventExceptions = [];
             console.log('Excepciones:' + JSON.stringify(_this.eventExceptions));
         });
         //Cargar eventos
@@ -1177,7 +893,76 @@ var CalendarPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 187:
+/***/ 174:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ServicesPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_service_service_service_service__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__ = __webpack_require__(46);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+/**
+ * Generated class for the ServicesPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var ServicesPage = /** @class */ (function () {
+    function ServicesPage(navCtrl, navParams, servicesService, globalService) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.servicesService = servicesService;
+        this.globalService = globalService;
+        this.servicesAvail = [];
+    }
+    ServicesPage.prototype.ngOnInit = function () {
+        this.loggedUser = this.globalService.getLoggedProffessionalData();
+        console.log('usuario:' + JSON.stringify(this.loggedUser));
+        if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
+        }
+        else {
+            this.getServices(this.loggedUser.userId);
+        }
+    };
+    ServicesPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad ServicesPage');
+    };
+    ServicesPage.prototype.getServices = function (professionalUID) {
+        var _this = this;
+        this.servicesService.getServices(professionalUID).subscribe(function (servicesAvail) { return _this.servicesAvail = servicesAvail; });
+    };
+    ServicesPage.prototype.serviceSelected = function (service) {
+    };
+    ServicesPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-services',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/services/services.html"*/'<!--\n  Generated template for the ServicesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar  color="primary">\n    <ion-title>Lista de Servicios</ion-title>\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n    <!--ion-buttons end>\n      <button ion-button icon-only (click)="addService()">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons-->\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-grid *ngFor="let service of servicesAvail">\n    <ion-row>\n      <ion-col (click)="serviceSelected(service)" align="left">\n        {{service.name}}\n      </ion-col>\n      <ion-col>\n        {{service.averageTime}}\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n</ion-content>\n\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/services/services.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_service_service_service_service__["a" /* ServiceServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */]])
+    ], ServicesPage);
+    return ServicesPage;
+}());
+
+//# sourceMappingURL=services.js.map
+
+/***/ }),
+
+/***/ 185:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -1190,49 +975,61 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 187;
+webpackEmptyAsyncContext.id = 185;
 
 /***/ }),
 
-/***/ 231:
+/***/ 229:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"../pages/calendar/calendar.module": [
-		888,
-		8
+		891,
+		11
 	],
 	"../pages/customer-add/customer-add-modal.module": [
 		880,
-		5
+		8
 	],
 	"../pages/customer-detail/customer-detail.module": [
-		882,
-		4
+		881,
+		7
 	],
 	"../pages/customer-modal/customer-modal.module": [
-		881,
-		3
+		882,
+		6
 	],
 	"../pages/customer/customer.module": [
 		883,
-		7
+		10
 	],
 	"../pages/event-modal/event-modal.module": [
 		884,
 		0
 	],
-	"../pages/home/home.module": [
-		885,
-		6
-	],
 	"../pages/login/login.module": [
+		885,
+		5
+	],
+	"../pages/private-policy/private-policy.module": [
+		887,
+		4
+	],
+	"../pages/professional-detail/professional-detail.module": [
 		886,
-		2
+		3
 	],
 	"../pages/registration/registration.module": [
-		887,
+		888,
+		2
+	],
+	"../pages/services-add/services-add.module": [
+		890,
 		1
+	],
+	"../pages/services/services.module": [
+		889,
+		9
 	]
 };
 function webpackAsyncContext(req) {
@@ -1246,24 +1043,215 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 231;
+webpackAsyncContext.id = 229;
 module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 461:
+/***/ 459:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ScheduleServiceProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__preferences_service_preferences_service__ = __webpack_require__(148);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var httpOptions = {
+    headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({ 'Content-Type': 'application/json' })
+};
+/*
+
+/*
+  Generated class for the ScheduleServiceProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var ScheduleServiceProvider = /** @class */ (function () {
+    function ScheduleServiceProvider(http, messageService, preferencesProvider) {
+        this.http = http;
+        this.messageService = messageService;
+        this.preferencesProvider = preferencesProvider;
+        this.appntUrl = __WEBPACK_IMPORTED_MODULE_5__environment__["a" /* environment */].baseUrl + '/professionals';
+        console.log('Hello ScheduleServiceProvider Provider');
+    }
+    ScheduleServiceProvider.prototype.log = function (message) {
+        this.messageService.add("AppointmentService: " + message);
+    };
+    ScheduleServiceProvider.prototype.getSchedule = function (professionalUID, startTime, endTime) {
+        var _this = this;
+        var finalURL = this.appntUrl + '/' + professionalUID + '/professionalsSchedule/appointments/?startTime=' + startTime + '&' + 'endTime=' + endTime;
+        console.log('SchedulePorRangoURL:' + finalURL);
+        return this.http.get(finalURL).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["map"])(function (result) {
+            var appointments = result;
+            appointments.forEach(function (appointment) {
+                appointment.startTime = new Date(appointment.startTime);
+                appointment.endTime = new Date(appointment.endTime);
+                appointment = _this.preferencesProvider.getColor(appointment);
+            });
+            return appointments;
+        }));
+    };
+    ScheduleServiceProvider.prototype.addScheduledAppnt = function (event) {
+        var _this = this;
+        console.log('Service: addScheduledAppointment:' + JSON.stringify(event));
+        return this.http.post(this.appntUrl + '/', event, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["tap"])(function (event) {
+            _this.log("added appointment w/ id=" + event.id);
+        }), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(this.handleError('addAppointment')));
+    };
+    /**
+     * Handle Http operation that failed.
+     * Let the app continue.
+     * @param operation - name of the operation that failed
+     * @param result - optional value to return as the observable result
+     */
+    ScheduleServiceProvider.prototype.handleError = function (operation, result) {
+        if (operation === void 0) { operation = 'operation'; }
+        return function (error) {
+            // TODO: send the error to remote logging infrastructure
+            console.error(error); // log to console instead
+            // TODO: better job of transforming error for user consumption
+            console.log(operation + " failed: " + error.message);
+            // Let the app keep running by returning an empty result.
+            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["of"])(result);
+        };
+    };
+    ScheduleServiceProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__["a" /* MessageServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_6__preferences_service_preferences_service__["a" /* PreferencesServiceProvider */]])
+    ], ScheduleServiceProvider);
+    return ScheduleServiceProvider;
+}());
+
+//# sourceMappingURL=schedule-service.js.map
+
+/***/ }),
+
+/***/ 46:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GlobalsServiceProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_logged_class__ = __webpack_require__(544);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(141);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+/*
+  Generated class for the GlobalsServiceProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var GlobalsServiceProvider = /** @class */ (function () {
+    function GlobalsServiceProvider(http, storage) {
+        this.http = http;
+        this.storage = storage;
+        this.loggedProfessional = new __WEBPACK_IMPORTED_MODULE_2__classes_logged_class__["a" /* LoggedProfessional */];
+        console.log('Hello GlobalsServiceProvider Provider');
+        this.readFromStorageProfessionalData();
+    }
+    GlobalsServiceProvider.prototype.ngOnInit = function () {
+        this.readFromStorageProfessionalData();
+    };
+    GlobalsServiceProvider.prototype.setProfessionalLoginData = function (UID, idSchedule, startHour, endHour) {
+        this.loggedProfessional.userId = UID;
+        this.loggedProfessional.idSchedule = idSchedule;
+        this.loggedProfessional.startHour = startHour;
+        this.loggedProfessional.endHour = endHour;
+    };
+    GlobalsServiceProvider.prototype.readFromStorageProfessionalData = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.storage.ready().then(function () {
+                _this.storage.get('uid').then(function (uidData) {
+                    _this.loggedProfessional.userId = uidData;
+                    //console.log('testing of sqlite was ' + uidData);
+                    _this.storage.get('idSchedule').then(function (idSched) {
+                        _this.loggedProfessional.idSchedule = idSched;
+                        resolve();
+                    });
+                });
+            });
+        }).then(function () { return _this.loggedProfessional; }, function () { return _this.loggedProfessional; });
+    };
+    GlobalsServiceProvider.prototype.getLoggedProffessionalData = function () {
+        return this.loggedProfessional;
+    };
+    GlobalsServiceProvider.prototype.reSetProfessionalLoginData = function () {
+        this.loggedProfessional.userId = '';
+        this.loggedProfessional.idSchedule = '';
+    };
+    /* Guarda la lista de clientes de un profesional en el cache */
+    GlobalsServiceProvider.prototype.getCustomerLocalList = function () {
+        return this.loadedCustomers;
+    };
+    GlobalsServiceProvider.prototype.setCustomerList = function (customerList) {
+        this.loadedCustomers = customerList;
+        //console.log('Set Customer Global List:' + JSON.stringify(this.loadedCustomers));
+    };
+    GlobalsServiceProvider.prototype.resetCustomerList = function () {
+        this.loadedCustomers = [];
+    };
+    GlobalsServiceProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_3__ionic_storage__["b" /* Storage */]])
+    ], GlobalsServiceProvider);
+    return GlobalsServiceProvider;
+}());
+
+//# sourceMappingURL=globals-service.js.map
+
+/***/ }),
+
+/***/ 460:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppointmentServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(52);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1347,19 +1335,19 @@ var AppointmentServiceProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 462:
+/***/ 461:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExceptionServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(52);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1434,54 +1422,7 @@ var ExceptionServiceProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 50:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessageServiceProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-/*
-  Generated class for the MessageServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-var MessageServiceProvider = /** @class */ (function () {
-    function MessageServiceProvider(http) {
-        this.http = http;
-        this.messages = [];
-        console.log('Hello MessageServiceProvider Provider');
-    }
-    MessageServiceProvider.prototype.add = function (message) {
-        this.messages.push(message);
-    };
-    MessageServiceProvider.prototype.clear = function () {
-        this.messages = [];
-    };
-    MessageServiceProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
-    ], MessageServiceProvider);
-    return MessageServiceProvider;
-}());
-
-//# sourceMappingURL=message-service.js.map
-
-/***/ }),
-
-/***/ 505:
+/***/ 504:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1490,8 +1431,8 @@ var MessageServiceProvider = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_customer_service_customer_service__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_globals_service_globals_service__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_globals_service_globals_service__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1606,19 +1547,19 @@ var CustomerSearchComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 506:
+/***/ 505:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerAddServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(52);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1708,22 +1649,46 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return firebaseConfig; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
-var firebaseConfig = {
-    apiKey: "AIzaSyBbM_6gU_MOGQL_Ti64jc3oD8R4aNJgju0",
-    authDomain: "ecomminstant.firebaseapp.com",
-    databaseURL: "https://ecomminstant.firebaseio.com",
-    projectId: "ecomminstant",
-    storageBucket: "ecomminstant.appspot.com",
-    messagingSenderId: "342856925244"
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessageServiceProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var environment = {
-    production: false,
-    baseUrl: 'https://ecommercealinstante.herokuapp.com'
-    //baseUrl: 'api'
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-//# sourceMappingURL=environment.js.map
+
+
+/*
+  Generated class for the MessageServiceProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var MessageServiceProvider = /** @class */ (function () {
+    function MessageServiceProvider(http) {
+        this.http = http;
+        this.messages = [];
+        console.log('Hello MessageServiceProvider Provider');
+    }
+    MessageServiceProvider.prototype.add = function (message) {
+        this.messages.push(message);
+    };
+    MessageServiceProvider.prototype.clear = function () {
+        this.messages = [];
+    };
+    MessageServiceProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */]])
+    ], MessageServiceProvider);
+    return MessageServiceProvider;
+}());
+
+//# sourceMappingURL=message-service.js.map
 
 /***/ }),
 
@@ -1733,38 +1698,38 @@ var environment = {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_splash_screen__ = __webpack_require__(502);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__ = __webpack_require__(503);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angularfire2__ = __webpack_require__(143);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_database__ = __webpack_require__(451);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_auth__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__environment__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_splash_screen__ = __webpack_require__(501);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__ = __webpack_require__(502);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angularfire2__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_database__ = __webpack_require__(449);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_auth__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__environment__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_user_service_user_service__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_storage__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ng2_dragula__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_storage__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ng2_dragula__ = __webpack_require__(145);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__angular_platform_browser_animations__ = __webpack_require__(865);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_ionic2_calendar__ = __webpack_require__(867);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__angular_common_http__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_screen_orientation__ = __webpack_require__(459);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_screen_orientation__ = __webpack_require__(457);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_components_module__ = __webpack_require__(878);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_customer_search_customer_search__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_customer_search_customer_search__ = __webpack_require__(504);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__app_component__ = __webpack_require__(879);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_home_home__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_tabs_tabs__ = __webpack_require__(171);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_calendar_calendar__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__providers_service_service_service_service__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__providers_customer_service_customer_service__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__providers_message_service_message_service__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__providers_appointment_service_appointment_service__ = __webpack_require__(461);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__pages_customer_customer__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__providers_schedule_service_schedule_service__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__providers_preferences_service_preferences_service__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__providers_globals_service_globals_service__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__providers_exception_service_exception_service__ = __webpack_require__(462);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__providers_customer_add_service_customer_add_service__ = __webpack_require__(506);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_tabs_tabs__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_calendar_calendar__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_service_service_service_service__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__providers_customer_service_customer_service__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__providers_message_service_message_service__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__providers_appointment_service_appointment_service__ = __webpack_require__(460);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_customer_customer__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__providers_schedule_service_schedule_service__ = __webpack_require__(459);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__providers_preferences_service_preferences_service__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__providers_globals_service_globals_service__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__providers_exception_service_exception_service__ = __webpack_require__(461);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__providers_customer_add_service_customer_add_service__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_services_services__ = __webpack_require__(174);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1812,10 +1777,10 @@ var AppModule = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["I" /* NgModule */])({
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_20__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_22__pages_calendar_calendar__["a" /* CalendarPage */],
-                __WEBPACK_IMPORTED_MODULE_27__pages_customer_customer__["a" /* CustomerPage */],
-                __WEBPACK_IMPORTED_MODULE_21__pages_tabs_tabs__["a" /* TabsPage */]
+                __WEBPACK_IMPORTED_MODULE_21__pages_calendar_calendar__["a" /* CalendarPage */],
+                __WEBPACK_IMPORTED_MODULE_26__pages_customer_customer__["a" /* CustomerPage */],
+                __WEBPACK_IMPORTED_MODULE_20__pages_tabs_tabs__["a" /* TabsPage */],
+                __WEBPACK_IMPORTED_MODULE_32__pages_services_services__["a" /* ServicesPage */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_forms__["a" /* FormsModule */],
@@ -1823,13 +1788,16 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/customer-add/customer-add-modal.module#CustomerAddModalPageModule', name: 'CustomerAddModalPage', segment: 'customer-add-modal', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/customer-modal/customer-modal.module#CustomerModalPageModule', name: 'CustomerModalPage', segment: 'customer-modal', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/customer-detail/customer-detail.module#CustomerDetailPageModule', name: 'CustomerDetailPage', segment: 'customer-detail', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/customer-modal/customer-modal.module#CustomerModalPageModule', name: 'CustomerModalPage', segment: 'customer-modal', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/customer/customer.module#CustomerPageModule', name: 'CustomerPage', segment: 'customer', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/event-modal/event-modal.module#EventModalPageModule', name: 'EventModalPage', segment: 'event-modal', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/home/home.module#HomePageModule', name: 'HomePage', segment: 'home', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/professional-detail/professional-detail.module#ProfessionalDetailPageModule', name: 'ProfessionalDetailPage', segment: 'professional-detail', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/private-policy/private-policy.module#PrivatePolicyPageModule', name: 'PrivatePolicyPage', segment: 'private-policy', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/registration/registration.module#RegistrationPageModule', name: 'RegistrationPage', segment: 'registration', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/services/services.module#ServicesPageModule', name: 'ServicesPage', segment: 'services', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/services-add/services-add.module#ServicesAddPageModule', name: 'ServicesAddPage', segment: 'services-add', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/calendar/calendar.module#CalendarPageModule', name: 'CalendarPage', segment: 'calendar', priority: 'low', defaultHistory: [] }
                     ]
                 }),
@@ -1850,10 +1818,10 @@ var AppModule = /** @class */ (function () {
             bootstrap: [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["b" /* IonicApp */]],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */],
-                __WEBPACK_IMPORTED_MODULE_20__pages_home_home__["a" /* HomePage */],
-                __WEBPACK_IMPORTED_MODULE_22__pages_calendar_calendar__["a" /* CalendarPage */],
-                __WEBPACK_IMPORTED_MODULE_27__pages_customer_customer__["a" /* CustomerPage */],
-                __WEBPACK_IMPORTED_MODULE_21__pages_tabs_tabs__["a" /* TabsPage */],
+                __WEBPACK_IMPORTED_MODULE_21__pages_calendar_calendar__["a" /* CalendarPage */],
+                __WEBPACK_IMPORTED_MODULE_26__pages_customer_customer__["a" /* CustomerPage */],
+                __WEBPACK_IMPORTED_MODULE_20__pages_tabs_tabs__["a" /* TabsPage */],
+                __WEBPACK_IMPORTED_MODULE_32__pages_services_services__["a" /* ServicesPage */]
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__["a" /* StatusBar */],
@@ -1861,17 +1829,17 @@ var AppModule = /** @class */ (function () {
                 { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["c" /* IonicErrorHandler */] },
                 __WEBPACK_IMPORTED_MODULE_10__providers_user_service_user_service__["a" /* UserServiceProvider */],
                 __WEBPACK_IMPORTED_MODULE_12_ng2_dragula__["b" /* DragulaService */],
-                __WEBPACK_IMPORTED_MODULE_23__providers_service_service_service_service__["a" /* ServiceServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_24__providers_customer_service_customer_service__["a" /* CustomerServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_25__providers_message_service_message_service__["a" /* MessageServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_22__providers_service_service_service_service__["a" /* ServiceServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_23__providers_customer_service_customer_service__["a" /* CustomerServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_24__providers_message_service_message_service__["a" /* MessageServiceProvider */],
                 __WEBPACK_IMPORTED_MODULE_18__components_customer_search_customer_search__["a" /* CustomerSearchComponent */],
-                __WEBPACK_IMPORTED_MODULE_26__providers_appointment_service_appointment_service__["a" /* AppointmentServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_28__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_29__providers_preferences_service_preferences_service__["a" /* PreferencesServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_30__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_25__providers_appointment_service_appointment_service__["a" /* AppointmentServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_27__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_28__providers_preferences_service_preferences_service__["a" /* PreferencesServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_29__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */],
                 __WEBPACK_IMPORTED_MODULE_16__ionic_native_screen_orientation__["a" /* ScreenOrientation */],
-                __WEBPACK_IMPORTED_MODULE_31__providers_exception_service_exception_service__["a" /* ExceptionServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_32__providers_customer_add_service_customer_add_service__["a" /* CustomerAddServiceProvider */]
+                __WEBPACK_IMPORTED_MODULE_30__providers_exception_service_exception_service__["a" /* ExceptionServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_31__providers_customer_add_service_customer_add_service__["a" /* CustomerAddServiceProvider */]
             ]
         })
     ], AppModule);
@@ -1886,88 +1854,22 @@ var AppModule = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GlobalsServiceProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_logged_class__ = __webpack_require__(544);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(140);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return firebaseConfig; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
+var firebaseConfig = {
+    apiKey: "AIzaSyBbM_6gU_MOGQL_Ti64jc3oD8R4aNJgju0",
+    authDomain: "ecomminstant.firebaseapp.com",
+    databaseURL: "https://ecomminstant.firebaseio.com",
+    projectId: "ecomminstant",
+    storageBucket: "ecomminstant.appspot.com",
+    messagingSenderId: "342856925244"
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+var environment = {
+    production: false,
+    baseUrl: 'https://ecommercealinstante.herokuapp.com'
+    //baseUrl: 'api'
 };
-
-
-
-
-/*
-  Generated class for the GlobalsServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-var GlobalsServiceProvider = /** @class */ (function () {
-    function GlobalsServiceProvider(http, storage) {
-        this.http = http;
-        this.storage = storage;
-        this.loggedProfessional = new __WEBPACK_IMPORTED_MODULE_2__classes_logged_class__["a" /* LoggedProfessional */];
-        console.log('Hello GlobalsServiceProvider Provider');
-        this.readFromStorageProfessionalData();
-    }
-    GlobalsServiceProvider.prototype.ngOnInit = function () {
-        this.readFromStorageProfessionalData();
-    };
-    GlobalsServiceProvider.prototype.setProfessionalLoginData = function (UID, idSchedule, startHour, endHour) {
-        this.loggedProfessional.userId = UID;
-        this.loggedProfessional.idSchedule = idSchedule;
-        this.loggedProfessional.startHour = startHour;
-        this.loggedProfessional.endHour = endHour;
-    };
-    GlobalsServiceProvider.prototype.readFromStorageProfessionalData = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.storage.ready().then(function () {
-                _this.storage.get('uid').then(function (uidData) {
-                    _this.loggedProfessional.userId = uidData;
-                    //console.log('testing of sqlite was ' + uidData);
-                    _this.storage.get('idSchedule').then(function (idSched) {
-                        _this.loggedProfessional.idSchedule = idSched;
-                        resolve();
-                    });
-                });
-            });
-        }).then(function () { return _this.loggedProfessional; }, function () { return _this.loggedProfessional; });
-    };
-    GlobalsServiceProvider.prototype.getLoggedProffessionalData = function () {
-        return this.loggedProfessional;
-    };
-    GlobalsServiceProvider.prototype.reSetProfessionalLoginData = function () {
-        this.loggedProfessional.userId = '';
-        this.loggedProfessional.idSchedule = '';
-    };
-    /* Guarda la lista de clientes de un profesional en el cache */
-    GlobalsServiceProvider.prototype.getCustomerLocalList = function () {
-        return this.loadedCustomers;
-    };
-    GlobalsServiceProvider.prototype.setCustomerList = function (customerList) {
-        this.loadedCustomers = customerList;
-        //console.log('Set Customer Global List:' + JSON.stringify(this.loadedCustomers));
-    };
-    GlobalsServiceProvider.prototype.resetCustomerList = function () {
-        this.loadedCustomers = [];
-    };
-    GlobalsServiceProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_3__ionic_storage__["b" /* Storage */]])
-    ], GlobalsServiceProvider);
-    return GlobalsServiceProvider;
-}());
-
-//# sourceMappingURL=globals-service.js.map
+//# sourceMappingURL=environment.js.map
 
 /***/ }),
 
@@ -1992,252 +1894,252 @@ var LoggedProfessional = /** @class */ (function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./af": 316,
-	"./af.js": 316,
-	"./ar": 317,
-	"./ar-dz": 318,
-	"./ar-dz.js": 318,
-	"./ar-kw": 319,
-	"./ar-kw.js": 319,
-	"./ar-ly": 320,
-	"./ar-ly.js": 320,
-	"./ar-ma": 321,
-	"./ar-ma.js": 321,
-	"./ar-sa": 322,
-	"./ar-sa.js": 322,
-	"./ar-tn": 323,
-	"./ar-tn.js": 323,
-	"./ar.js": 317,
-	"./az": 324,
-	"./az.js": 324,
-	"./be": 325,
-	"./be.js": 325,
-	"./bg": 326,
-	"./bg.js": 326,
-	"./bm": 327,
-	"./bm.js": 327,
-	"./bn": 328,
-	"./bn.js": 328,
-	"./bo": 329,
-	"./bo.js": 329,
-	"./br": 330,
-	"./br.js": 330,
-	"./bs": 331,
-	"./bs.js": 331,
-	"./ca": 332,
-	"./ca.js": 332,
-	"./cs": 333,
-	"./cs.js": 333,
-	"./cv": 334,
-	"./cv.js": 334,
-	"./cy": 335,
-	"./cy.js": 335,
-	"./da": 336,
-	"./da.js": 336,
-	"./de": 337,
-	"./de-at": 338,
-	"./de-at.js": 338,
-	"./de-ch": 339,
-	"./de-ch.js": 339,
-	"./de.js": 337,
-	"./dv": 340,
-	"./dv.js": 340,
-	"./el": 341,
-	"./el.js": 341,
-	"./en-au": 342,
-	"./en-au.js": 342,
-	"./en-ca": 343,
-	"./en-ca.js": 343,
-	"./en-gb": 344,
-	"./en-gb.js": 344,
-	"./en-ie": 345,
-	"./en-ie.js": 345,
-	"./en-il": 346,
-	"./en-il.js": 346,
-	"./en-nz": 347,
-	"./en-nz.js": 347,
-	"./eo": 348,
-	"./eo.js": 348,
-	"./es": 349,
-	"./es-do": 350,
-	"./es-do.js": 350,
-	"./es-us": 351,
-	"./es-us.js": 351,
-	"./es.js": 349,
-	"./et": 352,
-	"./et.js": 352,
-	"./eu": 353,
-	"./eu.js": 353,
-	"./fa": 354,
-	"./fa.js": 354,
-	"./fi": 355,
-	"./fi.js": 355,
-	"./fo": 356,
-	"./fo.js": 356,
-	"./fr": 357,
-	"./fr-ca": 358,
-	"./fr-ca.js": 358,
-	"./fr-ch": 359,
-	"./fr-ch.js": 359,
-	"./fr.js": 357,
-	"./fy": 360,
-	"./fy.js": 360,
-	"./gd": 361,
-	"./gd.js": 361,
-	"./gl": 362,
-	"./gl.js": 362,
-	"./gom-latn": 363,
-	"./gom-latn.js": 363,
-	"./gu": 364,
-	"./gu.js": 364,
-	"./he": 365,
-	"./he.js": 365,
-	"./hi": 366,
-	"./hi.js": 366,
-	"./hr": 367,
-	"./hr.js": 367,
-	"./hu": 368,
-	"./hu.js": 368,
-	"./hy-am": 369,
-	"./hy-am.js": 369,
-	"./id": 370,
-	"./id.js": 370,
-	"./is": 371,
-	"./is.js": 371,
-	"./it": 372,
-	"./it.js": 372,
-	"./ja": 373,
-	"./ja.js": 373,
-	"./jv": 374,
-	"./jv.js": 374,
-	"./ka": 375,
-	"./ka.js": 375,
-	"./kk": 376,
-	"./kk.js": 376,
-	"./km": 377,
-	"./km.js": 377,
-	"./kn": 378,
-	"./kn.js": 378,
-	"./ko": 379,
-	"./ko.js": 379,
-	"./ky": 380,
-	"./ky.js": 380,
-	"./lb": 381,
-	"./lb.js": 381,
-	"./lo": 382,
-	"./lo.js": 382,
-	"./lt": 383,
-	"./lt.js": 383,
-	"./lv": 384,
-	"./lv.js": 384,
-	"./me": 385,
-	"./me.js": 385,
-	"./mi": 386,
-	"./mi.js": 386,
-	"./mk": 387,
-	"./mk.js": 387,
-	"./ml": 388,
-	"./ml.js": 388,
-	"./mn": 389,
-	"./mn.js": 389,
-	"./mr": 390,
-	"./mr.js": 390,
-	"./ms": 391,
-	"./ms-my": 392,
-	"./ms-my.js": 392,
-	"./ms.js": 391,
-	"./mt": 393,
-	"./mt.js": 393,
-	"./my": 394,
-	"./my.js": 394,
-	"./nb": 395,
-	"./nb.js": 395,
-	"./ne": 396,
-	"./ne.js": 396,
-	"./nl": 397,
-	"./nl-be": 398,
-	"./nl-be.js": 398,
-	"./nl.js": 397,
-	"./nn": 399,
-	"./nn.js": 399,
-	"./pa-in": 400,
-	"./pa-in.js": 400,
-	"./pl": 401,
-	"./pl.js": 401,
-	"./pt": 402,
-	"./pt-br": 403,
-	"./pt-br.js": 403,
-	"./pt.js": 402,
-	"./ro": 404,
-	"./ro.js": 404,
-	"./ru": 405,
-	"./ru.js": 405,
-	"./sd": 406,
-	"./sd.js": 406,
-	"./se": 407,
-	"./se.js": 407,
-	"./si": 408,
-	"./si.js": 408,
-	"./sk": 409,
-	"./sk.js": 409,
-	"./sl": 410,
-	"./sl.js": 410,
-	"./sq": 411,
-	"./sq.js": 411,
-	"./sr": 412,
-	"./sr-cyrl": 413,
-	"./sr-cyrl.js": 413,
-	"./sr.js": 412,
-	"./ss": 414,
-	"./ss.js": 414,
-	"./sv": 415,
-	"./sv.js": 415,
-	"./sw": 416,
-	"./sw.js": 416,
-	"./ta": 417,
-	"./ta.js": 417,
-	"./te": 418,
-	"./te.js": 418,
-	"./tet": 419,
-	"./tet.js": 419,
-	"./tg": 420,
-	"./tg.js": 420,
-	"./th": 421,
-	"./th.js": 421,
-	"./tl-ph": 422,
-	"./tl-ph.js": 422,
-	"./tlh": 423,
-	"./tlh.js": 423,
-	"./tr": 424,
-	"./tr.js": 424,
-	"./tzl": 425,
-	"./tzl.js": 425,
-	"./tzm": 426,
-	"./tzm-latn": 427,
-	"./tzm-latn.js": 427,
-	"./tzm.js": 426,
-	"./ug-cn": 428,
-	"./ug-cn.js": 428,
-	"./uk": 429,
-	"./uk.js": 429,
-	"./ur": 430,
-	"./ur.js": 430,
-	"./uz": 431,
-	"./uz-latn": 432,
-	"./uz-latn.js": 432,
-	"./uz.js": 431,
-	"./vi": 433,
-	"./vi.js": 433,
-	"./x-pseudo": 434,
-	"./x-pseudo.js": 434,
-	"./yo": 435,
-	"./yo.js": 435,
-	"./zh-cn": 436,
-	"./zh-cn.js": 436,
-	"./zh-hk": 437,
-	"./zh-hk.js": 437,
-	"./zh-tw": 438,
-	"./zh-tw.js": 438
+	"./af": 314,
+	"./af.js": 314,
+	"./ar": 315,
+	"./ar-dz": 316,
+	"./ar-dz.js": 316,
+	"./ar-kw": 317,
+	"./ar-kw.js": 317,
+	"./ar-ly": 318,
+	"./ar-ly.js": 318,
+	"./ar-ma": 319,
+	"./ar-ma.js": 319,
+	"./ar-sa": 320,
+	"./ar-sa.js": 320,
+	"./ar-tn": 321,
+	"./ar-tn.js": 321,
+	"./ar.js": 315,
+	"./az": 322,
+	"./az.js": 322,
+	"./be": 323,
+	"./be.js": 323,
+	"./bg": 324,
+	"./bg.js": 324,
+	"./bm": 325,
+	"./bm.js": 325,
+	"./bn": 326,
+	"./bn.js": 326,
+	"./bo": 327,
+	"./bo.js": 327,
+	"./br": 328,
+	"./br.js": 328,
+	"./bs": 329,
+	"./bs.js": 329,
+	"./ca": 330,
+	"./ca.js": 330,
+	"./cs": 331,
+	"./cs.js": 331,
+	"./cv": 332,
+	"./cv.js": 332,
+	"./cy": 333,
+	"./cy.js": 333,
+	"./da": 334,
+	"./da.js": 334,
+	"./de": 335,
+	"./de-at": 336,
+	"./de-at.js": 336,
+	"./de-ch": 337,
+	"./de-ch.js": 337,
+	"./de.js": 335,
+	"./dv": 338,
+	"./dv.js": 338,
+	"./el": 339,
+	"./el.js": 339,
+	"./en-au": 340,
+	"./en-au.js": 340,
+	"./en-ca": 341,
+	"./en-ca.js": 341,
+	"./en-gb": 342,
+	"./en-gb.js": 342,
+	"./en-ie": 343,
+	"./en-ie.js": 343,
+	"./en-il": 344,
+	"./en-il.js": 344,
+	"./en-nz": 345,
+	"./en-nz.js": 345,
+	"./eo": 346,
+	"./eo.js": 346,
+	"./es": 347,
+	"./es-do": 348,
+	"./es-do.js": 348,
+	"./es-us": 349,
+	"./es-us.js": 349,
+	"./es.js": 347,
+	"./et": 350,
+	"./et.js": 350,
+	"./eu": 351,
+	"./eu.js": 351,
+	"./fa": 352,
+	"./fa.js": 352,
+	"./fi": 353,
+	"./fi.js": 353,
+	"./fo": 354,
+	"./fo.js": 354,
+	"./fr": 355,
+	"./fr-ca": 356,
+	"./fr-ca.js": 356,
+	"./fr-ch": 357,
+	"./fr-ch.js": 357,
+	"./fr.js": 355,
+	"./fy": 358,
+	"./fy.js": 358,
+	"./gd": 359,
+	"./gd.js": 359,
+	"./gl": 360,
+	"./gl.js": 360,
+	"./gom-latn": 361,
+	"./gom-latn.js": 361,
+	"./gu": 362,
+	"./gu.js": 362,
+	"./he": 363,
+	"./he.js": 363,
+	"./hi": 364,
+	"./hi.js": 364,
+	"./hr": 365,
+	"./hr.js": 365,
+	"./hu": 366,
+	"./hu.js": 366,
+	"./hy-am": 367,
+	"./hy-am.js": 367,
+	"./id": 368,
+	"./id.js": 368,
+	"./is": 369,
+	"./is.js": 369,
+	"./it": 370,
+	"./it.js": 370,
+	"./ja": 371,
+	"./ja.js": 371,
+	"./jv": 372,
+	"./jv.js": 372,
+	"./ka": 373,
+	"./ka.js": 373,
+	"./kk": 374,
+	"./kk.js": 374,
+	"./km": 375,
+	"./km.js": 375,
+	"./kn": 376,
+	"./kn.js": 376,
+	"./ko": 377,
+	"./ko.js": 377,
+	"./ky": 378,
+	"./ky.js": 378,
+	"./lb": 379,
+	"./lb.js": 379,
+	"./lo": 380,
+	"./lo.js": 380,
+	"./lt": 381,
+	"./lt.js": 381,
+	"./lv": 382,
+	"./lv.js": 382,
+	"./me": 383,
+	"./me.js": 383,
+	"./mi": 384,
+	"./mi.js": 384,
+	"./mk": 385,
+	"./mk.js": 385,
+	"./ml": 386,
+	"./ml.js": 386,
+	"./mn": 387,
+	"./mn.js": 387,
+	"./mr": 388,
+	"./mr.js": 388,
+	"./ms": 389,
+	"./ms-my": 390,
+	"./ms-my.js": 390,
+	"./ms.js": 389,
+	"./mt": 391,
+	"./mt.js": 391,
+	"./my": 392,
+	"./my.js": 392,
+	"./nb": 393,
+	"./nb.js": 393,
+	"./ne": 394,
+	"./ne.js": 394,
+	"./nl": 395,
+	"./nl-be": 396,
+	"./nl-be.js": 396,
+	"./nl.js": 395,
+	"./nn": 397,
+	"./nn.js": 397,
+	"./pa-in": 398,
+	"./pa-in.js": 398,
+	"./pl": 399,
+	"./pl.js": 399,
+	"./pt": 400,
+	"./pt-br": 401,
+	"./pt-br.js": 401,
+	"./pt.js": 400,
+	"./ro": 402,
+	"./ro.js": 402,
+	"./ru": 403,
+	"./ru.js": 403,
+	"./sd": 404,
+	"./sd.js": 404,
+	"./se": 405,
+	"./se.js": 405,
+	"./si": 406,
+	"./si.js": 406,
+	"./sk": 407,
+	"./sk.js": 407,
+	"./sl": 408,
+	"./sl.js": 408,
+	"./sq": 409,
+	"./sq.js": 409,
+	"./sr": 410,
+	"./sr-cyrl": 411,
+	"./sr-cyrl.js": 411,
+	"./sr.js": 410,
+	"./ss": 412,
+	"./ss.js": 412,
+	"./sv": 413,
+	"./sv.js": 413,
+	"./sw": 414,
+	"./sw.js": 414,
+	"./ta": 415,
+	"./ta.js": 415,
+	"./te": 416,
+	"./te.js": 416,
+	"./tet": 417,
+	"./tet.js": 417,
+	"./tg": 418,
+	"./tg.js": 418,
+	"./th": 419,
+	"./th.js": 419,
+	"./tl-ph": 420,
+	"./tl-ph.js": 420,
+	"./tlh": 421,
+	"./tlh.js": 421,
+	"./tr": 422,
+	"./tr.js": 422,
+	"./tzl": 423,
+	"./tzl.js": 423,
+	"./tzm": 424,
+	"./tzm-latn": 425,
+	"./tzm-latn.js": 425,
+	"./tzm.js": 424,
+	"./ug-cn": 426,
+	"./ug-cn.js": 426,
+	"./uk": 427,
+	"./uk.js": 427,
+	"./ur": 428,
+	"./ur.js": 428,
+	"./uz": 429,
+	"./uz-latn": 430,
+	"./uz-latn.js": 430,
+	"./uz.js": 429,
+	"./vi": 431,
+	"./vi.js": 431,
+	"./x-pseudo": 432,
+	"./x-pseudo.js": 432,
+	"./yo": 433,
+	"./yo.js": 433,
+	"./zh-cn": 434,
+	"./zh-cn.js": 434,
+	"./zh-hk": 435,
+	"./zh-hk.js": 435,
+	"./zh-tw": 436,
+	"./zh-tw.js": 436
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -2270,9 +2172,9 @@ webpackContext.id = 549;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ComponentsModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customer_search_customer_search__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customer_search_customer_search__ = __webpack_require__(504);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2306,11 +2208,11 @@ var ComponentsModule = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(503);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(502);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(502);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(501);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__ = __webpack_require__(171);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angularfire2_auth__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angularfire2_auth__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_user_service_user_service__ = __webpack_require__(170);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2336,9 +2238,9 @@ var MyApp = /** @class */ (function () {
         this.userService = userService;
         this.alertCtrl = alertCtrl;
         this.pages = [
-            { title: 'Home', pageName: 'HomePage', tabComponent: 'HomePage', index: 0, icon: 'home' },
-            { title: 'Mi Agenda', pageName: 'CalendarPage', tabComponent: 'CalendarPage', index: 1, icon: 'calendar' },
-            { title: 'Mis Pacientes', pageName: 'CustomerPage', tabComponent: 'CustomerPage', index: 2, icon: 'contacts' },
+            { title: 'Mi Agenda', pageName: 'CalendarPage', tabComponent: 'CalendarPage', index: 0, icon: 'calendar' },
+            { title: 'Mis Pacientes', pageName: 'CustomerPage', tabComponent: 'CustomerPage', index: 1, icon: 'contacts' },
+            { title: 'Mis Servicios', pageName: 'ServicesPage', tabComponent: 'ServicesPage', index: 2, icon: 'clipboard' }
         ];
         this.rootPage = __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__["a" /* TabsPage */];
         platform.ready().then(function () {
@@ -2383,6 +2285,13 @@ var MyApp = /** @class */ (function () {
             this.nav.setRoot(page.pageName, params);
         }
     };
+    MyApp.prototype.openPolicy = function () {
+        var view = this.nav.getActive();
+        console.log(view);
+        if (view.name !== 'PrivatePolicyPage') {
+            this.nav.push('PrivatePolicyPage');
+        }
+    };
     MyApp.prototype.isActive = function (page) {
         // Again the Tabs Navigation
         var childNav = this.nav.getActiveChildNav();
@@ -2398,13 +2307,20 @@ var MyApp = /** @class */ (function () {
         }
         return;
     };
+    MyApp.prototype.goToProfessional = function () {
+        var view = this.nav.getActive();
+        console.log(view);
+        if (view.name !== 'ProfessionalDetailPage') {
+            this.nav.push('ProfessionalDetailPage');
+        }
+    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Nav */]),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* Nav */])
     ], MyApp.prototype, "nav", void 0);
     MyApp = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'login-style',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/app/app.html"*/'<ion-menu [content]="mycontent" persistent="true" >\n  <ion-content>\n    <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">\n    <p>Hola!</p>\n    {{loggedIn}}\n    <p>Bienvenid@</p>\n    <button ion-button  menuClose detail-none (click)="signOff()">\n      Salir\n    </button>\n\n    <ion-list>\n\n      <ion-item menuClose detail-none *ngFor="let p of pages" (click)="openPage(p)">{{ p.title }}</ion-item>\n\n\n    </ion-list>\n    <ion-label><a href="mailto:ecommercealinstante@gmail.com?subject=Hola, tengo la siguiente sugerencia para la aplicación"\n                  target="_top"><ion-icon name="mail"></ion-icon> Dudas, comentarios, soporte</a>\n\n    </ion-label>\n\n  </ion-content>\n</ion-menu>\n<ion-nav #mycontent [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/app/app.html"*/
+            selector: 'login-style',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/app/app.html"*/'<ion-menu [content]="mycontent" persistent="true" >\n  <ion-content>\n    <!--div align="right">\n      <button ion-button color="secondary" (click)="goToProfessional()" small ><ion-icon name="brush"></ion-icon></button>\n    </div-->\n    <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">\n    <p>Hola!</p>\n    {{loggedIn}}\n    <p>Bienvenid@</p>\n    <button ion-button  menuClose detail-none (click)="signOff()">\n      Salir\n    </button>\n\n    <ion-list>\n\n      <ion-item menuClose detail-none *ngFor="let p of pages" (click)="openPage(p)">{{ p.title }}</ion-item>\n\n    </ion-list>\n    <ion-label><a href="mailto:ecommercealinstante@gmail.com?subject=Hola, tengo la siguiente sugerencia para la aplicación"\n                  target="_top"><ion-icon name="mail"></ion-icon> Dudas, comentarios, soporte</a>\n\n    </ion-label>\n    <ion-item (click)="openPolicy()">Politica de Privacidad</ion-item>\n\n  </ion-content>\n</ion-menu>\n<ion-nav #mycontent [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/app/app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */], __WEBPACK_IMPORTED_MODULE_5_angularfire2_auth__["a" /* AngularFireAuth */], __WEBPACK_IMPORTED_MODULE_6__providers_user_service_user_service__["a" /* UserServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
@@ -2423,13 +2339,13 @@ var MyApp = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__globals_service_globals_service__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__globals_service_globals_service__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2526,6 +2442,86 @@ var CustomerServiceProvider = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=customer-service.js.map
+
+/***/ }),
+
+/***/ 98:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ServiceServiceProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(52);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var httpOptions = {
+    headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({ 'Content-Type': 'application/json' })
+};
+/*
+  Generated class for the ServiceServiceProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var ServiceServiceProvider = /** @class */ (function () {
+    function ServiceServiceProvider(http, messageService) {
+        this.http = http;
+        this.messageService = messageService;
+        this.serviceUrl = __WEBPACK_IMPORTED_MODULE_5__environment__["a" /* environment */].baseUrl + '/professionals';
+        console.log('Hello ServiceServiceProvider Provider');
+    }
+    ServiceServiceProvider.prototype.log = function (message) {
+        this.messageService.add("ServicesService: " + message);
+    };
+    ServiceServiceProvider.prototype.getServices = function (professionalUID) {
+        var finalURL = this.serviceUrl + '/' + professionalUID + '/services';
+        console.log('ServicesURL:' + finalURL);
+        return this.http.get(finalURL, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["catchError"])(this.handleError('getServices', [])));
+    };
+    /**
+     * Handle Http operation that failed.
+     * Let the app continue.
+     * @param operation - name of the operation that failed
+     * @param result - optional value to return as the observable result
+     */
+    ServiceServiceProvider.prototype.handleError = function (operation, result) {
+        if (operation === void 0) { operation = 'operation'; }
+        return function (error) {
+            // TODO: send the error to remote logging infrastructure
+            console.error(error); // log to console instead
+            // TODO: better job of transforming error for user consumption
+            console.log(operation + " failed: " + error.message);
+            // Let the app keep running by returning an empty result.
+            return Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__["of"])(result);
+        };
+    };
+    ServiceServiceProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__["a" /* MessageServiceProvider */]])
+    ], ServiceServiceProvider);
+    return ServiceServiceProvider;
+}());
+
+//# sourceMappingURL=service-service.js.map
 
 /***/ })
 

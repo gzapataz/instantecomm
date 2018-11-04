@@ -6,6 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { ServiceClass } from "../../classes/service-class";
 import { MessageServiceProvider } from "../message-service/message-service";
 import { environment } from "../../environment";
+import {AppointmentClass} from "../../classes/appointment-class";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -36,6 +37,18 @@ export class ServiceServiceProvider {
    return this.http.get<ServiceClass[]>(finalURL,  httpOptions).pipe(
       catchError(this.handleError('getServices', []))
     );
+  }
+
+  addService(professionalUID, service) {
+    var finalURL = this.serviceUrl +  '/' + professionalUID + '/services';
+    console.log('Servicio AddService:' + finalURL)
+      return this.http.post<ServiceClass>(finalURL, service, httpOptions).pipe(
+        tap((service: ServiceClass) => {
+          console.log('EN POST');
+          this.log(`added Service w/ id=${service._id}`)
+        }),
+        catchError(this.handleError<ServiceClass>('addService', new ServiceClass()))
+      );
   }
 
 

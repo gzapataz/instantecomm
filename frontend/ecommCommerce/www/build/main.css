@@ -25752,25 +25752,6 @@ page-customer ion-icon {
   color: #fff;
 }
 
-page-home ion-icon {
-  color: #fff;
-}
-
-page-home .left {
-  border-right: 1px solid #000000;
-  padding: 0px;
-  overflow: scroll;
-}
-
-page-home .right {
-  padding: 0px;
-  overflow: scroll;
-}
-
-page-home ion-row {
-  height: 100%;
-}
-
 page-login {
   text-align: center;
 }

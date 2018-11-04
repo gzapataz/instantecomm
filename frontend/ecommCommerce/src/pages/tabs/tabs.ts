@@ -1,8 +1,10 @@
+import { AlertController, NavController, Platform, NavParams } from "ionic-angular";
 import { Component } from '@angular/core';
-import { HomePage } from '../home/home';
 import { CalendarPage } from "../calendar/calendar";
 import { CustomerPage } from "../customer/customer";
-import {AlertController, NavController, Platform, NavParams} from "ionic-angular";
+import { ServicesPage } from "../services/services";
+
+
 
 @Component({
   templateUrl: 'tabs.html'
@@ -10,10 +12,9 @@ import {AlertController, NavController, Platform, NavParams} from "ionic-angular
 export class TabsPage {
 
 
-
-  tab1Root = HomePage;
-  tab2Root = CalendarPage;
-  tab3Root = CustomerPage;
+  tab1Root = CalendarPage;
+  tab2Root = CustomerPage;
+  tab3Root = ServicesPage;
   myIndex: number;
 
   constructor(public navCtrl: NavController,
@@ -21,7 +22,5 @@ export class TabsPage {
               private platform: Platform, navParams: NavParams) {
     this.myIndex = navParams.data.tabIndex || 0;
   }
-
-
 
 }

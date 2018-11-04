@@ -1,14 +1,14 @@
 webpackJsonp([3],{
 
-/***/ 881:
+/***/ 886:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomerModalPageModule", function() { return CustomerModalPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfessionalDetailPageModule", function() { return ProfessionalDetailPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_modal__ = __webpack_require__(890);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__professional_detail__ = __webpack_require__(899);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,33 +18,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CustomerModalPageModule = /** @class */ (function () {
-    function CustomerModalPageModule() {
+var ProfessionalDetailPageModule = /** @class */ (function () {
+    function ProfessionalDetailPageModule() {
     }
-    CustomerModalPageModule = __decorate([
+    ProfessionalDetailPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__customer_modal__["a" /* CustomerModalPage */],
+                __WEBPACK_IMPORTED_MODULE_2__professional_detail__["a" /* ProfessionalDetailPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__customer_modal__["a" /* CustomerModalPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__professional_detail__["a" /* ProfessionalDetailPage */]),
             ],
         })
-    ], CustomerModalPageModule);
-    return CustomerModalPageModule;
+    ], ProfessionalDetailPageModule);
+    return ProfessionalDetailPageModule;
 }());
 
-//# sourceMappingURL=customer-modal.module.js.map
+//# sourceMappingURL=professional-detail.module.js.map
 
 /***/ }),
 
-/***/ 890:
+/***/ 899:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerModalPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfessionalDetailPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_user_service_user_service__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__ = __webpack_require__(46);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -56,47 +58,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
 /**
- * Generated class for the CustomerModalPage page.
+ * Generated class for the ProfessionalDetailPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-var CustomerModalPage = /** @class */ (function () {
-    function CustomerModalPage(navCtrl, navParams, viewCtrl) {
+var ProfessionalDetailPage = /** @class */ (function () {
+    function ProfessionalDetailPage(navCtrl, navParams, userService, globalService) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.viewCtrl = viewCtrl;
-        this.customers = [];
-        this.customers = this.navParams.get('customerList');
-        console.log('Clientes: ' + JSON.stringify(this.customers[0]));
+        this.userService = userService;
+        this.globalService = globalService;
+        this.nombre = "";
     }
-    CustomerModalPage.prototype.selectedName = function (id, name, customer) {
-        customer.name = name;
-        console.log('ReturnedCust:' + JSON.stringify(customer));
-        this.viewCtrl.dismiss(customer);
-        //this.show = false;
-        //this.myInput = name;
-        //this.custId$ = id;
-        //this.messageEvent.emit(customer);
+    ProfessionalDetailPage.prototype.ngOnInit = function () {
+        var _this = this;
+        this.loggedUser = this.globalService.getLoggedProffessionalData();
+        console.log('usuario:' + JSON.stringify(this.loggedUser));
+        this.userService.getUserData(this.loggedUser.userId).subscribe(function (result) {
+            _this.professional = result;
+            _this.nombre = _this.professional['person'].personName.firstName;
+            console.log('Profesional:' + JSON.stringify(_this.professional));
+        });
     };
-    CustomerModalPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad CustomerModalPage');
+    ProfessionalDetailPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad ProfessionalDetailPage');
     };
-    CustomerModalPage.prototype.cancel = function () {
-        this.viewCtrl.dismiss(undefined);
-    };
-    CustomerModalPage = __decorate([
+    ProfessionalDetailPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-customer-modal',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/'<!--\n  Generated template for the CustomerModalPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary" >\n    <ion-title>Búsqueda de Clientes</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list *ngFor="let customer of customers">\n    <ion-item (click)="selectedName(customer._id, customer.person.personName.lastName + \' \' + customer.person.personName.firstName, customer)">\n      {{customer.person.personName.lastName}} {{customer.person.personName.firstName}}\n    </ion-item>\n  </ion-list>\n  <button ion-button full icon-left (click)="cancel()">\n    <ion-icon name="checkmark"></ion-icon> Cancelar\n  </button>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/,
+            selector: 'page-professional-detail',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/professional-detail/professional-detail.html"*/'<!--\n  Generated template for the ProfessionalDetailPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Mis Datos</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-label>{{nombre}}</ion-label>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/professional-detail/professional-detail.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */]])
-    ], CustomerModalPage);
-    return CustomerModalPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1__providers_user_service_user_service__["a" /* UserServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */]])
+    ], ProfessionalDetailPage);
+    return ProfessionalDetailPage;
 }());
 
-//# sourceMappingURL=customer-modal.js.map
+//# sourceMappingURL=professional-detail.js.map
 
 /***/ })
 
