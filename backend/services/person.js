@@ -34,7 +34,6 @@ exports.updatePerson = async function(req, personId){
    if (req.body[key]!=null && req.body[key]!=undefined) {
      if(key != "email" && key != "uid" && key != "_id"){
         updatedFields[key] = req.body[key];
-        console.log(key);
      }
    }
  });

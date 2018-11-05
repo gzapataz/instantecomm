@@ -189,10 +189,10 @@ exports.findAppointmentsScheduleByProfessionalUid = function(req){
 
 /**
  * Buscar todos los pacientes de un profesional por uid
- * @param {*} req 
+ * @param {*} uid 
  */
-exports.findClientsByProfessionalUid = function(req){
-  var professional = Professional.findOne({uid:req.params.uid})
+exports.findClientsByProfessionalUid = function(uid){
+  var professional = Professional.findOne({uid:uid})
     .populate({path:'clients', 
       populate: {
         path:'person',

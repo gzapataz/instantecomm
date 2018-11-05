@@ -12,6 +12,7 @@ router.get('/:uid/professionalsSchedule/appointments/', ProfessionalController.g
 router.get('/:uid/clients/', ProfessionalController.getClientsByProfessionalUid);
 router.get('/:uid/professionalsSchedule/exceptions/', ProfessionalController.getExceptionsScheduleByProfessionalUid);
 router.post('/:uid/clients/', ProfessionalController.setClientProfessionalByUid);
+router.put('/:uid/clients/', ProfessionalController.setClientProfessionalUpdateByUid);
 router.post('/:uid/services/', ProfessionalController.setServiceProfessionalByUid);
 router.put('/:uid/services/', ProfessionalController.setServiceProfessionalUpdateByUid);
 

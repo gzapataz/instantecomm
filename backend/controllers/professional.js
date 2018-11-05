@@ -289,7 +289,7 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
  * @param {*} res 
  */
 exports.getClientsByProfessionalUid = function(req, res){ 
-  var professional = ProfessionalService.findClientsByProfessionalUid(req);
+  var professional = ProfessionalService.findClientsByProfessionalUid(req.params.uid);
   professional.exec(function(err, professional) {
     if(err)
       return res.status(500).send({message: 'Error en la petición: ' + err});
@@ -433,6 +433,48 @@ exports.setClientProfessionalByUid = function(req, res){
   else{
     return res.status(500).send({message: 'El email es requerido'});
   }
+}  
+
+exports.setClientProfessionalUpdateByUid = function(req, res){
+  var professionalService = ProfessionalService.findClientsByProfessionalUid(req.params.uid);
+  professionalService.then((professional) => {
+    var clients = professional.clients;
+    var isClient = false;
+    var clientId = undefined;
+    if(clients != null && clients != undefined && clients.length > 0){
+      for(var i in clients){
+        var client = clients[i];
+        if(client != undefined && client != null){
+          if(client._id == req.body._id){
+            isClient = true;
+            clientId = client._id;
+            break;
+          }
+        }
+      }  
+      if(isClient){
+        if(clientId != undefined){
+          var clientService = ClientService.findClientBy_id(clientId);
+          clientService.then((client) => {
+            var personService = PersonService.updatePerson(req, client.person);
+            personService.then((person) => {
+              res.json(person); 
+            });
+          }); 
+        }
+        else{
+          return res.status(500).send({message: 'El cliente no existe o no ha sido asociado a este professional'});
+        }
+      }
+      else{
+        return res.status(500).send({message: 'El cliente no existe o no ha sido asociado a este professional'});
+      }
+      
+    }  
+    else{
+      return res.status(500).send({message: 'El profesional no tiene clientes configurados'});
+    }
+  }); 
 }  
 
 /**
