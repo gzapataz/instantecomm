@@ -23,6 +23,7 @@ var Queue = kue.createQueue({
 
 
 var jobName = "sendNotification";
+var jobAlarmName = "sendNotificationAlarm";
 
 // Create a job instance in the queue.
 var job = Queue
@@ -30,19 +31,27 @@ var job = Queue
             .priority('normal')
             .removeOnComplete(true);
 
+// Create a job instance in the queue.
+var jobAlarm = Queue
+            .createJob(jobAlarmName)
+            .priority('normal')
+            .removeOnComplete(true);            
+
 // Schedule it to run every 60 minutes. Function every(interval, job) accepts interval in either a human-interval String format or a cron String format.
-Queue.every('10 seconds', job);
+Queue.every('1 minutes', job);
+Queue.every('30 minutes', jobAlarm);
 
 Queue.process(jobName, sendNotification);
-Queue.process(jobName, sendNotificationAlarm);
+Queue.process(jobAlarmName, sendNotificationAlarm);
 
 async function sendNotification(job, done) {
+    console.log("Envío de notificaciones");
     const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", new ObjectId(initialNotification));
     notificationCollection.forEach(notification => {
         
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
             AppointmentService.getAppointmentByNotification_id(db, notification._id).then((appointment) => {
-                console.log(JSON.stringify(notification) + " " + " " + appointment);
+                console.log("[Notificación]: " + JSON.stringify(notification) + " " + " " + JSON.stringify(appointment) + "\n");
                 if(appointment != null && appointment != undefined){
                     ServiceService.getServiceBy_id(db,appointment.service).then((service)=> {
                         ClientService.getClientBy_id(db, appointment.client).then((client) => {
@@ -70,12 +79,13 @@ async function sendNotification(job, done) {
 }
 
 async function sendNotificationAlarm(job, done) {
+    console.log(job.type);
     console.log("Envío de alarmas");
     const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", new ObjectId(alarmNotification));
     notificationCollection.forEach(notification => {
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
             AppointmentService.getAppointmentByNotification_id(db, notification._id).then((appointment) => {
-                console.log(JSON.stringify(notification) + " " + " " + appointment);
+                console.log("[Alarma]: " + JSON.stringify(notification) + " " + " " + JSON.stringify(appointment) + "\n");
                 if(appointment != null && appointment != undefined){
                     ServiceService.getServiceBy_id(db,appointment.service).then((service)=> {
                         ProfessionalService.getProfessionalBy_id(db,appointment.professional).then((professional)=> {
