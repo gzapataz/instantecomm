@@ -18,7 +18,7 @@ const initialNotification = "5ba1a970aedec9a5acbfc25e";
 const alarmNotification = "5bd12a8d1544111f28715083";
 
 var Queue = kue.createQueue({
-    //redis: redisUrl
+    redis: redisUrl
   });
 
 
