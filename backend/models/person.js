@@ -26,14 +26,30 @@ var personSchema   = new Schema({
     birthdate: { type: Date },
     creationDate:{ type: Date, default: Date.now },
     phone: String,
-    mobile: String,
+    mobile: { type: String, required: true},
     email: { 
         type: String, 
         required: true, 
         index: { unique: true },
         validate: [ validator.isEmail, 'invalid email' ]
+    },
+    address: {
+        type: String
     }
 });
 
 personSchema.index({ idType: 1, identification: 1}, { unique: true }); 
+
+personSchema.set('toObject', { virtuals: true })
+personSchema.set('toJSON', { virtuals: true })
+
+personSchema.virtual('age')
+  .get(function() {
+        if(this.birthdate != null && this.birthdate != undefined){  
+        var ageDifMs = Date.now() - this.birthdate.getTime();
+        var ageDate = new Date(ageDifMs); // miliseconds from epoch
+        return Math.abs(ageDate.getUTCFullYear() - 1970);  
+    }
+  })
+
 module.exports = mongoose.model('Person', personSchema);
