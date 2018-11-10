@@ -11,7 +11,7 @@
 <ion-content padding>
   <customer-search (messageEvent)="receiveMessage($event)"></customer-search>
   <ion-row>
-    <div *ngIf="platform.is('tablet') || platform.is('core') || screenOrientation.type == 'landscape-secondary' || screenOrientation.type == 'landscape-primary'">
+    <div *ngIf="platform.is('tablet') || platform.is('core')">
       <ion-col col-4 col-md-4 col-lg-6 >
         <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">
           <ion-item *ngFor="let service of servicesAvail" id={{service._id}}>{{service.name}}</ion-item>
@@ -64,10 +64,9 @@
                [style.top]="(37*displayEvent.startOffset/hourParts)+'px'"
                [style.left]="100/displayEvent.overlapNumber*displayEvent.position+'%'"
                [style.width]="100/displayEvent.overlapNumber+'%'"
+               [style.font-size]="'11px'"
                [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + 'px'">
-            {{displayEvent.event.title}}
-            <br>
-            {{displayEvent.event.status}}
+            {{displayEvent.event.title | slice:0:displayEvent.event.title.indexOf(' ')}}
           </div>
         </ng-template>
 
@@ -88,6 +87,7 @@
         </ng-template>
 
        <calendar [eventSource]="eventSource"
+                 [formatHourColumn]="calendar.formatHourColumn"
                  [calendarMode]="calendar.mode"
                  [markDisabled]="markDisabled"
                  [queryMode]="calendar.queryMode"

@@ -22,6 +22,7 @@ export class ServicesAddPage implements OnInit {
 
   averageTime = 0;
   loggedUser;
+  accion = 'Adicionar';
   service: ServiceClass = new ServiceClass();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -30,6 +31,10 @@ export class ServicesAddPage implements OnInit {
               private alertCtrl: AlertController,
               private serviceService: ServiceServiceProvider,
               private globalService: GlobalsServiceProvider) {
+    if (this.navParams.get('service')) {
+      this.service = this.navParams.get('service');
+      this.accion = 'Actualizar';
+    }
   }
 
   ionViewCanEnter() {
