@@ -3,14 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./app"
+    "start": "node ./app dentalApp-worker",
+    "stop": "pkill dentalApp-worker"
   },
   "dependencies": {
     "dateformat": "^3.0.3",
     "kue": "^0.11.6",
     "kue-scheduler": "^0.7.4",
     "mongoist": "^1.7.4",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "killall": "1.0.4"
   },
   "main": "app.js",
   "devDependencies": {},
