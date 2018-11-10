@@ -40,35 +40,13 @@ exports.saveRatingClient =  async function(client,rating){
 }
 
 /**
- * Buscar clientes por email
- * @param {*} email 
- */
-exports.findClientByEmail = function(email){
-  var client = Client.findOne()
-  .populate({path: 'person', match: { email: { $gte: email }}});
-  return client;
-}
-
-/**
- * Buscar cliente por identificación
- * @param {*} idType 
- * @param {*} identification 
- */
-exports.findClientByIdentification = function(idType, identification){
-  var client = Client.findOne()
-  .populate({path: 'person', 
-    match: { idType: { $gte: idType }},
-    match: { identification: {$gte: identification}}
-  });
-  return client;
-}
-
-/**
  * Buscar clientes por person
  * @param {*} personId 
  */
 exports.findClientByPersonId = function(personId){
-  var client = Client.findOne({person:personId});
+  var client = Client.findOne({person:personId}).select('clientSince lastVisit status')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1}});
   return client;
 }
 
@@ -77,8 +55,10 @@ exports.findClientByPersonId = function(personId){
  * @param {*} _id 
  */
 exports.findClientBy_id = function(_id){
-  var client = Client.findOne({_id:_id})
-  .populate('person').populate('clientGrades');
+  var client = Client.findOne({_id:_id}).select('clientSince lastVisit status')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1}});
+  //.populate('clientGrades');
   return client;
 }
 

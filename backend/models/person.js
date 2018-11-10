@@ -29,8 +29,8 @@ var personSchema   = new Schema({
     mobile: { type: String, required: true},
     email: { 
         type: String, 
-        required: true, 
-        index: { unique: true },
+        //required: true, 
+        //index: { unique: true },
         validate: [ validator.isEmail, 'invalid email' ]
     },
     address: {
@@ -47,7 +47,7 @@ personSchema.virtual('age')
   .get(function() {
         if(this.birthdate != null && this.birthdate != undefined){  
         var ageDifMs = Date.now() - this.birthdate.getTime();
-        var ageDate = new Date(ageDifMs); // miliseconds from epoch
+        var ageDate = new Date(ageDifMs);
         return Math.abs(ageDate.getUTCFullYear() - 1970);  
     }
   })

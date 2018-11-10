@@ -157,7 +157,6 @@ exports.findServicesProfessionalByUid = function(uid){
  * @param {*} professional_id 
  */
 exports.findServicesProfessionalBy_id = function(service_id,professional_id){
-  console.log(service_id);
   var professional = Professional.findOne({_id:professional_id, service: service_id})
   return professional;
 }
@@ -193,10 +192,13 @@ exports.findAppointmentsScheduleByProfessionalUid = function(req){
  */
 exports.findClientsByProfessionalUid = function(uid){
   var professional = Professional.findOne({uid:uid})
-    .populate({path:'clients', 
+    .populate({path:'clients',
+      match: {"status": { "$ne": ActivationStatus.INACTIVE}},
+      select: {'clientSince':1, 'lastVisit':1, 'status':1},
       populate: {
-        path:'person',
-        match: {"status": { "$ne": ActivationStatus.INACTIVE}},
+        path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+        'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1},
+        options: {sort: {personName: 'asc'}}
       }
     });
   return professional;  
