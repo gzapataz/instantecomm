@@ -75,7 +75,8 @@ customer:CustomerClass;
     //this.navCtrl.push('CustomerDetailPage', {customer: customer});
     //console.log(`Clicked customer:` + customer)
     let modal = this.modalCtrl.create('CustomerDetailPage', {
-    customer: customer
+    customer: customer,
+     profesionalID:this.loggedUser.userId
     });
     modal.present();
   }
