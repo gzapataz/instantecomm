@@ -128,6 +128,7 @@ customer:CustomerClass;
       });
       modal.present();
       modal.onDidDismiss(data => {
+        console.log("respuesta add "+data["message"]);
         this.navCtrl.setRoot(this.navCtrl.getActive().component);
 
     });

@@ -961,6 +961,7 @@ var CustomerPage = /** @class */ (function () {
             });
             modal.present();
             modal.onDidDismiss(function (data) {
+                console.log("respuesta add " + data["message"]);
                 _this.navCtrl.setRoot(_this.navCtrl.getActive().component);
             });
         }

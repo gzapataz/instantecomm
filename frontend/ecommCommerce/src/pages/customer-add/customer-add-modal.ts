@@ -18,7 +18,7 @@ export class CustomerAddModalPage implements OnInit {
     },
     idType: "Cédula",
     birthdate:Date,
-    gender: '',
+    gender: 'Femenino',
     phone: '',
     mobile: '',
     email:'',
@@ -53,8 +53,8 @@ professional: LoggedProfessional;
     // @ts-ignore
     this.person=this.persona;
     console.log(this.person);
-    if(!this.person.personName.firstName||!this.person.personName.lastName||!this.person.mobile
-    ){
+    if(!this.person.personName.firstName||!this.person.personName.lastName||!this.person.mobile||!this.person.identification||!this.person.email
+    ||!this.person.idType){
       let theAlert = this.alertCtrl.create({
         title: "Campos incompletos",
         subTitle: "Por favor ingresa los datos de tu paciente",
@@ -62,6 +62,13 @@ professional: LoggedProfessional;
       });
       theAlert.present();
     }else{
+
+      if(this.person.phone){
+        this.person.phone="00";
+      }
+      else if(this.person.address){
+        this.person.address="baker";
+      }
       this.customerAddServiceProvider.addACustomer(this.person,this.professional.userId).subscribe(data => {
         console.log('Datos Salvados:' + JSON.stringify(data));
         this.cancel();
