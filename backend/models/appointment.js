@@ -33,7 +33,8 @@ var appointmentSchema   = new Schema({
     notifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'
-    }]
+    }],
+    creationDate:{ type: Date, default: Date.now }
 });
 
 
