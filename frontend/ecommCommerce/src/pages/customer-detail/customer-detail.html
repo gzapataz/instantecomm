@@ -48,6 +48,11 @@
     <ion-input  type="email" id="email"[(ngModel)]="customer.person.email" name="email">
     </ion-input>
   </ion-item>
+  <ion-item>
+    <ion-label>Direccion </ion-label>
+    <ion-input  type="text" placeholder="Baker street" id="address"[(ngModel)]="customer.person.address" name="address">
+    </ion-input>
+  </ion-item>
   <ion-buttons >
     <button ion-button full icon-left color="secondary" (click)="save()">
       <ion-icon name="checkmark"></ion-icon> Actualizar

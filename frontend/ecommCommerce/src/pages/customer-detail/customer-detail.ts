@@ -31,6 +31,7 @@ export class CustomerDetailPage implements OnInit {
     mobile: '',
     email:'',
     identification:'',
+    address:''
   }
 
 
@@ -75,6 +76,7 @@ export class CustomerDetailPage implements OnInit {
     this.person.phone = this.customer.person.phone;
     this.person.mobile = this.customer.person.mobile;
     this.person.email=this.customer.person.email;
+    this.person.address=this.customer.person.address;
     this.customerUpdateDetailProvider.updateCustomer(this.person, this.profesionalID).subscribe(data => {
       console.log('Datos Salvados:' + JSON.stringify(data));
       this.cancel();
