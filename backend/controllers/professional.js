@@ -310,7 +310,7 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
     });
   }
   else{
-    return res.status(500).send({message: 'El uid del profesional es requerido'});
+    return res.status(404).send({message: 'El uid del profesional es requerido'});
   }
 }
 
@@ -333,7 +333,7 @@ exports.getClientsByProfessionalUid = function(req, res){
     });
   }
   else{
-    return res.status(500).send({message: 'El uid del profesional es requerido'});
+    return res.status(404).send({message: 'El uid del profesional es requerido'});
   }  
 }
 
@@ -412,7 +412,7 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
       });
     }
     else{
-      return res.status(500).send({message: 'El uid del profesional es requerido'});
+      return res.status(404).send({message: 'El uid del profesional es requerido'});
     }
   }
 
@@ -479,7 +479,7 @@ exports.setClientProfessionalByUid = function(req, res){
     }*/
   }
   else{
-    return res.status(500).send({message: 'El uid del profesional es requerido'});
+    return res.status(404).send({message: 'El uid del profesional es requerido'});
   }
 }  
 
@@ -512,21 +512,20 @@ exports.setClientProfessionalUpdateByUid = function(req, res){
             }); 
           }
           else{
-            return res.status(500).send({message: 'El cliente no existe o no ha sido asociado a este professional'});
+            return res.status(404).send({message: 'El campo _id del cliente es requerido para su actualización'});
           }
         }
         else{
-          return res.status(500).send({message: 'El cliente no existe o no ha sido asociado a este professional'});
-        }
-        
+          return res.status(404).send({message: 'El cliente no existe o no ha sido asociado a este professional'});
+        }  
       }  
       else{
-        return res.status(500).send({message: 'El profesional no tiene clientes configurados'});
+        return res.status(404).send({message: 'El profesional no tiene clientes configurados'});
       }
     });
   }
   else{
-    return res.status(500).send({message: 'El uid del profesional es requerido'});
+    return res.status(404).send({message: 'El uid del profesional es requerido'});
   } 
 }  
 
@@ -551,7 +550,7 @@ exports.setServiceProfessionalByUid = function(req, res){
     });
   }
   else{
-    return res.status(500).send({message: 'El uid del profesional es requerido'});
+    return res.status(404).send({message: 'El uid del profesional es requerido'});
   } 
 }  
 
@@ -583,17 +582,17 @@ exports.setServiceProfessionalUpdateByUid = function(req, res){
           }); 
         }
         else{
-          return res.status(500).send({message: 'Servicio no existente o no asociado a este professional'});
+          return res.status(404).send({message: 'Servicio no existente o no asociado a este professional'});
         }
         
       }  
       else{
-        return res.status(500).send({message: 'El profesional no tiene servicios configurados'});
+        return res.status(404).send({message: 'El profesional no tiene servicios configurados'});
       }
     });  
   }
   else{
-    return res.status(500).send({message: 'El uid del profesional es requerido'});
+    return res.status(404).send({message: 'El uid del profesional es requerido'});
   } 
 } 
 

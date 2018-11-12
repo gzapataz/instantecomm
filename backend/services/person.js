@@ -13,6 +13,7 @@ exports.savePerson = async function(req){
   person.phone = req.body.phone;
   person.mobile = req.body.mobile;
   person.email = req.body.email;
+  person.address = req.body.address;
   try{
     await person.save();
   }

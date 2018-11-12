@@ -4,7 +4,6 @@ var Professional = require('../models/professional');
 const ActivationStatus = require('../enums/activationStatus');
 const ExceptionType = require('../enums/exceptionType');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
-var Person = require('../services/person');
 var ObjectId = require('mongodb').ObjectID
 
 /**
@@ -115,7 +114,7 @@ exports.saveServiceProfessional =  async function(professionalUid, service){
 exports.findProfessionalByUid = function(uid){
   var professional = Professional.findOne({uid:uid}).select('professionalSince lastVisit status uid startHour endHour')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1}})
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
   .populate({path:'professionalSchedule', select: {'idSchedule':1}});
   return professional;
 }
@@ -127,7 +126,7 @@ exports.findProfessionalByUid = function(uid){
 exports.findProfessionalByPersonId = function(personId){
   var professional = Professional.findOne({person:personId}).select('professionalSince lastVisit status uid startHour endHour')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1}})
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
   .populate({path:'professionalSchedule', select: {'idSchedule':1}});
   return professional;
 }
@@ -197,7 +196,7 @@ exports.findClientsByProfessionalUid = function(uid){
       select: {'clientSince':1, 'lastVisit':1, 'status':1},
       populate: {
         path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-        'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1},
+        'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address:':1},
         options: {sort: {personName: 'asc'}}
       }
     });
