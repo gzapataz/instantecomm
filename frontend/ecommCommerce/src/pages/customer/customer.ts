@@ -124,8 +124,21 @@ customer:CustomerClass;
       modal.onDidDismiss(data => {
 
         this.navCtrl.setRoot(this.navCtrl.getActive().component);
-
+        this.openmodalwhatsapp(data.mobile);
     });
     }
+}
+
+openmodalwhatsapp(mobile){
+
+  let modal = this.modalCtrl.create('CustomerWhatsappPage', {
+    mobile: mobile
+  });
+  modal.present();
+  modal.onDidDismiss(data => {
+  this.navCtrl.setRoot(this.navCtrl.getActive().component);
+
+  });
+
 }
 }

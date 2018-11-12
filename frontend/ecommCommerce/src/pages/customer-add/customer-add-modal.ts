@@ -79,7 +79,10 @@ codigo:string;
       }
       this.person.mobile=this.codigo+this.persona.mobile;
       this.customerAddServiceProvider.addACustomer(this.person, this.professional.userId).subscribe(data => {
-        //console.log('Datos Salvados:' + JSON.stringify(data));
+        console.log('1Datos Salvados:' + JSON.stringify(data));
+
+
+
         this.cancel();
       });
     }
