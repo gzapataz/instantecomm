@@ -11,6 +11,7 @@ export interface IPerson {
   mobile: any,
   email: string,
   identication: string
+  address:string
 };
 
 export class PersonName {
@@ -28,7 +29,7 @@ export class Person {
   mobile: any;
   email: string;
   identification: string;
-
+  address:string;
 };
 
 

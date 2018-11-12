@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "342856925244",
+    "firebase_url": "https://ecomminstant.firebaseio.com",
+    "project_id": "ecomminstant",
+    "storage_bucket": "ecomminstant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342856925244:android:17c81f46b75ec124",
+        "android_client_info": {
+          "package_name": "ecommCommerce.co"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342856925244-36ruse5ee2qp4v5oj5dkotleitcpvtc7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbXui2UvsOSazMKIeGnXWsbCfuRJGxXkU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -59,10 +59,13 @@ exports.sendNotification = async function(phone, message, notification, arrayApo
             });   
             console.log('Se actualiza el estado de notificación a enviada');
         }
+        else if(response.statusCode == 469){
+            console.log('Plan de whatsapp agotado, sigue encolado el mensaje');
+        }
         else if(response.statusCode == 471){
             NotificationService.updateStatusReport(db, notification._id, 'Error', 'Status code: ' + response.statusCode).then((results) => {
             });  
-            console.log('Se actualiza el estado error en el móvil');
+            console.log('Se actualiza el estado a error en el móvil');
         }
     });
     return respuesta;

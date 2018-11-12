@@ -13,12 +13,43 @@ exports.savePerson = async function(req){
   person.phone = req.body.phone;
   person.mobile = req.body.mobile;
   person.email = req.body.email;
+  person.address = req.body.address;
   try{
     await person.save();
   }
   catch(err){
     return err;
   }  
+  return person;
+}
+
+
+
+
+/**
+ * Actualiza una persona. Actualiza la persona.
+ * @param {*} req 
+ */
+exports.updatePerson = async function(req, personId){
+ const updatedFields = {};
+ Object.keys(req.body).forEach(key => {
+   if (req.body[key]!=null && req.body[key]!=undefined) {
+     if(key != "email" && key != "uid" && key != "_id"){
+        updatedFields[key] = req.body[key];
+     }
+   }
+ });
+
+  try{
+    var person = Person.findOneAndUpdate(
+      {_id:personId},
+      {$set:updatedFields},          
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }
   return person;
 }
 

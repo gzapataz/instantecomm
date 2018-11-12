@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar  color="primary">
+    <ion-title>Paciente creado</ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <ion-label>Tu paciente ha sido creado correctamente.<br> Te invitamos a darle la bienvenida <br>enviandole un mensaje por <br>Whatsapp! </ion-label>
+
+  <ion-buttons >
+    <button ion-button color="secondary" small><a href="https://wa.me/{{mobile}}?text=Hola">Dar bienvenida</a></button>
+  </ion-buttons>
+
+</ion-content>
+

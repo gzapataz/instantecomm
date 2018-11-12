@@ -14,7 +14,8 @@ var appointmentSchema   = new Schema({
     },
     client:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Client'
+        ref: 'Client',
+        required: true
     },
     professional:{
         type: mongoose.Schema.Types.ObjectId,
@@ -22,7 +23,8 @@ var appointmentSchema   = new Schema({
     },
     service:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Service'
+        ref: 'Service',
+        required: true
     },
     title: {
         type: String,
@@ -31,16 +33,10 @@ var appointmentSchema   = new Schema({
     notifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'
-    }]
+    }],
+    creationDate:{ type: Date, default: Date.now }
 });
 
 
-appointmentSchema.set('toObject', { virtuals: true })
-appointmentSchema.set('toJSON', { virtuals: true })
-
-appointmentSchema.virtual('idAppointment')
-  .get(function() {
-    return this._id;
-  })
 
 module.exports = mongoose.model('Appointment', appointmentSchema);

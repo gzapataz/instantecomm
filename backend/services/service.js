@@ -19,7 +19,33 @@ exports.saveService = async function(req){
     return error;
   }    
   return service;
-} 
+}
+
+/**
+ * Actualiza un servicio.
+ * @param {*} req 
+ */
+exports.updateService = async function(req){
+  const updatedFields = {};
+  Object.keys(req.body).forEach(key => {
+    if (req.body[key]!=null && req.body[key]!=undefined) {
+      if(key != "_id"){
+        updatedFields[key] = req.body[key];
+      }  
+    }
+  });
+  try{
+    var service = Service.findOneAndUpdate(
+      {_id:req.body._id},
+      {$set:updatedFields},     
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }
+  return service;
+}
 
 /**
  * 

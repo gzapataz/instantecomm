@@ -1,14 +1,14 @@
 webpackJsonp([8],{
 
-/***/ 880:
+/***/ 886:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomerAddModalPageModule", function() { return CustomerAddModalPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomerDetailPageModule", function() { return CustomerDetailPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_add_modal__ = __webpack_require__(892);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_detail__ = __webpack_require__(898);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,34 +18,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CustomerAddModalPageModule = /** @class */ (function () {
-    function CustomerAddModalPageModule() {
+var CustomerDetailPageModule = /** @class */ (function () {
+    function CustomerDetailPageModule() {
     }
-    CustomerAddModalPageModule = __decorate([
+    CustomerDetailPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__customer_add_modal__["a" /* CustomerAddModalPage */],
+                __WEBPACK_IMPORTED_MODULE_2__customer_detail__["a" /* CustomerDetailPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__customer_add_modal__["a" /* CustomerAddModalPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__customer_detail__["a" /* CustomerDetailPage */]),
             ],
         })
-    ], CustomerAddModalPageModule);
-    return CustomerAddModalPageModule;
+    ], CustomerDetailPageModule);
+    return CustomerDetailPageModule;
 }());
 
-//# sourceMappingURL=customer-add-modal.module.js.map
+//# sourceMappingURL=customer-detail.module.js.map
 
 /***/ }),
 
-/***/ 892:
+/***/ 898:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerAddModalPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerDetailPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_customer_add_service_customer_add_service__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_customer_update_detail_customer_update_detail__ = __webpack_require__(510);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -58,14 +58,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var CustomerAddModalPage = /** @class */ (function () {
-    function CustomerAddModalPage(navCtrl, navParams, viewCtrl, customerAddServiceProvider, alertCtrl) {
+/**
+ * Generated class for the CustomerDetailPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var CustomerDetailPage = /** @class */ (function () {
+    function CustomerDetailPage(navCtrl, navParams, viewCtrl, customerUpdateDetailProvider) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.viewCtrl = viewCtrl;
-        this.customerAddServiceProvider = customerAddServiceProvider;
-        this.alertCtrl = alertCtrl;
+        this.customerUpdateDetailProvider = customerUpdateDetailProvider;
         this.persona = {
+            _id: '',
             personName: {
                 firstName: '',
                 lastName: '',
@@ -77,47 +83,51 @@ var CustomerAddModalPage = /** @class */ (function () {
             mobile: '',
             email: '',
             identification: '',
+            address: ''
         };
+        this.customer = this.navParams.get('customer');
+        this.profesionalID = this.navParams.get('profesionalID');
+        console.log('Detail:' + JSON.stringify(this.customer) + this.profesionalID);
+        if (this.customer != undefined) {
+        }
     }
-    CustomerAddModalPage.prototype.ngOnInit = function () {
-        this.professional = this.navParams.get('professional');
-        console.log(this.professional);
+    CustomerDetailPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad CustomerDetailPage');
     };
-    CustomerAddModalPage.prototype.cancel = function () {
-        this.viewCtrl.dismiss(this.person);
+    CustomerDetailPage.prototype.ngOnInit = function () {
     };
-    CustomerAddModalPage.prototype.save = function () {
+    CustomerDetailPage.prototype.cancel = function () {
+        this.viewCtrl.dismiss();
+    };
+    CustomerDetailPage.prototype.save = function () {
         var _this = this;
         // @ts-ignore
         this.person = this.persona;
-        console.log(this.person);
-        if (!this.person.personName.firstName || !this.person.personName.lastName || !this.person.gender || !this.person.email || !this.person.mobile) {
-            var theAlert = this.alertCtrl.create({
-                title: "Campos incompletos",
-                subTitle: "Por favor ingresa los datos de tu paciente",
-                buttons: ['OK']
-            });
-            theAlert.present();
-        }
-        else {
-            this.customerAddServiceProvider.addACustomer(this.person, this.professional.userId).subscribe(function (data) {
-                console.log('Datos Salvados:' + JSON.stringify(data));
-                _this.cancel();
-            });
-        }
+        this.person._id = this.customer._id;
+        this.person.personName.firstName = this.customer.person.personName.firstName;
+        this.person.personName.lastName = this.customer.person.personName.lastName;
+        this.person.idType = this.customer.person.idType;
+        this.person.identification = this.customer.person.identification;
+        this.person.gender = this.customer.person.gender;
+        this.person.phone = this.customer.person.phone;
+        this.person.mobile = this.customer.person.mobile;
+        this.person.email = this.customer.person.email;
+        this.person.address = this.customer.person.address;
+        this.customerUpdateDetailProvider.updateCustomer(this.person, this.profesionalID).subscribe(function (data) {
+            console.log('Datos Salvados:' + JSON.stringify(data));
+            _this.cancel();
+        });
     };
-    CustomerAddModalPage = __decorate([
+    CustomerDetailPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-customer-add-modal',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-add/customer-add-modal.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n    <ion-title>Agregar paciente</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item>\n      <ion-label >Nombre (*)</ion-label>\n      <ion-input  type="text" placeholder="Jon" id="name"[(ngModel)]="persona.personName.firstName" name="name" required="required">\n    </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label >Apellido (*)</ion-label>\n      <ion-input  type="text" placeholder="Doe" id="lastname" [(ngModel)]="persona.personName.lastName" name="lastname" required="required">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label >Numero identificacion</ion-label>\n      <ion-input  type="number" placeholder="123456789" id="identificacion" [(ngModel)]="persona.identification" name="identificacion">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label >Genero (*)</ion-label>\n      <ion-select  type="text" placeholder="Sexo"  [(ngModel)]="persona.gender" name="gender" required="required">\n        <ion-option   value="Femenino">Femenino</ion-option>\n        <ion-option   value="Masculino">Masculino</ion-option>\n      </ion-select>\n\n    </ion-item>\n    <ion-item>\n      <ion-label >E-mail (*)</ion-label>\n      <ion-input  type="email" placeholder="jon@gmail.com" id="email" [(ngModel)]="persona.email" name="email" required="required">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label >Celular (*)</ion-label>\n      <ion-input  type="number" placeholder="345123456" id="mobile" [(ngModel)]="persona.mobile" name="mobile" required="required">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label>Telefono Fijo </ion-label>\n      <ion-input  type="number" placeholder="0312345" id="phone"[(ngModel)]="persona.phone" name="phone" required="required">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label>Campos obligatorios (*)</ion-label>\n\n    </ion-item>\n\n  </ion-list>\n  <ion-buttons >\n    <button ion-button full icon-left color="secondary" (click)="save()">\n      <ion-icon name="checkmark"></ion-icon> Adicionar\n    </button>\n  </ion-buttons>\n\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-add/customer-add-modal.html"*/,
+            selector: 'page-customer-detail',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Información de contacto</ion-title>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <ion-item>\n    <ion-label >Nombre del paciente: </ion-label>\n    <ion-input  type="text" id="name"[(ngModel)]="customer.person.personName.firstName" name="name" required="required" >\n    </ion-input>\n  </ion-item>\n\n  <ion-item>\n    <ion-label >Apellido del paciente: </ion-label>\n    <ion-input  type="text" id="lastname"[(ngModel)]="customer.person.personName.lastName" name="lastname" required="required" >\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Tipo de identificacion:  </ion-label>\n    <ion-input  type="text" id="idType"[(ngModel)]="customer.person.idType" name="idType" >\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Numero  de identificacion:  </ion-label>\n    <ion-input  type="number" id="identification"[(ngModel)]="customer.person.identification" name="identification" >\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Telefono fijo: </ion-label>\n    <ion-input  type="tel" id="phone"[(ngModel)]="customer.person.phone" name="phone">\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Telefono celular: </ion-label>\n\n    <ion-input  type="tel" id="mobile"[(ngModel)]="customer.person.mobile" name="mobile" required="required" >\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Correo electronico: </ion-label>\n    <ion-input  type="email" id="email"[(ngModel)]="customer.person.email" name="email">\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label>Direccion </ion-label>\n    <ion-input  type="text" placeholder="Baker street" id="address"[(ngModel)]="customer.person.address" name="address">\n    </ion-input>\n  </ion-item>\n  <ion-buttons >\n    <button ion-button full icon-left color="secondary" (click)="save()">\n      <ion-icon name="checkmark"></ion-icon> Actualizar\n    </button>\n  </ion-buttons>\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer-detail/customer-detail.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_customer_add_service_customer_add_service__["a" /* CustomerAddServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
-    ], CustomerAddModalPage);
-    return CustomerAddModalPage;
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */], __WEBPACK_IMPORTED_MODULE_2__providers_customer_update_detail_customer_update_detail__["a" /* CustomerUpdateDetailProvider */]])
+    ], CustomerDetailPage);
+    return CustomerDetailPage;
 }());
 
-//# sourceMappingURL=customer-add-modal.js.map
+//# sourceMappingURL=customer-detail.js.map
 
 /***/ })
 

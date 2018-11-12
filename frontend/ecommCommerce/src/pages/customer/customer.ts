@@ -64,18 +64,15 @@ customer:CustomerClass;
     }
   }
 
-  addNewAppointment(customer) {
-    //console.log(`Clicked customer:` + JSON.stringify(customer));
-    this.addEvent(customer);
 
-  }
 
   customerSelected(customer) {
     this.customer=customer;
     //this.navCtrl.push('CustomerDetailPage', {customer: customer});
     //console.log(`Clicked customer:` + customer)
     let modal = this.modalCtrl.create('CustomerDetailPage', {
-    customer: customer
+    customer: customer,
+     profesionalID:this.loggedUser.userId
     });
     modal.present();
   }
@@ -92,9 +89,7 @@ customer:CustomerClass;
         eventData.status = 'Agendada';
         let events = this.eventSource;
         events.push(eventData);
-        /*this.appointmentService.addAppointment(eventData).subscribe(data => {
-          //console.log('Datos Salvados:' + JSON.stringify(data));
-        });*/
+
         this.eventSource = [];
         this.eventSelected = false;
         setTimeout(() => {
@@ -127,9 +122,26 @@ customer:CustomerClass;
       });
       modal.present();
       modal.onDidDismiss(data => {
+
         this.navCtrl.setRoot(this.navCtrl.getActive().component);
+    if(data!=undefined){
+      this.openmodalwhatsapp(data.mobile);
+    }
 
     });
     }
+}
+
+openmodalwhatsapp(mobile){
+
+  let modal = this.modalCtrl.create('CustomerWhatsappPage', {
+    mobile: mobile
+  });
+  modal.present();
+  modal.onDidDismiss(data => {
+  this.navCtrl.setRoot(this.navCtrl.getActive().component);
+
+  });
+
 }
 }

@@ -2,7 +2,7 @@
 // Cargamos los controladores para usarlos posteriormente
 var PersonService = require('../services/person');
 var ClientService = require('../services/client');
-var RatingService = require('../services/rating');
+//var RatingService = require('../services/rating');
 
 /**
  * Conseguir datos de todos los clientes
@@ -10,25 +10,18 @@ var RatingService = require('../services/rating');
  * @param {*} res 
  */
 exports.getClients = function(req, res){
-  if(req.query.email  != undefined){
-    exports.getClientByEmail(req, res);
-  }
-  else if(req.query.idType != undefined && req.query.identification != undefined){
-    exports.getClientByIdentification(req, res);
+  if(req.query.idType != undefined && req.query.identification != undefined){
+    var personService = PersonService.findPersonByIdentification(req.query.idType, req.query.identification);
+    personService.then((person) =>{
+      var clientService = ClientService.findClientByPersonId(person);
+      clientService.then((client) =>{
+        return res.json(client);
+      });  
+    });
   }
   else{
-    var clients = ClientService.findAllClients();
-    clients.exec(
-      (err, clients) => {
-        if(err)
-          return res.status(500).send({message: 'Error en la petición ' + err});
-        if(!clients) 
-          return res.status(404).send({message: 'No existen clientes creados'});
-        else
-          return res.json(clients);
-      }
-    )
-  }
+    return res.status(404).send({message: 'No hay filtros para esta consulta'});
+  }  
 }
 
 /**
@@ -60,41 +53,6 @@ exports.setClient = function(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-exports.getClientByEmail = function(req, res){
-  var client = ClientService.findClientByEmail(req.query.email);
-  client.exec(function(err, client) {
-    if(err)
-      return res.status(500).send({message: 'Error en la petición: ' + err});
-    if(!client) 
-      return res.status(404).send({message: 'No existe este cliente'});
-    else
-      return res.json(client);
-  });
-}
-
-/**
- * 
- * @param {*} req 
- * @param {*} res 
- */
-exports.getClientByIdentification = function(req, res){
-  var client = ClientService.findClientByIdentification(req.query.idType, req.query.identification);
-  client.exec(function(err, client) {
-    if(err)
-      return res.status(500).send({message: 'Error en la petición: ' + err});
-    if(!client) 
-      return res.status(404).send({message: 'No existe este cliente'});
-    else
-      return res.json(client);
-  });
-}
-
-
-/**
- * 
- * @param {*} req 
- * @param {*} res 
- */
 exports.getClientBy_id = function(req, res){
   var client = ClientService.findClientBy_id(req.params._id);
   client.exec(function(err, client) {
@@ -112,7 +70,7 @@ exports.getClientBy_id = function(req, res){
  * @param {*} req 
  * @param {*} res 
  */
-exports.setRatingClientByEmail = function(req, res){
+/*exports.setRatingClientByEmail = function(req, res){
   var rating = RatingService.saveRating(req.body.ratingValue);
   rating.then((rate) => {
     var client = ClientService.findClientByEmail(req.body.email);
@@ -127,4 +85,4 @@ exports.setRatingClientByEmail = function(req, res){
       });  
     });
   });
-}
+}*/
