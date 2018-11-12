@@ -39,8 +39,8 @@ exports.setProfessional = function(req, res){
   var startHour = req.body.startHour;
   var endHour = req.body.endHour;
   /**/
-  if(req.body.idType != undefined && req.body.idType != null && req.body.identification != undefined && req.body.identification != null){
-
+  //if(req.body.idType != undefined && req.body.idType != null && req.body.identification != undefined && req.body.identification != null){
+  if(req.body.email != undefined && req.body.email != null){
     if(startHour != undefined && startHour != null){
       if(!Number.isInteger(Number(startHour))){
         return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de inicio de jornada debe ser numerica '});
@@ -57,31 +57,28 @@ exports.setProfessional = function(req, res){
     else{
       return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de fin de jornada es requerida '});
     }
-    if(req.body.email != undefined && req.body.email != null){
-      var personService = PersonService.findPersonByEmail(req.body.email);
+
+    if(req.body.idType != undefined && req.body.idType != null && req.body.identification != undefined && req.body.identification != null){
+    var personService = PersonService.findPersonByIdentification(req.body.idType,req.body.identification);
       personService.then((person) => {
         var professionalService = ProfessionalService.findProfessionalByPersonId(person);
         professionalService.then((professional) => {
           if(professional != null && professional != undefined){
-            return res.status(404).send({message: 'Ya existe un profesional relacionado con el mail: ' + req.body.email});
+            return res.status(404).send({message: 'Ya existe un profesional con ' +  req.body.idType +  ' ' + req.body.identification});
           }
         });  
-      });  
-      
-    }
-    else{
-      return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional, el campo email es requerido'});
+      });   
     }
 
 
     req.body.status = ActivationStatus.ACTIVE;
-    var personService = PersonService.findPersonByIdentification(req.body.idType, req.body.identification);
+    var personService = PersonService.findPersonByEmail(req.body.email);
     personService.then((person) => {
       if(person != undefined && person != null){
         var professionalService = ProfessionalService.findProfessionalByPersonId(person) 
           professionalService.then((professional) => {
             if(professional != undefined && professional != null){
-              return res.status(404).send({message: 'El profesional con ' + req.body.idType + " " + req.body.identification +  ' ya existe'});
+              return res.status(404).send({message: 'El profesional con email' + req.body.email +  ' ya existe'});
             }
             else{
               var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
@@ -129,8 +126,13 @@ exports.setProfessional = function(req, res){
     }); 
   }
   else{
-    return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional, el tipo y la identificación son requeridos'});
+    return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional, el email es requerido'});
   }
+
+  /*}
+  else{
+    return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional, el tipo y la identificación son requeridos'});
+  }*/
 }
 
 
