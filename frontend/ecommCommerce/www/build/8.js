@@ -103,7 +103,7 @@ var CustomerDetailPage = /** @class */ (function () {
         var _this = this;
         // @ts-ignore
         this.person = this.persona;
-        this.person._id = this.customer.person._id;
+        this.person._id = this.customer._id;
         this.person.personName.firstName = this.customer.person.personName.firstName;
         this.person.personName.lastName = this.customer.person.personName.lastName;
         this.person.idType = this.customer.person.idType;
