@@ -34,7 +34,7 @@ export class AppointmentServiceProvider {
 
   /** POST: add a new Appointment to the server */
   addAppointment (event: AppointmentClass): Observable<AppointmentClass> {
-    console.log('Service: addAppointment:' + JSON.stringify(event));
+    //console.log('Service: addAppointment:' + JSON.stringify(event));
     return this.http.post<AppointmentClass>(this.appntUrl + '/appointment/', event, httpOptions).pipe(
       tap((event: AppointmentClass) => {
         console.log('EN POST');
@@ -46,7 +46,7 @@ export class AppointmentServiceProvider {
 
   /** PUT: update Appointment to the server */
   updateAppointment (event: AppointmentClass): Observable<AppointmentClass> {
-    console.log('Service: addAppointment:' + JSON.stringify(event));
+    //console.log('Service: addAppointment:' + JSON.stringify(event));
     return this.http.put<AppointmentClass>(this.appntUrl + '/appointment/', event, httpOptions).pipe(
       tap((event: AppointmentClass) => {
         console.log('EN POST');

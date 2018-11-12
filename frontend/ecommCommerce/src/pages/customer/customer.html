@@ -23,12 +23,12 @@
 <ion-content padding>
   <ion-grid *ngFor="let customer of myCustomers">
     <ion-row>
-      <ion-col (click)="customerSelected(customer)">
+      <ion-col (click)="customerSelected(customer)" align="left">
           {{customer.person.personName.lastName}} {{customer.person.personName.firstName}}
       </ion-col>
       <ion-col>
         <ion-buttons end>
-          <!--button ion-button color="secondary" small (click)="addNewAppointment(customer)"><ion-icon name="calendar"></ion-icon></button-->
+
           <button ion-button color="secondary" small><a href="tel:{{customer.person.mobile}}"><ion-icon name="call"></ion-icon> </a></button>
           <button ion-button color="secondary" small><a href="https://wa.me/{{customer.person.mobile}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>
           <button ion-button color="secondary" small><a href="mailto:{{customer.person.email}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>

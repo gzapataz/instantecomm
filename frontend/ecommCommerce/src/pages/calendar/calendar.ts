@@ -199,7 +199,7 @@ export class CalendarPage implements OnInit, OnDestroy {
       console.log ('COMPARANDO:' + moment(exceptionList.startTime).format("YYYYMMDD") + ' AND ' + moment(date).format("YYYYMMDD"));
       return moment(exceptionList.startTime).format("YYYYMMDD") === moment(date).format("YYYYMMDD")
     })
-    console.log('fest:' + JSON.stringify(fest));
+    //console.log('fest:' + JSON.stringify(fest));
     if (fest.length > 0)
       return true;
     return false;
@@ -371,7 +371,7 @@ export class CalendarPage implements OnInit, OnDestroy {
   }
 
   onEventSelected(event) {
-    console.log('Event onEventSelected ' + JSON.stringify(event))
+    //console.log('Event onEventSelected ' + JSON.stringify(event))
     if (event.status !== 'Excepción') {
       this.eventSelected = true;
       this.updateEvent(event);
@@ -380,7 +380,7 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   onTimeSelected(ev) {
     this.theColor = 'blue';
-    console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
+    //console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
     this.selectedDay = ev.selectedTime;
     if (!this.eventSelected && (this.calendar.mode == 'day' || this.calendar.mode == 'week') ) {
       if (!this.findException(this.selectedDay)) {
@@ -435,10 +435,10 @@ export class CalendarPage implements OnInit, OnDestroy {
   loadEvents(professionalUID, startTime, endTime) {
 
     this.scheduleServiceProvider.getSchedule(professionalUID, startTime, endTime).subscribe( data => {
-      console.log("datos de Agenda Queyr:" + JSON.stringify(data))
+      //console.log("datos de Agenda Queyr:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];
       this.eventSource = this.eventSource.filter(data => data.status !== 'Cancelada');
-      console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
+      //console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
     });
     //console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
     //Cargar eventos
@@ -447,12 +447,12 @@ export class CalendarPage implements OnInit, OnDestroy {
   loadExceptions(professionalUID, startTime, endTime) {
     this.exceptionServiceProvider.getException(professionalUID, startTime, endTime).subscribe( data => {
       ////console.log("datos de Agenda Queyr:" + JSON.stringify(data))
-      console.log('DATAExcepciones:' + JSON.stringify(data));
+      //console.log('DATAExcepciones:' + JSON.stringify(data));
       if (data)
         this.eventExceptions = data; //['appointments'];
       else
         this.eventExceptions = [];
-      console.log('Excepciones:' + JSON.stringify(this.eventExceptions))
+      //console.log('Excepciones:' + JSON.stringify(this.eventExceptions))
     });
     //Cargar eventos
   }

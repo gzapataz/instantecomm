@@ -37,7 +37,7 @@ export class UserServiceProvider {
   }
 
   createDBUser(user): Observable<LoggedProfessional> {
-    console.log('Prof->Creacion:' + JSON.stringify(user));
+    //console.log('Prof->Creacion:' + JSON.stringify(user));
     return this.http.post<Person>(this.userUrl, user, httpOptions).pipe(
       tap((user: any) => {
         console.log('EN POST');
@@ -82,7 +82,7 @@ export class UserServiceProvider {
                   result => {
                     if (result != undefined) {
                       this.getValuesProfessional(result)
-                      console.log('GET getValuesProfessional' + JSON.stringify(result))
+                      //console.log('GET getValuesProfessional' + JSON.stringify(result))
                       this.success = true;
                       resolve(result);
                     }
@@ -222,14 +222,14 @@ export class UserServiceProvider {
   }
   getValuesProfessional(jsonProfesional:JSON){
     var obj = jsonProfesional['person'];
-    console.log('guardandoPersona:' + JSON.stringify(obj))
+    //console.log('guardandoPersona:' + JSON.stringify(obj))
     for(var key in obj)
     {
       console.log("key: " + key + ", value: " + obj[key])
       this.storageControl('set', key.toString(), obj[key]);
 
     }
-    console.log('Horas:' + jsonProfesional['startHour'] + ' Y ' + jsonProfesional['endHour'])
+    //console.log('Horas:' + jsonProfesional['startHour'] + ' Y ' + jsonProfesional['endHour'])
     var obj2 = jsonProfesional['professionalSchedule'];
     this.storageControl('set', 'idSchedule', obj2['idSchedule']);
     this.storageControl('set', 'startHour', jsonProfesional['startHour']);
@@ -242,7 +242,7 @@ export class UserServiceProvider {
             this.storage.get('startHour').then (startHour => {
               this.storage.get('endHour').then (endHour => {
                 this.globalService.setProfessionalLoginData(uidData, idSched, startHour, endHour);
-                console.log('LoggedSingleltonUpdates ' + JSON.stringify(this.globalService.getLoggedProffessionalData())); //this is always null, even though I just set it to true.
+                //console.log('LoggedSingleltonUpdates ' + JSON.stringify(this.globalService.getLoggedProffessionalData())); //this is always null, even though I just set it to true.
               });
             });
           });

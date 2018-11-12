@@ -44,10 +44,10 @@ export class LoginPage {
     else {
       this.userService.logOn(this.login)
         .then(returned => {
-          console.log('RETORNO LOGGED: ' + JSON.stringify(returned))
+          //console.log('RETORNO LOGGED: ' + JSON.stringify(returned))
           if (this.userService.success) {
             this.globalService.readFromStorageProfessionalData().then( professionalData => {
-              console.log('DisparadoLOGIN0:' + JSON.stringify(professionalData))
+              //console.log('DisparadoLOGIN0:' + JSON.stringify(professionalData))
               console.log('Login Terminado')
               this.navCtrl.push(TabsPage);
             });

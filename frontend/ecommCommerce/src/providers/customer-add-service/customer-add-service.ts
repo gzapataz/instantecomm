@@ -32,9 +32,9 @@ export class CustomerAddServiceProvider {
     this.messageService.add(`CustomerAddServiceProvider: ${message}`);
   }
 
-  /** POST: add a new Appointment to the server */
+  /** POST: add a new Customer to the server */
   addACustomer (event: Person,uid:string): Observable<Person> {
-    console.log('Service: addACustomer:' + JSON.stringify(event));
+    //console.log('Service: addACustomer:' + JSON.stringify(event));
     return this.http.post<Person>(this.appntUrl + '/'+uid+"/clients/", event, httpOptions).pipe(
       tap((event: Person) => {
         console.log('EN POST');
