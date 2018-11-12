@@ -60,6 +60,7 @@ export class CalendarPage implements OnInit, OnDestroy {
   toDate = null;
   startHour = "9";
   endHour = '20';
+  space = '1';
 
   calendar = {
     mode: 'day',
