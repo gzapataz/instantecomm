@@ -6,6 +6,8 @@ import * as firebase from 'firebase/app';
 
 import { UserServiceProvider } from "../../providers/user-service/user-service";
 import {TabsPage} from "../tabs/tabs";
+import { ProfessionalClass } from "../../classes/ProfessionalClass";
+import {Person, PersonName} from "../../classes/customer-class";
 
 /**
  * Generated class for the RegistrationPage page.
@@ -21,6 +23,8 @@ import {TabsPage} from "../tabs/tabs";
 })
 export class RegistrationPage {
 
+  professional: ProfessionalClass = new ProfessionalClass();
+
   reg = {
     name: '',
     lastName: '',
@@ -31,6 +35,7 @@ export class RegistrationPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public alertCtrl: AlertController, private afAuth: AngularFireAuth,
               private userService: UserServiceProvider) {
+    this.professional.personName = new PersonName();
   }
 
   ionViewDidLoad() {
@@ -46,22 +51,28 @@ export class RegistrationPage {
     theAlert.present();
   }
 
-  registerAccoun() {
+  registerAccount() {
     if (this.reg.password != this.reg.password2) {
       this.displayAlert('Problema con el Password', 'No hay coincidencia con los passwords');
       this.reg.password = '';
       this.reg.password2 = '';
     }
     else {
-      this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(this.reg.email, this.reg.password)
+      this.reg.email = this.professional.email;
+      this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(this.professional.email, this.reg.password)
         .then(res => this.regSuccess(res))
         .catch(err => this.displayAlert('Error!', err));
     }
   }
 
   regSuccess(result) {
-    this.userService.logOn(this.reg)
-      .then(res => this.navCtrl.push(TabsPage));
-  }
+    //console.log("result:" + JSON.stringify(result))
+    this.professional.uid = result.user.uid;
+    //console.log("this.professional:" + JSON.stringify(this.professional))
 
+    this.userService.createDBUser(this.professional).subscribe(data => {
+      this.userService.logOn(this.reg)
+        .then(res => this.navCtrl.push(TabsPage));
+    })
+  }
 }

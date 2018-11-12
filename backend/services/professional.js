@@ -4,6 +4,7 @@ var Professional = require('../models/professional');
 const ActivationStatus = require('../enums/activationStatus');
 const ExceptionType = require('../enums/exceptionType');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
+var ObjectId = require('mongodb').ObjectID
 
 /**
  * Guardar un profesional. Guarda el profesional y la persona.
@@ -16,6 +17,9 @@ exports.saveProfessional = async function(req, person){
   professional.person = person;
   professional.uid    = req.body.uid;
   professional.professionalSchedule = req.body.professionalSchedule; 
+  professional.startHour = req.body.startHour;
+  professional.endHour = req.body.endHour;
+
   try{
     await professional.save();
   }
@@ -24,6 +28,32 @@ exports.saveProfessional = async function(req, person){
   }    
   return professional;
 } 
+
+/**
+ * Actualiza un profesional. Actualiza el profesional y la persona.
+ * @param {*} req 
+ */
+exports.updateProfessional = async function(req){
+  const updatedFields = {};
+  Object.keys(req.body).forEach(key => {
+    if (req.body[key]!=null && req.body[key]!=undefined) {
+      if(key == "startHour" || key == "endHour"){
+        updatedFields[key] = req.body[key];
+      }  
+    }
+  });
+  try{
+    var professional = Professional.findOneAndUpdate(
+      {uid:req.body.uid},
+      {$set:updatedFields},     
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }
+  return professional;
+}
 
 /**
  * 
@@ -61,27 +91,43 @@ exports.saveClientProfessional =  async function(professionalUid, client){
 }  
 
 /**
- * Buscar profesional por email
- * @param {*} email 
+ * Agregar servicio a un profesional
+ * @param {*} professionalUid 
  */
-exports.findProfessionalByEmail = function(email){
-  var professional = Professional.findOne()
-  .populate({path: 'person', match: { email: { $gte: email }}}).populate('professionalGrades');
-  return professional;
-}
+exports.saveServiceProfessional =  async function(professionalUid, service){
+  try{
+    return await Professional.findOneAndUpdate(
+      {uid : professionalUid},
+      {$addToSet: {services: service}},
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }    
+} 
 
 /**
  * Buscar profesional por uid
  * @param {*} uid 
  */
 exports.findProfessionalByUid = function(uid){
-  var professional = Professional.findOne({uid:uid})
-  .populate('person').populate('professionalGrades').populate('professionalSchedule')
-  .populate(
-    {
-      path: 'professionalSchedule', populate: {path:'appointments', populate:{path: 'service'}}
-    }
-  );
+  var professional = Professional.findOne({uid:uid}).select('professionalSince lastVisit status uid startHour endHour')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  .populate({path:'professionalSchedule', select: {'idSchedule':1}});
+  return professional;
+}
+
+/**
+ * Buscar un profesional por person
+ * @param {*} personId 
+ */
+exports.findProfessionalByPersonId = function(personId){
+  var professional = Professional.findOne({person:personId}).select('professionalSince lastVisit status uid startHour endHour')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  .populate({path:'professionalSchedule', select: {'idSchedule':1}});
   return professional;
 }
 
@@ -99,7 +145,18 @@ exports.findProfessionalBySchedule = function(professionalSchedule){
  * @param {*} uid 
  */
 exports.findServicesProfessionalByUid = function(uid){
-  var professional = Professional.findOne({uid:uid}).populate('services');
+  var professional = Professional.findOne({uid:uid})
+    .populate({path:'services', options: { sort: 'name' }});
+  return professional;
+}
+
+/**
+ * Buscar si un profesional posee un servicio.
+ * @param {*} service_id 
+ * @param {*} professional_id 
+ */
+exports.findServicesProfessionalBy_id = function(service_id,professional_id){
+  var professional = Professional.findOne({_id:professional_id, service: service_id})
   return professional;
 }
 
@@ -130,14 +187,17 @@ exports.findAppointmentsScheduleByProfessionalUid = function(req){
 
 /**
  * Buscar todos los pacientes de un profesional por uid
- * @param {*} req 
+ * @param {*} uid 
  */
-exports.findClientsByProfessionalUid = function(req){
-  var professional = Professional.findOne({uid:req.params.uid})
-    .populate({path:'clients', 
+exports.findClientsByProfessionalUid = function(uid){
+  var professional = Professional.findOne({uid:uid})
+    .populate({path:'clients',
+      match: {"status": { "$ne": ActivationStatus.INACTIVE}},
+      select: {'clientSince':1, 'lastVisit':1, 'status':1},
       populate: {
-        path:'person',
-        match: {"status": { "$ne": ActivationStatus.INACTIVE}},
+        path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+        'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1},
+        options: {sort: {personName: 'asc'}}
       }
     });
   return professional;  

@@ -1,0 +1,55 @@
+<!--
+  Generated template for the ServicesAddPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+
+    </ion-buttons>
+    <ion-title>{{accion | titlecase}} Servicio</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label >Título (*)</ion-label>
+      <ion-input  type="text" placeholder="Limpieza" [(ngModel)] = "service.name" id="name" name="name" required="required">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label >Descripción</ion-label>
+      <ion-input  type="text" [(ngModel)] = "service.description" id="description" name="name">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label >Duración en Minutos (*)</ion-label>
+      <ion-input  type="number" placeholder="45" [(ngModel)]="service.averageTime" required="required">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-range min="1" max="240" [(ngModel)]="service.averageTime" color="secondary">
+        <ion-label range-left>0</ion-label>
+        <ion-label range-right>240</ion-label>
+      </ion-range>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Campos obligatorios (*)</ion-label>
+
+    </ion-item>
+
+  </ion-list>
+  <ion-buttons >
+    <button ion-button full icon-left color="secondary" (click)="save()">
+      <ion-icon name="checkmark"></ion-icon>{{accion}}
+    </button>
+  </ion-buttons>
+
+</ion-content>

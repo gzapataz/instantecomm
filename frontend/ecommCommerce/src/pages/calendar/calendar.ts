@@ -20,6 +20,7 @@ import {GlobalsServiceProvider} from "../../providers/globals-service/globals-se
 import {LoggedProfessional} from "../../classes/logged-class";
 import {AppointmentClass} from "../../classes/appointment-class";
 import { ExceptionServiceProvider } from "../../providers/exception-service/exception-service";
+import {AuthenticationServiceProvider} from "../../providers/authentication-service/authentication-service";
 
 
 
@@ -59,6 +60,44 @@ export class CalendarPage implements OnInit, OnDestroy {
   toDate = null;
   startHour = "9";
   endHour = '20';
+  space = '1';
+
+  calendar = {
+    mode: 'day',
+    formatHourColumn: 'h:mm',
+    queryMode: 'remote',
+
+    locale: localCo[0],
+    currentDate: new Date(),
+    onTimePress(event) {
+      if (this.isEventSelected) {
+        return;
+      }
+      //console.log('Aqui vamos en evento')
+    },
+
+    onClick() {
+      //console.log('Aqui vamos en evento Click')
+
+    },
+    onMove(event) {
+      ////console.log('MVX ' +  event.movementX + ' ' + event.movementY)
+      ////console.log('Region ' +  event.region)
+    },
+    onMoveDown(event) {
+      ////console.log('Down Fired' +  event.movementX + ' ' + event.movementY)
+
+    },
+    onRangeChanged(ev) {
+      //console.log('RangeEstamos en Drop:' + ev)
+    },
+    onDrop(){
+      //console.log('Estamos en Drop')
+    },
+    onDoubleClick(){
+      //console.log('Doble Click')
+    }
+  };
 
   markDisabled = (date:Date) => {
     var val = true;
@@ -69,6 +108,7 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
               private modalCtrl: ModalController, private dragulaService: DragulaService,
+              private authService: AuthenticationServiceProvider,
               private servicesService: ServiceServiceProvider,
               private customerService: CustomerServiceProvider,
               private appointmentService: AppointmentServiceProvider,
@@ -111,13 +151,29 @@ export class CalendarPage implements OnInit, OnDestroy {
     //console.log('Mensaje Recibido:' + $event);
     this.customerId = $event
   }
-
+/*
+  ionViewCanEnter() {
+    console.log('Validando Permisos');
+    if (!this.authService.isAuthenticated()) {
+      let alert = this.alertCtrl.create({
+        title: 'Errro de Ingreso',
+        subTitle: 'Debe ingresar sus credenciales antes de poder ver la agenda',
+        buttons: ['Dismiss']
+      })
+      alert.present();
+      this.navCtrl.pop();
+      //this.navCtrl.push('LoginPage');
+      return false;
+    }
+    return true;
+  }
+*/
   ngOnInit() {
 
     //console.log('Plataforma:' + this.platform.platforms());
     //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
     this.loggedUser = this.globalService.getLoggedProffessionalData();
-
+    /*
     if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
       console.log('SALIENDO:' + JSON.stringify(this.loggedUser))
       this.navCtrl.push('LoginPage');
@@ -129,6 +185,10 @@ export class CalendarPage implements OnInit, OnDestroy {
       this.getServices(this.loggedUser.userId);
       this.getCustomers(this.loggedUser.userId);
     }
+    */
+    console.log('ENTRANDO CALENDAR:')
+    this.getServices(this.loggedUser.userId);
+    this.getCustomers(this.loggedUser.userId);
   }
 
   ngOnDestroy() {
@@ -137,7 +197,7 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   findException(date): boolean {
     var fest = this.eventExceptions.filter ( exceptionList => {
-      //console.log ('COMPARANDO:' + moment(exceptionList.startTime).format("YYYYMMDD") + ' AND ' + moment(date).format("YYYYMMDD"));
+      console.log ('COMPARANDO:' + moment(exceptionList.startTime).format("YYYYMMDD") + ' AND ' + moment(date).format("YYYYMMDD"));
       return moment(exceptionList.startTime).format("YYYYMMDD") === moment(date).format("YYYYMMDD")
     })
     //console.log('fest:' + JSON.stringify(fest));
@@ -146,44 +206,8 @@ export class CalendarPage implements OnInit, OnDestroy {
     return false;
   }
 
-  calendar = {
-    mode: 'week',
-
-    queryMode: 'remote',
-
-    locale: localCo[0],
-    currentDate: new Date(),
-      onTimePress(event) {
-        if (this.isEventSelected) {
-          return;
-        }
-        //console.log('Aqui vamos en evento')
-      },
-
-    onClick() {
-      //console.log('Aqui vamos en evento Click')
-
-    },
-    onMove(event) {
-      ////console.log('MVX ' +  event.movementX + ' ' + event.movementY)
-      ////console.log('Region ' +  event.region)
-    },
-    onMoveDown(event) {
-      ////console.log('Down Fired' +  event.movementX + ' ' + event.movementY)
-
-    },
-    onRangeChanged(ev) {
-      //console.log('RangeEstamos en Drop:' + ev)
-    },
-    onDrop(){
-      //console.log('Estamos en Drop')
-    },
-    onDoubleClick(){
-      //console.log('Doble Click')
-    }
-  };
-
   ionViewWillEnter() {
+    /*
     this.loggedUser = this.globalService.getLoggedProffessionalData();
     if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
       let alert = this.alertCtrl.create({
@@ -198,7 +222,7 @@ export class CalendarPage implements OnInit, OnDestroy {
       this.getCustomers(this.loggedUser.userId);
     }
     //this.loadEvents(this.loggedUser.userId);
-
+  */
   }
 
   getServices(professionalUID) {
@@ -220,6 +244,9 @@ export class CalendarPage implements OnInit, OnDestroy {
     return theCustomer;
 
   }
+  goToActual() {
+    this.calendar.currentDate = new Date();
+  }
 
   changeMode(newMode) {
     this.calendar.mode = newMode;
@@ -239,7 +266,6 @@ export class CalendarPage implements OnInit, OnDestroy {
           eventData.startTime = new Date(data.startTime);
           eventData.endTime = new Date(data.endTime);
           eventData = this.preferencesProvider.getColor(eventData);
-          this.eventSelected = false;
         }
         else {
           const index: number = events.indexOf(eventData);
@@ -257,6 +283,8 @@ export class CalendarPage implements OnInit, OnDestroy {
           this.eventSource = events;
         });
       }
+      console.log('YESTOSALIO:' + JSON.stringify(event))
+      this.eventSelected = false;
     });
   }
 
@@ -284,6 +312,7 @@ export class CalendarPage implements OnInit, OnDestroy {
       modal.present();
       modal.onDidDismiss(data => {
         if (data) {
+          console.log('VOYA SALVAR'+ JSON.stringify(data));
           let eventData = data;
           eventData.startTime = new Date(data.startTime);
           eventData.endTime = new Date(data.endTime);
@@ -345,9 +374,10 @@ export class CalendarPage implements OnInit, OnDestroy {
   }
 
   onEventSelected(event) {
-    console.log('Event onEventSelected ' + JSON.stringify(event))
+    //console.log('Event onEventSelected ' + JSON.stringify(event))
     if (event.status !== 'Excepción') {
       this.eventSelected = true;
+      console.log('AMODIF=' + JSON.stringify(event))
       this.updateEvent(event);
     }
   }
@@ -409,7 +439,7 @@ export class CalendarPage implements OnInit, OnDestroy {
   loadEvents(professionalUID, startTime, endTime) {
 
     this.scheduleServiceProvider.getSchedule(professionalUID, startTime, endTime).subscribe( data => {
-      ////console.log("datos de Agenda Queyr:" + JSON.stringify(data))
+      //console.log("datos de Agenda Queyr:" + JSON.stringify(data))
       this.eventSource = data; //['appointments'];
       this.eventSource = this.eventSource.filter(data => data.status !== 'Cancelada');
       //console.log('DatosAgenda:' + JSON.stringify(this.eventSource));
@@ -421,9 +451,12 @@ export class CalendarPage implements OnInit, OnDestroy {
   loadExceptions(professionalUID, startTime, endTime) {
     this.exceptionServiceProvider.getException(professionalUID, startTime, endTime).subscribe( data => {
       ////console.log("datos de Agenda Queyr:" + JSON.stringify(data))
-      console.log('DATAExcepciones:' + JSON.stringify(data));
-      this.eventExceptions = data; //['appointments'];
-      console.log('Excepciones:' + JSON.stringify(this.eventExceptions))
+      //console.log('DATAExcepciones:' + JSON.stringify(data));
+      if (data)
+        this.eventExceptions = data; //['appointments'];
+      else
+        this.eventExceptions = [];
+      //console.log('Excepciones:' + JSON.stringify(this.eventExceptions))
     });
     //Cargar eventos
   }

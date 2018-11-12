@@ -11,10 +11,53 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-item>
+    <ion-label >Nombre del paciente: </ion-label>
+    <ion-input  type="text" id="name"[(ngModel)]="customer.person.personName.firstName" name="name" required="required" >
+    </ion-input>
+  </ion-item>
 
-  <ion-label >Nombre del paciente: {{name}}</ion-label>
-  <ion-label >Genero: {{gender}}</ion-label>
-  <ion-label >Telefono fijo: {{phone}}</ion-label>
-  <ion-label >Telefono celular: {{mobile}}</ion-label>
-  <ion-label >Correo electronico: {{email}}</ion-label>
+  <ion-item>
+    <ion-label >Apellido del paciente: </ion-label>
+    <ion-input  type="text" id="lastname"[(ngModel)]="customer.person.personName.lastName" name="lastname" required="required" >
+    </ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label >Tipo de identificacion:  </ion-label>
+    <ion-input  type="text" id="idType"[(ngModel)]="customer.person.idType" name="idType" >
+    </ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label >Numero  de identificacion:  </ion-label>
+    <ion-input  type="number" id="identification"[(ngModel)]="customer.person.identification" name="identification" >
+    </ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label >Telefono fijo: </ion-label>
+    <ion-input  type="tel" id="phone"[(ngModel)]="customer.person.phone" name="phone">
+    </ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label >Telefono celular: </ion-label>
+
+    <ion-input  type="tel" id="mobile"[(ngModel)]="customer.person.mobile" name="mobile" required="required" >
+    </ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label >Correo electronico: </ion-label>
+    <ion-input  type="email" id="email"[(ngModel)]="customer.person.email" name="email">
+    </ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Direccion </ion-label>
+    <ion-input  type="text" placeholder="Baker street" id="address"[(ngModel)]="customer.person.address" name="address">
+    </ion-input>
+  </ion-item>
+  <ion-buttons >
+    <button ion-button full icon-left color="secondary" (click)="save()">
+      <ion-icon name="checkmark"></ion-icon> Actualizar
+    </button>
+  </ion-buttons>
+
 </ion-content>
+

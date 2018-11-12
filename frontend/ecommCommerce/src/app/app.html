@@ -1,11 +1,14 @@
 <ion-menu [content]="mycontent" persistent="true" >
   <ion-content>
+    <div align="right">
+      <button ion-button color="secondary" (click)="updateProfessional()" small ><ion-icon name="brush"></ion-icon></button>
+    </div>
     <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">
     <p>Hola!</p>
     {{loggedIn}}
     <p>Bienvenid@</p>
     <button ion-button  menuClose detail-none (click)="signOff()">
-      Salir
+      {{boton}}
     </button>
 
     <ion-list>

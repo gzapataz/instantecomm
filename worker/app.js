@@ -17,12 +17,15 @@ var ObjectId = require('mongodb').ObjectID
 const initialNotification = "5ba1a970aedec9a5acbfc25e";
 const alarmNotification = "5bd12a8d1544111f28715083";
 
+process.title = "dentalapp";
+
 var Queue = kue.createQueue({
     //redis: redisUrl
   });
 
 
 var jobName = "sendNotification";
+var jobAlarmName = "sendNotificationAlarm";
 
 // Create a job instance in the queue.
 var job = Queue
@@ -30,18 +33,27 @@ var job = Queue
             .priority('normal')
             .removeOnComplete(true);
 
+// Create a job instance in the queue.
+var jobAlarm = Queue
+            .createJob(jobAlarmName)
+            .priority('normal')
+            .removeOnComplete(true);            
+
 // Schedule it to run every 60 minutes. Function every(interval, job) accepts interval in either a human-interval String format or a cron String format.
-Queue.every('10 seconds', job);
+Queue.every('1 minutes', job);
+Queue.every('30 minutes', jobAlarm);
 
 Queue.process(jobName, sendNotification);
-Queue.process(jobName, sendNotificationAlarm);
+Queue.process(jobAlarmName, sendNotificationAlarm);
 
 async function sendNotification(job, done) {
+    console.log("Envío de notificaciones");
     const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", new ObjectId(initialNotification));
     notificationCollection.forEach(notification => {
-        console.log(notification);
+        
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
-            AppointmentService.getAppointmentByNotification_id(db, notification._id).then((appointment) => {
+            AppointmentService.getAppointmentByNotification_id(db, notification._id, "Agendada").then((appointment) => {
+                console.log("[Notificación]: " + JSON.stringify(notification) + " " + " " + JSON.stringify(appointment) + "\n");
                 if(appointment != null && appointment != undefined){
                     ServiceService.getServiceBy_id(db,appointment.service).then((service)=> {
                         ClientService.getClientBy_id(db, appointment.client).then((client) => {
@@ -62,6 +74,13 @@ async function sendNotification(job, done) {
                         }); 
                     });    
                 }
+                else{
+                    if(notification != null && notification != undefined && notification.notificationState == "Initial"){
+                        NotificationService.updateStatusReport(db,notification._id, "Error", "Notificación sin cita asociada").then((results) => {
+                            console.log("[Error] Notificación sin cita asignada" + JSON.stringify(results));
+                        });
+                    }
+                }
             });
         });  
     });
@@ -73,7 +92,8 @@ async function sendNotificationAlarm(job, done) {
     const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", new ObjectId(alarmNotification));
     notificationCollection.forEach(notification => {
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
-            AppointmentService.getAppointmentByNotification_id(db, notification._id).then((appointment) => {
+            AppointmentService.getAppointmentByNotification_id(db, notification._id, "Agendada").then((appointment) => {
+                console.log("[Alarma]: " + JSON.stringify(notification) + " " + " " + JSON.stringify(appointment) + "\n");
                 if(appointment != null && appointment != undefined){
                     ServiceService.getServiceBy_id(db,appointment.service).then((service)=> {
                         ProfessionalService.getProfessionalBy_id(db,appointment.professional).then((professional)=> {
@@ -105,6 +125,13 @@ async function sendNotificationAlarm(job, done) {
                             });    
                         });     
                     });    
+                }
+                else{
+                    if(notification != null && notification != undefined && notification.notificationState == "Initial"){
+                        NotificationService.updateStatusReport(db,notification._id, "Error", "Notificación sin cita asociada").then((results) => {
+                            console.log("[Error] Notificación sin cita asignada" + JSON.stringify(results));
+                        });
+                    }
                 }
             });
         });  
