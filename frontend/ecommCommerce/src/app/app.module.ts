@@ -37,8 +37,7 @@ import { ServicesPage } from "../pages/services/services";
 import { AuthenticationServiceProvider } from '../providers/authentication-service/authentication-service';
 import { LoginPage } from "../pages/login/login";
 import {CustomerUpdateDetailProvider} from "../providers/customer-update-detail/customer-update-detail";
-
-
+import {RestApiProvider} from "../providers/countries-service/countries-service";
 @NgModule({
   declarations: [
     MyApp,
@@ -93,7 +92,8 @@ import {CustomerUpdateDetailProvider} from "../providers/customer-update-detail/
 
     CustomerAddServiceProvider,
     AuthenticationServiceProvider,
-    CustomerUpdateDetailProvider
+    CustomerUpdateDetailProvider,
+    RestApiProvider
 
   ]
 })

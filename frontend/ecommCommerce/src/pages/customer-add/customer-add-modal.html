@@ -51,6 +51,13 @@
       <ion-input type="email" placeholder="jon@gmail.com" id="email" [(ngModel)]="persona.email" name="email">
       </ion-input>
     </ion-item>
+
+    <ion-item>
+      <ion-label>Pais (*)</ion-label>
+      <ion-select type="text" placeholder="Codigo"  id="code" name="code" multiple="false " [(ngModel)]="codigo" >
+        <ion-option *ngFor="let c of countries" [value] = "c.callingCodes[0]" [selected]="c.callingCodes[0] == '57'">{{c.name}}</ion-option>
+      </ion-select>
+    </ion-item>
     <ion-item>
       <ion-label>Celular (*)</ion-label>
       <ion-input type="tel" placeholder="345123456" id="mobile" [(ngModel)]="persona.mobile" name="mobile"
@@ -73,11 +80,11 @@
     </ion-item>
 
   </ion-list>
+
   <ion-buttons>
     <button ion-button full icon-left color="secondary" (click)="save()">
       <ion-icon name="checkmark"></ion-icon>
       Adicionar
     </button>
   </ion-buttons>
-
 </ion-content>
