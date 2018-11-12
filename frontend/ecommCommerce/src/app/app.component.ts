@@ -159,8 +159,9 @@ export class MyApp {
         }
 
       });
+  }
 
-    goToProfessional() {
+  goToProfessional() {
     let view = this.nav.getActive();
     //console.log(view);
     if (view.name !== 'ProfessionalDetailPage') {
