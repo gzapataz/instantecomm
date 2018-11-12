@@ -144,23 +144,24 @@ export class MyApp {
     return;
   }
 
-  updateProfessional(){
-      console.log('this.professionalData to update:' + JSON.stringify(this.professionalData));
-      let modal = this.modalCtrl.create('RegistrationPage', {professional: this.professionalData});
-      modal.present();
-      modal.onDidDismiss(data => {
-        if (data) {
-          let serviceData = data;
-          /*
-          this.servicesService.updateService(this.loggedUser.userId, serviceData).subscribe(data => {
-            serviceData._id = data._id;
-          });
-          */
-        }
+  updateProfessional() {
+    console.log('this.professionalData to update:' + JSON.stringify(this.professionalData));
+    let modal = this.modalCtrl.create('RegistrationPage', {professional: this.professionalData});
+    modal.present();
+    modal.onDidDismiss(data => {
+      if (data) {
+        let serviceData = data;
+        /*
+        this.servicesService.updateService(this.loggedUser.userId, serviceData).subscribe(data => {
+          serviceData._id = data._id;
+        });
+        */
+      }
 
-      });
+    });
+  }
 
-    goToProfessional() {
+  goToProfessional() {
     let view = this.nav.getActive();
     //console.log(view);
     if (view.name !== 'ProfessionalDetailPage') {
