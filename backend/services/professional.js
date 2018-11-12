@@ -196,7 +196,7 @@ exports.findClientsByProfessionalUid = function(uid){
       select: {'clientSince':1, 'lastVisit':1, 'status':1},
       populate: {
         path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-        'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address:':1},
+        'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1},
         options: {sort: {personName: 'asc'}}
       }
     });
