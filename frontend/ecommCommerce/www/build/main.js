@@ -276,7 +276,7 @@ var UserServiceProvider = /** @class */ (function () {
     UserServiceProvider.prototype.getValuesProfessional = function (jsonProfesional) {
         var _this = this;
         var obj = jsonProfesional['person'];
-        console.log('guardandoPersona:' + JSON.stringify(obj));
+        //console.log('guardandoPersona:' + JSON.stringify(obj))
         for (var key in obj) {
             console.log("key: " + key + ", value: " + obj[key]);
             this.storageControl('set', key.toString(), obj[key]);
@@ -943,7 +943,6 @@ var CustomerPage = /** @class */ (function () {
             });
             modal.present();
             modal.onDidDismiss(function (data) {
-                console.log("respuesta add " + data["message"]);
                 _this.navCtrl.setRoot(_this.navCtrl.getActive().component);
             });
         }
@@ -2551,14 +2550,16 @@ var MyApp = /** @class */ (function () {
                 //console.log('Disparado1');
                 _this.loginPage = 'LoginPage';
                 _this.afAuth.auth.onAuthStateChanged(function (user) {
+                    _this.loggedIn = user.email;
                     if (user) {
+                        _this.boton = "Salir";
                         globalService.readFromStorageProfessionalId().then(function (professionalData) {
                             //console.log('Disparado2:' + JSON.stringify(professionalData));
                             _this.rootPage = __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__["a" /* TabsPage */];
-                            _this.loggedIn = user.email;
                         });
                     }
                     else {
+                        _this.boton = "Ingresar";
                         _this.rootPage = 'LoginPage';
                     }
                 });
@@ -2631,7 +2632,7 @@ var MyApp = /** @class */ (function () {
     ], MyApp.prototype, "nav", void 0);
     MyApp = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'login-style',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/app/app.html"*/'<ion-menu [content]="mycontent" persistent="true" >\n  <ion-content>\n    <!--div align="right">\n      <button ion-button color="secondary" (click)="goToProfessional()" small ><ion-icon name="brush"></ion-icon></button>\n    </div-->\n    <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">\n    <p>Hola!</p>\n    {{loggedIn}}\n    <p>Bienvenid@</p>\n    <button ion-button  menuClose detail-none (click)="signOff()">\n      Salir\n    </button>\n\n    <ion-list>\n\n      <ion-item menuClose detail-none *ngFor="let p of pages" (click)="openPage(p)">{{ p.title }}</ion-item>\n\n    </ion-list>\n    <ion-label><a href="mailto:ecommercealinstante@gmail.com?subject=Hola, tengo la siguiente sugerencia para la aplicación"\n                  target="_top"><ion-icon name="mail"></ion-icon> Dudas, comentarios, soporte</a>\n\n    </ion-label>\n    <ion-item (click)="openPolicy()">Politica de Privacidad</ion-item>\n\n  </ion-content>\n</ion-menu>\n<ion-nav #mycontent [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/app/app.html"*/
+            selector: 'login-style',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/app/app.html"*/'<ion-menu [content]="mycontent" persistent="true" >\n  <ion-content>\n    <!--div align="right">\n      <button ion-button color="secondary" (click)="goToProfessional()" small ><ion-icon name="brush"></ion-icon></button>\n    </div-->\n    <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">\n    <p>Hola!</p>\n    {{loggedIn}}\n    <p>Bienvenid@</p>\n    <button ion-button  menuClose detail-none (click)="signOff()">\n      {{boton}}\n    </button>\n\n    <ion-list>\n\n      <ion-item menuClose detail-none *ngFor="let p of pages" (click)="openPage(p)">{{ p.title }}</ion-item>\n\n    </ion-list>\n    <ion-label><a href="mailto:ecommercealinstante@gmail.com?subject=Hola, tengo la siguiente sugerencia para la aplicación"\n                  target="_top"><ion-icon name="mail"></ion-icon> Dudas, comentarios, soporte</a>\n\n    </ion-label>\n    <ion-item (click)="openPolicy()">Politica de Privacidad</ion-item>\n\n  </ion-content>\n</ion-menu>\n<ion-nav #mycontent [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/app/app.html"*/
         }),
         __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5_angularfire2_auth__["a" /* AngularFireAuth */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5_angularfire2_auth__["a" /* AngularFireAuth */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_6__providers_user_service_user_service__["a" /* UserServiceProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__providers_user_service_user_service__["a" /* UserServiceProvider */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_7__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _h || Object])
     ], MyApp);

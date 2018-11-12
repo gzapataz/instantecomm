@@ -36,6 +36,7 @@ export class MyApp {
   rootPage: any;
   loginPage: any;
   loggedIn: any;
+  boton:string;
   constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
               private afAuth: AngularFireAuth,
               private userService: UserServiceProvider,
@@ -57,15 +58,19 @@ export class MyApp {
         //console.log('Disparado1');
         this.loginPage = 'LoginPage';
         this.afAuth.auth.onAuthStateChanged(user => {
+
+          this.loggedIn = user.email;
+
           if (user) {
+            this.boton="Salir";
             globalService.readFromStorageProfessionalId().then( professionalData => {
               //console.log('Disparado2:' + JSON.stringify(professionalData));
               this.rootPage = TabsPage;
-              this.loggedIn = user.email;
-            });
+          });
 
           }
           else {
+            this.boton="Ingresar";
             this.rootPage = 'LoginPage';
           }
         });

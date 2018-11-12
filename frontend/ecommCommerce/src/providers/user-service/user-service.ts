@@ -222,7 +222,7 @@ export class UserServiceProvider {
   }
   getValuesProfessional(jsonProfesional:JSON){
     var obj = jsonProfesional['person'];
-    console.log('guardandoPersona:' + JSON.stringify(obj))
+    //console.log('guardandoPersona:' + JSON.stringify(obj))
     for(var key in obj)
     {
       console.log("key: " + key + ", value: " + obj[key])
