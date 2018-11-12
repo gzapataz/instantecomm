@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {AlertController, Nav, NavController, Platform} from 'ionic-angular';
+import {AlertController, ModalController, Nav, NavController, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -17,6 +17,7 @@ export interface PageInterface {
   tabComponent?: any;
   index?: number;
   icon: string;
+
 }
 @Component({
   selector:'login-style',
@@ -24,8 +25,8 @@ export interface PageInterface {
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  professionalData;
   pages: PageInterface[] = [
-
 
     { title: 'Mi Agenda', pageName: 'CalendarPage', tabComponent: 'CalendarPage', index: 0, icon: 'calendar' },
     { title: 'Mis Pacientes', pageName: 'CustomerPage',tabComponent: 'CustomerPage', index: 1, icon: 'contacts' },
@@ -39,12 +40,15 @@ export class MyApp {
   boton:string;
   constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
               private afAuth: AngularFireAuth,
+              private modalCtrl: ModalController,
               private userService: UserServiceProvider,
               private globalService: GlobalsServiceProvider,
               private alertCtrl: AlertController) {
 
     globalService.readFromStorageProfessionalData().then( professionalData => {
-      //console.log('Disparado0:' + JSON.stringify(professionalData));
+
+      console.log('Disparado0:' + JSON.stringify(professionalData));
+      this.professionalData = professionalData;
       this.rootPage = TabsPage;
       if (professionalData.userId === '' || professionalData.userId == null) {
         this.rootPage = 'LoginPage';
@@ -140,7 +144,23 @@ export class MyApp {
     return;
   }
 
-  goToProfessional() {
+  updateProfessional(){
+      console.log('this.professionalData to update:' + JSON.stringify(this.professionalData));
+      let modal = this.modalCtrl.create('RegistrationPage', {professional: this.professionalData});
+      modal.present();
+      modal.onDidDismiss(data => {
+        if (data) {
+          let serviceData = data;
+          /*
+          this.servicesService.updateService(this.loggedUser.userId, serviceData).subscribe(data => {
+            serviceData._id = data._id;
+          });
+          */
+        }
+
+      });
+
+    goToProfessional() {
     let view = this.nav.getActive();
     //console.log(view);
     if (view.name !== 'ProfessionalDetailPage') {

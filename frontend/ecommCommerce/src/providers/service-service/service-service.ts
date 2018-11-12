@@ -39,6 +39,18 @@ export class ServiceServiceProvider {
     );
   }
 
+  updateService(professionalUID, service) {
+    var finalURL = this.serviceUrl +  '/' + professionalUID + '/services';
+    console.log('Servicio AddService:' + finalURL)
+    return this.http.put<ServiceClass>(finalURL, service, httpOptions).pipe(
+      tap((service: ServiceClass) => {
+        console.log('EN PUT');
+        this.log(`updated Service w/ id=${service._id}`)
+      }),
+      catchError(this.handleError<ServiceClass>('updateService', new ServiceClass()))
+    );
+  }
+
   addService(professionalUID, service) {
     var finalURL = this.serviceUrl +  '/' + professionalUID + '/services';
     console.log('Servicio AddService:' + finalURL)

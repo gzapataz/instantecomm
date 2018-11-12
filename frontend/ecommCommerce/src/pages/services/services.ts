@@ -65,8 +65,20 @@ export class ServicesPage implements OnInit {
     this.servicesService.getServices(professionalUID).subscribe(servicesAvail => this.servicesAvail = servicesAvail);
   }
 
-  serviceSelected(service) {
 
+  serviceSelected(theService) {
+
+    let modal = this.modalCtrl.create('ServicesAddPage', {service: theService});
+    modal.present();
+    modal.onDidDismiss(data => {
+      if (data) {
+        let serviceData = data;
+        this.servicesService.updateService(this.loggedUser.userId, serviceData).subscribe(data => {
+          serviceData._id = data._id;
+        });
+      }
+
+    });
   }
 
   addService() {
@@ -77,6 +89,7 @@ export class ServicesPage implements OnInit {
         let serviceData = data;
         this.servicesService.addService(this.loggedUser.userId, serviceData).subscribe(data => {
           serviceData._id = data._id;
+          this.servicesAvail.push(serviceData);
         });
       }
 

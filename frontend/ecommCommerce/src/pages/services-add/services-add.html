@@ -12,7 +12,7 @@
       </button>
 
     </ion-buttons>
-    <ion-title>Agregar Servicio</ion-title>
+    <ion-title>{{accion | titlecase}} Servicio</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -48,7 +48,7 @@
   </ion-list>
   <ion-buttons >
     <button ion-button full icon-left color="secondary" (click)="save()">
-      <ion-icon name="checkmark"></ion-icon> Adicionar
+      <ion-icon name="checkmark"></ion-icon>{{accion}}
     </button>
   </ion-buttons>
 

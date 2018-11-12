@@ -60,10 +60,11 @@ export class CalendarPage implements OnInit, OnDestroy {
   toDate = null;
   startHour = "9";
   endHour = '20';
+  space = '1';
 
   calendar = {
     mode: 'day',
-
+    formatHourColumn: 'h:mm',
     queryMode: 'remote',
 
     locale: localCo[0],
@@ -265,7 +266,6 @@ export class CalendarPage implements OnInit, OnDestroy {
           eventData.startTime = new Date(data.startTime);
           eventData.endTime = new Date(data.endTime);
           eventData = this.preferencesProvider.getColor(eventData);
-          this.eventSelected = false;
         }
         else {
           const index: number = events.indexOf(eventData);
@@ -283,6 +283,8 @@ export class CalendarPage implements OnInit, OnDestroy {
           this.eventSource = events;
         });
       }
+      console.log('YESTOSALIO:' + JSON.stringify(event))
+      this.eventSelected = false;
     });
   }
 
@@ -310,6 +312,7 @@ export class CalendarPage implements OnInit, OnDestroy {
       modal.present();
       modal.onDidDismiss(data => {
         if (data) {
+          console.log('VOYA SALVAR'+ JSON.stringify(data));
           let eventData = data;
           eventData.startTime = new Date(data.startTime);
           eventData.endTime = new Date(data.endTime);
@@ -374,6 +377,7 @@ export class CalendarPage implements OnInit, OnDestroy {
     //console.log('Event onEventSelected ' + JSON.stringify(event))
     if (event.status !== 'Excepción') {
       this.eventSelected = true;
+      console.log('AMODIF=' + JSON.stringify(event))
       this.updateEvent(event);
     }
   }

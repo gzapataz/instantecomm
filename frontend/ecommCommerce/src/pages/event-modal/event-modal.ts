@@ -76,8 +76,9 @@ export class EventModalPage implements OnInit {
     console.log('EventsFilter:' + JSON.stringify(this.events));
     console.log('Evento:' + JSON.stringify(currentEvent));
     let auxEvent = this.events.filter( eventDate => {
-      return moment(currentEvent.startTime).toDate() >= eventDate.startTime && moment(currentEvent.endTime).toDate() >= eventDate.endTime && moment(currentEvent.startTime).toDate() <= eventDate.endTime
+      return moment(currentEvent.startTime).toDate() >= eventDate.startTime && moment(currentEvent.endTime).toDate() >= eventDate.endTime && moment(currentEvent.startTime).toDate() < eventDate.endTime
     });
+    console.log('auxEvent:' + JSON.stringify(auxEvent));
     if (auxEvent.length > 0 ) {
       return false
     }
@@ -88,6 +89,8 @@ export class EventModalPage implements OnInit {
   ngOnInit() {
     console.log('Me volvi a disparar');
     this.eventSelected = this.navParams.get('eventSelected');
+    if (this.eventSelected)
+      this.event = this.eventSelected;
     this.getServices()
   }
 
@@ -113,10 +116,14 @@ export class EventModalPage implements OnInit {
   }
 
   cancel() {
+    console.log('Cancelando');
     if (this.navParams.get('eventSelected')) {
       this.event.service = this.prevEventImage.service;
+      this.event.startTime = moment(this.prevEventImage.startTime).format();
+      this.event.endTime = moment(this.prevEventImage.endTime).format();
     }
-    this.viewCtrl.dismiss(this.prevEventImage);
+
+    this.viewCtrl.dismiss(null);
   }
 
   newStartDate() {

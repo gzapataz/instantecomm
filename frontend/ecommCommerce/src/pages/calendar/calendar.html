@@ -11,7 +11,7 @@
 <ion-content padding>
   <customer-search (messageEvent)="receiveMessage($event)"></customer-search>
   <ion-row>
-    <div *ngIf="platform.is('tablet') || platform.is('core') || screenOrientation.type == 'landscape-secondary' || screenOrientation.type == 'landscape-primary'">
+    <div *ngIf="platform.is('tablet') || platform.is('core')">
       <ion-col col-4 col-md-4 col-lg-6 >
         <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">
           <ion-item *ngFor="let service of servicesAvail" id={{service._id}}>{{service.name}}</ion-item>
@@ -47,27 +47,27 @@
 
        <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">
           <div class="calendar-event-inner"
-               [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white'}"
+               [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white', 'font-color': 'white', 'font-size': '12px', 'border-style': 'solid', 'border-color': 'double', 'border-width': 'thin'}"
                [style.top]="(37*displayEvent.startOffset/hourParts)+'px'"
                [style.left]="100/displayEvent.overlapNumber*displayEvent.position+'%'"
                [style.width]="100/displayEvent.overlapNumber+'%'"
+               [style.border-color]="'#C0C0C0'"
                [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + 'px'">
             {{displayEvent.event.title}}
             <br>
-            {{displayEvent.event.status}}
           </div>
         </ng-template>
 
         <ng-template #template2 let-displayEvent="displayEvent" let-hourParts="hourParts">
           <div class="calendar-event-inner"
-               [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white'}"
+               [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white', 'border-style': 'solid', 'border-color': 'double', 'border-width': 'thin'}"
                [style.top]="(37*displayEvent.startOffset/hourParts)+'px'"
                [style.left]="100/displayEvent.overlapNumber*displayEvent.position+'%'"
                [style.width]="100/displayEvent.overlapNumber+'%'"
+               [style.font-size]="'11px'"
+               [style.border-color]="'#C0C0C0'"
                [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + 'px'">
-            {{displayEvent.event.title}}
-            <br>
-            {{displayEvent.event.status}}
+            {{displayEvent.event.title | slice:0:displayEvent.event.title.indexOf(' ')}}
           </div>
         </ng-template>
 
@@ -75,7 +75,6 @@
           <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
             <ion-item *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
                         <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
-                            -
                             {{event.endTime|date: 'HH:mm'}}
                         </span>
               <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>
@@ -88,6 +87,7 @@
         </ng-template>
 
        <calendar [eventSource]="eventSource"
+                 [formatHourColumn]="calendar.formatHourColumn"
                  [calendarMode]="calendar.mode"
                  [markDisabled]="markDisabled"
                  [queryMode]="calendar.queryMode"
