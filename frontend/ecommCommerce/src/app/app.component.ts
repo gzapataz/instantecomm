@@ -157,7 +157,6 @@ export class MyApp {
         });
         */
       }
-
     });
   }
 
