@@ -32,7 +32,7 @@ export class CustomerUpdateDetailProvider {
     this.messageService.add(`CustomerAddServiceProvider: ${message}`);
   }
 
-  /** POST: add a new Appointment to the server */
+  /** PUT: update customer data */
   updateCustomer (event: Person,uid:string): Observable<Person> {
     console.log('Service: PUT:' + JSON.stringify(event));
     return this.http.put<Person>(this.appntUrl + '/'+uid+"/clients/", event, httpOptions).pipe(

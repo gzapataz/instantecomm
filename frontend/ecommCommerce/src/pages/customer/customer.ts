@@ -64,11 +64,7 @@ customer:CustomerClass;
     }
   }
 
-  addNewAppointment(customer) {
-    //console.log(`Clicked customer:` + JSON.stringify(customer));
-    this.addEvent(customer);
 
-  }
 
   customerSelected(customer) {
     this.customer=customer;
@@ -93,9 +89,7 @@ customer:CustomerClass;
         eventData.status = 'Agendada';
         let events = this.eventSource;
         events.push(eventData);
-        /*this.appointmentService.addAppointment(eventData).subscribe(data => {
-          //console.log('Datos Salvados:' + JSON.stringify(data));
-        });*/
+
         this.eventSource = [];
         this.eventSelected = false;
         setTimeout(() => {

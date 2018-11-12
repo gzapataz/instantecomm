@@ -66,9 +66,9 @@ export class RegistrationPage {
   }
 
   regSuccess(result) {
-    console.log("result:" + JSON.stringify(result))
+    //console.log("result:" + JSON.stringify(result))
     this.professional.uid = result.user.uid;
-    console.log("this.professional:" + JSON.stringify(this.professional))
+    //console.log("this.professional:" + JSON.stringify(this.professional))
 
     this.userService.createDBUser(this.professional).subscribe(data => {
       this.userService.logOn(this.reg)

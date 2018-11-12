@@ -60,7 +60,7 @@ codigo:string;
 // @ts-ignore
     this.person = this.persona;
 
-    console.log(this.person);
+    //console.log(this.person);
     if (!this.person.personName.firstName || !this.person.personName.lastName || !this.person.mobile || !this.person.identification || !this.person.email
       || !this.person.idType) {
       let theAlert = this.alertCtrl.create({
@@ -79,7 +79,7 @@ codigo:string;
       }
       this.person.mobile=this.codigo+this.persona.mobile;
       this.customerAddServiceProvider.addACustomer(this.person, this.professional.userId).subscribe(data => {
-        console.log('Datos Salvados:' + JSON.stringify(data));
+        //console.log('Datos Salvados:' + JSON.stringify(data));
         this.cancel();
       });
     }

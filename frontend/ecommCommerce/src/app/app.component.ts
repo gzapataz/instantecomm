@@ -43,7 +43,7 @@ export class MyApp {
               private alertCtrl: AlertController) {
 
     globalService.readFromStorageProfessionalData().then( professionalData => {
-      console.log('Disparado0:' + JSON.stringify(professionalData));
+      //console.log('Disparado0:' + JSON.stringify(professionalData));
       this.rootPage = TabsPage;
       if (professionalData.userId === '' || professionalData.userId == null) {
         this.rootPage = 'LoginPage';
@@ -54,12 +54,12 @@ export class MyApp {
         // Here you can do any higher level native things you might need.
         //statusBar.styleDefault();
         splashScreen.hide();
-        console.log('Disparado1');
+        //console.log('Disparado1');
         this.loginPage = 'LoginPage';
         this.afAuth.auth.onAuthStateChanged(user => {
           if (user) {
             globalService.readFromStorageProfessionalId().then( professionalData => {
-              console.log('Disparado2:' + JSON.stringify(professionalData));
+              //console.log('Disparado2:' + JSON.stringify(professionalData));
               this.rootPage = TabsPage;
               this.loggedIn = user.email;
             });
@@ -93,7 +93,7 @@ export class MyApp {
 
   openPage(page: PageInterface) {
     let params = {};
-    console.log('Entrando a autenticacion PAGE:' + page);
+    //console.log('Entrando a autenticacion PAGE:' + page);
     // The index is equal to the order of our tabs inside tabs.ts
     if (page.index) {
       params = { tabIndex: page.index };
@@ -111,7 +111,7 @@ export class MyApp {
 
   openPolicy() {
     let view = this.nav.getActive();
-    console.log(view);
+    //console.log(view);
     if (view.name !== 'PrivatePolicyPage') {
       this.nav.push('PrivatePolicyPage');
     }
@@ -137,7 +137,7 @@ export class MyApp {
 
   goToProfessional() {
     let view = this.nav.getActive();
-    console.log(view);
+    //console.log(view);
     if (view.name !== 'ProfessionalDetailPage') {
       this.nav.push('ProfessionalDetailPage');
     }
