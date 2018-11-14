@@ -141,6 +141,17 @@ exports.findProfessionalBySchedule = function(professionalSchedule){
 }
 
 /**
+ * Busca un cliente dentro de un profesional.
+ * @param {*} uid 
+ * @param {*} client 
+ */
+exports.findClientByProfessionalUid = function(uid, client){
+  var professional = Professional.findOne({uid:uid, clients: { "$in" : [client]}});
+  return professional;
+} 
+
+
+/**
  * Buscar profesionales y los servicios que prestan por uid
  * @param {*} uid 
  */
@@ -149,6 +160,7 @@ exports.findServicesProfessionalByUid = function(uid){
     .populate({path:'services', options: { sort: 'name' }});
   return professional;
 }
+
 
 /**
  * Buscar si un profesional posee un servicio.

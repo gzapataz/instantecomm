@@ -22,7 +22,7 @@ var professionalSchema   = new Schema({
     },
     services:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Service',
+        ref: 'Service'
     }],
     clients:[{
         type: mongoose.Schema.Types.ObjectId,
