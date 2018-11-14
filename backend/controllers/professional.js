@@ -69,8 +69,6 @@ exports.setProfessional = function(req, res){
         });  
       });   
     }
-
-
     req.body.status = ActivationStatus.ACTIVE;
     var personService = PersonService.findPersonByEmail(req.body.email);
     personService.then((person) => {
@@ -438,7 +436,19 @@ exports.setClientProfessionalByUid = function(req, res){
           var client = ClientService.findClientByPersonId(person);
           client.then((client) => {
             if(client != undefined && client != null){
-              return res.status(404).send({message: 'El cliente con ' + req.body.idType + ' ' + req.body.identification + ' ya existe'});
+              var professionalService = ProfessionalService.findClientByProfessionalUid(req.params.uid, client);
+              professionalService.then((professional) => {
+                if(professional != null && professional != undefined){
+                  return res.status(404).send({message: 'El cliente con ' + req.body.idType + ' ' + req.body.identification + ' ya existe'});
+                }
+                else{
+                  var professional = ProfessionalService.saveClientProfessional(req.params.uid, client);
+                  professional.then((results) => {
+                    return res.status(200).send({message: 'Cliente asociado al profesional'});
+                  }); 
+                }
+              });
+              
             } 
             else{
               var clientService = ClientService.saveClient(req, person);
@@ -538,23 +548,44 @@ exports.setClientProfessionalUpdateByUid = function(req, res){
  */
 exports.setServiceProfessionalByUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
-    var serviceService = ServiceService.saveService(req);
-    serviceService.then((service) => {
-      if(service != null & service != undefined){
-        var professional = ProfessionalService.saveServiceProfessional(req.params.uid, service);
-        professional.then((results) => {
-          return res.status(200).send({message: 'Servicio asociado al profesional'});
-        }); 
+    var professionalService = ProfessionalService.findServicesProfessionalByUid(req.params.uid);
+    professionalService.then((professional) => {
+      var services = professional.services;
+      var isService = false;
+      if(services != null && services != undefined){
+        for (var i in services){
+          if(Number.isInteger(Number(i))){
+            var serviceName = services[i].name;
+            if(serviceName == req.body.name){
+              isService = true;
+            }
+          }  
+        }
+      }
+      if(!isService){
+        var serviceService = ServiceService.saveService(req);
+        serviceService.then((service) => {
+          if(service != null & service != undefined){
+            var professional = ProfessionalService.saveServiceProfessional(req.params.uid, service);
+            professional.then((results) => {
+              return res.status(200).send({message: 'Servicio asociado al profesional'});
+            }); 
+          }
+          else{
+            return res.status(500).send({message: 'El servicio no pudo ser creado'});
+          }
+        });
       }
       else{
-        return res.status(500).send({message: 'El servicio no pudo ser creado'});
+        return res.status(500).send({message: 'Un servicio con este nombre ya esta asociado a este profesional'});
       }
     });
   }
   else{
     return res.status(404).send({message: 'El uid del profesional es requerido'});
-  } 
-}  
+  }
+}
+ 
 
 /**
  * 

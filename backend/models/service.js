@@ -22,5 +22,4 @@ var serviceSchema   = new Schema({
         ref: 'ServiceCondition'
     }]*/
 });
-
 module.exports = mongoose.model('Service', serviceSchema);
