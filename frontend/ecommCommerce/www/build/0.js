@@ -121,8 +121,9 @@ var EventModalPage = /** @class */ (function () {
         console.log('EventsFilter:' + JSON.stringify(this.events));
         console.log('Evento:' + JSON.stringify(currentEvent));
         var auxEvent = this.events.filter(function (eventDate) {
-            return __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() >= eventDate.startTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.endTime).toDate() >= eventDate.endTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() <= eventDate.endTime;
+            return __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() >= eventDate.startTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.endTime).toDate() >= eventDate.endTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() < eventDate.endTime;
         });
+        console.log('auxEvent:' + JSON.stringify(auxEvent));
         if (auxEvent.length > 0) {
             return false;
         }
@@ -131,6 +132,8 @@ var EventModalPage = /** @class */ (function () {
     EventModalPage.prototype.ngOnInit = function () {
         console.log('Me volvi a disparar');
         this.eventSelected = this.navParams.get('eventSelected');
+        if (this.eventSelected)
+            this.event = this.eventSelected;
         this.getServices();
     };
     EventModalPage.prototype.getServices = function () {
@@ -152,10 +155,13 @@ var EventModalPage = /** @class */ (function () {
         this.viewCtrl.dismiss(this.event);
     };
     EventModalPage.prototype.cancel = function () {
+        console.log('Cancelando');
         if (this.navParams.get('eventSelected')) {
             this.event.service = this.prevEventImage.service;
+            this.event.startTime = __WEBPACK_IMPORTED_MODULE_2_moment__(this.prevEventImage.startTime).format();
+            this.event.endTime = __WEBPACK_IMPORTED_MODULE_2_moment__(this.prevEventImage.endTime).format();
         }
-        this.viewCtrl.dismiss(this.prevEventImage);
+        this.viewCtrl.dismiss(null);
     };
     EventModalPage.prototype.newStartDate = function () {
         console.log("Cambio la fecha de Inicio " + this.event.startTime);
