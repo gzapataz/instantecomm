@@ -1,6 +1,6 @@
 webpackJsonp([1],{
 
-/***/ 894:
+/***/ 896:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegistrationPageModule", function() { return RegistrationPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration__ = __webpack_require__(907);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration__ = __webpack_require__(908);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var RegistrationPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 907:
+/***/ 908:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -48,8 +48,8 @@ var RegistrationPageModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_user_service_user_service__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tabs_tabs__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__classes_ProfessionalClass__ = __webpack_require__(908);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__classes_customer_class__ = __webpack_require__(909);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__classes_ProfessionalClass__ = __webpack_require__(909);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__classes_customer_class__ = __webpack_require__(910);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -116,9 +116,9 @@ var RegistrationPage = /** @class */ (function () {
     };
     RegistrationPage.prototype.regSuccess = function (result) {
         var _this = this;
-        //console.log("result:" + JSON.stringify(result))
+        console.log("result:" + JSON.stringify(result));
         this.professional.uid = result.user.uid;
-        //console.log("this.professional:" + JSON.stringify(this.professional))
+        console.log("this.professional:" + JSON.stringify(this.professional));
         this.userService.createDBUser(this.professional).subscribe(function (data) {
             _this.userService.logOn(_this.reg)
                 .then(function (res) { return _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__tabs_tabs__["a" /* TabsPage */]); });
@@ -126,7 +126,7 @@ var RegistrationPage = /** @class */ (function () {
     };
     RegistrationPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-registration',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/'<ion-header>\n  <ion-toolbar color="primary">\n    <ion-title>Registro- e-Commerce</ion-title>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-item>\n    <ion-label color="facebook">Nombre</ion-label>\n    <ion-input type="text" [(ngModel)] = "professional.personName.firstName" name="name"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Apellido</ion-label>\n    <ion-input type="text" [(ngModel)] = "professional.personName.lastName" name="lastName"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Correo Electrónico</ion-label>\n    <ion-input type="email" [(ngModel)] = "professional.email" name="email"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password" name="password"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Repetir Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password2" name="password2"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Hora de Inicio (*)</ion-label>\n    <ion-input  type="number" placeholder="7" [(ngModel)]="professional.startHour" required="required">\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Hora de Salida (*)</ion-label>\n    <ion-input  type="number" placeholder="19" [(ngModel)]="professional.endHour" required="required">\n    </ion-input>\n  </ion-item>\n\n  <button ion-button color="secondary" (click)="registerAccount()">Registrar</button>\n\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/,
+            selector: 'page-registration',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/'<ion-header>\n  <ion-toolbar color="primary">\n    <ion-title>Registro</ion-title>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-item>\n    <ion-label color="facebook">Nombre</ion-label>\n    <ion-input type="text" [(ngModel)] = "professional.personName.firstName" name="name"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Apellido</ion-label>\n    <ion-input type="text" [(ngModel)] = "professional.personName.lastName" name="lastName"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Correo Electrónico</ion-label>\n    <ion-input type="email" [(ngModel)] = "professional.email" name="email"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password" name="password"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Repetir Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password2" name="password2"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Hora de Inicio (*)</ion-label>\n    <ion-input  type="number" placeholder="7" [(ngModel)]="professional.startHour" required="required">\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Hora de Salida (*)</ion-label>\n    <ion-input  type="number" placeholder="19" [(ngModel)]="professional.endHour" required="required">\n    </ion-input>\n  </ion-item>\n\n  <button ion-button color="secondary" (click)="registerAccount()">Registrar</button>\n\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__["a" /* AngularFireAuth */],
@@ -139,7 +139,7 @@ var RegistrationPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 908:
+/***/ 909:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -156,7 +156,7 @@ var ProfessionalClass = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 909:
+/***/ 910:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

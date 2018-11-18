@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 890:
+/***/ 889:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51,7 +51,7 @@ var EventModalPageModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_uuid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular2_uuid__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_service_service_service_service__ = __webpack_require__(98);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__classes_appointment_class__ = __webpack_require__(903);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_common_locales_es_CO__ = __webpack_require__(507);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_common_locales_es_CO__ = __webpack_require__(509);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_common__ = __webpack_require__(28);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -121,8 +121,9 @@ var EventModalPage = /** @class */ (function () {
         console.log('EventsFilter:' + JSON.stringify(this.events));
         console.log('Evento:' + JSON.stringify(currentEvent));
         var auxEvent = this.events.filter(function (eventDate) {
-            return __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() >= eventDate.startTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.endTime).toDate() >= eventDate.endTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() <= eventDate.endTime;
+            return __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() >= eventDate.startTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.endTime).toDate() >= eventDate.endTime && __WEBPACK_IMPORTED_MODULE_2_moment__(currentEvent.startTime).toDate() < eventDate.endTime;
         });
+        console.log('auxEvent:' + JSON.stringify(auxEvent));
         if (auxEvent.length > 0) {
             return false;
         }
@@ -131,6 +132,8 @@ var EventModalPage = /** @class */ (function () {
     EventModalPage.prototype.ngOnInit = function () {
         console.log('Me volvi a disparar');
         this.eventSelected = this.navParams.get('eventSelected');
+        if (this.eventSelected)
+            this.event = this.eventSelected;
         this.getServices();
     };
     EventModalPage.prototype.getServices = function () {
@@ -152,10 +155,13 @@ var EventModalPage = /** @class */ (function () {
         this.viewCtrl.dismiss(this.event);
     };
     EventModalPage.prototype.cancel = function () {
+        console.log('Cancelando');
         if (this.navParams.get('eventSelected')) {
             this.event.service = this.prevEventImage.service;
+            this.event.startTime = __WEBPACK_IMPORTED_MODULE_2_moment__(this.prevEventImage.startTime).format();
+            this.event.endTime = __WEBPACK_IMPORTED_MODULE_2_moment__(this.prevEventImage.endTime).format();
         }
-        this.viewCtrl.dismiss(this.prevEventImage);
+        this.viewCtrl.dismiss(null);
     };
     EventModalPage.prototype.newStartDate = function () {
         console.log("Cambio la fecha de Inicio " + this.event.startTime);
