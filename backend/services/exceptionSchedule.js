@@ -57,6 +57,15 @@ exports.findExceptionScheduleBy_id = function(_id){
 }
 
 /**
+ * 
+ * @param {*} arrayExceptions 
+ */
+exports.deleteArrayExceptions = function(arrayExceptions){
+  var exceptionSchedule = ExceptionSchedule.deleteMany({ _id: { $in: arrayExceptions}});
+  return exceptionSchedule;
+}
+
+/**
  * buscar todas las excepciones
  */
 exports.findAllExceptionsSchedule = function(){

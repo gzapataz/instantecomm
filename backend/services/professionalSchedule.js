@@ -50,6 +50,55 @@ exports.findProfessionalScheduleBy_id = function(idSchedule){
 }  
 
 /**
+ * 
+ * @param {*} exceptions 
+ */
+exports.findProfessionalSchedulesByExceptions = function(exceptions){
+  var professionalSchedule = ProfessionalSchedule.find({exceptions: { "$in" : exceptions}});
+  return professionalSchedule;
+}
+
+/**
+ * 
+ * @param {*} appointments 
+ */
+exports.findProfessionalSchedulesByAppointments = function(appointments){
+  var professionalSchedule = ProfessionalSchedule.find({appointments: { "$in" : appointments}});
+  return professionalSchedule;
+}
+
+/**
+ * 
+ * @param {*} scheduleId 
+ * @param {*} exceptions 
+ */
+exports.updateRemoveProfessionalScheduleExceptionsBy_id = async function(scheduleId,exceptions){
+  try{
+  return await ProfessionalSchedule.update({ _id: scheduleId }, 
+    {'$pullAll': { exceptions: exceptions}});
+  } 
+  catch(error){
+    return error;
+  }      
+}
+
+/**
+ * 
+ * @param {*} scheduleId 
+ * @param {*} appointments 
+ */
+exports.updateRemoveProfessionalScheduleAppointmentsBy_id = async function(scheduleId,appointments){
+  try{
+  return await ProfessionalSchedule.update({ _id: scheduleId }, 
+    {'$pullAll': { appointments: appointments}});
+  } 
+  catch(error){
+    return error;
+  }      
+}
+
+
+/**
  * buscar todas los citas
  */
 exports.findAllProfessionalsSchedule = function(){

@@ -83,3 +83,12 @@ exports.findAllServices = function(){
   //TODO .populate('serviceConditions');
   return services;
 }
+
+/**
+ * 
+ * @param {*} arrayServices 
+ */
+exports.deleteArrayServices = function(arrayServices){
+  var service = Service.deleteMany({ _id: { $in: arrayServices}});
+  return service;
+}

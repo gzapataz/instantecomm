@@ -4,6 +4,7 @@ var Professional = require('../models/professional');
 const ActivationStatus = require('../enums/activationStatus');
 const ExceptionType = require('../enums/exceptionType');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
+const ECAIConstants = require('../constants/ECAIConstants');
 var ObjectId = require('mongodb').ObjectID
 
 /**
@@ -54,6 +55,37 @@ exports.updateProfessional = async function(req){
   }
   return professional;
 }
+
+/**
+ * 
+ * @param {*} uid 
+ * @param {*} services 
+ */
+exports.updateRemoveServicesProfessionalByUid = async function(uid,services){
+  try{
+  return await Professional.update({ uid: uid }, 
+    {'$pullAll': { services: services}});
+  } 
+  catch(error){
+    return error;
+  }      
+}
+
+/**
+ * 
+ * @param {*} uid 
+ * @param {*} clients 
+ */
+exports.updateRemoveClientsProfessionalByUid = async function(uid,clients){
+  try{
+  return await Professional.update({ uid: uid }, 
+    {'$pullAll': { clients: clients}});
+  } 
+  catch(error){
+    return error;
+  }      
+}
+
 
 /**
  * 
@@ -150,6 +182,27 @@ exports.findClientByProfessionalUid = function(uid, client){
   return professional;
 } 
 
+/**
+ * 
+ * @param {*} persons 
+ */
+exports.findProfessionalsByPersons = function(persons){
+  var professional = Professional.find({person: { "$in" : persons}});
+  return professional;
+}
+
+/**
+ * 
+ * @param {*} _ids 
+ */
+exports.findProfessionalsBy_id = function(_ids){
+  var professional = Professional.find({_id: { "$in" : _ids}})
+  .select('professionalSince lastVisit status uid startHour endHour')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  return professional;
+}
+
 
 /**
  * Buscar profesionales y los servicios que prestan por uid
@@ -161,16 +214,34 @@ exports.findServicesProfessionalByUid = function(uid){
   return professional;
 }
 
-
 /**
  * Buscar si un profesional posee un servicio.
  * @param {*} service_id 
  * @param {*} professional_id 
  */
 exports.findServicesProfessionalBy_id = function(service_id,professional_id){
-  var professional = Professional.findOne({_id:professional_id, service: service_id})
+  var professional = Professional.findOne({_id:professional_id, services: service_id})
   return professional;
 }
+
+/**
+ * Buscar si un profesional posee un servicio.
+ * @param {*} services
+ */
+exports.findProfessionalsByServices = function(services){
+  var professional = Professional.find({services: { "$in" : services}});
+  return professional;
+}
+
+/**
+ * Buscar los profesionales que poseen uno o varios clientes.
+ * @param {*} clients
+ */
+exports.findProfessionalsByClients = function(clients){
+  var professional = Professional.find({clients: { "$in" : clients}});
+  return professional;
+}
+
 
 /**
  * Buscar citas de la agenda por por uid de un profesional
@@ -219,7 +290,7 @@ exports.findClientsByProfessionalUid = function(uid){
  * Buscar todas las excepciones de la agenda de un profesional por uid
  * @param {*} req 
  */
-exports.findExceptionsScheduleByProfessionalUid = function(req, type){
+exports.findExceptionsScheduleByProfessionalUidAndType = function(req, type){
   var currentDate = new Date()
   var matchStartDate = {'startDate': {'$lt':currentDate}};
   var matchEndDate = {'endDate': {'$gte':currentDate}};
@@ -249,6 +320,38 @@ exports.findExceptionsScheduleByProfessionalUid = function(req, type){
 } 
 
 /**
+ * Buscar profesionales y sus excepciones por uid
+ * @param {*} uid 
+ */
+exports.findExceptionsScheduleByProfessionalUid = function(uid){
+  var professional = Professional.findOne({uid:uid})
+    .populate({
+      path:'professionalSchedule', 
+      populate:{
+        path: 'exceptions',
+        match: {'_id': {'$ne':ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY}}
+      }
+    });
+  return professional;
+}
+
+/**
+ * Buscar profesionales y sus citas por uid
+ * @param {*} uid 
+ */
+exports.findAllAppointmentsScheduleByProfessionalUid = function(uid){
+  var professional = Professional.findOne({uid:uid})
+    .populate({
+      path:'professionalSchedule', 
+      populate:{
+        path: 'appointments'
+      }
+    });
+  return professional;
+}
+
+
+/**
  * Buscar profesional por _id
  * @param {*} _id 
  */
@@ -276,3 +379,12 @@ exports.findAllProfessionals = function(){
   );
   return professionals;
 }
+
+/**
+ * Borrado de un profesional por uid
+ * @param {*} uid 
+ */
+exports.deleteProfessionalByUid = function(uid){
+  var professionals = Professional.deleteOne({uid:uid});
+  return professionals;  
+}  

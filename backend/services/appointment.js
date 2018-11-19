@@ -96,6 +96,15 @@ exports.saveAppointmentNotification =  async function(appointment,notification){
 }
 
 /**
+ * 
+ * @param {*} arrayAppointments 
+ */
+exports.deleteArrayAppointmens = function(arrayAppointments){
+  var appointment = Appointment.deleteMany({ _id: { $in: arrayAppointments}});
+  return appointment;
+}
+
+/**
  * Buscar una cita por _id
  * @param {*} _id 
  */

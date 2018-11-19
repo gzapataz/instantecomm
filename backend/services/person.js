@@ -71,3 +71,21 @@ exports.findPersonByEmail = function(email){
   var person = Person.findOne({email:email});
   return person;
 }
+
+/**
+ * 
+ * @param {*} arrayPersons
+ */
+exports.deleteArrayPersons = function(arrayPersons){
+  var person = Person.deleteMany({ _id: { $in: arrayPersons}});
+  return person;
+}
+
+/**
+ * Borrado de una persona por _id
+ * @param {*} _id 
+ */
+exports.deletePersonBy_id = function(_id){
+  var person = Person.deleteOne({_id:_id});
+  return person;  
+}  

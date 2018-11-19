@@ -46,7 +46,7 @@ exports.saveRatingClient =  async function(client,rating){
 exports.findClientByPersonId = function(personId){
   var client = Client.findOne({person:personId}).select('clientSince lastVisit status')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1}});
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
   return client;
 }
 
@@ -57,9 +57,17 @@ exports.findClientByPersonId = function(personId){
 exports.findClientBy_id = function(_id){
   var client = Client.findOne({_id:_id}).select('clientSince lastVisit status')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1}});
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
   //.populate('clientGrades');
   return client;
+}
+
+exports.findClientsBy_ids = function(_ids){
+  var clients = Client.find({_id: { "$in" : _ids}})
+  .select('clientSince lastVisit status')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
+  return clients;
 }
 
 /**
@@ -68,4 +76,13 @@ exports.findClientBy_id = function(_id){
 exports.findAllClients = function(){
   var clients = Client.find().populate('person').populate('clientGrades');
   return clients;
+}
+
+/**
+ * 
+ * @param {*} arrayClients
+ */
+exports.deleteArrayClients = function(arrayClients){
+  var client = Client.deleteMany({ _id: { $in: arrayClients}});
+  return client;
 }

@@ -15,5 +15,6 @@ router.post('/:uid/clients/', ProfessionalController.setClientProfessionalByUid)
 router.put('/:uid/clients/', ProfessionalController.setClientProfessionalUpdateByUid);
 router.post('/:uid/services/', ProfessionalController.setServiceProfessionalByUid);
 router.put('/:uid/services/', ProfessionalController.setServiceProfessionalUpdateByUid);
+router.delete('/:uid', ProfessionalController.removeProfessionalCascadeByUid);
 
 module.exports = router;

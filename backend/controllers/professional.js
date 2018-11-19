@@ -6,12 +6,15 @@ var ProfessionalService = require('../services/professional');
 var RatingService = require('../services/rating');
 var ClientService = require('../services/client');
 var ProfessionalScheduleService = require('../services/professionalSchedule');
+var ExceptionService = require('../services/exceptionSchedule');
+var AppointmentService = require('../services/appointment');
 const ActivationStatus = require('../enums/activationStatus');
 var SimpleDateUtil = require('../utils/simpleDateUtil');
 var DayUtil = require('../utils/dayUtil');
 var ObjectId = require('mongodb').ObjectID
 const ExceptionType = require('../enums/exceptionType');
 var module = require('colombia-holidays');
+var CompareArrayUtil = require('../utils/compareArrayUtil')
 
 /**
  * Conseguir datos de todos los profesionales
@@ -275,7 +278,7 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
         return res.status(404).send({message: 'No existe este profesional'});
       else{
           var appointments = professional.professionalSchedule.appointments;
-          var exceptions = ProfessionalService.findExceptionsScheduleByProfessionalUid(req,ExceptionType.BREAK_TIME);
+          var exceptions = ProfessionalService.findExceptionsScheduleByProfessionalUidAndType(req,ExceptionType.BREAK_TIME);
           exceptions.exec(function(err, exceptions) {
             var exceptions = exceptions.professionalSchedule.exceptions;
             var simpleDateUtil = new SimpleDateUtil(req.query.startTime, req.query.endTime);
@@ -594,40 +597,427 @@ exports.setServiceProfessionalByUid = function(req, res){
  */
 exports.setServiceProfessionalUpdateByUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
-    var professionalService = ProfessionalService.findServicesProfessionalByUid(req.params.uid);
-    professionalService.then((professional) => {
-      var services = professional.services;
-      var isService = false;
-      if(services != null && services != undefined && services.length > 0){
-        for(var i in services){
-          var service = services[i];
-          if(service != undefined && service != null){
-            if(service._id == req.body._id){
-              isService = true;
-              break;
+    if(req.body._id != undefined && req.body._id != null){
+      var professionalService = ProfessionalService.findServicesProfessionalByUid(req.params.uid);
+      professionalService.then((professional) => {
+        var services = professional.services;
+        var isService = false;
+        if(services != null && services != undefined && services.length > 0){
+          for(var i in services){
+            var service = services[i];
+            if(service != undefined && service != null){
+              if(service._id == req.body._id){
+                isService = true;
+                break;
+              }
             }
+          }  
+          if(isService){
+            var serviceService = ServiceService.updateService(req);
+            serviceService.then((service) => {
+              res.json(service); 
+            }); 
           }
+          else{
+            return res.status(404).send({message: 'Servicio no existente o no asociado a este professional'});
+          }
+          
         }  
-        if(isService){
-          var serviceService = ServiceService.updateService(req);
-          serviceService.then((service) => {
-            res.json(service); 
-          }); 
-        }
         else{
-          return res.status(404).send({message: 'Servicio no existente o no asociado a este professional'});
+          return res.status(404).send({message: 'El profesional no tiene servicios configurados'});
         }
-        
-      }  
-      else{
-        return res.status(404).send({message: 'El profesional no tiene servicios configurados'});
-      }
-    });  
+      });
+    }
+    else{
+      return res.status(404).send({message: 'El _id del servicio es requerido'});
+    }  
   }
   else{
     return res.status(404).send({message: 'El uid del profesional es requerido'});
   } 
 } 
+
+
+exports.removeProfessionalCascadeByUid = function(req, res){
+  if(req.params.uid != undefined && req.params.uid != null){
+    var uid = req.params.uid;   
+    var professionalService = ProfessionalService.findServicesProfessionalByUid(uid);
+    professionalService.exec(function(err, professional) {
+      if(professional != null && professional != undefined){
+        var professionalPersonId = professional.person;
+        var services = professional.services;
+        if(services.length > 0){
+          var professionalService = ProfessionalService.findProfessionalsByServices(services);
+          professionalService.exec(function(err, professionals) {
+            var professionalService = ProfessionalService.updateRemoveServicesProfessionalByUid(uid, services);
+            professionalService.then((updateProfessional) => {
+              console.log("Número de registros modificados:" + updateProfessional.nModified);
+              if(updateProfessional.nModified > 0){
+                  var servicesProfessional = new Array();
+                  var servicesArray=new Array();
+                  var servicesFinalArray=new Array();
+                  console.log("Número de profesionales que tienen los mismos servicios:" + professionals.length);
+                  if(professionals.length > 1){
+                    for (var i in professionals){
+                        if(Number.isInteger(Number(i))){
+                          var professional = professionals[i];
+                          if(professional.uid == uid){
+                            servicesProfessional = professional.services;
+                          }
+                          else{
+                            servicesArray.push(professional.services);
+                          }
+                        }
+                    }  
+                    for(var i=0;i<servicesArray.length;i++){
+                      var compareArrayUtil = new CompareArrayUtil(servicesProfessional,servicesArray[i]);
+                      var diffArray = new Array();
+                      diffArray = compareArrayUtil.getArrayDifference();
+                      console.log("Se encontraron " + diffArray.length + " diferencias");
+                      if(diffArray.length > 0){
+                        for(var j=0;j<diffArray.length;j++){
+                          servicesFinalArray.push(diffArray[j]);
+                        }  
+                      }
+                    }
+
+                    console.log("Servicios a ser borrados: "+ servicesFinalArray.length);
+                    if(servicesFinalArray.length > 0){
+                      var serviceService = ServiceService.deleteArrayServices(servicesFinalArray);
+                      serviceService.exec(function(err, service) {
+                        if(err){
+                          return res.status(500).send({message: 'Error en la petición: ' + err});
+                        }
+                        else{
+                          console.log("Se eliminaron " + servicesFinalArray.length + " servicios");
+                        }    
+                      });
+                    }
+                  } 
+                  else{
+                      var serviceService = ServiceService.deleteArrayServices(services);
+                      serviceService.exec(function(err, service) {
+                        if(err){
+                          return res.status(500).send({message: 'Error en la petición: ' + err});
+                        }
+                        else{
+                          console.log("Se eliminaron " + services.length + " servicios");
+                        }    
+                      });
+                  }
+                } 
+            });
+          });
+        }
+        else{
+          console.log("Este profesional no tiene servicios");
+        }
+        var professionalService = ProfessionalService.findClientsByProfessionalUid(uid);
+        professionalService.exec(function(err, professional) {
+          var clients = professional.clients;
+          if(clients.length > 0){
+            var professionalService =  ProfessionalService.findProfessionalsByClients(clients);
+            professionalService.exec(function(err, professionals) {
+              var professionalService = ProfessionalService.updateRemoveClientsProfessionalByUid(uid, clients);
+              professionalService.then((updateProfessional) => {
+                console.log("Número de registros modificados:" + updateProfessional.nModified);
+                if(updateProfessional.nModified > 0){
+                    var clientsProfessional = new Array();
+                    var clientsArray=new Array();
+                    var clientsFinalArray=new Array();
+                    console.log("Número de profesionales que tienen los mismos clientes:" + professionals.length);
+                    if(professionals.length > 1){
+                      for (var i in professionals){
+                          if(Number.isInteger(Number(i))){
+                            var professional = professionals[i];
+                            if(professional.uid == uid){
+                              clientsProfessional = professional.clients;
+                            }
+                            else{
+                              clientsArray.push(professional.clients);
+                            }
+                          }
+                        }
+                        for(var i=0;i<clientsArray.length;i++){
+                          var compareArrayUtil = new CompareArrayUtil(clientsProfessional,clientsArray[i]);
+                          var diffArray = new Array();
+                          diffArray = compareArrayUtil.getArrayDifference();
+                          console.log("Se encontraron " + diffArray.length + " diferencias");
+                          if(diffArray.length > 0){
+                            for(var j=0;j<diffArray.length;j++){
+                              clientsFinalArray.push(diffArray[j]);
+                            }  
+                          }
+                        }
+                        console.log("Clientes a ser borrados: "+ clientsFinalArray.length);
+
+                        if(clientsFinalArray.length > 0){
+                          var professionalsPersonArray = new Array();
+                          var clientsPersonArray = new Array();
+
+                          var clientService = ClientService.findClientsBy_ids(clientsFinalArray);
+                          clientService.exec(function(err, clients) {
+
+                            for (var i in clients){
+                              if(Number.isInteger(Number(i))){
+                                var client = clients[i];
+                                console.log(client.person._id);
+                                clientsPersonArray.push(client.person._id);
+                              }
+                            }
+
+                            console.log("Se consultaran " + clientsPersonArray.length + " personas clientes para saber si"
+                              + "existen como profesionales");
+
+                            var professionalService = ProfessionalService.findProfessionalsByPersons(clientsPersonArray);
+                            professionalService.exec(function(err, professionals) {
+
+                              console.log("profesionales:" + professionals);
+                              for (var i in professionals){
+                                if(Number.isInteger(Number(i))){
+                                  var professional = professionals[i];
+                                  console.log(professional.person);
+                                  professionalsPersonArray.push(professional.person);
+                                }
+                              }
+                              console.log("Se encontrarón " + clientsPersonArray.length + " clientes y de estos, " 
+                                + professionalsPersonArray.length + " son profesionales");
+
+                              var clientService = ClientService.deleteArrayClients(clientsFinalArray);
+                              clientService.exec(function(err, client) {
+                                if(err){
+                                  return res.status(500).send({message: 'Error en la petición: ' + err});
+                                }
+                                else{
+                                  console.log("Se eliminaron " + clientsFinalArray.length + " clientes");
+
+                                  var compareArrayUtil = new CompareArrayUtil(clientsPersonArray,professionalsPersonArray);
+                                  var diffPersonArray = new Array();
+
+                                  diffPersonArray = compareArrayUtil.getArrayDifference();  
+                                  console.log("Se eliminarán " + diffPersonArray.length + " personas");
+                                  if(diffPersonArray.length > 0){
+                                    var personService = PersonService.deleteArrayPersons(diffPersonArray);
+                                    personService.exec(function(err, person) {
+                                      if(err){
+                                        return res.status(500).send({message: 'Error en la petición: ' + err});
+                                      }
+                                      else{
+                                        console.log("Se eliminaron " + diffPersonArray.length + " personas clientes");
+                                      }  
+                                    });  
+                                  }
+                                }    
+                              });
+                          }); 
+                        });
+                        }     
+                      }  
+                      else{
+                        var professionalsPersonArray = new Array();
+                        var clientsPersonArray = new Array();
+
+                        for (var i in clients){
+                          if(Number.isInteger(Number(i))){
+                            var client = clients[i];
+                              clientsPersonArray.push(client.person._id);
+                          }
+                        }
+
+                        console.log("Se consultaran " + clientsPersonArray.length + " personas clientes para saber si"
+                          + "existen como profesionales");
+
+                        var professionalService = ProfessionalService.findProfessionalsByPersons(clientsPersonArray);
+                        professionalService.exec(function(err, professionals) {
+
+                          console.log("profesionales:" + professionals);
+                          for (var i in professionals){
+                            if(Number.isInteger(Number(i))){
+                              var professional = professionals[i];
+                              console.log(professional.person);
+                              professionalsPersonArray.push(professional.person);
+                            }
+                          }
+                          console.log("Se encontrarón " + clientsPersonArray.length + " clientes y de estos, " 
+                            + professionalsPersonArray.length + " son profesionales");
+
+                          var clientService = ClientService.deleteArrayClients(clients);
+                          clientService.exec(function(err, client) {
+                            if(err){
+                              return res.status(500).send({message: 'Error en la petición: ' + err});
+                            }
+                            else{
+                              console.log("Se eliminaron " + clients.length + " clientes");
+
+                              var compareArrayUtil = new CompareArrayUtil(clientsPersonArray,professionalsPersonArray);
+                              var diffPersonArray = new Array();
+
+                              diffPersonArray = compareArrayUtil.getArrayDifference();  
+                              console.log("Se eliminarán " + diffPersonArray.length + " personas");
+                              if(diffPersonArray.length > 0){
+                                var personService = PersonService.deleteArrayPersons(diffPersonArray);
+                                personService.exec(function(err, person) {
+                                  if(err){
+                                    return res.status(500).send({message: 'Error en la petición: ' + err});
+                                  }
+                                  else{
+                                    console.log("Se eliminaron " + diffPersonArray.length + " personas clientes");
+                                  }  
+                                });  
+                              }
+                            }    
+                          });
+                        }); 
+                      }    
+                  }
+              });                    
+            });
+          } 
+          else{
+            console.log("Este profesional no tiene clientes");
+          }
+
+          var professionalService = ProfessionalService.findExceptionsScheduleByProfessionalUid(uid);
+          professionalService.exec(function(err, professional) {
+            var exceptions = professional.professionalSchedule.exceptions;
+            var scheduleId = professional.professionalSchedule._id;
+            if(exceptions.length > 0){
+              var professionalScheduleService = ProfessionalScheduleService.findProfessionalSchedulesByExceptions(exceptions);
+              professionalScheduleService.exec(function(err, professionalSchedules) {
+                var professionalScheduleService = ProfessionalScheduleService.updateRemoveProfessionalScheduleExceptionsBy_id(scheduleId, exceptions);
+                professionalScheduleService.then((updateProfessionalSchedule) => {
+                  console.log("Número de registros modificados:" + updateProfessionalSchedule.nModified);
+                  if(updateProfessionalSchedule.nModified > 0){
+                      var exceptionsSchedule = new Array();
+                      var exceptionsArray=new Array();
+                      var exceptionsFinalArray=new Array();
+                      console.log("Número de agendas que tienen las mismas excepciones:" + professionalSchedules.length);
+                      if(professionalSchedules.length > 1){
+                        for (var i in professionalSchedules){
+                            if(Number.isInteger(Number(i))){
+                              var professionalSchedule = professionalSchedules[i];
+                              
+                              var tmpId = new String(professionalSchedule._id).valueOf();
+                              var tmpScheduleId = new String(scheduleId).valueOf();
+                              if(tmpId == tmpScheduleId){
+                                exceptionsSchedule = professionalSchedule.exceptions;
+                              }
+                              else{
+                                exceptionsArray.push(professionalSchedule.exceptions);
+                              }
+                            }
+                        }  
+                        for(var i=0;i<exceptionsArray.length;i++){
+                          var compareArrayUtil = new CompareArrayUtil(exceptionsSchedule,exceptionsArray[i]);
+                          var diffArray = new Array();
+                          diffArray = compareArrayUtil.getArrayDifference();
+                          console.log("Se encontraron " + diffArray.length + " diferencias");
+                          if(diffArray.length > 0){
+                            for(var j=0;j<diffArray.length;j++){
+                              exceptionsFinalArray.push(diffArray[j]);
+                            }  
+                          }
+                        }
+      
+                        console.log("Excepciones a ser borradas: "+ exceptionsFinalArray.length);
+                        if(exceptionsFinalArray.length > 0){
+                          var exceptionService = ExceptionService.deleteArrayExceptions(exceptionsFinalArray);
+                          exceptionService.exec(function(err, exception) {
+                            if(err){
+                              return res.status(500).send({message: 'Error en la petición: ' + err});
+                            }
+                            else{
+                              console.log("Se eliminaron " + exceptionsFinalArray.length + " excepciones");
+                            }    
+                          });
+                        }
+                      } 
+                      else{
+                        var exceptionService = ExceptionService.deleteArrayExceptions(exceptions);
+                        exceptionService.exec(function(err, exception) {
+                          if(err){
+                            return res.status(500).send({message: 'Error en la petición: ' + err});
+                          }
+                          else{
+                            console.log("Se eliminaron " + exceptions.length + " excepciones");
+                          }    
+                        });
+                      }
+                    } 
+                });
+              });
+            }
+            else{
+              console.log("Este profesional no tiene excepciones");
+            }
+
+            var professionalService = ProfessionalService.findAllAppointmentsScheduleByProfessionalUid(uid);
+            professionalService.exec(function(err, professional) {
+              var appointments = professional.professionalSchedule.appointments;
+              var scheduleId = professional.professionalSchedule._id;
+              if(appointments.length > 0){
+                var professionalScheduleService = ProfessionalScheduleService.findProfessionalSchedulesByAppointments(appointments);
+                professionalScheduleService.exec(function(err, professionalSchedules) {
+                  var professionalScheduleService = ProfessionalScheduleService.updateRemoveProfessionalScheduleAppointmentsBy_id(scheduleId, appointments);
+                  professionalScheduleService.then((updateProfessionalSchedule) => {
+                    console.log("Número de registros modificados:" + updateProfessionalSchedule.nModified);
+                    if(updateProfessionalSchedule.nModified > 0){
+                      var appointmentService = AppointmentService.deleteArrayAppointmens(appointments);
+                      appointmentService.exec(function(err, appointment) {
+                        if(err){
+                          return res.status(500).send({message: 'Error en la petición: ' + err});
+                        }
+                        else{
+                          console.log("Se eliminaron " + appointments.length + " citas del profesional");
+                        }    
+                      });
+                    }
+                  });    
+
+                });  
+              }  
+              else{
+                console.log("Este profesional no tiene citas vinculadas");
+              }
+
+              var clientService = ClientService.findClientByPersonId(professionalPersonId);
+              clientService.exec(function(err, clientPerson) {
+                var professionalService = ProfessionalService.deleteProfessionalByUid(uid);
+                professionalService.exec(function(err, professional) {
+                  if(err){
+                    return res.status(500).send({message: 'Error en la petición: ' + err});
+                  }
+                  else{
+                    console.log("Se encontró un cliente asociado a la persona");
+                    if(clientPerson != null && clientPerson != undefined){
+                      console.log("No se elimina la persona porque esta vinculada a un cliente");
+                    }
+                    else{
+                      var personService = PersonService.deletePersonBy_id(professionalPersonId);
+                      personService.exec(function(err, person) {
+                        console.log("Persona eliminada");
+                      });
+                    }
+                    return res.status(200).send({message: 'Todos los datos, servicios, clientes y excepciones fueron desasociados'
+                        + ' y/o eliminados del profesional  '});
+                  }  
+                });
+              });  
+            });
+          }); 
+        });
+      }
+      else{
+        return res.status(404).send({message: 'No existe un profesional con este uid'});
+      }
+    });
+  }
+  else{
+    return res.status(404).send({message: 'El uid del profesional es requerido'});
+  } 
+}  
+
+
 
 /**
  * 
