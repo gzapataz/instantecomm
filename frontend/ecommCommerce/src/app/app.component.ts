@@ -145,7 +145,7 @@ export class MyApp {
   }
 
   updateProfessional() {
-    console.log('this.professionalData to update:' + JSON.stringify(this.professionalData));
+    console.log('this.professionalData to update:' + JSON.stringify(this.professionalData.jsonProfessional.person));
     let modal = this.modalCtrl.create('RegistrationPage', {professional: this.professionalData});
     modal.present();
     modal.onDidDismiss(data => {

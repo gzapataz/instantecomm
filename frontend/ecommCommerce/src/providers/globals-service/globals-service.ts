@@ -14,6 +14,7 @@ import {CustomerClass} from "../../classes/customer-class";
 export class GlobalsServiceProvider implements OnInit {
   public loggedProfessional = new LoggedProfessional;
   public loadedCustomers: CustomerClass[];
+  public jsonProfesional: JSON;
 
   constructor(public http: HttpClient, private storage: Storage) {
     console.log('Hello GlobalsServiceProvider Provider');
@@ -45,9 +46,18 @@ export class GlobalsServiceProvider implements OnInit {
             //console.log('testing of sqlite was ' + uidData);
             this.storage.get('idSchedule').then(idSched => {
               this.loggedProfessional.idSchedule = idSched;
-              resolve();
-            })
-          })
+              this.storage.get('startHour').then(startHour => {
+                this.loggedProfessional.startHour =  startHour;
+                this.storage.get('endHour').then(endHour => {
+                  this.loggedProfessional.endHour =  endHour;
+                  this.storage.get('usrJson').then(usrJson => {
+                    this.loggedProfessional.jsonProfessional = usrJson;
+                    resolve();
+                  });
+                });
+              });
+            });
+          });
         });
     }).then(() => {return this.loggedProfessional},
       () => {return this.loggedProfessional}
@@ -77,6 +87,8 @@ export class GlobalsServiceProvider implements OnInit {
   reSetProfessionalLoginData() {
     this.loggedProfessional.userId = '';
     this.loggedProfessional.idSchedule = '';
+    this.loggedProfessional.startHour = '';
+    this.loggedProfessional.endHour = '';
   }
 
   /* Guarda la lista de clientes de un profesional en el cache */

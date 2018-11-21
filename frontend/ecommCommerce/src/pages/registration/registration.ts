@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, AlertController, ViewController} from 'ionic-angular';
 
 import { AngularFireAuth } from "angularfire2/auth";
 import * as firebase from 'firebase/app';
@@ -24,6 +24,9 @@ import {Person, PersonName} from "../../classes/customer-class";
 export class RegistrationPage {
 
   professional: ProfessionalClass = new ProfessionalClass();
+  loggedProfessional
+
+  action: String = 'Registrarse';
 
   reg = {
     name: '',
@@ -32,10 +35,22 @@ export class RegistrationPage {
     password: '',
     password2: ''
   };
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,
               public alertCtrl: AlertController, private afAuth: AngularFireAuth,
               private userService: UserServiceProvider) {
-    this.professional.personName = new PersonName();
+      if (this.navParams.get('professional')) {
+        this.loggedProfessional = this.navParams.get('professional');
+        console.log('COmpleto:' + JSON.stringify(this.loggedProfessional))
+        this.professional = this.loggedProfessional.jsonProfessional.person;
+        this.professional.uid = this.loggedProfessional.userId;
+        this.professional.startHour = this.loggedProfessional.startHour;
+        this.professional.endHour = this.loggedProfessional.endHour;
+        console.log('Professional:' + JSON.stringify(this.professional))
+        this.action = 'Actualizar';
+      }
+      else {
+        this.professional.personName = new PersonName();
+      }
   }
 
   ionViewDidLoad() {
@@ -65,6 +80,16 @@ export class RegistrationPage {
     }
   }
 
+  updateAccount() {
+    delete this.professional['email'];
+    console.log("Update:" + JSON.stringify(this.professional))
+    this.userService.updateDBUser(this.professional).subscribe(data => {
+      console.log("UpdatedData:" + JSON.stringify(data))
+      this.viewCtrl.dismiss();
+    })
+  }
+
+
   regSuccess(result) {
     console.log("result:" + JSON.stringify(result))
     this.professional.uid = result.user.uid;
@@ -74,5 +99,28 @@ export class RegistrationPage {
       this.userService.logOn(this.reg)
         .then(res => this.navCtrl.push(TabsPage));
     })
+  }
+
+  cancel() {
+    this.viewCtrl.dismiss();
+  }
+
+  deleteUser() {
+    let alert = this.alertCtrl.create({
+      title: 'Alerta',
+      subTitle: 'Esta opción borra físicamente su cuenta y toda su información relacionada: Citas, Pacientes, Servicios etc. Seleccione canclar para no continuar o eliminar para proseguir con el borrado',
+      buttons: [{text: 'Cancelar'},
+        { text: 'Eliminar',
+          handler: () => {
+            this.userService.deleteDBUser(this.professional).subscribe(data => {
+              console.log("deleted:" + JSON.stringify(data))
+              this.viewCtrl.dismiss();
+              this.navCtrl.push('LoginPage')
+
+            })
+          }
+        }]
+    })
+    alert.present();
   }
 }

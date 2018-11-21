@@ -58,8 +58,8 @@ export class CalendarPage implements OnInit, OnDestroy {
   theColor = 'white';
   fromDate = null;
   toDate = null;
-  startHour = "9";
-  endHour = '20';
+  startHour = "6";
+  endHour = '22';
   space = '1';
 
   calendar = {
@@ -173,7 +173,7 @@ export class CalendarPage implements OnInit, OnDestroy {
     //console.log('Plataforma:' + this.platform.platforms());
     //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
     this.loggedUser = this.globalService.getLoggedProffessionalData();
-    /*
+
     if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
       console.log('SALIENDO:' + JSON.stringify(this.loggedUser))
       this.navCtrl.push('LoginPage');
@@ -185,7 +185,7 @@ export class CalendarPage implements OnInit, OnDestroy {
       this.getServices(this.loggedUser.userId);
       this.getCustomers(this.loggedUser.userId);
     }
-    */
+
     console.log('ENTRANDO CALENDAR:')
     this.getServices(this.loggedUser.userId);
     this.getCustomers(this.loggedUser.userId);

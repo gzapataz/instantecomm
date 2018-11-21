@@ -12,6 +12,6 @@ export class ProfessionalClass {
   email: string;
   uid: string;
   identification: string;
-  startHour: string = "9";
-  endHour: string = "19";
+  startHour: string = "6";
+  endHour: string = "21";
 }

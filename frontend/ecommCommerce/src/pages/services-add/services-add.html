@@ -50,6 +50,9 @@
     <button ion-button full icon-left color="secondary" (click)="save()">
       <ion-icon name="checkmark"></ion-icon>{{accion}}
     </button>
+    <button ion-button full icon-left color="danger" (click)="save()" *ngIf="accion == 'Actualizar'">
+      Eliminar
+    </button>
   </ion-buttons>
 
 </ion-content>
