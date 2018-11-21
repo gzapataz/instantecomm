@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Registro</ion-title>
+    <ion-title>{{action}}</ion-title>
   </ion-toolbar>
 
 </ion-header>
@@ -15,29 +15,32 @@
     <ion-label color="facebook">Apellido</ion-label>
     <ion-input type="text" [(ngModel)] = "professional.personName.lastName" name="lastName"></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item *ngIf="action == 'Registrarse'">
     <ion-label color="facebook">Correo Electrónico</ion-label>
     <ion-input type="email" [(ngModel)] = "professional.email" name="email"></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item *ngIf="action == 'Registrarse'">
     <ion-label color="facebook">Password</ion-label>
     <ion-input type="password" [(ngModel)] = "reg.password" name="password"></ion-input>
   </ion-item>
-  <ion-item>
+  <ion-item *ngIf="action == 'Registrarse'">
     <ion-label color="facebook">Repetir Password</ion-label>
     <ion-input type="password" [(ngModel)] = "reg.password2" name="password2"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label >Hora de Inicio (*)</ion-label>
-    <ion-input  type="number" placeholder="7" [(ngModel)]="professional.startHour" required="required">
+    <ion-input  type="number" placeholder="6" [(ngModel)]="professional.startHour" required="required">
     </ion-input>
   </ion-item>
   <ion-item>
     <ion-label >Hora de Salida (*)</ion-label>
-    <ion-input  type="number" placeholder="19" [(ngModel)]="professional.endHour" required="required">
+    <ion-input  type="number" placeholder="21" [(ngModel)]="professional.endHour" required="required">
     </ion-input>
   </ion-item>
 
-  <button ion-button color="secondary" (click)="registerAccount()">Registrar</button>
+  <button ion-button full color="secondary" (click)="registerAccount()" *ngIf="action == 'Registrarse'">Registrarse</button>
+  <button ion-button full color="secondary" (click)="updateAccount()" *ngIf="action == 'Actualizar'">Actualizar</button>
+  <button ion-button full icon-left color="gray" (click)="cancel()" *ngIf="action == 'Actualizar'">Cancelar</button>
+  <button ion-button full icon-left color="danger" (click)="deleteUser()" *ngIf="action == 'Actualizar'">Eliminar</button>
 
 </ion-content>

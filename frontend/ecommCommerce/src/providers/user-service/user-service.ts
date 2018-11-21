@@ -46,6 +46,35 @@ export class UserServiceProvider {
     );
   }
 
+  updateDBUser(user): Observable<LoggedProfessional> {
+    //console.log('Prof->Creacion:' + JSON.stringify(user));
+    return this.http.put<Person>(this.userUrl, user, httpOptions).pipe(
+      tap((msg: any) => {
+        console.log('EN POST->Upd:' + JSON.stringify(user));
+        this.getValuesProfessional(user)
+      }),
+      catchError(this.handleError<Person>('addUser'))
+    );
+  }
+
+  deleteDBUser(user): Observable<LoggedProfessional> {
+    console.log('Prof->Delete:' + user.uid);
+    let delUrl = this.userUrl + '/' + user.uid;
+    console.log('URL DELETE:' + this.userUrl);
+    return this.http.delete<Person>(delUrl, httpOptions).pipe(
+      tap((user: any) => {
+        this.afAuth.auth.currentUser.delete().then(() => {
+          this.logOut();
+          console.log('EN delete->Upd:' + JSON.stringify(user));
+
+        })
+      }),
+      catchError(this.handleError<Person>('addUser'))
+    );
+  }
+
+
+
   displayAlert(alertTitle, alertSub) {
     let theAlert = this.alertCtrl.create({
       title: alertTitle,
@@ -64,6 +93,7 @@ export class UserServiceProvider {
         this.storageControl('delete', 'uid');
         this.storageControl('delete', 'startHour');
         this.storageControl('delete', 'endHour');
+        this.storageControl('delete', 'usrJson');
         this.globalService.reSetProfessionalLoginData();
       })
       .catch(err => this.displayAlert('Error Logged Out', err));
@@ -105,6 +135,15 @@ export class UserServiceProvider {
 
   }
 
+  sendPasswordReset(email): Promise<any> {
+    return this.afAuth.auth.sendPasswordResetEmail(email).then(() => {
+      return true;
+    }).catch(err => {
+      this.success = false;
+      this.displayAlert("Error", err )
+      return false;
+    });
+  }
 
   //No usar
   oldlogOn(user)  {
@@ -230,7 +269,9 @@ export class UserServiceProvider {
 
     }
     //console.log('Horas:' + jsonProfesional['startHour'] + ' Y ' + jsonProfesional['endHour'])
+    console.log('jsonProfesional:' + JSON.stringify(jsonProfesional));
     var obj2 = jsonProfesional['professionalSchedule'];
+    this.storageControl('set', 'usrJson', jsonProfesional);
     this.storageControl('set', 'idSchedule', obj2['idSchedule']);
     this.storageControl('set', 'startHour', jsonProfesional['startHour']);
     this.storageControl('set', 'endHour', jsonProfesional['endHour']);
@@ -242,7 +283,7 @@ export class UserServiceProvider {
             this.storage.get('startHour').then (startHour => {
               this.storage.get('endHour').then (endHour => {
                 this.globalService.setProfessionalLoginData(uidData, idSched, startHour, endHour);
-                //console.log('LoggedSingleltonUpdates ' + JSON.stringify(this.globalService.getLoggedProffessionalData())); //this is always null, even though I just set it to true.
+                console.log('LoggedSingleltonUpdates ' + JSON.stringify(this.globalService.getLoggedProffessionalData())); //this is always null, even though I just set it to true.
               });
             });
           });

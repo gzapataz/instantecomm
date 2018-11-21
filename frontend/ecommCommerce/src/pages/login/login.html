@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-<ion-title>Inicio- e-Commerce</ion-title>
+<ion-title>Inicio DentalApp</ion-title>
   </ion-toolbar>
 
 </ion-header>
@@ -8,14 +8,17 @@
 
 <ion-content>
   <ion-item>
-    <ion-label color="facebook">Correo electronico</ion-label>
-    <ion-input type="email" [(ngModel)]="login.email" name="email"></ion-input>
+    <ion-label color="facebook">eMail</ion-label>
+    <ion-input type="email" [(ngModel)]="this.login.email" name="email" ngModel email="true"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label color="facebook">Password</ion-label>
     <ion-input type="password" [(ngModel)]="login.password" name="password"></ion-input>
   </ion-item>
+
   <button ion-button color="secondary" (click)="signOn()">Ingresar</button>
-  <p>¿Todavia no perteneces a e-Commerce al instante?</p>
+  <br>
+  <button ion-button color="alert" outline small (click)="forgotPwd()">olvidó su contraseña?</button>
+  <p>¿Todavía no pertenece a DentalApp?</p>
   <button ion-button color="secondary" [navPush]="registrationPage">Registrarse aquí</button>
 </ion-content>
