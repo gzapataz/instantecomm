@@ -219,8 +219,8 @@ exports.findServicesProfessionalByUid = function(uid){
  * @param {*} service_id 
  * @param {*} professional_id 
  */
-exports.findServicesProfessionalBy_id = function(service_id,professional_id){
-  var professional = Professional.findOne({_id:professional_id, services: service_id})
+exports.findServiceProfessionalByUid = function(uid, service_id,){
+  var professional = Professional.findOne({uid:uid, services: service_id})
   return professional;
 }
 
@@ -232,6 +232,7 @@ exports.findProfessionalsByServices = function(services){
   var professional = Professional.find({services: { "$in" : services}});
   return professional;
 }
+
 
 /**
  * Buscar los profesionales que poseen uno o varios clientes.
