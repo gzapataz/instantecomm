@@ -152,6 +152,50 @@ exports.findProfessionalByUid = function(uid){
 }
 
 /**
+ * Buscar profesional por uid
+ * @param {*} uid 
+ */
+exports.findAllInformationProfessionalByUid = function(uid){
+  var professional = Professional.findOne({uid:uid})
+  .select('professionalSince lastVisit status uid startHour endHour')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  .populate(
+      {
+        path:'professionalSchedule', select: {'idSchedule':1}, 
+        populate:{
+          path:'appointments', 
+          select: {'_id':1, 'startTime':1, 'endTime':1, 'durationTime':1, 
+          'status': 1, 'client': 1, 'professional': 1, 'service':1, 'title':1},
+        },
+        populate:{
+          path: 'exceptions',
+          select: {'title':1, 'type':1, 'status':1, 'startDate':1, 
+          'endDate': 1, 'startTime': 1, 'endTime': 1, 'weekday':1},
+          match: {'_id': {'$ne':ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY}}
+        }
+    })
+    .populate(
+      {
+        path:'clients', 
+        select: ('clientSince lastVisit status'),
+        populate:{
+          path:'person', 
+          select: {
+            'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+            'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1
+          }          
+        }  
+      })
+      .populate(
+        {
+          path:'services',
+        });
+  return professional;
+}
+
+
+/**
  * Buscar un profesional por person
  * @param {*} personId 
  */
@@ -219,8 +263,18 @@ exports.findServicesProfessionalByUid = function(uid){
  * @param {*} service_id 
  * @param {*} professional_id 
  */
-exports.findServiceProfessionalByUid = function(uid, service_id,){
+exports.findServiceProfessionalByUid = function(uid, service_id){
   var professional = Professional.findOne({uid:uid, services: service_id})
+  return professional;
+}
+
+/**
+ * Buscar si un profesional posee un cliente.
+ * @param {*} uid 
+ * @param {*} client_id 
+ */
+exports.findClientProfessionalByUid = function(uid, client_id){
+  var professional = Professional.findOne({uid:uid, clients: client_id})
   return professional;
 }
 

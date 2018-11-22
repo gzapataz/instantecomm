@@ -637,6 +637,11 @@ exports.setServiceProfessionalUpdateByUid = function(req, res){
   } 
 } 
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.removeServiceProfessionalByUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
     var uid = req.params.uid;
@@ -653,33 +658,9 @@ exports.removeServiceProfessionalByUid = function(req, res){
               professionalService.then((updateProfessional) => {
                 console.log("Número de registros modificados:" + updateProfessional.nModified);
                 if(updateProfessional.nModified > 0){
-                  var servicesArray=new Array();
-                  var servicesFinalArray=new Array();
                   console.log("Número de profesionales que tienen los mismos servicios:" + professionals.length);
-                  if(professionals.length > 1){
-                    for (var i in professionals){
-                        if(Number.isInteger(Number(i))){
-                          var professional = professionals[i];
-                          if(professional.uid != uid){
-                            servicesArray.push(professional.services);
-                          }
-                        }
-                    }  
-                    for(var i=0;i<servicesArray.length;i++){
-                      var compareArrayUtil = new CompareArrayUtil([service],servicesArray[i]);
-                      var diffArray = new Array();
-                      diffArray = compareArrayUtil.getArrayDifference();
-                      console.log("Se encontraron " + diffArray.length + " diferencias");
-                      if(diffArray.length > 0){
-                        for(var j=0;j<diffArray.length;j++){
-                          servicesFinalArray.push(diffArray[j]);
-                        }  
-                      }
-                    }
-
-                    console.log("Servicios a ser borrados: "+ servicesFinalArray.length);
-                    if(servicesFinalArray.length > 0){
-                      var serviceService = ServiceService.deleteArrayServices(servicesFinalArray);
+                  if(professionals.length == 1){
+                      var serviceService = ServiceService.deleteOneService(service);
                       serviceService.exec(function(err, service) {
                         if(err){
                           return res.status(500).send({message: 'Error en la petición: ' + err});
@@ -688,21 +669,9 @@ exports.removeServiceProfessionalByUid = function(req, res){
                           return res.status(200).send({message: 'servicio eliminado correctamente'});
                         }    
                       });
-                    }
-                    else{
-                      return res.status(200).send({message: 'servicio desasociado correctamente'});
-                    }
-                  } 
+                  }
                   else{
-                      var serviceService = ServiceService.deleteArrayServices(service);
-                      serviceService.exec(function(err, service) {
-                        if(err){
-                          return res.status(500).send({message: 'Error en la petición: ' + err});
-                        }
-                        else{
-                          return res.status(200).send({message: 'servicio eliminado correctamente'});
-                        }    
-                      });
+                    return res.status(200).send({message: 'servicio desasociado correctamente'});
                   }
                 }  
               });  
@@ -720,9 +689,80 @@ exports.removeServiceProfessionalByUid = function(req, res){
   }
   else{
     return res.status(404).send({message: 'El uid del profesional es requerido'});
-  } 
-
+  }
 }
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.removeClientProfessionalByUid = function(req, res){
+  if(req.params.uid != undefined && req.params.uid != null){
+    var uid = req.params.uid;
+    if(req.body._id != undefined && req.body._id != null){
+      var client = req.body._id;
+      var professionalService = ProfessionalService.findClientProfessionalByUid(uid,req.body._id);
+      professionalService.exec(function(err, professional) {
+        if(professional != null && professional != undefined){
+          var clients = professional.clients;
+          if(clients.length > 0){
+            var professionalService = ProfessionalService.findProfessionalsByClients(client);
+            professionalService.exec(function(err, professionals) {
+              var professionalService = ProfessionalService.updateRemoveClientsProfessionalByUid(uid, [client]);
+              professionalService.then((updateProfessional) => {
+                console.log("Número de registros modificados:" + updateProfessional.nModified);
+                if(updateProfessional.nModified > 0){
+                  console.log("Número de profesionales que tienen el mismo cliente:" + professionals.length);
+                  if(professionals.length == 1){
+                    var clientService = ClientService.findClientBy_id(client);
+                    clientService.exec(function(err, clientPerson) {
+                      console.log("Se consultara la persona clientes para saber si existe como profesional");
+                      var professionalService = ProfessionalService.findProfessionalByPersonId(clientPerson.person);
+                      professionalService.exec(function(err, professional) {
+                        var clientService = ClientService.deleteOneClient(clientPerson);
+                        clientService.exec(function(err, client) {
+                          if(err){
+                            return res.status(500).send({message: 'Error en la petición: ' + err});
+                          }
+                          else{
+                            if(professional == null && professional == undefined){
+                              var personService = PersonService.deletePersonBy_id(clientPerson);
+                              personService.exec(function(err, person) {
+                                return res.status(200).send({message: 'cliente y persona relacionada, eliminados correctamente'});
+                              });  
+                            }
+                            else{
+                              console.log("Hay un profesional relacionado a esta persona");
+                              return res.status(200).send({message: 'cliente eliminado correctamente'});
+                            }  
+                          }    
+                        });
+                      });
+                    }); 
+                  }
+                  else{
+                    return res.status(200).send({message: 'cliente desasociado correctamente'});
+                  }
+                }  
+              });  
+            });
+          }  
+        }
+        else{
+          return res.status(404).send({message: 'No existe un profesional con este uid o no tiene un cliente asociado con este identificador'});
+        }
+      });  
+    }
+    else{
+      return res.status(404).send({message: 'El identificador del cliente es requerido'});
+    }  
+  }
+  else{
+    return res.status(404).send({message: 'El uid del profesional es requerido'});
+  } 
+}
+
 
 
 
@@ -732,6 +772,11 @@ exports.removeServiceProfessionalByUid = function(req, res){
  * @param {*} res 
  */
 exports.removeProfessionalCascadeByUid = function(req, res){
+  /*var professionalService = ProfessionalService.findAllInformationProfessionalByUid(req.params.uid);
+  professionalService.exec(function(err, professional) {
+    console.log(professional);
+  });*/ 
+
   if(req.params.uid != undefined && req.params.uid != null){
     var uid = req.params.uid;   
     var professionalService = ProfessionalService.findServicesProfessionalByUid(uid);

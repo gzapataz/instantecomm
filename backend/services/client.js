@@ -86,3 +86,12 @@ exports.deleteArrayClients = function(arrayClients){
   var client = Client.deleteMany({ _id: { $in: arrayClients}});
   return client;
 }
+
+/**
+ * 
+ * @param {*} client
+ */
+exports.deleteOneClient = function(client){
+  var client = Client.deleteOne({ _id: client});
+  return client;
+}
