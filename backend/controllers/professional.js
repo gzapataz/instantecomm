@@ -63,68 +63,70 @@ exports.setProfessional = function(req, res){
 
     if(req.body.idType != undefined && req.body.idType != null && req.body.identification != undefined && req.body.identification != null){
     var personService = PersonService.findPersonByIdentification(req.body.idType,req.body.identification);
-      personService.then((person) => {
+      personService.then((person) => {   
         var professionalService = ProfessionalService.findProfessionalByPersonId(person);
         professionalService.then((professional) => {
-          if(professional != null && professional != undefined){
+          if(person != null && person != undefined && professional != null && professional != undefined){
             return res.status(404).send({message: 'Ya existe un profesional con ' +  req.body.idType +  ' ' + req.body.identification});
+          }
+          else{
+            req.body.status = ActivationStatus.ACTIVE;
+            var personService = PersonService.findPersonByEmail(req.body.email);
+            personService.then((person) => {
+              if(person != undefined && person != null){
+                var professionalService = ProfessionalService.findProfessionalByPersonId(person) 
+                  professionalService.then((professional) => {
+                    if(professional != undefined && professional != null){
+                      return res.status(404).send({message: 'El profesional con email ' + req.body.email +  ' ya existe'});
+                    }
+                    else{
+                      var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
+                      professionalScheduleService.then((professionalSchedule) => {
+                        // save the professional and check for errors
+                        if(professionalSchedule != undefined && professionalSchedule != null){
+                          req.body.professionalSchedule = professionalSchedule;
+                          var professional = ProfessionalService.saveProfessional(req, person);
+                          professional.then((results) => {
+                            if(results.errors)
+                              return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
+                            else{
+                              res.json(results); 
+                            }
+                          });
+                        } 
+                      }); 
+                    }     
+                  });  
+                }
+                else{
+                  var personService = PersonService.savePerson(req);
+                  personService.then((results) => {
+                    if(results.errors)
+                      return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona ' + results});
+                    else{
+                      var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
+                      professionalScheduleService.then((professionalSchedule) => {
+                      // save the professional and check for errors
+                      if(professionalSchedule != undefined && professionalSchedule != null){
+                          req.body.professionalSchedule = professionalSchedule;
+                          var professional = ProfessionalService.saveProfessional(req, results);
+                          professional.then((results) => {
+                            if(results.errors)
+                              return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
+                            else{
+                              res.json(results); 
+                            }
+                          });
+                        } 
+                      }); 
+                    }  
+                  });
+                } 
+            }); 
           }
         });  
       });   
     }
-    req.body.status = ActivationStatus.ACTIVE;
-    var personService = PersonService.findPersonByEmail(req.body.email);
-    personService.then((person) => {
-      if(person != undefined && person != null){
-        var professionalService = ProfessionalService.findProfessionalByPersonId(person) 
-          professionalService.then((professional) => {
-            if(professional != undefined && professional != null){
-              return res.status(404).send({message: 'El profesional con email' + req.body.email +  ' ya existe'});
-            }
-            else{
-              var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
-              professionalScheduleService.then((professionalSchedule) => {
-                // save the professional and check for errors
-                if(professionalSchedule != undefined && professionalSchedule != null){
-                  req.body.professionalSchedule = professionalSchedule;
-                  var professional = ProfessionalService.saveProfessional(req, person);
-                  professional.then((results) => {
-                    if(results.errors)
-                      return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
-                    else{
-                      res.json(results); 
-                    }
-                  });
-                } 
-              }); 
-            }     
-          });  
-        }
-        else{
-          var personService = PersonService.savePerson(req);
-          personService.then((results) => {
-            if(results.errors)
-              return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona ' + results});
-            else{
-              var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
-              professionalScheduleService.then((professionalSchedule) => {
-              // save the professional and check for errors
-              if(professionalSchedule != undefined && professionalSchedule != null){
-                  req.body.professionalSchedule = professionalSchedule;
-                  var professional = ProfessionalService.saveProfessional(req, results);
-                  professional.then((results) => {
-                    if(results.errors)
-                      return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
-                    else{
-                      res.json(results); 
-                    }
-                  });
-                } 
-              }); 
-            }  
-          });
-        } 
-    }); 
   }
   else{
     return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional, el email es requerido'});
@@ -775,15 +777,19 @@ exports.removeProfessionalCascadeByUid = function(req, res){
   /*var professionalService = ProfessionalService.findAllInformationProfessionalByUid(req.params.uid);
   professionalService.exec(function(err, professional) {
     console.log(professional);
-  });*/ 
-
+  });*/
   if(req.params.uid != undefined && req.params.uid != null){
     var uid = req.params.uid;   
-    var professionalService = ProfessionalService.findServicesProfessionalByUid(uid);
+    var professionalService = ProfessionalService.findAllInformationProfessionalByUid(uid);
     professionalService.exec(function(err, professional) {
       if(professional != null && professional != undefined){
         var professionalPersonId = professional.person;
         var services = professional.services;
+        var clients = professional.clients;
+        var exceptions = professional.professionalSchedule.exceptions;
+        var scheduleId = professional.professionalSchedule._id;
+        var appointments = professional.professionalSchedule.appointments;
+
         if(services.length > 0){
           var professionalService = ProfessionalService.findProfessionalsByServices(services);
           professionalService.exec(function(err, professionals) {
@@ -850,9 +856,6 @@ exports.removeProfessionalCascadeByUid = function(req, res){
         else{
           console.log("Este profesional no tiene servicios");
         }
-        var professionalService = ProfessionalService.findClientsByProfessionalUid(uid);
-        professionalService.exec(function(err, professional) {
-          var clients = professional.clients;
           if(clients.length > 0){
             var professionalService =  ProfessionalService.findProfessionalsByClients(clients);
             professionalService.exec(function(err, professionals) {
@@ -905,7 +908,7 @@ exports.removeProfessionalCascadeByUid = function(req, res){
                             }
 
                             console.log("Se consultaran " + clientsPersonArray.length + " personas clientes para saber si"
-                              + "existen como profesionales");
+                              + " existen como profesionales");
 
                             var professionalService = ProfessionalService.findProfessionalsByPersons(clientsPersonArray);
                             professionalService.exec(function(err, professionals) {
@@ -963,12 +966,11 @@ exports.removeProfessionalCascadeByUid = function(req, res){
                         }
 
                         console.log("Se consultaran " + clientsPersonArray.length + " personas clientes para saber si"
-                          + "existen como profesionales");
+                          + " existen como profesionales");
 
                         var professionalService = ProfessionalService.findProfessionalsByPersons(clientsPersonArray);
                         professionalService.exec(function(err, professionals) {
 
-                          console.log("profesionales:" + professionals);
                           for (var i in professionals){
                             if(Number.isInteger(Number(i))){
                               var professional = professionals[i];
@@ -1014,11 +1016,6 @@ exports.removeProfessionalCascadeByUid = function(req, res){
           else{
             console.log("Este profesional no tiene clientes");
           }
-
-          var professionalService = ProfessionalService.findExceptionsScheduleByProfessionalUid(uid);
-          professionalService.exec(function(err, professional) {
-            var exceptions = professional.professionalSchedule.exceptions;
-            var scheduleId = professional.professionalSchedule._id;
             if(exceptions.length > 0){
               var professionalScheduleService = ProfessionalScheduleService.findProfessionalSchedulesByExceptions(exceptions);
               professionalScheduleService.exec(function(err, professionalSchedules) {
@@ -1088,17 +1085,13 @@ exports.removeProfessionalCascadeByUid = function(req, res){
             else{
               console.log("Este profesional no tiene excepciones");
             }
-
-            var professionalService = ProfessionalService.findAllAppointmentsScheduleByProfessionalUid(uid);
-            professionalService.exec(function(err, professional) {
-              var appointments = professional.professionalSchedule.appointments;
-              var scheduleId = professional.professionalSchedule._id;
+              console.log("Número de citas a ser borradas" + appointments.length);
               if(appointments.length > 0){
                 var professionalScheduleService = ProfessionalScheduleService.findProfessionalSchedulesByAppointments(appointments);
                 professionalScheduleService.exec(function(err, professionalSchedules) {
                   var professionalScheduleService = ProfessionalScheduleService.updateRemoveProfessionalScheduleAppointmentsBy_id(scheduleId, appointments);
                   professionalScheduleService.then((updateProfessionalSchedule) => {
-                    console.log("Número de registros modificados:" + updateProfessionalSchedule.nModified);
+                    console.log("Número de registros de citas modificados:" + updateProfessionalSchedule.nModified);
                     if(updateProfessionalSchedule.nModified > 0){
                       var appointmentService = AppointmentService.deleteArrayAppointmens(appointments);
                       appointmentService.exec(function(err, appointment) {
@@ -1106,6 +1099,7 @@ exports.removeProfessionalCascadeByUid = function(req, res){
                           return res.status(500).send({message: 'Error en la petición: ' + err});
                         }
                         else{
+
                           console.log("Se eliminaron " + appointments.length + " citas del profesional");
                         }    
                       });
@@ -1141,9 +1135,6 @@ exports.removeProfessionalCascadeByUid = function(req, res){
                   }  
                 });
               });  
-            });
-          }); 
-        });
       }
       else{
         return res.status(404).send({message: 'No existe un profesional con este uid'});
@@ -1152,7 +1143,7 @@ exports.removeProfessionalCascadeByUid = function(req, res){
   }
   else{
     return res.status(404).send({message: 'El uid del profesional es requerido'});
-  } 
+  }
 }  
 
 

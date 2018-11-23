@@ -163,17 +163,17 @@ exports.findAllInformationProfessionalByUid = function(uid){
   .populate(
       {
         path:'professionalSchedule', select: {'idSchedule':1}, 
-        populate:{
+        populate:[{
           path:'appointments', 
           select: {'_id':1, 'startTime':1, 'endTime':1, 'durationTime':1, 
           'status': 1, 'client': 1, 'professional': 1, 'service':1, 'title':1},
         },
-        populate:{
+        {
           path: 'exceptions',
           select: {'title':1, 'type':1, 'status':1, 'startDate':1, 
           'endDate': 1, 'startTime': 1, 'endTime': 1, 'weekday':1},
           match: {'_id': {'$ne':ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY}}
-        }
+        }]
     })
     .populate(
       {

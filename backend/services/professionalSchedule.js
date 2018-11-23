@@ -108,3 +108,12 @@ exports.findAllProfessionalsSchedule = function(){
   .populate({path: 'appointments', populate: {path:'service'}});
   return professionalSchedule;
 }
+
+/**
+ * 
+ * @param {*} arrayProfessionalSchedules 
+ */
+exports.deleteArrayProfessionalSchedules = function(arrayProfessionalSchedules){
+  var professionalSchedule = ProfessionalSchedule.deleteMany({ _id: { $in: arrayProfessionalSchedules}});
+  return professionalSchedule;
+}
