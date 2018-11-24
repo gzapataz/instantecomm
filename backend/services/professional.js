@@ -137,7 +137,7 @@ exports.saveServiceProfessional =  async function(professionalUid, service){
   catch(error){
     return error;
   }    
-} 
+}
 
 /**
  * Buscar profesional por uid
@@ -172,7 +172,7 @@ exports.findAllInformationProfessionalByUid = function(uid){
           path: 'exceptions',
           select: {'title':1, 'type':1, 'status':1, 'startDate':1, 
           'endDate': 1, 'startTime': 1, 'endTime': 1, 'weekday':1},
-          match: {'_id': {'$ne':ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY}}
+          //match: {'_id': {'$ne':ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY}}
         }]
     })
     .populate(

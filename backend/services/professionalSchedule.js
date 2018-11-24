@@ -37,6 +37,24 @@ exports.saveProfessionalScheduleAppointment =  async function(professionalSchedu
 }
 
 /**
+ * 
+ * @param {*} exception 
+ * @param {*} professionalScheduleId
+ */
+exports.saveProfessionalScheduleException =  async function(exception,professionalScheduleId){
+  try{
+    return await ProfessionalSchedule.findOneAndUpdate(
+      {_id : professionalScheduleId},
+      {$push: { exceptions: exception } },
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }  
+}
+
+/**
  * Buscar la agenda de profesional por _id
  * @param {*} req 
  */
@@ -113,7 +131,11 @@ exports.findAllProfessionalsSchedule = function(){
  * 
  * @param {*} arrayProfessionalSchedules 
  */
-exports.deleteArrayProfessionalSchedules = function(arrayProfessionalSchedules){
-  var professionalSchedule = ProfessionalSchedule.deleteMany({ _id: { $in: arrayProfessionalSchedules}});
-  return professionalSchedule;
+exports.deleteArrayProfessionalSchedules = async function(arrayProfessionalSchedules){
+  try{
+    return ProfessionalSchedule.deleteMany({ _id: { $in: arrayProfessionalSchedules}});
+  }
+  catch(error){
+    return error;
+  } 
 }
