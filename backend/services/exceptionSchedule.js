@@ -65,7 +65,9 @@ exports.deleteArrayExceptions = function(arrayExceptions){
   var exceptionSchedule = ExceptionSchedule.deleteMany(
     { $and: [
       {_id: { $in: arrayExceptions}}, 
-      {_id: {$ne: constants.EXCEPTION_COLOMBIAN_HOLIDAY}}
+      {_id: {$ne: constants.EXCEPTION_COLOMBIAN_HOLIDAY}},
+      {_id: {$ne: constants.EXCEPTION_DAY_SUNDAY_DEFAULT}},
+      {_id: {$ne: constants.EXCEPTION_BREAK_TIME_DEFAULT}}
       ]
     });
   return exceptionSchedule;

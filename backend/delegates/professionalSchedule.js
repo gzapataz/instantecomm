@@ -4,6 +4,7 @@ var ProfessionalScheduleService = require('../services/professionalSchedule');
 var AppointmentService = require('../services/appointment');
 var ExceptionService = require('../services/exceptionSchedule');
 var CompareArrayUtil = require('../utils/compareArrayUtil');
+var constants = require('../constants/ECAIConstants');
 
 
 /**
@@ -75,7 +76,7 @@ exports.deleteArrayExceptionsDelegate = async function(scheduleId,exceptions){
                         exceptionsSchedule = professionalSchedule.exceptions;
                       }
                       else{
-                        exceptionsArray.push(professionalSchedule.exceptions);
+                          exceptionsArray.push(professionalSchedule.exceptions);
                       }
                     }
                 }  
@@ -86,7 +87,11 @@ exports.deleteArrayExceptionsDelegate = async function(scheduleId,exceptions){
                   console.log("Se encontraron " + diffArray.length + " diferencias" + diffArray);
                   if(diffArray.length > 0){
                     for(var j=0;j<diffArray.length;j++){
-                      exceptionsFinalArray.push(diffArray[j]);
+                      if(diffArray[j] != constants.EXCEPTION_BREAK_TIME_DEFAULT && 
+                        diffArray[j] != constants.EXCEPTION_COLOMBIAN_HOLIDAY &&
+                        diffArray[j] != constants.EXCEPTION_DAY_SUNDAY_DEFAULT){
+                          exceptionsFinalArray.push(diffArray[j]);
+                      }
                     }  
                   }
                 }

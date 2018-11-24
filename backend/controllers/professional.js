@@ -6,8 +6,6 @@ var ProfessionalService = require('../services/professional');
 var RatingService = require('../services/rating');
 var ClientService = require('../services/client');
 var ProfessionalScheduleService = require('../services/professionalSchedule');
-var ExceptionService = require('../services/exceptionSchedule');
-var AppointmentService = require('../services/appointment');
 var ProfessionalScheduleDelegate = require('../delegates/professionalSchedule');
 var ProfessionalDelegate = require('../delegates/professional');
 var ClientDelegate = require('../delegates/client');
@@ -18,7 +16,6 @@ var DayUtil = require('../utils/dayUtil');
 var ObjectId = require('mongodb').ObjectID
 const ExceptionType = require('../enums/exceptionType');
 var module = require('colombia-holidays');
-var CompareArrayUtil = require('../utils/compareArrayUtil');
 var ECAIConstants = require('../constants/ECAIConstants');
 
 /**
@@ -47,6 +44,11 @@ exports.setProfessional = function(req, res){
   req.body.status = ActivationStatus.ACTIVE;
   var startHour = req.body.startHour;
   var endHour = req.body.endHour;
+
+  var arrayExceptionsByDefault = new Array();
+  arrayExceptionsByDefault.push(ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY);
+  arrayExceptionsByDefault.push(ECAIConstants.EXCEPTION_BREAK_TIME_DEFAULT);
+  arrayExceptionsByDefault.push(ECAIConstants.EXCEPTION_DAY_SUNDAY_DEFAULT);
 
   if(req.body.email != undefined && req.body.email != null){
     if(startHour != undefined && startHour != null){
@@ -95,7 +97,7 @@ exports.setProfessional = function(req, res){
                               return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
                             else{
                               var professionalScheduleService = ProfessionalScheduleService.
-                                saveProfessionalScheduleException(ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY, professionalSchedule._id);
+                                saveProfessionalScheduleException(arrayExceptionsByDefault, professionalSchedule._id);
                               professionalScheduleService.then((professionalSchedule) => {
                                 res.json(professional); 
                               });
@@ -123,7 +125,7 @@ exports.setProfessional = function(req, res){
                               return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + professional});
                             else{
                               var professionalScheduleService = ProfessionalScheduleService.
-                                saveProfessionalScheduleException(ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY, professionalSchedule._id);
+                                saveProfessionalScheduleException(arrayExceptionsByDefault, professionalSchedule._id);
                               professionalScheduleService.then((professionalSchedule) => {
                                 res.json(professional); 
                               });
@@ -160,7 +162,7 @@ exports.setProfessional = function(req, res){
                         return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
                       else{
                         var professionalScheduleService = ProfessionalScheduleService.
-                          saveProfessionalScheduleException(ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY, professionalSchedule._id);
+                          saveProfessionalScheduleException(arrayExceptionsByDefault, professionalSchedule._id);
                         professionalScheduleService.then((professionalSchedule) => {
                           res.json(professional); 
                         });
@@ -188,7 +190,7 @@ exports.setProfessional = function(req, res){
                         return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + professional});
                       else{
                         var professionalScheduleService = ProfessionalScheduleService.
-                          saveProfessionalScheduleException(ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY, professionalSchedule._id);
+                          saveProfessionalScheduleException(arrayExceptionsByDefault, professionalSchedule._id);
                         professionalScheduleService.then((professionalSchedule) => {
                           res.json(professional); 
                         });

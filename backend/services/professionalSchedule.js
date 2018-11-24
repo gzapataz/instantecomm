@@ -41,11 +41,11 @@ exports.saveProfessionalScheduleAppointment =  async function(professionalSchedu
  * @param {*} exception 
  * @param {*} professionalScheduleId
  */
-exports.saveProfessionalScheduleException =  async function(exception,professionalScheduleId){
+exports.saveProfessionalScheduleException =  async function(exceptions,professionalScheduleId){
   try{
     return await ProfessionalSchedule.findOneAndUpdate(
       {_id : professionalScheduleId},
-      {$push: { exceptions: exception } },
+      {$push: { exceptions: exceptions } },
       {safe: true, upsert: true, new: true}
     );
   } 
