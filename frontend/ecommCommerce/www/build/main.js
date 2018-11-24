@@ -125,6 +125,26 @@ var UserServiceProvider = /** @class */ (function () {
             console.log('EN POST');
         }), Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__["catchError"])(this.handleError('addUser')));
     };
+    UserServiceProvider.prototype.updateDBUser = function (user) {
+        var _this = this;
+        //console.log('Prof->Creacion:' + JSON.stringify(user));
+        return this.http.put(this.userUrl, user, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__["tap"])(function (msg) {
+            console.log('EN POST->Upd:' + JSON.stringify(user));
+            _this.getValuesProfessional(user);
+        }), Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__["catchError"])(this.handleError('addUser')));
+    };
+    UserServiceProvider.prototype.deleteDBUser = function (user) {
+        var _this = this;
+        console.log('Prof->Delete:' + user.uid);
+        var delUrl = this.userUrl + '/' + user.uid;
+        console.log('URL DELETE:' + this.userUrl);
+        return this.http.delete(delUrl, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__["tap"])(function (user) {
+            _this.afAuth.auth.currentUser.delete().then(function () {
+                _this.logOut();
+                console.log('EN delete->Upd:' + JSON.stringify(user));
+            });
+        }), Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__["catchError"])(this.handleError('addUser')));
+    };
     UserServiceProvider.prototype.displayAlert = function (alertTitle, alertSub) {
         var theAlert = this.alertCtrl.create({
             title: alertTitle,
@@ -143,6 +163,7 @@ var UserServiceProvider = /** @class */ (function () {
             _this.storageControl('delete', 'uid');
             _this.storageControl('delete', 'startHour');
             _this.storageControl('delete', 'endHour');
+            _this.storageControl('delete', 'usrJson');
             _this.globalService.reSetProfessionalLoginData();
         })
             .catch(function (err) { return _this.displayAlert('Error Logged Out', err); });
@@ -176,6 +197,16 @@ var UserServiceProvider = /** @class */ (function () {
             }).catch(function (error) {
                 return;
             });
+        });
+    };
+    UserServiceProvider.prototype.sendPasswordReset = function (email) {
+        var _this = this;
+        return this.afAuth.auth.sendPasswordResetEmail(email).then(function () {
+            return true;
+        }).catch(function (err) {
+            _this.success = false;
+            _this.displayAlert("Error", err);
+            return false;
         });
     };
     //No usar
@@ -282,7 +313,9 @@ var UserServiceProvider = /** @class */ (function () {
             this.storageControl('set', key.toString(), obj[key]);
         }
         //console.log('Horas:' + jsonProfesional['startHour'] + ' Y ' + jsonProfesional['endHour'])
+        console.log('jsonProfesional:' + JSON.stringify(jsonProfesional));
         var obj2 = jsonProfesional['professionalSchedule'];
+        this.storageControl('set', 'usrJson', jsonProfesional);
         this.storageControl('set', 'idSchedule', obj2['idSchedule']);
         this.storageControl('set', 'startHour', jsonProfesional['startHour']);
         this.storageControl('set', 'endHour', jsonProfesional['endHour']);
@@ -293,7 +326,7 @@ var UserServiceProvider = /** @class */ (function () {
                     _this.storage.get('startHour').then(function (startHour) {
                         _this.storage.get('endHour').then(function (endHour) {
                             _this.globalService.setProfessionalLoginData(uidData, idSched, startHour, endHour);
-                            //console.log('LoggedSingleltonUpdates ' + JSON.stringify(this.globalService.getLoggedProffessionalData())); //this is always null, even though I just set it to true.
+                            console.log('LoggedSingleltonUpdates ' + JSON.stringify(_this.globalService.getLoggedProffessionalData())); //this is always null, even though I just set it to true.
                         });
                     });
                 });
@@ -446,8 +479,8 @@ var CalendarPage = /** @class */ (function () {
         this.theColor = 'white';
         this.fromDate = null;
         this.toDate = null;
-        this.startHour = "9";
-        this.endHour = '20';
+        this.startHour = "6";
+        this.endHour = '22';
         this.space = '1';
         this.calendar = {
             mode: 'day',
@@ -538,19 +571,17 @@ var CalendarPage = /** @class */ (function () {
         //console.log('Plataforma:' + this.platform.platforms());
         //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
         this.loggedUser = this.globalService.getLoggedProffessionalData();
-        /*
         if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
-          console.log('SALIENDO:' + JSON.stringify(this.loggedUser))
-          this.navCtrl.push('LoginPage');
-          return;
-        } else {
-          this.startHour = this.loggedUser.startHour;
-          this.endHour = this.loggedUser.endHour;
-    
-          this.getServices(this.loggedUser.userId);
-          this.getCustomers(this.loggedUser.userId);
+            console.log('SALIENDO:' + JSON.stringify(this.loggedUser));
+            this.navCtrl.push('LoginPage');
+            return;
         }
-        */
+        else {
+            this.startHour = this.loggedUser.startHour;
+            this.endHour = this.loggedUser.endHour;
+            this.getServices(this.loggedUser.userId);
+            this.getCustomers(this.loggedUser.userId);
+        }
         console.log('ENTRANDO CALENDAR:');
         this.getServices(this.loggedUser.userId);
         this.getCustomers(this.loggedUser.userId);
@@ -1163,11 +1194,11 @@ var map = {
 		9
 	],
 	"../pages/customer-detail/customer-detail.module": [
-		886,
+		887,
 		8
 	],
 	"../pages/customer-modal/customer-modal.module": [
-		887,
+		886,
 		7
 	],
 	"../pages/customer-whatsapp/customer-whatsapp.module": [
@@ -1175,11 +1206,11 @@ var map = {
 		6
 	],
 	"../pages/customer/customer.module": [
-		892,
+		889,
 		11
 	],
 	"../pages/event-modal/event-modal.module": [
-		889,
+		891,
 		0
 	],
 	"../pages/login/login.module": [
@@ -1187,23 +1218,23 @@ var map = {
 		5
 	],
 	"../pages/private-policy/private-policy.module": [
-		893,
+		892,
 		4
 	],
 	"../pages/professional-detail/professional-detail.module": [
-		891,
+		893,
 		3
 	],
 	"../pages/registration/registration.module": [
-		896,
+		894,
 		1
 	],
 	"../pages/services-add/services-add.module": [
-		894,
+		895,
 		2
 	],
 	"../pages/services/services.module": [
-		895,
+		896,
 		10
 	]
 };
@@ -1282,7 +1313,16 @@ var GlobalsServiceProvider = /** @class */ (function () {
                     //console.log('testing of sqlite was ' + uidData);
                     _this.storage.get('idSchedule').then(function (idSched) {
                         _this.loggedProfessional.idSchedule = idSched;
-                        resolve();
+                        _this.storage.get('startHour').then(function (startHour) {
+                            _this.loggedProfessional.startHour = startHour;
+                            _this.storage.get('endHour').then(function (endHour) {
+                                _this.loggedProfessional.endHour = endHour;
+                                _this.storage.get('usrJson').then(function (usrJson) {
+                                    _this.loggedProfessional.jsonProfessional = usrJson;
+                                    resolve();
+                                });
+                            });
+                        });
                     });
                 });
             });
@@ -1307,6 +1347,8 @@ var GlobalsServiceProvider = /** @class */ (function () {
     GlobalsServiceProvider.prototype.reSetProfessionalLoginData = function () {
         this.loggedProfessional.userId = '';
         this.loggedProfessional.idSchedule = '';
+        this.loggedProfessional.startHour = '';
+        this.loggedProfessional.endHour = '';
     };
     /* Guarda la lista de clientes de un profesional en el cache */
     GlobalsServiceProvider.prototype.getCustomerLocalList = function () {
@@ -2071,7 +2113,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(21);
@@ -2163,23 +2205,23 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_32__pages_services_services__["a" /* ServicesPage */]
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_0__angular_forms__["a" /* FormsModule */],
+                __WEBPACK_IMPORTED_MODULE_0__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/customer-add/customer-add-modal.module#CustomerAddModalPageModule', name: 'CustomerAddModalPage', segment: 'customer-add-modal', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/calendar/calendar.module#CalendarPageModule', name: 'CalendarPage', segment: 'calendar', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/customer-detail/customer-detail.module#CustomerDetailPageModule', name: 'CustomerDetailPage', segment: 'customer-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/customer-modal/customer-modal.module#CustomerModalPageModule', name: 'CustomerModalPage', segment: 'customer-modal', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/customer-detail/customer-detail.module#CustomerDetailPageModule', name: 'CustomerDetailPage', segment: 'customer-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/customer-whatsapp/customer-whatsapp.module#CustomerWhatsappPageModule', name: 'CustomerWhatsappPage', segment: 'customer-whatsapp', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/event-modal/event-modal.module#EventModalPageModule', name: 'EventModalPage', segment: 'event-modal', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/professional-detail/professional-detail.module#ProfessionalDetailPageModule', name: 'ProfessionalDetailPage', segment: 'professional-detail', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/customer/customer.module#CustomerPageModule', name: 'CustomerPage', segment: 'customer', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/event-modal/event-modal.module#EventModalPageModule', name: 'EventModalPage', segment: 'event-modal', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/private-policy/private-policy.module#PrivatePolicyPageModule', name: 'PrivatePolicyPage', segment: 'private-policy', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/professional-detail/professional-detail.module#ProfessionalDetailPageModule', name: 'ProfessionalDetailPage', segment: 'professional-detail', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/registration/registration.module#RegistrationPageModule', name: 'RegistrationPage', segment: 'registration', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/services-add/services-add.module#ServicesAddPageModule', name: 'ServicesAddPage', segment: 'services-add', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/services/services.module#ServicesPageModule', name: 'ServicesPage', segment: 'services', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/registration/registration.module#RegistrationPageModule', name: 'RegistrationPage', segment: 'registration', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/services/services.module#ServicesPageModule', name: 'ServicesPage', segment: 'services', priority: 'low', defaultHistory: [] }
                     ]
                 }),
                 __WEBPACK_IMPORTED_MODULE_6_angularfire2__["a" /* AngularFireModule */].initializeApp(__WEBPACK_IMPORTED_MODULE_9__environment__["b" /* firebaseConfig */]),
@@ -2510,8 +2552,8 @@ webpackContext.id = 549;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoggedProfessional; });
 var LoggedProfessional = /** @class */ (function () {
     function LoggedProfessional() {
-        this.startHour = "9";
-        this.endHour = "19";
+        this.startHour = "6";
+        this.endHour = "21";
     }
     return LoggedProfessional;
 }());
@@ -2692,7 +2734,7 @@ var MyApp = /** @class */ (function () {
         return;
     };
     MyApp.prototype.updateProfessional = function () {
-        console.log('this.professionalData to update:' + JSON.stringify(this.professionalData));
+        console.log('this.professionalData to update:' + JSON.stringify(this.professionalData.jsonProfessional.person));
         var modal = this.modalCtrl.create('RegistrationPage', { professional: this.professionalData });
         modal.present();
         modal.onDidDismiss(function (data) {
