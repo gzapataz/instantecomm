@@ -421,7 +421,7 @@ exports.getClientsByProfessionalUid = function(req, res){
 exports.getExceptionsScheduleByProfessionalUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
     var type = req.query.type;
-    var professional = ProfessionalService.findExceptionsScheduleByProfessionalUid(req, type);
+    var professional = ProfessionalService.findExceptionsScheduleByProfessionalUidAndType(req, type);
     professional.exec(function(err, professional) {
       if(err)
         return res.status(500).send({message: 'Error en la petición: ' + err});
