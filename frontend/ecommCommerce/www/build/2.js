@@ -1,6 +1,6 @@
 webpackJsonp([2],{
 
-/***/ 895:
+/***/ 893:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServicesAddPageModule", function() { return ServicesAddPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_add__ = __webpack_require__(910);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_add__ = __webpack_require__(907);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var ServicesAddPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 910:
+/***/ 907:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47,8 +47,8 @@ var ServicesAddPageModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_service_service_service_service__ = __webpack_require__(98);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__classes_service_class__ = __webpack_require__(506);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_authentication_service_authentication_service__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__classes_service_class__ = __webpack_require__(509);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_authentication_service_authentication_service__ = __webpack_require__(100);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -80,7 +80,12 @@ var ServicesAddPage = /** @class */ (function () {
         this.serviceService = serviceService;
         this.globalService = globalService;
         this.averageTime = 0;
+        this.accion = 'Adicionar';
         this.service = new __WEBPACK_IMPORTED_MODULE_4__classes_service_class__["a" /* ServiceClass */]();
+        if (this.navParams.get('service')) {
+            this.service = this.navParams.get('service');
+            this.accion = 'Actualizar';
+        }
     }
     ServicesAddPage.prototype.ionViewCanEnter = function () {
         return this.authService.isAuthenticated();
@@ -111,7 +116,7 @@ var ServicesAddPage = /** @class */ (function () {
     };
     ServicesAddPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-services-add',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/services-add/services-add.html"*/'<!--\n  Generated template for the ServicesAddPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary">\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n    <ion-title>Agregar Servicio</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item>\n      <ion-label >Título (*)</ion-label>\n      <ion-input  type="text" placeholder="Limpieza" [(ngModel)] = "service.name" id="name" name="name" required="required">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label >Descripción</ion-label>\n      <ion-input  type="text" [(ngModel)] = "service.description" id="description" name="name">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label >Duración en Minutos (*)</ion-label>\n      <ion-input  type="number" placeholder="45" [(ngModel)]="service.averageTime" required="required">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-range min="1" max="240" [(ngModel)]="service.averageTime" color="secondary">\n        <ion-label range-left>0</ion-label>\n        <ion-label range-right>240</ion-label>\n      </ion-range>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Campos obligatorios (*)</ion-label>\n\n    </ion-item>\n\n  </ion-list>\n  <ion-buttons >\n    <button ion-button full icon-left color="secondary" (click)="save()">\n      <ion-icon name="checkmark"></ion-icon> Adicionar\n    </button>\n  </ion-buttons>\n\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/services-add/services-add.html"*/,
+            selector: 'page-services-add',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/services-add/services-add.html"*/'<!--\n  Generated template for the ServicesAddPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary">\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n    <ion-title>{{accion | titlecase}} Servicio</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item>\n      <ion-label >Título (*)</ion-label>\n      <ion-input  type="text" placeholder="Limpieza" [(ngModel)] = "service.name" id="name" name="name" required="required">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label >Descripción</ion-label>\n      <ion-input  type="text" [(ngModel)] = "service.description" id="description" name="name">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label >Duración en Minutos (*)</ion-label>\n      <ion-input  type="number" placeholder="45" [(ngModel)]="service.averageTime" required="required">\n      </ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-range min="1" max="240" [(ngModel)]="service.averageTime" color="secondary">\n        <ion-label range-left>0</ion-label>\n        <ion-label range-right>240</ion-label>\n      </ion-range>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Campos obligatorios (*)</ion-label>\n\n    </ion-item>\n\n  </ion-list>\n  <ion-buttons >\n    <button ion-button full icon-left color="secondary" (click)="save()">\n      <ion-icon name="checkmark"></ion-icon>{{accion}}\n    </button>\n    <button ion-button full icon-left color="danger" (click)="save()" *ngIf="accion == \'Actualizar\'">\n      Eliminar\n    </button>\n  </ion-buttons>\n\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/services-add/services-add.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_5__providers_authentication_service_authentication_service__["a" /* AuthenticationServiceProvider */],

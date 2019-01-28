@@ -37,12 +37,12 @@ export class UserServiceProvider {
   }
 
   createDBUser(user): Observable<LoggedProfessional> {
-    //console.log('Prof->Creacion:' + JSON.stringify(user));
+    console.log('Prof->Creacion:' + JSON.stringify(user));
     return this.http.post<Person>(this.userUrl, user, httpOptions).pipe(
       tap((user: any) => {
-        console.log('EN POST');
+        console.log('EN POST USER CREATED');
       }),
-      catchError(this.handleError<Person>('addUser'))
+      catchError(this.handleError<LoggedProfessional>('addUser'))
     );
   }
 

@@ -1,6 +1,6 @@
 webpackJsonp([7],{
 
-/***/ 887:
+/***/ 885:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomerModalPageModule", function() { return CustomerModalPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_modal__ = __webpack_require__(899);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_modal__ = __webpack_require__(898);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,7 +38,7 @@ var CustomerModalPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 899:
+/***/ 898:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88,7 +88,7 @@ var CustomerModalPage = /** @class */ (function () {
     };
     CustomerModalPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-customer-modal',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/'<!--\n  Generated template for the CustomerModalPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary" >\n    <ion-title>Búsqueda de Clientes</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list *ngFor="let customer of customers">\n    <ion-item (click)="selectedName(customer._id, customer.person.personName.lastName + \' \' + customer.person.personName.firstName, customer)">\n      {{customer.person.personName.lastName}} {{customer.person.personName.firstName}}\n    </ion-item>\n  </ion-list>\n  <button ion-button full icon-left (click)="cancel()">\n    <ion-icon name="checkmark"></ion-icon> Cancelar\n  </button>\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/,
+            selector: 'page-customer-modal',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/'<!--\n  Generated template for the CustomerModalPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary" >\n    <ion-title>Búsqueda de Clientes</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list *ngFor="let customer of customers">\n    <ion-item (click)="selectedName(customer._id, customer.person.personName.lastName + \' \' + customer.person.personName.firstName, customer)">\n      {{customer.person.personName.lastName}} {{customer.person.personName.firstName}}\n    </ion-item>\n  </ion-list>\n  <button ion-button full icon-left (click)="cancel()">\n    <ion-icon name="checkmark"></ion-icon> Cancelar\n  </button>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-modal/customer-modal.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */]])
