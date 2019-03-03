@@ -227,6 +227,16 @@ exports.findClientByProfessionalUid = function(uid, client){
 } 
 
 /**
+ * Busca clientes dentro de un profesional.
+ * @param {*} uid 
+ * @param {*} clients
+ */
+exports.findClientsByProfessionalUid = function(uid, clients){
+  var professional = Professional.find({uid:uid, clients: { "$in" : clients}});
+  return professional;
+} 
+
+/**
  * 
  * @param {*} persons 
  */

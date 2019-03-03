@@ -513,7 +513,7 @@ exports.setClientProfessionalByUid = function(req, res){
           var clients = ClientService.findClientsByPersonsId(persons);
           clients.then((clients) => {
             if(clients != undefined && clients != null){
-              var professionalService = ProfessionalService.findClientByProfessionalUid(req.params.uid, clients);
+              var professionalService = ProfessionalService.findClientsByProfessionalUid(req.params.uid, clients);
               professionalService.then((professional) => {
                 console.log("p:----" + professional + " Clie:---" + clients);
                 var compareArrayUtil = new CompareArrayUtil(professional.clients,clients);
