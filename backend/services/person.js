@@ -64,6 +64,16 @@ exports.findPersonByIdentification = function(idType, identification){
 }
 
 /**
+ * Buscar personas por identificación
+ * @param {*} idType 
+ * @param {*} identification 
+ */
+exports.findPersonsByIdentification = function(idType, identification){
+  var persons = Person.find({idType:idType, identification:identification});
+  return persons;
+}
+
+/**
  * Buscar persona por email
  * @param {*} email 
  */

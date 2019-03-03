@@ -51,6 +51,17 @@ exports.findClientByPersonId = function(personId){
 }
 
 /**
+ * Buscar clientes por colección de personas
+ * @param {*} persons 
+ */
+exports.findClientsByPersonsId = function(persons){
+  var clients = Client.find({person:persons}).select('clientSince lastVisit status')
+  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
+  return clients;
+}
+
+/**
  * Buscar clientes por _id
  * @param {*} _id 
  */

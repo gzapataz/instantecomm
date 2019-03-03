@@ -17,6 +17,7 @@ var ObjectId = require('mongodb').ObjectID
 const ExceptionType = require('../enums/exceptionType');
 var module = require('colombia-holidays');
 var ECAIConstants = require('../constants/ECAIConstants');
+var CompareArrayUtil = require('../utils/compareArrayUtil');
 
 /**
  * Conseguir datos de todos los profesionales
@@ -504,17 +505,21 @@ exports.setClientProfessionalByUid = function(req, res){
     if(req.body.idType != undefined && req.body.identification != undefined){
     //if(req.body.email!= undefined && req.body.email!= null ){
       req.body.status = ActivationStatus.ACTIVE;
-      var personService = PersonService.findPersonByIdentification(req.body.idType, req.body.identification);
-      personService.then((person) => {
+      var personService = PersonService.findPersonsByIdentification(req.body.idType, req.body.identification);
+      personService.then((persons) => {
       //var person = PersonService.findPersonByEmail(req.body.email);
-        if(person != undefined && person != null){
+        if(persons != undefined && persons != null){
           //Buscar cliente por persona
-          var client = ClientService.findClientByPersonId(person);
-          client.then((client) => {
-            if(client != undefined && client != null){
-              var professionalService = ProfessionalService.findClientByProfessionalUid(req.params.uid, client);
+          var clients = ClientService.findClientsByPersonsId(persons);
+          clients.then((clients) => {
+            if(clients != undefined && clients != null){
+              var professionalService = ProfessionalService.findClientByProfessionalUid(req.params.uid, clients);
               professionalService.then((professional) => {
-                if(professional != null && professional != undefined){
+                var compareArrayUtil = new CompareArrayUtil(professional.clients,clients);
+                var intersectArray = new Array();
+                intersectArray = compareArrayUtil.getArrayIntersect();
+                console.log(intersectArray);
+                /*if(professional != null && professional != undefined){
                   return res.status(404).send({message: 'El cliente con ' + req.body.idType + ': ' + req.body.identification + ' ya existe'});
                 }
                 else{
@@ -522,10 +527,12 @@ exports.setClientProfessionalByUid = function(req, res){
                   professional.then((results) => {
                     return res.status(200).send({message: 'Cliente asociado al profesional'});
                   }); 
-                }
+                }*/
               });
               
             } 
+
+
             else{
               var clientService = ClientService.saveClient(req, person);
               clientService.then((results) => {
@@ -540,6 +547,8 @@ exports.setClientProfessionalByUid = function(req, res){
                 } 
               });  
             }
+
+
           });  
         }
         else{
@@ -563,7 +572,7 @@ exports.setClientProfessionalByUid = function(req, res){
       });
     }
     else{
-                //crear cliente y persona
+      //crear cliente y persona
       var personService = PersonService.savePerson(req);
       personService.then((person) => {
         var clientService = ClientService.saveClient(req, person)
