@@ -502,7 +502,8 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
 exports.setClientProfessionalByUid = function(req, res){
 
   if(req.params.uid != undefined && req.params.uid != null){
-    if(req.body.idType != undefined && req.body.identification != undefined){
+    if(req.body.idType != undefined && req.body.identification != undefined && req.body.idType != null && req.body.identification != null 
+      && req.body.idType.trim() != "" != null && req.body.identification.trim() != ""){
     //if(req.body.email!= undefined && req.body.email!= null ){
       req.body.status = ActivationStatus.ACTIVE;
       var personService = PersonService.findPersonsByIdentification(req.body.idType, req.body.identification);
