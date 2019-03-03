@@ -518,6 +518,7 @@ exports.setClientProfessionalByUid = function(req, res){
                 var compareArrayUtil = new CompareArrayUtil(professional.clients,clients);
                 var client = new Array();
                 client = compareArrayUtil.getArrayIntersect();
+                console.log(client);
                 if(client != null && client != undefined){
                   return res.status(404).send({message: 'El cliente con ' + req.body.idType + ': ' + req.body.identification + ' ya existe para este profesional'});
                 }
