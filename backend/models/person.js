@@ -40,8 +40,6 @@ var personSchema   = new Schema({
     }
 });
 
-personSchema.index({ idType: 1, identification: 1}, { unique: true }); 
-
 personSchema.set('toObject', { virtuals: true })
 personSchema.set('toJSON', { virtuals: true })
 
