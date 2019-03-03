@@ -516,39 +516,50 @@ exports.setClientProfessionalByUid = function(req, res){
               var professionalService = ProfessionalService.findClientsByProfessionalUid(req.params.uid, clients);
               professionalService.then((professional) => {
                 var compareArrayUtil = new CompareArrayUtil(professional.clients,clients);
-                var intersectArray = new Array();
-                intersectArray = compareArrayUtil.getArrayIntersect();
-                console.log(intersectArray);
-                /*if(professional != null && professional != undefined){
-                  return res.status(404).send({message: 'El cliente con ' + req.body.idType + ': ' + req.body.identification + ' ya existe'});
+                var client = new Array();
+                client = compareArrayUtil.getArrayIntersect();
+                if(client != null && client != undefined){
+                  return res.status(404).send({message: 'El cliente con ' + req.body.idType + ': ' + req.body.identification + ' ya existe para este profesional'});
                 }
                 else{
-                  var professional = ProfessionalService.saveClientProfessional(req.params.uid, client);
-                  professional.then((results) => {
-                    return res.status(200).send({message: 'Cliente asociado al profesional'});
-                  }); 
-                }*/
+                  //crear cliente y persona
+                  var personService = PersonService.savePerson(req);
+                  personService.then((person) => {
+                    var clientService = ClientService.saveClient(req, person)
+                    clientService.then((results) => {
+                      if(results.errors != null && results.errors != undefined){
+                        return res.status(404).send(results.errors);
+                      }
+                      else{
+                        var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
+                        professional.then((results) => {
+                          return res.status(200).send({message: 'Cliente asociado al profesional'});
+                        }); 
+                      }
+                    }); 
+                  });
+                }
               });
               
             } 
-
-
             else{
-              var clientService = ClientService.saveClient(req, person);
-              clientService.then((results) => {
-                if(results.errors != null && results.errors != undefined){
-                  return res.status(404).send(results.errors);
-                }
-                else{
-                  var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
-                  professional.then((results) => {
-                    return res.status(200).send({message: 'Cliente asociado al profesional'});
-                  });                 
-                } 
+              //crear cliente y persona
+              var personService = PersonService.savePerson(req);
+              personService.then((person) => {
+                var clientService = ClientService.saveClient(req, person)
+                clientService.then((results) => {
+                  if(results.errors != null && results.errors != undefined){
+                    return res.status(404).send(results.errors);
+                  }
+                  else{
+                    var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
+                    professional.then((results) => {
+                      return res.status(200).send({message: 'Cliente asociado al profesional'});
+                    }); 
+                  }
+                }); 
               });  
             }
-
-
           });  
         }
         else{
