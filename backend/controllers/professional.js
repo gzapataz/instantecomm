@@ -501,7 +501,7 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
 exports.setClientProfessionalByUid = function(req, res){
 
   if(req.params.uid != undefined && req.params.uid != null){
-    //if(req.body.idType != undefined && req.body.identification != undefined){
+    if(req.body.idType != undefined && req.body.identification != undefined){
     //if(req.body.email!= undefined && req.body.email!= null ){
       req.body.status = ActivationStatus.ACTIVE;
       var personService = PersonService.findPersonByIdentification(req.body.idType, req.body.identification);
@@ -515,7 +515,7 @@ exports.setClientProfessionalByUid = function(req, res){
               var professionalService = ProfessionalService.findClientByProfessionalUid(req.params.uid, client);
               professionalService.then((professional) => {
                 if(professional != null && professional != undefined){
-                  return res.status(404).send({message: 'El cliente con ' + req.body.idType + ' ' + req.body.identification + ' ya existe'});
+                  return res.status(404).send({message: 'El cliente con ' + req.body.idType + ': ' + req.body.identification + ' ya existe'});
                 }
                 else{
                   var professional = ProfessionalService.saveClientProfessional(req.params.uid, client);
@@ -561,10 +561,25 @@ exports.setClientProfessionalByUid = function(req, res){
           });  
         }
       });
-    /*}
+    }
     else{
-      return res.status(500).send({message: 'El tipo de identificación y la identificación son requeridos'});
-    }*/
+                //crear cliente y persona
+      var personService = PersonService.savePerson(req);
+      personService.then((person) => {
+        var clientService = ClientService.saveClient(req, person)
+        clientService.then((results) => {
+          if(results.errors != null && results.errors != undefined){
+            return res.status(404).send(results.errors);
+          }
+          else{
+            var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
+            professional.then((results) => {
+              return res.status(200).send({message: 'Cliente asociado al profesional'});
+            }); 
+          }
+        }); 
+      });  
+    }
   }
   else{
     return res.status(404).send({message: 'El uid del profesional es requerido'});
