@@ -515,6 +515,7 @@ exports.setClientProfessionalByUid = function(req, res){
             if(clients != undefined && clients != null){
               var professionalService = ProfessionalService.findClientByProfessionalUid(req.params.uid, clients);
               professionalService.then((professional) => {
+                console.log("p:----" + professional + " Clie:---" + clients);
                 var compareArrayUtil = new CompareArrayUtil(professional.clients,clients);
                 var intersectArray = new Array();
                 intersectArray = compareArrayUtil.getArrayIntersect();
