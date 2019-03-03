@@ -39,6 +39,6 @@ var professionalSchema   = new Schema({
     endHour: {
         type: String,
     },
-    creationDate:{ type: Date, default: Date.now }
+    modificationDate:{ type: Date, default: Date.now }
 });
 module.exports = mongoose.model('Professional', professionalSchema);
