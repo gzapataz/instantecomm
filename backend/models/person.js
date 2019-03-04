@@ -12,8 +12,8 @@ var personSchema   = new Schema({
     },
     idType: {
         type: String,
-        enum: Object.values(IdType),
-        allowNull: true
+        allowNull: true,
+        enum: Object.values(IdType)
         //required: true
     },
     identification: {
@@ -22,8 +22,8 @@ var personSchema   = new Schema({
     },    
     gender: {
         type: String,
-        enum: Object.values(Gender),
-        allowNull: true
+        allowNull: true,
+        enum: Object.values(Gender)
     },
     birthdate: { type: Date },
     creationDate:{ type: Date, default: Date.now },

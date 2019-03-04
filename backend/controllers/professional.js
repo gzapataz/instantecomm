@@ -502,13 +502,19 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
 exports.setClientProfessionalByUid = function(req, res){
 
   if(req.params.uid != undefined && req.params.uid != null){
-    if(req.body.idType != undefined && req.body.identification != undefined && req.body.idType != null && req.body.identification != null 
-      && req.body.idType.trim() != "" != null && req.body.identification.trim() != ""){
-    //if(req.body.email!= undefined && req.body.email!= null ){
+    var invalidIdentification = false;
+    var invalidIdType = false;
+    if(req.body.idType == undefined || req.body.idType == null || req.body.idType.trim() == "")
+    {
+      invalidIdType = true;
+    }
+    if(req.body.identification == undefined || req.body.identification == null || req.body.identification.trim() == ""){
+      invalidIdentification = true;
+    }  
+    if(invalidIdentification == false && invalidIdType == false){
       req.body.status = ActivationStatus.ACTIVE;
       var personService = PersonService.findPersonsByIdentification(req.body.idType, req.body.identification);
       personService.then((persons) => {
-      //var person = PersonService.findPersonByEmail(req.body.email);
         if(persons != undefined && persons != null){
           //Buscar cliente por persona
           var clients = ClientService.findClientsByPersonsId(persons);
@@ -524,82 +530,65 @@ exports.setClientProfessionalByUid = function(req, res){
                 }
                 else{
                   //crear cliente y persona
-                  var personService = PersonService.savePerson(req);
-                  personService.then((person) => {
-                    var clientService = ClientService.saveClient(req, person)
-                    clientService.then((results) => {
-                      if(results.errors != null && results.errors != undefined){
-                        return res.status(404).send(results.errors);
-                      }
-                      else{
-                        var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
-                        professional.then((results) => {
-                          return res.status(200).send({message: 'Cliente asociado al profesional'});
-                        }); 
-                      }
-                    }); 
-                  });
+                  var resultSaveClientDelegate = ClientDelegate.saveServicesDelegate(req);
+                  resultSaveClientDelegate.then((results) => {
+                    if(results.errors){
+                      return res.status(500).send({message: 'Error en la petición: ' + results});
+                    }
+                    else{
+                      return res.status(200).send({message: 'Cliente asociado al profesional'});
+                    }  
+                  }); 
                 }
               });
               
             } 
             else{
               //crear cliente y persona
-              var personService = PersonService.savePerson(req);
-              personService.then((person) => {
-                var clientService = ClientService.saveClient(req, person)
-                clientService.then((results) => {
-                  if(results.errors != null && results.errors != undefined){
-                    return res.status(404).send(results.errors);
-                  }
-                  else{
-                    var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
-                    professional.then((results) => {
-                      return res.status(200).send({message: 'Cliente asociado al profesional'});
-                    }); 
-                  }
-                }); 
-              });  
+              var resultSaveClientDelegate = ClientDelegate.saveServicesDelegate(req);
+              resultSaveClientDelegate.then((results) => {
+                if(results.errors){
+                  return res.status(500).send({message: 'Error en la petición: ' + results});
+                }
+                else{
+                  return res.status(200).send({message: 'Cliente asociado al profesional'});
+                } 
+              });    
             }
           });  
         }
         else{
           //crear cliente y persona
-          var personService = PersonService.savePerson(req);
-          personService.then((person) => {
-            var clientService = ClientService.saveClient(req, person)
-            clientService.then((results) => {
-              if(results.errors != null && results.errors != undefined){
-                return res.status(404).send(results.errors);
-              }
-              else{
-                var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
-                professional.then((results) => {
-                  return res.status(200).send({message: 'Cliente asociado al profesional'});
-                }); 
-              }
-            }); 
+          var resultSaveClientDelegate = ClientDelegate.saveServicesDelegate(req);
+          resultSaveClientDelegate.then((results) => {
+            if(results.errors){
+              return res.status(500).send({message: 'Error en la petición: ' + results});
+            }
+            else{
+              return res.status(200).send({message: 'Cliente asociado al profesional'});
+            } 
           });  
         }
       });
+    //}
     }
     else{
-      //crear cliente y persona
-      var personService = PersonService.savePerson(req);
-      personService.then((person) => {
-        var clientService = ClientService.saveClient(req, person)
-        clientService.then((results) => {
-          if(results.errors != null && results.errors != undefined){
-            return res.status(404).send(results.errors);
+      if(invalidIdentification || invalidIdType){
+        console.log(invalidIdentification + "  "  + invalidIdType + " " + req.body.identification + " " + req.body.idType);
+        return res.status(404).send({message: 'Tipo de documento o identificación invalidos'});
+      }
+      else{  
+        //crear cliente y persona
+        var resultSaveClientDelegate = ClientDelegate.saveServicesDelegate(req);
+        resultSaveClientDelegate.then((results) => {
+          if(results.errors){
+            return res.status(500).send({message: 'Error en la petición: ' + results});
           }
           else{
-            var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
-            professional.then((results) => {
-              return res.status(200).send({message: 'Cliente asociado al profesional'});
-            }); 
+            return res.status(200).send({message: 'Cliente asociado al profesional'});
           }
         }); 
-      });  
+      }    
     }
   }
   else{

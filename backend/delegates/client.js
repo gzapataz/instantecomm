@@ -180,3 +180,27 @@ exports.deleteClientDelegate = async function(clients, uid){
     throw new Error(error);
   }  
 }
+
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} uid 
+ */
+exports.saveServicesDelegate = async function(req){
+  try{
+    var personService = PersonService.savePerson(req);
+    personService.then((person) => {
+        var clientService = ClientService.saveClient(req, person);
+        clientService.then((results) => {
+            var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
+            professional.then((results) => {
+            }); 
+        }); 
+    }); 
+    return personService;
+  }
+  catch(error){
+    throw new Error(error);
+  } 
+}

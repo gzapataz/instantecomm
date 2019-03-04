@@ -4,6 +4,13 @@ var Person = require('../models/person');
 
 exports.savePerson = async function(req){
   var person = new Person();
+  Object.keys(req.body).forEach(key => {
+    if (req.body[key]!=null && req.body[key]!=undefined) {
+         person[key] = req.body[key];
+    }
+  });
+
+  /*var person = new Person();
   person.personName = req.body.personName;
   person.personLastName = req.body.personLastName;
   person.idType = req.body.idType;
@@ -13,7 +20,7 @@ exports.savePerson = async function(req){
   person.phone = req.body.phone;
   person.mobile = req.body.mobile;
   person.email = req.body.email;
-  person.address = req.body.address;
+  person.address = req.body.address;*/
   try{
     await person.save();
   }
