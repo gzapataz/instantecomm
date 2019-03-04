@@ -20,7 +20,7 @@ const alarmNotification = "5bd12a8d1544111f28715083";
 process.title = "dentalapp";
 
 var Queue = kue.createQueue({
-    //redis: redisUrl
+        redis: redisUrl  
   });
 
 
