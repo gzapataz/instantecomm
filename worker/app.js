@@ -97,48 +97,53 @@ async function sendNotificationAlarm(job, done) {
     const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", new ObjectId(alarmNotification));
     notificationCollection.forEach(notification => {
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
-            AppointmentService.getAppointmentByNotification_id(db, notification._id, "Agendada").then((appointment) => {
-                console.log("[Alarma]: " + JSON.stringify(notification) + " " + " " + JSON.stringify(appointment) + "\n");
-                if(appointment != null && appointment != undefined){
-                    ServiceService.getServiceBy_id(db,appointment.service).then((service)=> {
-                        ProfessionalService.getProfessionalBy_id(db,appointment.professional).then((professional)=> {
-                            PersonService.getPersonBy_id(db, professional.person).then((professionalPerson) => {
-                                ClientService.getClientBy_id(db, appointment.client).then((client) => {
-                                    if(client != null && client != undefined){
-                                        PersonService.getPersonBy_id(db, client.person).then((person) => {
-                                            var currentDate = new Date();
-                                            var startTime = new Date(appointment.startTime);
-                                            var yesterday = new Date(sumarDias(startTime, -1));
-                                            //console.log(yesterday -currentDate);
-                                            if(currentDate > yesterday){// 1 día es igual a 86400000ms
-                                                
-                                                var startTime =  dateFormat(appointment.startTime, "h:MM:ss");   
-                                                var endTime =  dateFormat(appointment.endTime, "h:MM:ss");  
-                                                var day = dateFormat(appointment.startTime, "yyyy-mm-dd");
-                                                var url = herokuURL + appointment._id + "?status=Confirmada";
-                                                var serviceName = service.name;
-                                                var professionalName = professionalPerson.personName.firstName + " " + professionalPerson.personName.lastName;
-                                                var professionalMobile = professionalPerson.mobile;
-                                                var arrayAppointment = [serviceName, day, startTime, endTime, url, professionalName, professionalMobile];
-                                                WhatsappService.sendNotification(person.mobile,message.message,notification,arrayAppointment,db).then((results) => {
-                                                    //console.log(results);
-                                                }); 
-                                            }
-                                        });  
-                                    }  
-                                });
-                            });    
-                        });     
-                    });    
-                }
-                else{
-                    if(notification != null && notification != undefined && notification.notificationState == "Initial"){
-                        NotificationService.updateStatusReport(db,notification._id, "Error", "Notificación sin cita asociada").then((results) => {
-                            console.log("[Error] Notificación sin cita asignada" + JSON.stringify(results));
-                        });
+            if(message != null && message != undefined){
+                AppointmentService.getAppointmentByNotification_id(db, notification._id, "Agendada").then((appointment) => {
+                    console.log("[Alarma]: " + JSON.stringify(notification) + " " + " " + JSON.stringify(appointment) + "\n");
+                    if(appointment != null && appointment != undefined){
+                        ServiceService.getServiceBy_id(db,appointment.service).then((service)=> {
+                            ProfessionalService.getProfessionalBy_id(db,appointment.professional).then((professional)=> {
+                                PersonService.getPersonBy_id(db, professional.person).then((professionalPerson) => {
+                                    ClientService.getClientBy_id(db, appointment.client).then((client) => {
+                                        if(client != null && client != undefined){
+                                            PersonService.getPersonBy_id(db, client.person).then((person) => {
+                                                var currentDate = new Date();
+                                                var startTime = new Date(appointment.startTime);
+                                                var yesterday = new Date(sumarDias(startTime, -1));
+                                                //console.log(yesterday -currentDate);
+                                                if(currentDate > yesterday){// 1 día es igual a 86400000ms
+                                                    
+                                                    var startTime =  dateFormat(appointment.startTime, "h:MM:ss");   
+                                                    var endTime =  dateFormat(appointment.endTime, "h:MM:ss");  
+                                                    var day = dateFormat(appointment.startTime, "yyyy-mm-dd");
+                                                    var url = herokuURL + appointment._id + "?status=Confirmada";
+                                                    var serviceName = service.name;
+                                                    var professionalName = professionalPerson.personName.firstName + " " + professionalPerson.personName.lastName;
+                                                    var professionalMobile = professionalPerson.mobile;
+                                                    var arrayAppointment = [serviceName, day, startTime, endTime, url, professionalName, professionalMobile];
+                                                    WhatsappService.sendNotification(person.mobile,message.message,notification,arrayAppointment,db).then((results) => {
+                                                        //console.log(results);
+                                                    }); 
+                                                }
+                                            });  
+                                        }  
+                                    });
+                                });    
+                            });     
+                        });    
                     }
-                }
-            });
+                    else{
+                        if(notification != null && notification != undefined && notification.notificationState == "Initial"){
+                            NotificationService.updateStatusReport(db,notification._id, "Error", "Notificación sin cita asociada").then((results) => {
+                                console.log("[Error] Notificación sin cita asignada" + JSON.stringify(results));
+                            });
+                        }
+                    }
+                });
+            }
+            else{
+                console.log("[Error] Mensajes de alarmas no configurados");
+            }
         });  
     });
     done();
