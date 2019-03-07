@@ -37,12 +37,12 @@ export class UserServiceProvider {
   }
 
   createDBUser(user): Observable<LoggedProfessional> {
-    //console.log('Prof->Creacion:' + JSON.stringify(user));
+    console.log('Prof->Creacion:' + JSON.stringify(user));
     return this.http.post<Person>(this.userUrl, user, httpOptions).pipe(
       tap((user: any) => {
-        console.log('EN POST');
+        console.log('EN POST USER CREATED');
       }),
-      catchError(this.handleError<Person>('addUser'))
+      catchError(this.handleError<LoggedProfessional>('addUser'))
     );
   }
 
@@ -59,7 +59,7 @@ export class UserServiceProvider {
 
   deleteDBUser(user): Observable<LoggedProfessional> {
     console.log('Prof->Delete:' + user.uid);
-    let delUrl = this.userUrl + '/' + user.uid;
+    let delUrl = this.userUrl + user.uid;
     console.log('URL DELETE:' + this.userUrl);
     return this.http.delete<Person>(delUrl, httpOptions).pipe(
       tap((user: any) => {
@@ -229,8 +229,8 @@ export class UserServiceProvider {
   }
 
   getUserData(uid:string): Observable<any> {
-
-    return this.http.get<any>("https://ecommercealinstante.herokuapp.com/professionals/?uid="+uid, httpOptions)
+    console.log('Tomando Usuario:' + uid + ' cad ' + this.userUrl + '?uid='+uid)
+    return this.http.get<any>(this.userUrl + '?uid='+uid, httpOptions)
       .pipe(
         map(data =>
           { <ProfessionalClass[]>data;

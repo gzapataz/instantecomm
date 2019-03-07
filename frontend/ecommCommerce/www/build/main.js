@@ -1,6 +1,57 @@
-webpackJsonp([13],{
+webpackJsonp([15],{
 
-/***/ 145:
+/***/ 100:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationServiceProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_globals_service_globals_service__ = __webpack_require__(37);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+/*
+  Generated class for the AuthenticationServiceProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var AuthenticationServiceProvider = /** @class */ (function () {
+    function AuthenticationServiceProvider(http, globalService) {
+        this.http = http;
+        this.globalService = globalService;
+        console.log('Hello AuthenticationServiceProvider Provider');
+    }
+    AuthenticationServiceProvider.prototype.isAuthenticated = function () {
+        this.loggedUser = this.globalService.getLoggedProffessionalData();
+        if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
+            return false;
+        }
+        return true;
+    };
+    AuthenticationServiceProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */]])
+    ], AuthenticationServiceProvider);
+    return AuthenticationServiceProvider;
+}());
+
+//# sourceMappingURL=authentication-service.js.map
+
+/***/ }),
+
+/***/ 149:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71,14 +122,14 @@ var PreferencesServiceProvider = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angularfire2_database__ = __webpack_require__(456);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angularfire2_database__ = __webpack_require__(452);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Rx__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_Rx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_common_http__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_operators__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_operators__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_observable_of__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_observable_of__);
@@ -120,9 +171,9 @@ var UserServiceProvider = /** @class */ (function () {
         this.items = this.afDataBase.list("/users");
     }
     UserServiceProvider.prototype.createDBUser = function (user) {
-        //console.log('Prof->Creacion:' + JSON.stringify(user));
+        console.log('Prof->Creacion:' + JSON.stringify(user));
         return this.http.post(this.userUrl, user, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__["tap"])(function (user) {
-            console.log('EN POST');
+            console.log('EN POST USER CREATED');
         }), Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__["catchError"])(this.handleError('addUser')));
     };
     UserServiceProvider.prototype.updateDBUser = function (user) {
@@ -136,7 +187,7 @@ var UserServiceProvider = /** @class */ (function () {
     UserServiceProvider.prototype.deleteDBUser = function (user) {
         var _this = this;
         console.log('Prof->Delete:' + user.uid);
-        var delUrl = this.userUrl + '/' + user.uid;
+        var delUrl = this.userUrl + user.uid;
         console.log('URL DELETE:' + this.userUrl);
         return this.http.delete(delUrl, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__["tap"])(function (user) {
             _this.afAuth.auth.currentUser.delete().then(function () {
@@ -283,7 +334,8 @@ var UserServiceProvider = /** @class */ (function () {
         }
     };
     UserServiceProvider.prototype.getUserData = function (uid) {
-        return this.http.get("https://ecommercealinstante.herokuapp.com/professionals/?uid=" + uid, httpOptions)
+        console.log('Tomando Usuario:' + uid + ' cad ' + this.userUrl + '?uid=' + uid);
+        return this.http.get(this.userUrl + '?uid=' + uid, httpOptions)
             .pipe(Object(__WEBPACK_IMPORTED_MODULE_7_rxjs_operators__["map"])(function (data) {
             data;
             delete data.services;
@@ -351,11 +403,13 @@ var UserServiceProvider = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TabsPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_ionic_angular__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customer_customer__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_services__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customer_customer__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_services__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__referal_referal__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__payments_payments__ = __webpack_require__(174);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -370,6 +424,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var TabsPage = /** @class */ (function () {
     function TabsPage(navCtrl, alertCtrl, platform, navParams) {
         this.navCtrl = navCtrl;
@@ -378,10 +434,12 @@ var TabsPage = /** @class */ (function () {
         this.tab1Root = __WEBPACK_IMPORTED_MODULE_2__calendar_calendar__["a" /* CalendarPage */];
         this.tab2Root = __WEBPACK_IMPORTED_MODULE_3__customer_customer__["a" /* CustomerPage */];
         this.tab3Root = __WEBPACK_IMPORTED_MODULE_4__services_services__["a" /* ServicesPage */];
+        this.tab4Root = __WEBPACK_IMPORTED_MODULE_5__referal_referal__["a" /* ReferalPage */];
+        this.tab5Root = __WEBPACK_IMPORTED_MODULE_6__payments_payments__["a" /* PaymentsPage */];
         this.myIndex = navParams.data.tabIndex || 0;
     }
     TabsPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/'<ion-tabs [selectedIndex]="myIndex">\n  <ion-tab [root]="tab1Root" tabTitle="Mi Agenda" tabIcon="calendar"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="Mis Pacientes" tabIcon="contacts"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Mis Servicios" tabIcon="clipboard"></ion-tab>\n\n\n  <!--ion-tab [root]="tab3Root" tabTitle="Mi Scroll" tabIcon="calendar"></ion-tab-->\n</ion-tabs>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/'<ion-tabs [selectedIndex]="myIndex">\n  <ion-tab [root]="tab1Root" tabTitle="Mi Agenda" tabIcon="calendar"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="Mis Pacientes" tabIcon="contacts"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Mis Servicios" tabIcon="clipboard"></ion-tab>\n  <!--ion-tab [root]="tab4Root" tabTitle="Mis Referidos" tabIcon="people"></ion-tab-->\n  <!--ion-tab [root]="tab5Root" tabTitle="Mis Pagos" tabIcon="card"></ion-tab-->\n\n\n  <!--ion-tab [root]="tab3Root" tabTitle="Mi Scroll" tabIcon="calendar"></ion-tab-->\n</ion-tabs>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/tabs/tabs.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_ionic_angular__["h" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_0_ionic_angular__["a" /* AlertController */],
@@ -398,23 +456,240 @@ var TabsPage = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_customer_service_customer_service__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__ = __webpack_require__(37);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+/**
+ * Generated class for the CustomerPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var CustomerPage = /** @class */ (function () {
+    function CustomerPage(navCtrl, navParams, customerService, modalCtrl, alertCtrl, platform, globalService) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.customerService = customerService;
+        this.modalCtrl = modalCtrl;
+        this.alertCtrl = alertCtrl;
+        this.platform = platform;
+        this.globalService = globalService;
+        this.eventSelected = false;
+        this.eventSource = [];
+        this.myCustomers = [];
+        this.selectedDay = new Date();
+    }
+    CustomerPage.prototype.getCustomers = function (professionaUID) {
+        var _this = this;
+        this.customerService.getCustomers(professionaUID).subscribe(function (data) { return _this.myCustomers = data; });
+    };
+    CustomerPage.prototype.ngOnInit = function () {
+        //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
+        var userLogged = this.globalService.getLoggedProffessionalData();
+        this.loggedUser = this.globalService.getLoggedProffessionalData();
+        if (userLogged.userId === '' || userLogged.userId == null) {
+            return;
+        }
+        ;
+        this.getCustomers(userLogged.userId);
+    };
+    CustomerPage.prototype.refreshView = function () {
+        this.getCustomers(this.loggedUser.userId);
+    };
+    CustomerPage.prototype.ionViewWillEnter = function () {
+        var userLogged = this.globalService.getLoggedProffessionalData();
+        if (userLogged.userId === '' || userLogged.userId == null) {
+            var alert_1 = this.alertCtrl.create({
+                title: 'Errro de Ingreso',
+                subTitle: 'Debe ingresar sus credenciales antes de poder ver la agenda',
+                buttons: ['Dismiss']
+            });
+            alert_1.present();
+            this.navCtrl.push('LoginPage');
+        }
+        else if (this.myCustomers.length == 0) {
+            this.getCustomers(userLogged.userId);
+        }
+    };
+    CustomerPage.prototype.customerSelected = function (customer) {
+        var _this = this;
+        this.customer = customer;
+        //this.navCtrl.push('CustomerDetailPage', {customer: customer});
+        //console.log(`Clicked customer:` + customer)
+        var modal = this.modalCtrl.create('CustomerDetailPage', {
+            customer: customer,
+            profesionalID: this.loggedUser.userId
+        });
+        modal.present();
+        modal.onDidDismiss(function (data) {
+            _this.refreshView();
+        });
+    };
+    CustomerPage.prototype.addEvent = function (customer) {
+        var _this = this;
+        var modal = this.modalCtrl.create('EventModalPage', { selectedDay: this.selectedDay, eventSelected: null, customerSelected: customer });
+        modal.present();
+        modal.onDidDismiss(function (data) {
+            if (data) {
+                var eventData = data;
+                eventData.startTime = new Date(data.startTime);
+                eventData.endTime = new Date(data.endTime);
+                eventData.eventColor = 'blue';
+                eventData.status = 'Agendada';
+                var events_1 = _this.eventSource;
+                events_1.push(eventData);
+                _this.eventSource = [];
+                _this.eventSelected = false;
+                setTimeout(function () {
+                    _this.eventSource = events_1;
+                });
+            }
+        });
+    };
+    CustomerPage.prototype.ionViewDidLoad = function () {
+        //console.log('ionViewDidLoad CustomerPage');
+    };
+    CustomerPage.prototype.startChat = function (mobile) {
+    };
+    CustomerPage.prototype.addCustomer = function () {
+        var _this = this;
+        var userLogged = this.globalService.getLoggedProffessionalData();
+        if (userLogged.userId === '' || userLogged.userId == null) {
+            var alert_2 = this.alertCtrl.create({
+                title: 'Errro de Ingreso',
+                subTitle: 'Debe ingresar sus credenciales antes agregar un paciente',
+                buttons: ['Dismiss']
+            });
+            alert_2.present();
+        }
+        else {
+            var modal = this.modalCtrl.create('CustomerAddModalPage', {
+                professional: this.loggedUser
+            });
+            modal.present();
+            modal.onDidDismiss(function (data) {
+                _this.navCtrl.setRoot(_this.navCtrl.getActive().component);
+                if (data != undefined && _this.platform.is('mobile')) {
+                    console.log('entrando a MODAL Whatsapp :' + JSON.stringify(_this.loggedUser.jsonProfessional));
+                    var professional = _this.loggedUser.jsonProfessional['personName']['firstName'] + ' ' + _this.loggedUser.jsonProfessional['personName']['lastName'];
+                    console.log(professional);
+                    _this.openmodalwhatsapp(data.mobile, data.personName, professional);
+                }
+            });
+        }
+    };
+    CustomerPage.prototype.openmodalwhatsapp = function (mobile, personName, professional) {
+        var _this = this;
+        var modal = this.modalCtrl.create('CustomerWhatsappPage', {
+            mobile: mobile,
+            customer: personName,
+            professional: professional
+        });
+        modal.present();
+        modal.onDidDismiss(function (data) {
+            _this.navCtrl.setRoot(_this.navCtrl.getActive().component);
+        });
+    };
+    CustomerPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-customer',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer/customer.html"*/'<!--\n  Generated template for the CustomerPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Mis pacientes</ion-title>\n    <!--<button ion-button icon-only [menuToggle] start>\n      <img src="../assets/images/navicon.png" width="20" height="20" >\n    </button>-->\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="addCustomer()">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-grid *ngFor="let customer of myCustomers">\n    <ion-row>\n      <ion-col (click)="customerSelected(customer)" align="left">\n          {{customer.person.personName.lastName}} {{customer.person.personName.firstName}}\n      </ion-col>\n      <ion-col>\n        <ion-buttons end>\n\n          <button ion-button color="secondary" small><a href="tel:{{customer.person.mobile}}"><ion-icon name="call"></ion-icon> </a></button>\n          <button ion-button color="secondary" small><a href="https://wa.me/{{customer.person.mobile}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>\n          <button ion-button color="secondary" small><a href="mailto:{{customer.person.email}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>\n        </ion-buttons>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer/customer.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1__providers_customer_service_customer_service__["a" /* CustomerServiceProvider */],
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* ModalController */],
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["a" /* AlertController */],
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["j" /* Platform */],
+            __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */]])
+    ], CustomerPage);
+    return CustomerPage;
+}());
+
+//# sourceMappingURL=customer.js.map
+
+/***/ }),
+
+/***/ 174:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaymentsPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+/**
+ * Generated class for the PaymentsPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var PaymentsPage = /** @class */ (function () {
+    function PaymentsPage(navCtrl, navParams) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    PaymentsPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad PaymentsPage');
+    };
+    PaymentsPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-payments',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/payments/payments.html"*/'<!--\n  Generated template for the PaymentsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar  color="primary">\n    <ion-title>Lista de Pagos</ion-title>\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="addService()">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/payments/payments.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
+    ], PaymentsPage);
+    return PaymentsPage;
+}());
+
+//# sourceMappingURL=payments.js.map
+
+/***/ }),
+
+/***/ 175:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CalendarPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ng2_dragula__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_screen_orientation__ = __webpack_require__(449);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ng2_dragula__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_screen_orientation__ = __webpack_require__(460);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_service_service_service_service__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_schedule_service_schedule_service__ = __webpack_require__(451);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_customer_service_customer_service__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_common_locales_es_CO__ = __webpack_require__(509);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_schedule_service_schedule_service__ = __webpack_require__(462);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_customer_service_customer_service__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_common_locales_es_CO__ = __webpack_require__(512);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__angular_common__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_preferences_service_preferences_service__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__providers_appointment_service_appointment_service__ = __webpack_require__(452);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_preferences_service_preferences_service__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__providers_appointment_service_appointment_service__ = __webpack_require__(463);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__providers_globals_service_globals_service__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_exception_service_exception_service__ = __webpack_require__(453);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__providers_authentication_service_authentication_service__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_exception_service_exception_service__ = __webpack_require__(464);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__providers_authentication_service_authentication_service__ = __webpack_require__(100);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -568,7 +843,7 @@ var CalendarPage = /** @class */ (function () {
       }
     */
     CalendarPage.prototype.ngOnInit = function () {
-        //console.log('Plataforma:' + this.platform.platforms());
+        console.log('Plataforma:' + this.platform.platforms());
         //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
         this.loggedUser = this.globalService.getLoggedProffessionalData();
         if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
@@ -844,7 +1119,7 @@ var CalendarPage = /** @class */ (function () {
     };
     CalendarPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-calendar',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/calendar/calendar.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Mi Agenda</ion-title>\n    <!--<button ion-button icon-only [menuToggle] start>\n      <img src="../assets/images/navicon.png" width="20" height="20" >\n    </button>-->\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <customer-search (messageEvent)="receiveMessage($event)"></customer-search>\n  <ion-row>\n    <div *ngIf="platform.is(\'tablet\') || platform.is(\'core\')">\n      <ion-col col-4 col-md-4 col-lg-6 >\n        <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">\n          <ion-item *ngFor="let service of servicesAvail" id={{service._id}}>{{service.name}}</ion-item>\n        </ion-list>\n      </ion-col>\n    </div>\n      <ion-col col-12 col-sm-12 col-md-8 col-lg-8>\n        <div align-items-start>\n          <ion-title>\n            {{ viewTitle }}\n          </ion-title>\n        </div>\n        <!--ion-buttons end>\n          {{ viewTitle }}\n          <button ion-button (click)="loadEvents()"><ion-icon name="refresh"></ion-icon></button>\n        </ion-buttons-->\n\n\n     <ion-navbar color="primary">\n       <ion-buttons>\n         <button ion-button (click)="goToActual()">Hoy</button>\n         <button ion-button (click)="changeMode(\'month\')">Mes</button>\n         <button ion-button (click)="changeMode(\'week\')">Semana</button>\n         <button ion-button (click)="changeMode(\'day\')">Dia</button>\n         <button ion-button (click)="refreshView()"><ion-icon name="refresh"></ion-icon></button>\n       </ion-buttons>\n       <ion-buttons end>\n         <button ion-button icon-only (click)="addEvent()">\n           <ion-icon name="add"></ion-icon>\n         </button>\n       </ion-buttons>\n     </ion-navbar>\n\n       <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">\n          <div class="calendar-event-inner"\n               [ngStyle]="{\'background-color\': displayEvent.event.eventColor, color: \'white\', \'font-color\': \'white\', \'font-size\': \'12px\', \'border-style\': \'solid\', \'border-color\': \'double\', \'border-width\': \'thin\'}"\n               [style.top]="(37*displayEvent.startOffset/hourParts)+\'px\'"\n               [style.left]="100/displayEvent.overlapNumber*displayEvent.position+\'%\'"\n               [style.width]="100/displayEvent.overlapNumber+\'%\'"\n               [style.border-color]="\'#C0C0C0\'"\n               [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + \'px\'">\n            {{displayEvent.event.title}}\n            <br>\n          </div>\n        </ng-template>\n\n        <ng-template #template2 let-displayEvent="displayEvent" let-hourParts="hourParts">\n          <div class="calendar-event-inner"\n               [ngStyle]="{\'background-color\': displayEvent.event.eventColor, color: \'white\', \'border-style\': \'solid\', \'border-color\': \'double\', \'border-width\': \'thin\'}"\n               [style.top]="(37*displayEvent.startOffset/hourParts)+\'px\'"\n               [style.left]="100/displayEvent.overlapNumber*displayEvent.position+\'%\'"\n               [style.width]="100/displayEvent.overlapNumber+\'%\'"\n               [style.font-size]="\'11px\'"\n               [style.border-color]="\'#C0C0C0\'"\n               [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + \'px\'">\n            {{displayEvent.event.title | slice:0:displayEvent.event.title.indexOf(\' \')}}\n          </div>\n        </ng-template>\n\n        <ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">\n          <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">\n            <ion-item *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">\n                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: \'HH:mm\'}}\n                            {{event.endTime|date: \'HH:mm\'}}\n                        </span>\n              <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>\n              <span class="event-detail">  |  {{event.title}} - {{event.status}}</span>\n            </ion-item>\n            <ion-item *ngIf="selectedDate?.events.length==0">\n              <div class="no-events-label">No hay Citas programadas</div>\n            </ion-item>\n          </ion-list>\n        </ng-template>\n\n       <calendar [eventSource]="eventSource"\n                 [formatHourColumn]="calendar.formatHourColumn"\n                 [calendarMode]="calendar.mode"\n                 [markDisabled]="markDisabled"\n                 [queryMode]="calendar.queryMode"\n                 [currentDate]="calendar.currentDate"\n                 (press)="calendar.onTimePress($event)"\n                 (click)="calendar.onClick()"\n                 (doubleclick)="calendar.onDoubleClick()"\n                 (mousemove)="calendar.onMove($event)"\n                 (mousedown)="calendar.onMoveDown($event)"\n                 (drop)="calendar.onDrop()"\n                 (dragover)="calendar.onDrop()"\n                 (onEventSelected)="onEventSelected($event)"\n                 (onTitleChanged)="onViewTitleChanged($event)"\n                 (onTimeSelected)="onTimeSelected($event)"\n                 (onRangeChanged)="onRangeChanged($event)"\n                 [locale]="calendar.locale"\n                 [dayviewNormalEventTemplate]="template3"\n                 [weekviewNormalEventTemplate]="template2"\n                 [monthviewEventDetailTemplate]="template1"\n                 step="30"\n                 startHour={{startHour}}\n                 endHour={{endHour}}\n                 class="calendar">\n       </calendar>\n\n\n\n\n   </ion-col>\n  </ion-row>\n</ion-content>\n\n\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/calendar/calendar.html"*/,
+            selector: 'page-calendar',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/calendar/calendar.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Mi Agenda</ion-title>\n    <!--<button ion-button icon-only [menuToggle] start>\n      <img src="../assets/images/navicon.png" width="20" height="20" >\n    </button>-->\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <customer-search (messageEvent)="receiveMessage($event)"></customer-search>\n  <ion-row>\n    <div *ngIf="platform.is(\'tablet\') || platform.is(\'core\')">\n      <ion-col col-4 col-md-4 col-lg-6 >\n        <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">\n          <ion-item *ngFor="let service of servicesAvail" id={{service._id}}>{{service.name}}</ion-item>\n        </ion-list>\n      </ion-col>\n    </div>\n      <ion-col col-12 col-sm-12 col-md-8 col-lg-8>\n        <div align-items-start>\n          <ion-title>\n            {{ viewTitle }}\n          </ion-title>\n        </div>\n        <!--ion-buttons end>\n          {{ viewTitle }}\n          <button ion-button (click)="loadEvents()"><ion-icon name="refresh"></ion-icon></button>\n        </ion-buttons-->\n\n\n     <ion-navbar color="primary">\n       <ion-buttons>\n         <button ion-button (click)="goToActual()">Hoy</button>\n         <button ion-button (click)="changeMode(\'month\')">Mes</button>\n         <button ion-button (click)="changeMode(\'week\')">Semana</button>\n         <button ion-button (click)="changeMode(\'day\')">Dia</button>\n         <button ion-button (click)="refreshView()"><ion-icon name="refresh"></ion-icon></button>\n       </ion-buttons>\n       <ion-buttons end>\n         <button ion-button icon-only (click)="addEvent()">\n           <ion-icon name="add"></ion-icon>\n         </button>\n       </ion-buttons>\n     </ion-navbar>\n\n       <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">\n          <div class="calendar-event-inner"\n               [ngStyle]="{\'background-color\': displayEvent.event.eventColor, color: \'white\', \'font-color\': \'white\', \'font-size\': \'12px\', \'border-style\': \'solid\', \'border-color\': \'double\', \'border-width\': \'thin\'}"\n               [style.top]="(37*displayEvent.startOffset/hourParts)+\'px\'"\n               [style.left]="100/displayEvent.overlapNumber*displayEvent.position+\'%\'"\n               [style.width]="100/displayEvent.overlapNumber+\'%\'"\n               [style.border-color]="\'#C0C0C0\'"\n               [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + \'px\'">\n            {{displayEvent.event.title}}\n            <br>\n          </div>\n        </ng-template>\n\n        <ng-template #template2 let-displayEvent="displayEvent" let-hourParts="hourParts">\n          <div class="calendar-event-inner"\n               [ngStyle]="{\'background-color\': displayEvent.event.eventColor, color: \'white\', \'border-style\': \'solid\', \'border-color\': \'double\', \'border-width\': \'thin\'}"\n               [style.top]="(37*displayEvent.startOffset/hourParts)+\'px\'"\n               [style.left]="100/displayEvent.overlapNumber*displayEvent.position+\'%\'"\n               [style.width]="100/displayEvent.overlapNumber+\'%\'"\n               [style.font-size]="\'11px\'"\n               [style.border-color]="\'#C0C0C0\'"\n               [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + \'px\'">\n            {{displayEvent.event.title | slice:0:displayEvent.event.title.indexOf(\' \')}}\n          </div>\n        </ng-template>\n\n        <ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">\n          <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">\n            <ion-item *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">\n                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: \'HH:mm\'}}\n                            {{event.endTime|date: \'HH:mm\'}}\n                        </span>\n              <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>\n              <span class="event-detail">  |  {{event.title}} - {{event.status}}</span>\n            </ion-item>\n            <ion-item *ngIf="selectedDate?.events.length==0">\n              <div class="no-events-label">No hay Citas programadas</div>\n            </ion-item>\n          </ion-list>\n        </ng-template>\n\n       <calendar [eventSource]="eventSource"\n                 [formatHourColumn]="calendar.formatHourColumn"\n                 [calendarMode]="calendar.mode"\n                 [markDisabled]="markDisabled"\n                 [queryMode]="calendar.queryMode"\n                 [currentDate]="calendar.currentDate"\n                 (press)="calendar.onTimePress($event)"\n                 (click)="calendar.onClick()"\n                 (doubleclick)="calendar.onDoubleClick()"\n                 (mousemove)="calendar.onMove($event)"\n                 (mousedown)="calendar.onMoveDown($event)"\n                 (drop)="calendar.onDrop()"\n                 (dragover)="calendar.onDrop()"\n                 (onEventSelected)="onEventSelected($event)"\n                 (onTitleChanged)="onViewTitleChanged($event)"\n                 (onTimeSelected)="onTimeSelected($event)"\n                 (onRangeChanged)="onRangeChanged($event)"\n                 [locale]="calendar.locale"\n                 [dayviewNormalEventTemplate]="template3"\n                 [weekviewNormalEventTemplate]="template2"\n                 [monthviewEventDetailTemplate]="template1"\n                 step="30"\n                 startHour={{startHour}}\n                 endHour={{endHour}}\n                 class="calendar">\n       </calendar>\n\n\n\n\n   </ion-col>\n  </ion-row>\n</ion-content>\n\n\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/calendar/calendar.html"*/,
             providers: [__WEBPACK_IMPORTED_MODULE_6__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */]]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
@@ -867,197 +1142,16 @@ var CalendarPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 174:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__providers_customer_service_customer_service__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__ = __webpack_require__(37);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-/**
- * Generated class for the CustomerPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var CustomerPage = /** @class */ (function () {
-    function CustomerPage(navCtrl, navParams, customerService, modalCtrl, alertCtrl, globalService) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.customerService = customerService;
-        this.modalCtrl = modalCtrl;
-        this.alertCtrl = alertCtrl;
-        this.globalService = globalService;
-        this.eventSelected = false;
-        this.eventSource = [];
-        this.myCustomers = [];
-        this.loadedCountryList = [];
-        this.selectedDay = new Date();
-    }
-    CustomerPage.prototype.getItems = function (searchbar) {
-        // Reset items back to all of the items
-        this.initializeItems();
-        // set q to the value of the searchbar
-        var q = searchbar.srcElement.value;
-        // if the value is an empty string don't filter the items
-        if (!q) {
-            return;
-        }
-        this.myCustomers = this.myCustomers.filter(function (v) {
-            if (v.person.personName.firstName && q || v.person.personName.lastName && q) {
-                if (v.person.personName.firstName.toLowerCase().indexOf(q.toLowerCase()) > -1 || v.person.personName.lastName.toLowerCase().indexOf(q.toLowerCase()) > -1) {
-                    return true;
-                }
-                return false;
-            }
-        });
-        console.log(q, this.myCustomers.length);
-    };
-    CustomerPage.prototype.initializeItems = function () {
-        this.myCustomers = this.loadedCountryList;
-    };
-    CustomerPage.prototype.getCustomers = function (professionaUID) {
-        var _this = this;
-        this.customerService.getCustomers(professionaUID).subscribe(function (data) { return _this.myCustomers = data; });
-        this.customerService.getCustomers(professionaUID).subscribe(function (data) { return _this.loadedCountryList = data; });
-    };
-    CustomerPage.prototype.ngOnInit = function () {
-        //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
-        var userLogged = this.globalService.getLoggedProffessionalData();
-        this.loggedUser = this.globalService.getLoggedProffessionalData();
-        if (userLogged.userId === '' || userLogged.userId == null) {
-            return;
-        }
-        ;
-        this.getCustomers(userLogged.userId);
-    };
-    CustomerPage.prototype.ionViewWillEnter = function () {
-        var userLogged = this.globalService.getLoggedProffessionalData();
-        if (userLogged.userId === '' || userLogged.userId == null) {
-            var alert_1 = this.alertCtrl.create({
-                title: 'Errro de Ingreso',
-                subTitle: 'Debe ingresar sus credenciales antes de poder ver la agenda',
-                buttons: ['Dismiss']
-            });
-            alert_1.present();
-            this.navCtrl.push('LoginPage');
-        }
-        else if (this.myCustomers.length == 0) {
-            this.getCustomers(userLogged.userId);
-        }
-    };
-    CustomerPage.prototype.customerSelected = function (customer) {
-        this.customer = customer;
-        //this.navCtrl.push('CustomerDetailPage', {customer: customer});
-        //console.log(`Clicked customer:` + customer)
-        var modal = this.modalCtrl.create('CustomerDetailPage', {
-            customer: customer,
-            profesionalID: this.loggedUser.userId
-        });
-        modal.present();
-    };
-    CustomerPage.prototype.addEvent = function (customer) {
-        var _this = this;
-        var modal = this.modalCtrl.create('EventModalPage', { selectedDay: this.selectedDay, eventSelected: null, customerSelected: customer });
-        modal.present();
-        modal.onDidDismiss(function (data) {
-            if (data) {
-                var eventData = data;
-                eventData.startTime = new Date(data.startTime);
-                eventData.endTime = new Date(data.endTime);
-                eventData.eventColor = 'blue';
-                eventData.status = 'Agendada';
-                var events_1 = _this.eventSource;
-                events_1.push(eventData);
-                _this.eventSource = [];
-                _this.eventSelected = false;
-                setTimeout(function () {
-                    _this.eventSource = events_1;
-                });
-            }
-        });
-    };
-    CustomerPage.prototype.ionViewDidLoad = function () {
-        //console.log('ionViewDidLoad CustomerPage');
-    };
-    CustomerPage.prototype.startChat = function (mobile) {
-    };
-    CustomerPage.prototype.addCustomer = function () {
-        var _this = this;
-        var userLogged = this.globalService.getLoggedProffessionalData();
-        if (userLogged.userId === '' || userLogged.userId == null) {
-            var alert_2 = this.alertCtrl.create({
-                title: 'Errro de Ingreso',
-                subTitle: 'Debe ingresar sus credenciales antes agregar un paciente',
-                buttons: ['Dismiss']
-            });
-            alert_2.present();
-        }
-        else {
-            var modal = this.modalCtrl.create('CustomerAddModalPage', {
-                professional: this.loggedUser
-            });
-            modal.present();
-            modal.onDidDismiss(function (data) {
-                _this.navCtrl.setRoot(_this.navCtrl.getActive().component);
-                if (data != undefined) {
-                    _this.openmodalwhatsapp(data.mobile);
-                }
-            });
-        }
-    };
-    CustomerPage.prototype.openmodalwhatsapp = function (mobile) {
-        var _this = this;
-        var modal = this.modalCtrl.create('CustomerWhatsappPage', {
-            mobile: mobile
-        });
-        modal.present();
-        modal.onDidDismiss(function (data) {
-            _this.navCtrl.setRoot(_this.navCtrl.getActive().component);
-        });
-    };
-    CustomerPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-customer',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer/customer.html"*/'<!--\n  Generated template for the CustomerPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Mis pacientes</ion-title>\n    <!--<button ion-button icon-only [menuToggle] start>\n      <img src="../assets/images/navicon.png" width="20" height="20" >\n    </button>-->\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="addCustomer()">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n\n\n<ion-content padding>\n  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>\n  <ion-grid *ngFor="let customer of myCustomers">\n    <ion-row>\n      <ion-col (click)="customerSelected(customer)" align="left">\n          {{customer.person.personName.firstName}}  {{customer.person.personName.lastName}}\n      </ion-col>\n      <ion-col>\n        <ion-buttons end>\n\n          <button ion-button color="secondary" small><a href="tel:{{customer.person.mobile}}"><ion-icon name="call"></ion-icon> </a></button>\n          <button ion-button color="secondary" small><a href="https://wa.me/{{customer.person.mobile}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>\n          <button ion-button color="secondary" small><a href="mailto:{{customer.person.email}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>\n        </ion-buttons>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n</ion-content>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/customer/customer.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["i" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1__providers_customer_service_customer_service__["a" /* CustomerServiceProvider */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["f" /* ModalController */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */]])
-    ], CustomerPage);
-    return CustomerPage;
-}());
-
-//# sourceMappingURL=customer.js.map
-
-/***/ }),
-
-/***/ 175:
+/***/ 176:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ServicesPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_service_service_service_service__ = __webpack_require__(98);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_globals_service_globals_service__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_authentication_service_authentication_service__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_authentication_service_authentication_service__ = __webpack_require__(100);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1149,7 +1243,7 @@ var ServicesPage = /** @class */ (function () {
     };
     ServicesPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-services',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/services/services.html"*/'<!--\n  Generated template for the ServicesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar  color="primary">\n    <ion-title>Lista de Servicios</ion-title>\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="addService()">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-grid *ngFor="let service of servicesAvail">\n    <ion-row>\n      <ion-col (click)="serviceSelected(service)" align="left">\n        {{service.name}}\n      </ion-col>\n      <ion-col>\n        {{service.averageTime}}\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n</ion-content>\n\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/pages/services/services.html"*/,
+            selector: 'page-services',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/services/services.html"*/'<!--\n  Generated template for the ServicesPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar  color="primary">\n    <ion-title>Lista de Servicios</ion-title>\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="addService()">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-grid *ngFor="let service of servicesAvail">\n    <ion-row>\n      <ion-col (click)="serviceSelected(service)" align="left">\n        {{service.name}}\n      </ion-col>\n      <ion-col>\n        {{service.averageTime}}\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n</ion-content>\n\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/services/services.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* ModalController */],
@@ -1164,7 +1258,55 @@ var ServicesPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 186:
+/***/ 177:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ReferalPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+/**
+ * Generated class for the ReferalPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var ReferalPage = /** @class */ (function () {
+    function ReferalPage(navCtrl, navParams) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    ReferalPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad ReferalPage');
+    };
+    ReferalPage.prototype.sendSms = function () {
+        //this.sms.send('+573102407408', 'Hola Mundo');
+    };
+    ReferalPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-referal',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/referal/referal.html"*/'<!--\n  Generated template for the ReferalPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar  color="primary">\n    <ion-title>Lista de Referidos</ion-title>\n    <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>\n    <ion-buttons end>\n      <button ion-button icon-only (click)="addService()">\n        <ion-icon name="add"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-navbar>\n\n\n</ion-header>\n\n<ion-content padding>\n\n  <p><a href="sms:3112112385&body=holamnudo">SMS</a></p>\n\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/referal/referal.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]])
+    ], ReferalPage);
+    return ReferalPage;
+}());
+
+//# sourceMappingURL=referal.js.map
+
+/***/ }),
+
+/***/ 188:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -1177,20 +1319,20 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 186;
+webpackEmptyAsyncContext.id = 188;
 
 /***/ }),
 
-/***/ 230:
+/***/ 232:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"../pages/calendar/calendar.module": [
-		885,
-		12
+		901,
+		14
 	],
 	"../pages/customer-add/customer-add-modal.module": [
-		884,
+		890,
 		9
 	],
 	"../pages/customer-detail/customer-detail.module": [
@@ -1198,43 +1340,51 @@ var map = {
 		8
 	],
 	"../pages/customer-modal/customer-modal.module": [
-		886,
+		888,
 		7
 	],
 	"../pages/customer-whatsapp/customer-whatsapp.module": [
-		888,
+		889,
 		6
 	],
 	"../pages/customer/customer.module": [
-		889,
-		11
+		891,
+		13
 	],
 	"../pages/event-modal/event-modal.module": [
-		891,
+		892,
 		0
 	],
 	"../pages/login/login.module": [
-		890,
+		894,
 		5
 	],
+	"../pages/payments/payments.module": [
+		893,
+		12
+	],
 	"../pages/private-policy/private-policy.module": [
-		892,
+		895,
 		4
 	],
 	"../pages/professional-detail/professional-detail.module": [
-		893,
+		897,
 		3
 	],
+	"../pages/referal/referal.module": [
+		896,
+		11
+	],
 	"../pages/registration/registration.module": [
-		894,
+		900,
 		1
 	],
 	"../pages/services-add/services-add.module": [
-		895,
+		898,
 		2
 	],
 	"../pages/services/services.module": [
-		896,
+		899,
 		10
 	]
 };
@@ -1249,7 +1399,7 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 230;
+webpackAsyncContext.id = 232;
 module.exports = webpackAsyncContext;
 
 /***/ }),
@@ -1261,8 +1411,8 @@ module.exports = webpackAsyncContext;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GlobalsServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_logged_class__ = __webpack_require__(829);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__classes_logged_class__ = __webpack_require__(550);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(142);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1388,6 +1538,7 @@ var firebaseConfig = {
 };
 var environment = {
     production: false,
+    //baseUrl: 'https://dev-odontapp.herokuapp.com'
     baseUrl: 'https://ecommercealinstante.herokuapp.com'
     //baseUrl: 'api'
 };
@@ -1395,20 +1546,20 @@ var environment = {
 
 /***/ }),
 
-/***/ 451:
+/***/ 462:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ScheduleServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__preferences_service_preferences_service__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__preferences_service_preferences_service__ = __webpack_require__(149);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1497,14 +1648,14 @@ var ScheduleServiceProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 452:
+/***/ 463:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppointmentServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
@@ -1593,14 +1744,14 @@ var AppointmentServiceProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 453:
+/***/ 464:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExceptionServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
@@ -1727,7 +1878,7 @@ var MessageServiceProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 505:
+/***/ 507:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1735,8 +1886,8 @@ var MessageServiceProvider = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_customer_service_customer_service__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_customer_service_customer_service__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_globals_service_globals_service__ = __webpack_require__(37);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1839,7 +1990,7 @@ var CustomerSearchComponent = /** @class */ (function () {
          */
         ,
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'customer-search',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/components/customer-search/customer-search.html"*/'<!-- Generated template for the CustomerSearchComponent component -->\n<div id="search-component">\n  <!--input #searchBox id="search-box" (keyup)="search(searchBox.value)" /-->\n  <ion-searchbar\n    [(ngModel)]="myInput"\n    [placeholder]="srcTitle"\n    [autocomplete]="on"\n    [debounce]="500"\n    [showCancelButton]="shouldShowCancel"\n    (ionInput)="onInput($event)"\n    (ionCancel)="onCancel($event)"\n    (ionClear)="onClear($event)">\n  </ion-searchbar>\n  <div *ngIf="show">\n    <ion-list *ngFor="let customer of customers$ | async">\n      <ion-item (click)="selectedName(customer._id, customer.name, customer)">{{customer.person.personName.firstName}}</ion-item>\n    </ion-list>\n  </div>\n\n</div>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/components/customer-search/customer-search.html"*/
+            selector: 'customer-search',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/components/customer-search/customer-search.html"*/'<!-- Generated template for the CustomerSearchComponent component -->\n<div id="search-component">\n  <!--input #searchBox id="search-box" (keyup)="search(searchBox.value)" /-->\n  <ion-searchbar\n    [(ngModel)]="myInput"\n    [placeholder]="srcTitle"\n    [autocomplete]="on"\n    [debounce]="500"\n    [showCancelButton]="shouldShowCancel"\n    (ionInput)="onInput($event)"\n    (ionCancel)="onCancel($event)"\n    (ionClear)="onClear($event)">\n  </ion-searchbar>\n  <div *ngIf="show">\n    <ion-list *ngFor="let customer of customers$ | async">\n      <ion-item (click)="selectedName(customer._id, customer.name, customer)">{{customer.person.personName.firstName}}</ion-item>\n    </ion-list>\n  </div>\n\n</div>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/components/customer-search/customer-search.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__providers_customer_service_customer_service__["a" /* CustomerServiceProvider */],
             __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* ModalController */],
@@ -1852,14 +2003,107 @@ var CustomerSearchComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 506:
+/***/ 508:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerUpdateDetailProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(40);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+/*
+  Generated class for the CustomerAddServiceProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var httpOptions = {
+    headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({ 'Content-Type': 'application/json' })
+};
+var CustomerUpdateDetailProvider = /** @class */ (function () {
+    function CustomerUpdateDetailProvider(http, messageService) {
+        this.http = http;
+        this.messageService = messageService;
+        this.appntUrl = __WEBPACK_IMPORTED_MODULE_5__environment__["a" /* environment */].baseUrl + '/professionals';
+        console.log('Hello CustomerAddServiceProvider Provider');
+    }
+    CustomerUpdateDetailProvider.prototype.log = function (message) {
+        this.messageService.add("CustomerAddServiceProvider: " + message);
+    };
+    /** PUT: update customer data */
+    CustomerUpdateDetailProvider.prototype.updateCustomer = function (event, uid) {
+        var _this = this;
+        console.log('Service: PUT:' + JSON.stringify(event));
+        return this.http.put(this.appntUrl + '/' + uid + "/clients/", event, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["tap"])(function (event) {
+            console.log('EN PUT');
+            _this.log("UPTADTE CSTOMER w/ id=" + event._id);
+        }), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(this.handleError('updateCustomer')));
+    };
+    /** Delete: delete customer data */
+    CustomerUpdateDetailProvider.prototype.deleteCustomer = function (customer, uid) {
+        var _this = this;
+        console.log('Service: DELETE:' + JSON.stringify(event));
+        return this.http.delete(this.appntUrl + '/' + uid + "/clients/" + customer._id, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["tap"])(function (event) {
+            console.log('EN DELETE');
+            _this.log("DELETE CUSTOMER w/ id=" + event._id);
+        }), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(this.handleError('updateCustomer')));
+    };
+    /**
+     * Handle Http operation that failed.
+     * Let the app continue.
+     * @param operation - name of the operation that failed
+     * @param result - optional value to return as the observable result
+     */
+    CustomerUpdateDetailProvider.prototype.handleError = function (operation, result) {
+        if (operation === void 0) { operation = 'operation'; }
+        return function (error) {
+            // TODO: send the error to remote logging infrastructure
+            console.error(error); // log to console instead
+            // TODO: better job of transforming error for user consumption
+            console.log(operation + " failed: " + error.message);
+            // Let the app keep running by returning an empty result.
+            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["of"])(result);
+        };
+    };
+    CustomerUpdateDetailProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__["a" /* MessageServiceProvider */]])
+    ], CustomerUpdateDetailProvider);
+    return CustomerUpdateDetailProvider;
+}());
+
+//# sourceMappingURL=customer-update-detail.js.map
+
+/***/ }),
+
+/***/ 509:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerAddServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
@@ -1902,7 +2146,7 @@ var CustomerAddServiceProvider = /** @class */ (function () {
     /** POST: add a new Customer to the server */
     CustomerAddServiceProvider.prototype.addACustomer = function (event, uid) {
         var _this = this;
-        console.log('Service: addACustomer:' + JSON.stringify(event));
+        console.log('Service: addACustomer POST:' + JSON.stringify(event) + ' UID: ' + uid);
         return this.http.post(this.appntUrl + '/' + uid + "/clients/", event, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["tap"])(function (event) {
             console.log('EN POST');
             _this.log("added appointment w/ id=" + event._id);
@@ -1936,7 +2180,7 @@ var CustomerAddServiceProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 507:
+/***/ 510:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1945,7 +2189,7 @@ var CustomerAddServiceProvider = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1995,7 +2239,7 @@ var RestApiProvider = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 508:
+/***/ 511:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2010,97 +2254,13 @@ var ServiceClass = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 510:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerUpdateDetailProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__environment__ = __webpack_require__(40);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-/*
-  Generated class for the CustomerAddServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-var httpOptions = {
-    headers: new __WEBPACK_IMPORTED_MODULE_0__angular_common_http__["c" /* HttpHeaders */]({ 'Content-Type': 'application/json' })
-};
-var CustomerUpdateDetailProvider = /** @class */ (function () {
-    function CustomerUpdateDetailProvider(http, messageService) {
-        this.http = http;
-        this.messageService = messageService;
-        this.appntUrl = __WEBPACK_IMPORTED_MODULE_5__environment__["a" /* environment */].baseUrl + '/professionals';
-        console.log('Hello CustomerAddServiceProvider Provider');
-    }
-    CustomerUpdateDetailProvider.prototype.log = function (message) {
-        this.messageService.add("CustomerAddServiceProvider: " + message);
-    };
-    /** PUT: update customer data */
-    CustomerUpdateDetailProvider.prototype.updateCustomer = function (event, uid) {
-        var _this = this;
-        console.log('Service: PUT:' + JSON.stringify(event));
-        return this.http.put(this.appntUrl + '/' + uid + "/clients/", event, httpOptions).pipe(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["tap"])(function (event) {
-            console.log('EN PUT');
-            _this.log("UPTADTE CSTOMER w/ id=" + event._id);
-        }), Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__["catchError"])(this.handleError('updateCustomer')));
-    };
-    /**
-     * Handle Http operation that failed.
-     * Let the app continue.
-     * @param operation - name of the operation that failed
-     * @param result - optional value to return as the observable result
-     */
-    CustomerUpdateDetailProvider.prototype.handleError = function (operation, result) {
-        if (operation === void 0) { operation = 'operation'; }
-        return function (error) {
-            // TODO: send the error to remote logging infrastructure
-            console.error(error); // log to console instead
-            // TODO: better job of transforming error for user consumption
-            console.log(operation + " failed: " + error.message);
-            // Let the app keep running by returning an empty result.
-            return Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__["of"])(result);
-        };
-    };
-    CustomerUpdateDetailProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */], __WEBPACK_IMPORTED_MODULE_4__message_service_message_service__["a" /* MessageServiceProvider */]])
-    ], CustomerUpdateDetailProvider);
-    return CustomerUpdateDetailProvider;
-}());
-
-//# sourceMappingURL=customer-update-detail.js.map
-
-/***/ }),
-
-/***/ 511:
+/***/ 513:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(512);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(516);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(514);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(518);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -2108,53 +2268,59 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 516:
+/***/ 518:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_splash_screen__ = __webpack_require__(502);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__ = __webpack_require__(503);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angularfire2__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_database__ = __webpack_require__(456);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_auth__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_splash_screen__ = __webpack_require__(504);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angularfire2__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_angularfire2_database__ = __webpack_require__(452);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_angularfire2_auth__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__environment__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_user_service_user_service__ = __webpack_require__(171);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_storage__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ng2_dragula__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__angular_platform_browser_animations__ = __webpack_require__(869);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_ionic2_calendar__ = __webpack_require__(871);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_storage__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ng2_dragula__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__angular_platform_browser_animations__ = __webpack_require__(871);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_ionic2_calendar__ = __webpack_require__(873);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__angular_common_http__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_screen_orientation__ = __webpack_require__(449);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_components_module__ = __webpack_require__(882);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_customer_search_customer_search__ = __webpack_require__(505);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__app_component__ = __webpack_require__(883);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ionic_native_screen_orientation__ = __webpack_require__(460);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_components_module__ = __webpack_require__(884);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_customer_search_customer_search__ = __webpack_require__(507);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__app_component__ = __webpack_require__(885);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_tabs_tabs__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_calendar_calendar__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_service_service_service_service__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__providers_customer_service_customer_service__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__providers_message_service_message_service__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__providers_appointment_service_appointment_service__ = __webpack_require__(452);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__pages_customer_customer__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__providers_schedule_service_schedule_service__ = __webpack_require__(451);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__providers_preferences_service_preferences_service__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__providers_globals_service_globals_service__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__providers_exception_service_exception_service__ = __webpack_require__(453);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__providers_customer_add_service_customer_add_service__ = __webpack_require__(506);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_services_services__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__providers_authentication_service_authentication_service__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__providers_customer_update_detail_customer_update_detail__ = __webpack_require__(510);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__providers_countries_service_countries_service__ = __webpack_require__(507);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_calendar_calendar__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_referal_referal__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_payments_payments__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__providers_service_service_service_service__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__providers_customer_service_customer_service__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__providers_message_service_message_service__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__providers_appointment_service_appointment_service__ = __webpack_require__(463);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__pages_customer_customer__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__providers_schedule_service_schedule_service__ = __webpack_require__(462);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__providers_preferences_service_preferences_service__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__providers_globals_service_globals_service__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__providers_exception_service_exception_service__ = __webpack_require__(464);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__providers_customer_add_service_customer_add_service__ = __webpack_require__(509);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_services_services__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__providers_authentication_service_authentication_service__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__providers_customer_update_detail_customer_update_detail__ = __webpack_require__(508);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__providers_countries_service_countries_service__ = __webpack_require__(510);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38_ngx_vcard__ = __webpack_require__(886);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -2200,28 +2366,32 @@ var AppModule = /** @class */ (function () {
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */],
                 __WEBPACK_IMPORTED_MODULE_21__pages_calendar_calendar__["a" /* CalendarPage */],
-                __WEBPACK_IMPORTED_MODULE_26__pages_customer_customer__["a" /* CustomerPage */],
+                __WEBPACK_IMPORTED_MODULE_28__pages_customer_customer__["a" /* CustomerPage */],
                 __WEBPACK_IMPORTED_MODULE_20__pages_tabs_tabs__["a" /* TabsPage */],
-                __WEBPACK_IMPORTED_MODULE_32__pages_services_services__["a" /* ServicesPage */]
+                __WEBPACK_IMPORTED_MODULE_34__pages_services_services__["a" /* ServicesPage */],
+                __WEBPACK_IMPORTED_MODULE_22__pages_referal_referal__["a" /* ReferalPage */],
+                __WEBPACK_IMPORTED_MODULE_23__pages_payments_payments__["a" /* PaymentsPage */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_forms__["c" /* FormsModule */],
                 __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/customer-add/customer-add-modal.module#CustomerAddModalPageModule', name: 'CustomerAddModalPage', segment: 'customer-add-modal', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/calendar/calendar.module#CalendarPageModule', name: 'CalendarPage', segment: 'calendar', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/customer-modal/customer-modal.module#CustomerModalPageModule', name: 'CustomerModalPage', segment: 'customer-modal', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/customer-detail/customer-detail.module#CustomerDetailPageModule', name: 'CustomerDetailPage', segment: 'customer-detail', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/customer-modal/customer-modal.module#CustomerModalPageModule', name: 'CustomerModalPage', segment: 'customer-modal', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/customer-whatsapp/customer-whatsapp.module#CustomerWhatsappPageModule', name: 'CustomerWhatsappPage', segment: 'customer-whatsapp', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/customer-add/customer-add-modal.module#CustomerAddModalPageModule', name: 'CustomerAddModalPage', segment: 'customer-add-modal', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/customer/customer.module#CustomerPageModule', name: 'CustomerPage', segment: 'customer', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/event-modal/event-modal.module#EventModalPageModule', name: 'EventModalPage', segment: 'event-modal', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/payments/payments.module#PaymentsPageModule', name: 'PaymentsPage', segment: 'payments', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/private-policy/private-policy.module#PrivatePolicyPageModule', name: 'PrivatePolicyPage', segment: 'private-policy', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/referal/referal.module#ReferalPageModule', name: 'ReferalPage', segment: 'referal', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/professional-detail/professional-detail.module#ProfessionalDetailPageModule', name: 'ProfessionalDetailPage', segment: 'professional-detail', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/registration/registration.module#RegistrationPageModule', name: 'RegistrationPage', segment: 'registration', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/services-add/services-add.module#ServicesAddPageModule', name: 'ServicesAddPage', segment: 'services-add', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/services/services.module#ServicesPageModule', name: 'ServicesPage', segment: 'services', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/services/services.module#ServicesPageModule', name: 'ServicesPage', segment: 'services', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/registration/registration.module#RegistrationPageModule', name: 'RegistrationPage', segment: 'registration', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/calendar/calendar.module#CalendarPageModule', name: 'CalendarPage', segment: 'calendar', priority: 'low', defaultHistory: [] }
                     ]
                 }),
                 __WEBPACK_IMPORTED_MODULE_6_angularfire2__["a" /* AngularFireModule */].initializeApp(__WEBPACK_IMPORTED_MODULE_9__environment__["b" /* firebaseConfig */]),
@@ -2236,15 +2406,18 @@ var AppModule = /** @class */ (function () {
                     name: '__mydb',
                     driverOrder: ['indexeddb', 'sqlite', 'websql']
                 }),
-                __WEBPACK_IMPORTED_MODULE_12_ng2_dragula__["a" /* DragulaModule */]
+                __WEBPACK_IMPORTED_MODULE_12_ng2_dragula__["a" /* DragulaModule */],
+                __WEBPACK_IMPORTED_MODULE_38_ngx_vcard__["a" /* NgxVcardModule */]
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["b" /* IonicApp */]],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_19__app_component__["a" /* MyApp */],
                 __WEBPACK_IMPORTED_MODULE_21__pages_calendar_calendar__["a" /* CalendarPage */],
-                __WEBPACK_IMPORTED_MODULE_26__pages_customer_customer__["a" /* CustomerPage */],
+                __WEBPACK_IMPORTED_MODULE_28__pages_customer_customer__["a" /* CustomerPage */],
                 __WEBPACK_IMPORTED_MODULE_20__pages_tabs_tabs__["a" /* TabsPage */],
-                __WEBPACK_IMPORTED_MODULE_32__pages_services_services__["a" /* ServicesPage */]
+                __WEBPACK_IMPORTED_MODULE_34__pages_services_services__["a" /* ServicesPage */],
+                __WEBPACK_IMPORTED_MODULE_22__pages_referal_referal__["a" /* ReferalPage */],
+                __WEBPACK_IMPORTED_MODULE_23__pages_payments_payments__["a" /* PaymentsPage */]
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_5__ionic_native_status_bar__["a" /* StatusBar */],
@@ -2252,20 +2425,20 @@ var AppModule = /** @class */ (function () {
                 { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["c" /* IonicErrorHandler */] },
                 __WEBPACK_IMPORTED_MODULE_10__providers_user_service_user_service__["a" /* UserServiceProvider */],
                 __WEBPACK_IMPORTED_MODULE_12_ng2_dragula__["b" /* DragulaService */],
-                __WEBPACK_IMPORTED_MODULE_22__providers_service_service_service_service__["a" /* ServiceServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_23__providers_customer_service_customer_service__["a" /* CustomerServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_24__providers_message_service_message_service__["a" /* MessageServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_24__providers_service_service_service_service__["a" /* ServiceServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_25__providers_customer_service_customer_service__["a" /* CustomerServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_26__providers_message_service_message_service__["a" /* MessageServiceProvider */],
                 __WEBPACK_IMPORTED_MODULE_18__components_customer_search_customer_search__["a" /* CustomerSearchComponent */],
-                __WEBPACK_IMPORTED_MODULE_25__providers_appointment_service_appointment_service__["a" /* AppointmentServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_27__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_28__providers_preferences_service_preferences_service__["a" /* PreferencesServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_29__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_27__providers_appointment_service_appointment_service__["a" /* AppointmentServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_29__providers_schedule_service_schedule_service__["a" /* ScheduleServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_30__providers_preferences_service_preferences_service__["a" /* PreferencesServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_31__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */],
                 __WEBPACK_IMPORTED_MODULE_16__ionic_native_screen_orientation__["a" /* ScreenOrientation */],
-                __WEBPACK_IMPORTED_MODULE_30__providers_exception_service_exception_service__["a" /* ExceptionServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_31__providers_customer_add_service_customer_add_service__["a" /* CustomerAddServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_33__providers_authentication_service_authentication_service__["a" /* AuthenticationServiceProvider */],
-                __WEBPACK_IMPORTED_MODULE_34__providers_customer_update_detail_customer_update_detail__["a" /* CustomerUpdateDetailProvider */],
-                __WEBPACK_IMPORTED_MODULE_35__providers_countries_service_countries_service__["a" /* RestApiProvider */]
+                __WEBPACK_IMPORTED_MODULE_32__providers_exception_service_exception_service__["a" /* ExceptionServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_33__providers_customer_add_service_customer_add_service__["a" /* CustomerAddServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_35__providers_authentication_service_authentication_service__["a" /* AuthenticationServiceProvider */],
+                __WEBPACK_IMPORTED_MODULE_36__providers_customer_update_detail_customer_update_detail__["a" /* CustomerUpdateDetailProvider */],
+                __WEBPACK_IMPORTED_MODULE_37__providers_countries_service_countries_service__["a" /* RestApiProvider */]
             ]
         })
     ], AppModule);
@@ -2276,276 +2449,7 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 549:
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./af": 315,
-	"./af.js": 315,
-	"./ar": 316,
-	"./ar-dz": 317,
-	"./ar-dz.js": 317,
-	"./ar-kw": 318,
-	"./ar-kw.js": 318,
-	"./ar-ly": 319,
-	"./ar-ly.js": 319,
-	"./ar-ma": 320,
-	"./ar-ma.js": 320,
-	"./ar-sa": 321,
-	"./ar-sa.js": 321,
-	"./ar-tn": 322,
-	"./ar-tn.js": 322,
-	"./ar.js": 316,
-	"./az": 323,
-	"./az.js": 323,
-	"./be": 324,
-	"./be.js": 324,
-	"./bg": 325,
-	"./bg.js": 325,
-	"./bm": 326,
-	"./bm.js": 326,
-	"./bn": 327,
-	"./bn.js": 327,
-	"./bo": 328,
-	"./bo.js": 328,
-	"./br": 329,
-	"./br.js": 329,
-	"./bs": 330,
-	"./bs.js": 330,
-	"./ca": 331,
-	"./ca.js": 331,
-	"./cs": 332,
-	"./cs.js": 332,
-	"./cv": 333,
-	"./cv.js": 333,
-	"./cy": 334,
-	"./cy.js": 334,
-	"./da": 335,
-	"./da.js": 335,
-	"./de": 336,
-	"./de-at": 337,
-	"./de-at.js": 337,
-	"./de-ch": 338,
-	"./de-ch.js": 338,
-	"./de.js": 336,
-	"./dv": 339,
-	"./dv.js": 339,
-	"./el": 340,
-	"./el.js": 340,
-	"./en-au": 341,
-	"./en-au.js": 341,
-	"./en-ca": 342,
-	"./en-ca.js": 342,
-	"./en-gb": 343,
-	"./en-gb.js": 343,
-	"./en-ie": 344,
-	"./en-ie.js": 344,
-	"./en-il": 345,
-	"./en-il.js": 345,
-	"./en-nz": 346,
-	"./en-nz.js": 346,
-	"./eo": 347,
-	"./eo.js": 347,
-	"./es": 348,
-	"./es-do": 349,
-	"./es-do.js": 349,
-	"./es-us": 350,
-	"./es-us.js": 350,
-	"./es.js": 348,
-	"./et": 351,
-	"./et.js": 351,
-	"./eu": 352,
-	"./eu.js": 352,
-	"./fa": 353,
-	"./fa.js": 353,
-	"./fi": 354,
-	"./fi.js": 354,
-	"./fo": 355,
-	"./fo.js": 355,
-	"./fr": 356,
-	"./fr-ca": 357,
-	"./fr-ca.js": 357,
-	"./fr-ch": 358,
-	"./fr-ch.js": 358,
-	"./fr.js": 356,
-	"./fy": 359,
-	"./fy.js": 359,
-	"./gd": 360,
-	"./gd.js": 360,
-	"./gl": 361,
-	"./gl.js": 361,
-	"./gom-latn": 362,
-	"./gom-latn.js": 362,
-	"./gu": 363,
-	"./gu.js": 363,
-	"./he": 364,
-	"./he.js": 364,
-	"./hi": 365,
-	"./hi.js": 365,
-	"./hr": 366,
-	"./hr.js": 366,
-	"./hu": 367,
-	"./hu.js": 367,
-	"./hy-am": 368,
-	"./hy-am.js": 368,
-	"./id": 369,
-	"./id.js": 369,
-	"./is": 370,
-	"./is.js": 370,
-	"./it": 371,
-	"./it.js": 371,
-	"./ja": 372,
-	"./ja.js": 372,
-	"./jv": 373,
-	"./jv.js": 373,
-	"./ka": 374,
-	"./ka.js": 374,
-	"./kk": 375,
-	"./kk.js": 375,
-	"./km": 376,
-	"./km.js": 376,
-	"./kn": 377,
-	"./kn.js": 377,
-	"./ko": 378,
-	"./ko.js": 378,
-	"./ky": 379,
-	"./ky.js": 379,
-	"./lb": 380,
-	"./lb.js": 380,
-	"./lo": 381,
-	"./lo.js": 381,
-	"./lt": 382,
-	"./lt.js": 382,
-	"./lv": 383,
-	"./lv.js": 383,
-	"./me": 384,
-	"./me.js": 384,
-	"./mi": 385,
-	"./mi.js": 385,
-	"./mk": 386,
-	"./mk.js": 386,
-	"./ml": 387,
-	"./ml.js": 387,
-	"./mn": 388,
-	"./mn.js": 388,
-	"./mr": 389,
-	"./mr.js": 389,
-	"./ms": 390,
-	"./ms-my": 391,
-	"./ms-my.js": 391,
-	"./ms.js": 390,
-	"./mt": 392,
-	"./mt.js": 392,
-	"./my": 393,
-	"./my.js": 393,
-	"./nb": 394,
-	"./nb.js": 394,
-	"./ne": 395,
-	"./ne.js": 395,
-	"./nl": 396,
-	"./nl-be": 397,
-	"./nl-be.js": 397,
-	"./nl.js": 396,
-	"./nn": 398,
-	"./nn.js": 398,
-	"./pa-in": 399,
-	"./pa-in.js": 399,
-	"./pl": 400,
-	"./pl.js": 400,
-	"./pt": 401,
-	"./pt-br": 402,
-	"./pt-br.js": 402,
-	"./pt.js": 401,
-	"./ro": 403,
-	"./ro.js": 403,
-	"./ru": 404,
-	"./ru.js": 404,
-	"./sd": 405,
-	"./sd.js": 405,
-	"./se": 406,
-	"./se.js": 406,
-	"./si": 407,
-	"./si.js": 407,
-	"./sk": 408,
-	"./sk.js": 408,
-	"./sl": 409,
-	"./sl.js": 409,
-	"./sq": 410,
-	"./sq.js": 410,
-	"./sr": 411,
-	"./sr-cyrl": 412,
-	"./sr-cyrl.js": 412,
-	"./sr.js": 411,
-	"./ss": 413,
-	"./ss.js": 413,
-	"./sv": 414,
-	"./sv.js": 414,
-	"./sw": 415,
-	"./sw.js": 415,
-	"./ta": 416,
-	"./ta.js": 416,
-	"./te": 417,
-	"./te.js": 417,
-	"./tet": 418,
-	"./tet.js": 418,
-	"./tg": 419,
-	"./tg.js": 419,
-	"./th": 420,
-	"./th.js": 420,
-	"./tl-ph": 421,
-	"./tl-ph.js": 421,
-	"./tlh": 422,
-	"./tlh.js": 422,
-	"./tr": 423,
-	"./tr.js": 423,
-	"./tzl": 424,
-	"./tzl.js": 424,
-	"./tzm": 425,
-	"./tzm-latn": 426,
-	"./tzm-latn.js": 426,
-	"./tzm.js": 425,
-	"./ug-cn": 427,
-	"./ug-cn.js": 427,
-	"./uk": 428,
-	"./uk.js": 428,
-	"./ur": 429,
-	"./ur.js": 429,
-	"./uz": 430,
-	"./uz-latn": 431,
-	"./uz-latn.js": 431,
-	"./uz.js": 430,
-	"./vi": 432,
-	"./vi.js": 432,
-	"./x-pseudo": 433,
-	"./x-pseudo.js": 433,
-	"./yo": 434,
-	"./yo.js": 434,
-	"./zh-cn": 435,
-	"./zh-cn.js": 435,
-	"./zh-hk": 436,
-	"./zh-hk.js": 436,
-	"./zh-tw": 437,
-	"./zh-tw.js": 437
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 549;
-
-/***/ }),
-
-/***/ 829:
+/***/ 550:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2562,22 +2466,291 @@ var LoggedProfessional = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 875:
+/***/ 555:
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./af": 317,
+	"./af.js": 317,
+	"./ar": 318,
+	"./ar-dz": 319,
+	"./ar-dz.js": 319,
+	"./ar-kw": 320,
+	"./ar-kw.js": 320,
+	"./ar-ly": 321,
+	"./ar-ly.js": 321,
+	"./ar-ma": 322,
+	"./ar-ma.js": 322,
+	"./ar-sa": 323,
+	"./ar-sa.js": 323,
+	"./ar-tn": 324,
+	"./ar-tn.js": 324,
+	"./ar.js": 318,
+	"./az": 325,
+	"./az.js": 325,
+	"./be": 326,
+	"./be.js": 326,
+	"./bg": 327,
+	"./bg.js": 327,
+	"./bm": 328,
+	"./bm.js": 328,
+	"./bn": 329,
+	"./bn.js": 329,
+	"./bo": 330,
+	"./bo.js": 330,
+	"./br": 331,
+	"./br.js": 331,
+	"./bs": 332,
+	"./bs.js": 332,
+	"./ca": 333,
+	"./ca.js": 333,
+	"./cs": 334,
+	"./cs.js": 334,
+	"./cv": 335,
+	"./cv.js": 335,
+	"./cy": 336,
+	"./cy.js": 336,
+	"./da": 337,
+	"./da.js": 337,
+	"./de": 338,
+	"./de-at": 339,
+	"./de-at.js": 339,
+	"./de-ch": 340,
+	"./de-ch.js": 340,
+	"./de.js": 338,
+	"./dv": 341,
+	"./dv.js": 341,
+	"./el": 342,
+	"./el.js": 342,
+	"./en-au": 343,
+	"./en-au.js": 343,
+	"./en-ca": 344,
+	"./en-ca.js": 344,
+	"./en-gb": 345,
+	"./en-gb.js": 345,
+	"./en-ie": 346,
+	"./en-ie.js": 346,
+	"./en-il": 347,
+	"./en-il.js": 347,
+	"./en-nz": 348,
+	"./en-nz.js": 348,
+	"./eo": 349,
+	"./eo.js": 349,
+	"./es": 350,
+	"./es-do": 351,
+	"./es-do.js": 351,
+	"./es-us": 352,
+	"./es-us.js": 352,
+	"./es.js": 350,
+	"./et": 353,
+	"./et.js": 353,
+	"./eu": 354,
+	"./eu.js": 354,
+	"./fa": 355,
+	"./fa.js": 355,
+	"./fi": 356,
+	"./fi.js": 356,
+	"./fo": 357,
+	"./fo.js": 357,
+	"./fr": 358,
+	"./fr-ca": 359,
+	"./fr-ca.js": 359,
+	"./fr-ch": 360,
+	"./fr-ch.js": 360,
+	"./fr.js": 358,
+	"./fy": 361,
+	"./fy.js": 361,
+	"./gd": 362,
+	"./gd.js": 362,
+	"./gl": 363,
+	"./gl.js": 363,
+	"./gom-latn": 364,
+	"./gom-latn.js": 364,
+	"./gu": 365,
+	"./gu.js": 365,
+	"./he": 366,
+	"./he.js": 366,
+	"./hi": 367,
+	"./hi.js": 367,
+	"./hr": 368,
+	"./hr.js": 368,
+	"./hu": 369,
+	"./hu.js": 369,
+	"./hy-am": 370,
+	"./hy-am.js": 370,
+	"./id": 371,
+	"./id.js": 371,
+	"./is": 372,
+	"./is.js": 372,
+	"./it": 373,
+	"./it.js": 373,
+	"./ja": 374,
+	"./ja.js": 374,
+	"./jv": 375,
+	"./jv.js": 375,
+	"./ka": 376,
+	"./ka.js": 376,
+	"./kk": 377,
+	"./kk.js": 377,
+	"./km": 378,
+	"./km.js": 378,
+	"./kn": 379,
+	"./kn.js": 379,
+	"./ko": 380,
+	"./ko.js": 380,
+	"./ky": 381,
+	"./ky.js": 381,
+	"./lb": 382,
+	"./lb.js": 382,
+	"./lo": 383,
+	"./lo.js": 383,
+	"./lt": 384,
+	"./lt.js": 384,
+	"./lv": 385,
+	"./lv.js": 385,
+	"./me": 386,
+	"./me.js": 386,
+	"./mi": 387,
+	"./mi.js": 387,
+	"./mk": 388,
+	"./mk.js": 388,
+	"./ml": 389,
+	"./ml.js": 389,
+	"./mn": 390,
+	"./mn.js": 390,
+	"./mr": 391,
+	"./mr.js": 391,
+	"./ms": 392,
+	"./ms-my": 393,
+	"./ms-my.js": 393,
+	"./ms.js": 392,
+	"./mt": 394,
+	"./mt.js": 394,
+	"./my": 395,
+	"./my.js": 395,
+	"./nb": 396,
+	"./nb.js": 396,
+	"./ne": 397,
+	"./ne.js": 397,
+	"./nl": 398,
+	"./nl-be": 399,
+	"./nl-be.js": 399,
+	"./nl.js": 398,
+	"./nn": 400,
+	"./nn.js": 400,
+	"./pa-in": 401,
+	"./pa-in.js": 401,
+	"./pl": 402,
+	"./pl.js": 402,
+	"./pt": 403,
+	"./pt-br": 404,
+	"./pt-br.js": 404,
+	"./pt.js": 403,
+	"./ro": 405,
+	"./ro.js": 405,
+	"./ru": 406,
+	"./ru.js": 406,
+	"./sd": 407,
+	"./sd.js": 407,
+	"./se": 408,
+	"./se.js": 408,
+	"./si": 409,
+	"./si.js": 409,
+	"./sk": 410,
+	"./sk.js": 410,
+	"./sl": 411,
+	"./sl.js": 411,
+	"./sq": 412,
+	"./sq.js": 412,
+	"./sr": 413,
+	"./sr-cyrl": 414,
+	"./sr-cyrl.js": 414,
+	"./sr.js": 413,
+	"./ss": 415,
+	"./ss.js": 415,
+	"./sv": 416,
+	"./sv.js": 416,
+	"./sw": 417,
+	"./sw.js": 417,
+	"./ta": 418,
+	"./ta.js": 418,
+	"./te": 419,
+	"./te.js": 419,
+	"./tet": 420,
+	"./tet.js": 420,
+	"./tg": 421,
+	"./tg.js": 421,
+	"./th": 422,
+	"./th.js": 422,
+	"./tl-ph": 423,
+	"./tl-ph.js": 423,
+	"./tlh": 424,
+	"./tlh.js": 424,
+	"./tr": 425,
+	"./tr.js": 425,
+	"./tzl": 426,
+	"./tzl.js": 426,
+	"./tzm": 427,
+	"./tzm-latn": 428,
+	"./tzm-latn.js": 428,
+	"./tzm.js": 427,
+	"./ug-cn": 429,
+	"./ug-cn.js": 429,
+	"./uk": 430,
+	"./uk.js": 430,
+	"./ur": 431,
+	"./ur.js": 431,
+	"./uz": 432,
+	"./uz-latn": 433,
+	"./uz-latn.js": 433,
+	"./uz.js": 432,
+	"./vi": 434,
+	"./vi.js": 434,
+	"./x-pseudo": 435,
+	"./x-pseudo.js": 435,
+	"./yo": 436,
+	"./yo.js": 436,
+	"./zh-cn": 437,
+	"./zh-cn.js": 437,
+	"./zh-hk": 438,
+	"./zh-hk.js": 438,
+	"./zh-tw": 439,
+	"./zh-tw.js": 439
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 555;
+
+/***/ }),
+
+/***/ 877:
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
 
-/***/ 882:
+/***/ 884:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ComponentsModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customer_search_customer_search__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__customer_search_customer_search__ = __webpack_require__(507);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2605,17 +2778,17 @@ var ComponentsModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 883:
+/***/ 885:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(503);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(502);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(505);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(504);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_tabs_tabs__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angularfire2_auth__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_angularfire2_auth__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_user_service_user_service__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_globals_service_globals_service__ = __webpack_require__(37);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2761,7 +2934,7 @@ var MyApp = /** @class */ (function () {
     ], MyApp.prototype, "nav", void 0);
     MyApp = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'login-style',template:/*ion-inline-start:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/app/app.html"*/'<ion-menu [content]="mycontent" persistent="true" >\n  <ion-content>\n    <div align="right">\n      <button ion-button color="secondary" (click)="updateProfessional()" small ><ion-icon name="brush"></ion-icon></button>\n    </div>\n    <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">\n    <p>Hola!</p>\n    {{loggedIn}}\n    <p>Bienvenid@</p>\n    <button ion-button  menuClose detail-none (click)="signOff()">\n      {{boton}}\n    </button>\n\n    <ion-list>\n\n      <ion-item menuClose detail-none *ngFor="let p of pages" (click)="openPage(p)">{{ p.title }}</ion-item>\n\n    </ion-list>\n    <ion-label><a href="mailto:ecommercealinstante@gmail.com?subject=Hola, tengo la siguiente sugerencia para la aplicación"\n                  target="_top"><ion-icon name="mail"></ion-icon> Dudas, comentarios, soporte</a>\n\n    </ion-label>\n    <ion-item (click)="openPolicy()">Politica de Privacidad</ion-item>\n\n  </ion-content>\n</ion-menu>\n<ion-nav #mycontent [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/taidyygreisly/Documents/Taidy/instantecomm/frontend/ecommCommerce/src/app/app.html"*/
+            selector: 'login-style',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/app/app.html"*/'<ion-menu [content]="mycontent" persistent="true" >\n  <ion-content>\n    <div align="right">\n      <button ion-button color="secondary" (click)="updateProfessional()" small ><ion-icon name="brush"></ion-icon></button>\n    </div>\n    <img src="assets/images/noavatar.png" width="42" height="42" align="middle" style="margin:50px 0px">\n    <p>Hola!</p>\n    {{loggedIn}}\n    <p>Bienvenid@</p>\n    <button ion-button  menuClose detail-none (click)="signOff()">\n      {{boton}}\n    </button>\n\n    <ion-list>\n\n      <ion-item menuClose detail-none *ngFor="let p of pages" (click)="openPage(p)">{{ p.title }}</ion-item>\n\n    </ion-list>\n    <ion-label><a href="mailto:ecommercealinstante@gmail.com?subject=Hola, tengo la siguiente sugerencia para la aplicación"\n                  target="_top"><ion-icon name="mail"></ion-icon> Dudas, comentarios, soporte</a>\n\n    </ion-label>\n    <ion-item (click)="openPolicy()">Politica de Privacidad</ion-item>\n\n  </ion-content>\n</ion-menu>\n<ion-nav #mycontent [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/app/app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */],
             __WEBPACK_IMPORTED_MODULE_5_angularfire2_auth__["a" /* AngularFireAuth */],
@@ -2777,14 +2950,14 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 92:
+/***/ 91:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerServiceProvider; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_of__);
@@ -2899,9 +3072,9 @@ var CustomerServiceProvider = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_of__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__classes_service_class__ = __webpack_require__(508);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__classes_service_class__ = __webpack_require__(511);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__message_service_message_service__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__environment__ = __webpack_require__(40);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2988,58 +3161,7 @@ var ServiceServiceProvider = /** @class */ (function () {
 
 //# sourceMappingURL=service-service.js.map
 
-/***/ }),
-
-/***/ 99:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationServiceProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common_http__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_globals_service_globals_service__ = __webpack_require__(37);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-/*
-  Generated class for the AuthenticationServiceProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-var AuthenticationServiceProvider = /** @class */ (function () {
-    function AuthenticationServiceProvider(http, globalService) {
-        this.http = http;
-        this.globalService = globalService;
-        console.log('Hello AuthenticationServiceProvider Provider');
-    }
-    AuthenticationServiceProvider.prototype.isAuthenticated = function () {
-        this.loggedUser = this.globalService.getLoggedProffessionalData();
-        if (this.loggedUser.userId === '' || this.loggedUser.userId == null) {
-            return false;
-        }
-        return true;
-    };
-    AuthenticationServiceProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_common_http__["a" /* HttpClient */],
-            __WEBPACK_IMPORTED_MODULE_2__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */]])
-    ], AuthenticationServiceProvider);
-    return AuthenticationServiceProvider;
-}());
-
-//# sourceMappingURL=authentication-service.js.map
-
 /***/ })
 
-},[511]);
+},[513]);
 //# sourceMappingURL=main.js.map

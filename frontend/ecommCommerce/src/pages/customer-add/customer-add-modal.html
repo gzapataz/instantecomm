@@ -13,42 +13,18 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <ion-label>Nombre (*)</ion-label>
-      <ion-input type="text" placeholder="Jon" id="name" [(ngModel)]="persona.personName.firstName" name="name"
+      <ion-label>Nombre y Apellido (*)</ion-label>
+      <ion-input type="text" placeholder="nombre" id="name" [(ngModel)]="persona.personName.firstName" name="name"
                  required="required">
       </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Apellido (*)</ion-label>
-      <ion-input type="text" placeholder="Doe" id="lastname" [(ngModel)]="persona.personName.lastName" name="lastname"
+      <ion-input type="text" placeholder="apellido" id="lastname" [(ngModel)]="persona.personName.lastName" name="lastname"
                  required="required">
       </ion-input>
-    </ion-item>
-      <ion-item>
-        <ion-label>Tipo identificacion (*)</ion-label>
-        <ion-select type="text" placeholder="idType" [(ngModel)]="persona.idType" name="idType">
-          <ion-option value="Cédula">Cédula</ion-option>
-          <ion-option value="Registro Civil">Registro Civil</ion-option>
-        </ion-select>
-      </ion-item>
-
-    <ion-item>
-      <ion-label>Numero identificacion (*)</ion-label>
-      <ion-input type="number" placeholder="123456789" id="identificacion" [(ngModel)]="persona.identification"
-                 name="identificacion">
-      </ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Genero</ion-label>
-      <ion-select type="text" placeholder="Sexo" [(ngModel)]="persona.gender" name="gender">
-        <ion-option value="Femenino">Femenino</ion-option>
-        <ion-option value="Masculino">Masculino</ion-option>
-      </ion-select>
-
     </ion-item>
     <ion-item>
       <ion-label>E-mail (*)</ion-label>
-      <ion-input type="email" placeholder="jon@gmail.com" id="email" [(ngModel)]="persona.email" name="email">
+      <ion-input type="email" placeholder="jon@gmail.com" id="email" [(ngModel)]="persona.email" name="email" required="required">
+
       </ion-input>
     </ion-item>
 
@@ -70,13 +46,7 @@
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Direccion</ion-label>
-      <ion-input type="text" placeholder="Baker street" id="address" [(ngModel)]="persona.address" name="address">
-      </ion-input>
-    </ion-item>
-    <ion-item>
       <ion-label>Campos obligatorios (*)</ion-label>
-
     </ion-item>
 
   </ion-list>
@@ -87,4 +57,11 @@
       Adicionar
     </button>
   </ion-buttons>
+    <ion-list>
+      <ion-list-header>Follow us on Twitter</ion-list-header>
+      <ion-item *ngFor="let item of contactsfound">
+        {{ item.displayName }}
+        <p>{{ item.phoneNumbers }}</p>
+      </ion-item>
+    </ion-list>
 </ion-content>

@@ -4,6 +4,7 @@ import {Person} from "../../classes/customer-class";
 import {LoggedProfessional} from "../../classes/logged-class";
 import {CustomerAddServiceProvider} from "../../providers/customer-add-service/customer-add-service";
 import {RestApiProvider} from '../../providers/countries-service/countries-service';
+//import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
 
 @IonicPage()
 @Component({
@@ -17,27 +18,31 @@ export class CustomerAddModalPage implements OnInit {
       firstName: '',
       lastName: '',
     },
-    idType: "Cédula",
-    birthdate: Date,
-    gender: 'Femenino',
+    //idType: null,
+    //birthdate: null,
+    //gender: null,
     phone: '',
     mobile: '',
     email: '',
-    identification: '',
-    address: ''
+    //identification: null,
+    //address: null
   }
-codigo:string;
+
+  codigo:string;
 
   professional: LoggedProfessional;
-
+  contactsfound = []
 
   person: Person;
   countries: string[];
   errorMessage: string;
 
+
   constructor(public navCtrl: NavController, private navParams: NavParams, public viewCtrl: ViewController,
               private customerAddServiceProvider: CustomerAddServiceProvider,
-              private alertCtrl: AlertController, public rest: RestApiProvider) {
+              private alertCtrl: AlertController, public rest: RestApiProvider,
+              //private contacts: Contacts
+              ) {
   }
 
   ngOnInit() {
@@ -45,7 +50,11 @@ codigo:string;
   //  console.log(this.professional);
     this.getCountries();
     this.codigo='57';
-
+/*
+    this.contacts.find(["displayName", "phoneNumbers"], {multiple: true}).then((contacts) => {
+      this.contactsfound = contacts;
+    })
+*/
   }
 
 
@@ -61,8 +70,12 @@ codigo:string;
     this.person = this.persona;
 
     //console.log(this.person);
-    if (!this.person.personName.firstName || !this.person.personName.lastName || !this.person.mobile || !this.person.identification || !this.person.email
-      || !this.person.idType) {
+    console.log('this.person.personName.firstName' + this.person.personName.firstName);
+    console.log('this.person.personName.lastName' + this.person.personName.lastName);
+    console.log('this.person.mobile' + this.person.mobile);
+    console.log('this.person.email' + this.person.email);
+
+    if (!this.person.personName.firstName || !this.person.personName.lastName || !this.person.mobile || !this.person.email) {
       let theAlert = this.alertCtrl.create({
         title: "Campos incompletos",
         subTitle: "Por favor ingresa los datos de tu paciente",
@@ -74,15 +87,11 @@ codigo:string;
       if (!this.person.phone) {
         this.person.phone = "00";
       }
-      else if (!this.person.address) {
-        this.person.address = "baker";
-      }
+
       this.person.mobile=this.codigo+this.persona.mobile;
+      this.person.address
       this.customerAddServiceProvider.addACustomer(this.person, this.professional.userId).subscribe(data => {
         console.log('1Datos Salvados:' + JSON.stringify(data));
-
-
-
         this.cancel();
       });
     }

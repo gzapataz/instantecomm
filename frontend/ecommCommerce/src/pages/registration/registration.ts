@@ -74,7 +74,7 @@ export class RegistrationPage {
     }
     else {
       this.reg.email = this.professional.email;
-      this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(this.professional.email, this.reg.password)
+      this.afAuth.auth.createUserWithEmailAndPassword(this.professional.email, this.reg.password)
         .then(res => this.regSuccess(res))
         .catch(err => this.displayAlert('Error!', err));
     }
