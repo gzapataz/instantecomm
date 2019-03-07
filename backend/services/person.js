@@ -4,6 +4,13 @@ var Person = require('../models/person');
 
 exports.savePerson = async function(req){
   var person = new Person();
+  Object.keys(req.body).forEach(key => {
+    if (req.body[key]!=null && req.body[key]!=undefined) {
+         person[key] = req.body[key];
+    }
+  });
+
+  /*var person = new Person();
   person.personName = req.body.personName;
   person.personLastName = req.body.personLastName;
   person.idType = req.body.idType;
@@ -13,7 +20,7 @@ exports.savePerson = async function(req){
   person.phone = req.body.phone;
   person.mobile = req.body.mobile;
   person.email = req.body.email;
-  person.address = req.body.address;
+  person.address = req.body.address;*/
   try{
     await person.save();
   }
@@ -64,6 +71,16 @@ exports.findPersonByIdentification = function(idType, identification){
 }
 
 /**
+ * Buscar personas por identificación
+ * @param {*} idType 
+ * @param {*} identification 
+ */
+exports.findPersonsByIdentification = function(idType, identification){
+  var persons = Person.find({idType:idType, identification:identification});
+  return persons;
+}
+
+/**
  * Buscar persona por email
  * @param {*} email 
  */
@@ -71,3 +88,21 @@ exports.findPersonByEmail = function(email){
   var person = Person.findOne({email:email});
   return person;
 }
+
+/**
+ * 
+ * @param {*} arrayPersons
+ */
+exports.deleteArrayPersons = function(arrayPersons){
+  var person = Person.deleteMany({ _id: { $in: arrayPersons}});
+  return person;
+}
+
+/**
+ * Borrado de una persona por _id
+ * @param {*} _id 
+ */
+exports.deletePersonBy_id = function(_id){
+  var person = Person.deleteOne({_id:_id});
+  return person;  
+}  

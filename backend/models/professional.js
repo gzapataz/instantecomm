@@ -22,7 +22,7 @@ var professionalSchema   = new Schema({
     },
     services:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Service',
+        ref: 'Service'
     }],
     clients:[{
         type: mongoose.Schema.Types.ObjectId,
@@ -39,6 +39,6 @@ var professionalSchema   = new Schema({
     endHour: {
         type: String,
     },
-    creationDate:{ type: Date, default: Date.now }
+    modificationDate:{ type: Date, default: Date.now }
 });
 module.exports = mongoose.model('Professional', professionalSchema);

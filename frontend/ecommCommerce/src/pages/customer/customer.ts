@@ -28,6 +28,7 @@ customer:CustomerClass;
   eventSelected = false;
   eventSource = [];
   myCustomers: CustomerClass[] = [];
+  loadedCountryList: CustomerClass[] = [];
   selectedDay = new Date();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -38,8 +39,37 @@ customer:CustomerClass;
               private globalService: GlobalsServiceProvider) {
   }
 
+  getItems(searchbar) {
+    // Reset items back to all of the items
+    this.initializeItems();
+
+    // set q to the value of the searchbar
+    var q = searchbar.srcElement.value;
+
+
+    // if the value is an empty string don't filter the items
+    if (!q) {
+      return;
+    }
+
+    this.myCustomers = this.myCustomers.filter((v) => {
+      if(v.person.personName.firstName && q ||v.person.personName.lastName && q) {
+        if (v.person.personName.firstName.toLowerCase().indexOf(q.toLowerCase()) > -1||v.person.personName.lastName.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+          return true;
+        }
+        return false;
+      }
+    });
+
+    console.log(q, this.myCustomers.length);
+
+  }
+  initializeItems(): void {
+    this.myCustomers = this.loadedCountryList;
+  }
   getCustomers(professionaUID) {
     this.customerService.getCustomers(professionaUID).subscribe(data => this.myCustomers = data);
+    this.customerService.getCustomers(professionaUID).subscribe(data => this.loadedCountryList = data);
   }
 
   ngOnInit() {

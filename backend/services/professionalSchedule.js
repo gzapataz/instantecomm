@@ -37,6 +37,24 @@ exports.saveProfessionalScheduleAppointment =  async function(professionalSchedu
 }
 
 /**
+ * 
+ * @param {*} exception 
+ * @param {*} professionalScheduleId
+ */
+exports.saveProfessionalScheduleException =  async function(exceptions,professionalScheduleId){
+  try{
+    return await ProfessionalSchedule.findOneAndUpdate(
+      {_id : professionalScheduleId},
+      {$push: { exceptions: exceptions } },
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }  
+}
+
+/**
  * Buscar la agenda de profesional por _id
  * @param {*} req 
  */
@@ -50,6 +68,55 @@ exports.findProfessionalScheduleBy_id = function(idSchedule){
 }  
 
 /**
+ * 
+ * @param {*} exceptions 
+ */
+exports.findProfessionalSchedulesByExceptions = function(exceptions){
+  var professionalSchedule = ProfessionalSchedule.find({exceptions: { "$in" : exceptions}});
+  return professionalSchedule;
+}
+
+/**
+ * 
+ * @param {*} appointments 
+ */
+exports.findProfessionalSchedulesByAppointments = function(appointments){
+  var professionalSchedule = ProfessionalSchedule.find({appointments: { "$in" : appointments}});
+  return professionalSchedule;
+}
+
+/**
+ * 
+ * @param {*} scheduleId 
+ * @param {*} exceptions 
+ */
+exports.updateRemoveProfessionalScheduleExceptionsBy_id = async function(scheduleId,exceptions){
+  try{
+  return await ProfessionalSchedule.update({ _id: scheduleId }, 
+    {'$pullAll': { exceptions: exceptions}});
+  } 
+  catch(error){
+    return error;
+  }      
+}
+
+/**
+ * 
+ * @param {*} scheduleId 
+ * @param {*} appointments 
+ */
+exports.updateRemoveProfessionalScheduleAppointmentsBy_id = async function(scheduleId,appointments){
+  try{
+  return await ProfessionalSchedule.update({ _id: scheduleId }, 
+    {'$pullAll': { appointments: appointments}});
+  } 
+  catch(error){
+    return error;
+  }      
+}
+
+
+/**
  * buscar todas los citas
  */
 exports.findAllProfessionalsSchedule = function(){
@@ -58,4 +125,17 @@ exports.findAllProfessionalsSchedule = function(){
   .populate({path: 'appointments', populate: {path: 'client', populate: {path: 'person'}}})
   .populate({path: 'appointments', populate: {path:'service'}});
   return professionalSchedule;
+}
+
+/**
+ * 
+ * @param {*} arrayProfessionalSchedules 
+ */
+exports.deleteArrayProfessionalSchedules = async function(arrayProfessionalSchedules){
+  try{
+    return ProfessionalSchedule.deleteMany({ _id: { $in: arrayProfessionalSchedules}});
+  }
+  catch(error){
+    return error;
+  } 
 }

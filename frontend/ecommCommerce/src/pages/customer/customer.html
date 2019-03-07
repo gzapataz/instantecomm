@@ -20,11 +20,13 @@
 </ion-header>
 
 
+
 <ion-content padding>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-grid *ngFor="let customer of myCustomers">
     <ion-row>
       <ion-col (click)="customerSelected(customer)" align="left">
-          {{customer.person.personName.lastName}} {{customer.person.personName.firstName}}
+          {{customer.person.personName.firstName}}  {{customer.person.personName.lastName}}
       </ion-col>
       <ion-col>
         <ion-buttons end>

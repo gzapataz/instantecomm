@@ -1,6 +1,7 @@
 'use strict'
 // Cargamos los modelos para usarlos posteriormente
 var ExceptionSchedule = require('../models/exceptionSchedule');
+const constants = require('../constants/ECAIConstants');
 
 /**
  * Guardar una excepción.
@@ -53,6 +54,22 @@ exports.updateExceptionSchedule = function(req){
  */
 exports.findExceptionScheduleBy_id = function(_id){
   var exceptionSchedule = ExceptionSchedule.findOne({_id:_id});
+  return exceptionSchedule;
+}
+
+/**
+ * 
+ * @param {*} arrayExceptions 
+ */
+exports.deleteArrayExceptions = function(arrayExceptions){
+  var exceptionSchedule = ExceptionSchedule.deleteMany(
+    { $and: [
+      {_id: { $in: arrayExceptions}}, 
+      {_id: {$ne: constants.EXCEPTION_COLOMBIAN_HOLIDAY}},
+      {_id: {$ne: constants.EXCEPTION_DAY_SUNDAY_DEFAULT}},
+      {_id: {$ne: constants.EXCEPTION_BREAK_TIME_DEFAULT}}
+      ]
+    });
   return exceptionSchedule;
 }
 

@@ -12,7 +12,8 @@ var personSchema   = new Schema({
     },
     idType: {
         type: String,
-        enum: Object.values(IdType),
+        allowNull: true,
+        enum: Object.values(IdType)
         //required: true
     },
     identification: {
@@ -21,12 +22,15 @@ var personSchema   = new Schema({
     },    
     gender: {
         type: String,
-        enum: Object.values(Gender),
+        allowNull: true,
+        enum: Object.values(Gender)
     },
     birthdate: { type: Date },
     creationDate:{ type: Date, default: Date.now },
     phone: String,
-    mobile: { type: String, required: true},
+    mobile: { type: String 
+        //required: true
+    },
     email: { 
         type: String, 
         //required: true, 
@@ -37,8 +41,6 @@ var personSchema   = new Schema({
         type: String
     }
 });
-
-personSchema.index({ idType: 1, identification: 1}, { unique: true }); 
 
 personSchema.set('toObject', { virtuals: true })
 personSchema.set('toJSON', { virtuals: true })

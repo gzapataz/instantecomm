@@ -20,7 +20,7 @@ var clientSchema   = new Schema({
         ref: 'Rating',
     }],*/
     uid: String,
-    creationDate:{ type: Date, default: Date.now }
+    modificationDate:{ type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Client', clientSchema);
