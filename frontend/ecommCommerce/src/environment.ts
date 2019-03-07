@@ -9,6 +9,7 @@ export const firebaseConfig = {
 
 export const environment = {
   production: false,
+  //baseUrl: 'https://dev-odontapp.herokuapp.com'
   baseUrl: 'https://ecommercealinstante.herokuapp.com'
   //baseUrl: 'api'
 };

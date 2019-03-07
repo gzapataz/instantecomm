@@ -12,10 +12,16 @@
 
 <ion-content padding>
 
-    <ion-label>Tu paciente ha sido creado correctamente.<br> Te invitamos a darle la bienvenida <br>enviandole un mensaje por <br>Whatsapp! </ion-label>
+    <ion-label>El paciente ha sido creado correctamente.<br></ion-label>
+    <ion-label>Para poder contactalo por WhatsApp el paciente<br></ion-label>
+    <ion-label>debe autorizar los mensajes.<br></ion-label>
+    <ion-label>Es necesario enviar este link</ion-label>
+  <!--ion-buttons >
+    <button ion-button color="secondary" small (click)="sendSms()">SMS</button>
+  </ion-buttons-->
 
   <ion-buttons >
-    <button ion-button color="secondary" small><a href="https://wa.me/{{mobile}}?text=Hola">Dar bienvenida</a></button>
+    <button ion-button color="secondary" small><a href="https://wa.me/{{mobile}}?text={{textData}}">Enviar Acceso</a></button>
   </ion-buttons>
 
 </ion-content>

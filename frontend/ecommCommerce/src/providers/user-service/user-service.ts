@@ -59,7 +59,7 @@ export class UserServiceProvider {
 
   deleteDBUser(user): Observable<LoggedProfessional> {
     console.log('Prof->Delete:' + user.uid);
-    let delUrl = this.userUrl + '/' + user.uid;
+    let delUrl = this.userUrl + user.uid;
     console.log('URL DELETE:' + this.userUrl);
     return this.http.delete<Person>(delUrl, httpOptions).pipe(
       tap((user: any) => {
@@ -229,8 +229,8 @@ export class UserServiceProvider {
   }
 
   getUserData(uid:string): Observable<any> {
-
-    return this.http.get<any>("https://ecommercealinstante.herokuapp.com/professionals/?uid="+uid, httpOptions)
+    console.log('Tomando Usuario:' + uid + ' cad ' + this.userUrl + '?uid='+uid)
+    return this.http.get<any>(this.userUrl + '?uid='+uid, httpOptions)
       .pipe(
         map(data =>
           { <ProfessionalClass[]>data;

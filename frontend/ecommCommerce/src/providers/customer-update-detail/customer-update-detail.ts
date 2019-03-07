@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { of } from "rxjs/observable/of";
 import { MessageServiceProvider } from "../message-service/message-service";
 import { environment } from "../../environment";
-import { Person } from "../../classes/customer-class";
+import {CustomerClass, Person} from "../../classes/customer-class";
 
 /*
   Generated class for the CustomerAddServiceProvider provider.
@@ -44,7 +44,17 @@ export class CustomerUpdateDetailProvider {
     );
   }
 
-
+  /** Delete: delete customer data */
+  deleteCustomer (customer: CustomerClass,uid:string): Observable<Person> {
+    console.log('Service: DELETE:' + JSON.stringify(event));
+    return this.http.delete<Person>(this.appntUrl + '/'+uid+"/clients/" + customer._id, httpOptions).pipe(
+      tap((event: Person) => {
+        console.log('EN DELETE');
+        this.log(`DELETE CUSTOMER w/ id=${event._id}`)
+      }),
+      catchError(this.handleError<Person>('updateCustomer'))
+    );
+  }
 
   /**
    * Handle Http operation that failed.

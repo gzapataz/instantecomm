@@ -10,6 +10,7 @@
   </ion-navbar>
   <ion-buttons end>
     <button ion-button color="secondary" small><a href="tel:{{customerSelected.person.mobile}}"><ion-icon name="call"></ion-icon> </a></button>
+    <button ion-button color="secondary" small><a [href]=sanitaize()>SMS</a></button>
     <button ion-button color="secondary" small><a href="https://wa.me/{{customerSelected.person.mobile}}?text={{messageTest}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>
     <button ion-button color="secondary" small><a href="mailto:{{customerSelected.person.email}}?subject=Su Próxima Cita&body={{messageTest}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>
   </ion-buttons>

@@ -4,6 +4,9 @@ import {AlertController, IonicPage, ModalController, NavController, NavParams} f
 import { CustomerClass } from "../../classes/customer-class";
 import {GlobalsServiceProvider} from "../../providers/globals-service/globals-service";
 import {LoggedProfessional} from "../../classes/logged-class";
+import { Platform } from 'ionic-angular';
+import * as moment from "moment";
+
 
 
 /**
@@ -31,6 +34,7 @@ customer:CustomerClass;
               public customerService: CustomerServiceProvider,
               private modalCtrl: ModalController,
               private alertCtrl: AlertController,
+              private platform: Platform,
               private globalService: GlobalsServiceProvider) {
   }
 
@@ -48,6 +52,11 @@ customer:CustomerClass;
 
     this.getCustomers(userLogged.userId);
   }
+
+  refreshView() {
+    this.getCustomers(this.loggedUser.userId);
+  }
+
 
   ionViewWillEnter () {
     let userLogged = this.globalService.getLoggedProffessionalData();
@@ -75,6 +84,9 @@ customer:CustomerClass;
      profesionalID:this.loggedUser.userId
     });
     modal.present();
+    modal.onDidDismiss( data => {
+      this.refreshView();
+    })
   }
 
   addEvent(customer) {
@@ -124,18 +136,23 @@ customer:CustomerClass;
       modal.onDidDismiss(data => {
 
         this.navCtrl.setRoot(this.navCtrl.getActive().component);
-    if(data!=undefined){
-      this.openmodalwhatsapp(data.mobile);
+    if(data!=undefined && this.platform.is('mobile')){
+      console.log('entrando a MODAL Whatsapp :' + JSON.stringify(this.loggedUser.jsonProfessional))
+      let professional = this.loggedUser.jsonProfessional['personName']['firstName'] + ' ' + this.loggedUser.jsonProfessional['personName']['lastName'];
+      console.log(professional)
+      this.openmodalwhatsapp(data.mobile, data.personName, professional);
     }
 
     });
     }
 }
 
-openmodalwhatsapp(mobile){
+openmodalwhatsapp(mobile, personName, professional){
 
   let modal = this.modalCtrl.create('CustomerWhatsappPage', {
-    mobile: mobile
+    mobile: mobile,
+    customer: personName,
+    professional: professional
   });
   modal.present();
   modal.onDidDismiss(data => {
