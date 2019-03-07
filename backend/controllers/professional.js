@@ -500,7 +500,6 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
  * @param {*} res 
  */
 exports.setClientProfessionalByUid = function(req, res){
-
   if(req.params.uid != undefined && req.params.uid != null){
     var invalidIdentification = false;
     var invalidIdType = false;
@@ -570,11 +569,9 @@ exports.setClientProfessionalByUid = function(req, res){
           });  
         }
       });
-    //}
     }
     else{
-      if(invalidIdentification || invalidIdType){
-        console.log(invalidIdentification + "  "  + invalidIdType + " " + req.body.identification + " " + req.body.idType);
+      if(invalidIdentification && invalidIdType == false || invalidIdentification == false && invalidIdType){
         return res.status(404).send({message: 'Tipo de documento o identificación invalidos'});
       }
       else{  
@@ -596,6 +593,11 @@ exports.setClientProfessionalByUid = function(req, res){
   }
 }  
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.setClientProfessionalUpdateByUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
     var professionalService = ProfessionalService.findClientsByProfessionalUid(req.params.uid);
@@ -743,9 +745,9 @@ exports.setServiceProfessionalUpdateByUid = function(req, res){
 exports.removeServiceProfessionalByUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
     var uid = req.params.uid;
-    if(req.body._id != undefined && req.body._id != null){
-      var service = req.body._id;
-      var professionalService = ProfessionalService.findServiceProfessionalByUid(uid,req.body._id);
+    if(req.params._id != undefined && req.params._id != null){
+      var service = req.params._id;
+      var professionalService = ProfessionalService.findServiceProfessionalByUid(uid,service);
       professionalService.exec(function(err, professional) {
         if(professional != null && professional != undefined){
           var services = professional.services;
@@ -798,9 +800,9 @@ exports.removeServiceProfessionalByUid = function(req, res){
 exports.removeClientProfessionalByUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
     var uid = req.params.uid;
-    if(req.body._id != undefined && req.body._id != null){
-      var client = req.body._id;
-      var professionalService = ProfessionalService.findClientProfessionalByUid(uid,req.body._id);
+    if(req.params._id != undefined && req.params._id != null){
+      var client = req.params._id;
+      var professionalService = ProfessionalService.findClientProfessionalByUid(uid,client);
       professionalService.exec(function(err, professional) {
         if(professional != null && professional != undefined){
           var clients = professional.clients;
