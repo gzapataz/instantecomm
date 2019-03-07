@@ -170,7 +170,7 @@ export class CalendarPage implements OnInit, OnDestroy {
 */
   ngOnInit() {
 
-    //console.log('Plataforma:' + this.platform.platforms());
+    console.log('Plataforma:' + this.platform.platforms());
     //console.log('LOGGED CALENDAR:' + JSON.stringify(this.globalService.getLoggedProffessionalData()));
     this.loggedUser = this.globalService.getLoggedProffessionalData();
 

@@ -62,8 +62,14 @@ export class CustomerDetailPage implements OnInit {
     this.viewCtrl.dismiss();
   }
 
-  save() {
+  delete() {
+    this.customerUpdateDetailProvider.deleteCustomer(this.customer, this.profesionalID).subscribe(data => {
+      console.log('Datos Eliminados:' + JSON.stringify(data));
+      this.cancel();
+    });
+  }
 
+  save() {
 
     // @ts-ignore
     this.person=this.persona;

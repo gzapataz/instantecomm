@@ -19,10 +19,11 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { ComponentsModule } from "../components/components.module";
 import { CustomerSearchComponent } from "../components/customer-search/customer-search";
-
 import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CalendarPage } from "../pages/calendar/calendar";
+import { ReferalPage } from "../pages/referal/referal";
+import { PaymentsPage } from "../pages/payments/payments";
 import { ServiceServiceProvider } from '../providers/service-service/service-service';
 import { CustomerServiceProvider } from '../providers/customer-service/customer-service';
 import { MessageServiceProvider } from '../providers/message-service/message-service';
@@ -38,13 +39,19 @@ import { AuthenticationServiceProvider } from '../providers/authentication-servi
 import { LoginPage } from "../pages/login/login";
 import {CustomerUpdateDetailProvider} from "../providers/customer-update-detail/customer-update-detail";
 import {RestApiProvider} from "../providers/countries-service/countries-service";
+
+import { NgxVcardModule } from 'ngx-vcard';
+
+
 @NgModule({
   declarations: [
     MyApp,
     CalendarPage,
     CustomerPage,
     TabsPage,
-    ServicesPage
+    ServicesPage,
+    ReferalPage,
+    PaymentsPage
   ],
   imports: [ 
     FormsModule, 
@@ -62,7 +69,8 @@ import {RestApiProvider} from "../providers/countries-service/countries-service"
       name: '__mydb',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
     }),
-    DragulaModule
+    DragulaModule,
+    NgxVcardModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -70,7 +78,9 @@ import {RestApiProvider} from "../providers/countries-service/countries-service"
     CalendarPage,
     CustomerPage,
     TabsPage,
-    ServicesPage
+    ServicesPage,
+    ReferalPage,
+    PaymentsPage
   ],
   providers: [
     StatusBar,

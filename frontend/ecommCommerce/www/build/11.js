@@ -1,14 +1,14 @@
 webpackJsonp([11],{
 
-/***/ 889:
+/***/ 896:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomerPageModule", function() { return CustomerPageModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ReferalPageModule", function() { return ReferalPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__referal__ = __webpack_require__(177);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,23 +18,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var CustomerPageModule = /** @class */ (function () {
-    function CustomerPageModule() {
+var ReferalPageModule = /** @class */ (function () {
+    function ReferalPageModule() {
     }
-    CustomerPageModule = __decorate([
+    ReferalPageModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__customer__["a" /* CustomerPage */],
+                __WEBPACK_IMPORTED_MODULE_2__referal__["a" /* ReferalPage */],
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__customer__["a" /* CustomerPage */]),
+                __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__referal__["a" /* ReferalPage */]),
             ],
         })
-    ], CustomerPageModule);
-    return CustomerPageModule;
+    ], ReferalPageModule);
+    return ReferalPageModule;
 }());
 
-//# sourceMappingURL=customer.module.js.map
+//# sourceMappingURL=referal.module.js.map
 
 /***/ })
 

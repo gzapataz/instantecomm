@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, NgModule, OnInit} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import * as moment from 'moment';
+import { PipesModule } from "../../pipes/pipes.module";
 import { UUID } from 'angular2-uuid';
 import { ServiceServiceProvider } from "../../providers/service-service/service-service";
 import { IAppointment, AppointmentClass } from "../../classes/appointment-class";
@@ -10,13 +11,23 @@ import {ServiceClass} from "../../classes/service-class";
 import {LoggedProfessional} from "../../classes/logged-class";
 import localCo from '@angular/common/locales/es-CO';
 import { registerLocaleData } from "@angular/common";
+import {DomSanitizer} from '@angular/platform-browser';
+import { Platform } from 'ionic-angular';
+
+import {SafeUrlPipe} from "../../pipes/safe-url/safe-url";
+
 registerLocaleData(localCo);
 
 
 @IonicPage()
+
+@NgModule({
+  imports:[PipesModule]
+})
+
 @Component({
   selector: 'page-event-modal',
-  templateUrl: 'event-modal.html',
+  templateUrl: 'event-modal.html'
 })
 export class EventModalPage implements OnInit {
   messageTest = '';
@@ -25,6 +36,7 @@ export class EventModalPage implements OnInit {
   servicesAvailAux$: Observable<any[]>;
   customerSelected: CustomerClass;
   eventSelected: '';
+  smsmobile: any;
   professional: LoggedProfessional;
   events: AppointmentClass[] = [];
 
@@ -36,12 +48,16 @@ export class EventModalPage implements OnInit {
 
   constructor(public navCtrl: NavController, private navParams: NavParams, public viewCtrl: ViewController,
               private servicesService: ServiceServiceProvider,
-              private alertCtrl: AlertController) {
+              private alertCtrl: AlertController,
+              private platform: Platform,
+              private sanitizer:DomSanitizer) {
       this.customerSelected = this.navParams.get('customerSelected');
       console.log(`this.customerSelected ` + JSON.stringify(this.customerSelected));
       this.professional = this.navParams.get('professional');
       this.events = this.navParams.get('events');
       console.log('Tosos los events:'+ JSON.stringify(this.events))
+      this.smsmobile = "sms:573112112385"; //sanitizer.bypassSecurityTrustResourceUrl("sms:573112112385");
+
       if (this.navParams.get('eventSelected')) {
         this.event = this.navParams.get('eventSelected');
         this.prevEventImage = Object.assign({}, this.event);
@@ -65,7 +81,7 @@ export class EventModalPage implements OnInit {
         //this.event.title.slice(0, this.event.title.indexOf(':'))
         this.event.title
         + ' para el dia ' + moment(this.event.startTime).locale(localCo.toLocaleString()).format('LLLL') +
-        ' Por favor para confirmar presione el siguiente link:' +
+        ' Por favor para confirmar presione el siguiente link:\n' +
         'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada'
 
       console.log('MESSAGE : ' + this.messageTest);
@@ -92,6 +108,19 @@ export class EventModalPage implements OnInit {
     if (this.eventSelected)
       this.event = this.eventSelected;
     this.getServices()
+  }
+
+  sanitaize(url) {
+    let conector = '?body=';
+
+    if (this.platform.is('ios')) {
+      conector = '&body=';
+    }
+
+
+    this.smsmobile = 'sms:' + this.customerSelected.person.mobile + conector + this.messageTest;
+    console.log('this.smsmobile:' + this.smsmobile)
+    return this.sanitizer.bypassSecurityTrustResourceUrl(this.smsmobile);
   }
 
   getServices() {
