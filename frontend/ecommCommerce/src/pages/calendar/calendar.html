@@ -9,6 +9,8 @@
 </ion-header>
 
 <ion-content padding>
+
+
   <customer-search (messageEvent)="receiveMessage($event)"></customer-search>
   <ion-row>
     <div *ngIf="platform.is('tablet') || platform.is('core')">
