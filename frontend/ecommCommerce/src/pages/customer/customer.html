@@ -22,6 +22,7 @@
 
 
 <ion-content padding>
+
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-grid *ngFor="let customer of myCustomers">
     <ion-row>

@@ -436,6 +436,17 @@ export class CalendarPage implements OnInit, OnDestroy {
   }
 
 
+  doRefresh(event) {
+    console.log('Begin async operation');
+    //this.refreshView();
+    event.target.cancel();
+
+    /*setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000); */
+  }
+
   loadEvents(professionalUID, startTime, endTime) {
 
     this.scheduleServiceProvider.getSchedule(professionalUID, startTime, endTime).subscribe( data => {

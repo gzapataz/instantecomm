@@ -87,6 +87,17 @@ customer:CustomerClass;
     this.getCustomers(this.loggedUser.userId);
   }
 
+  doRefresh(event) {
+    console.log('Begin async operation');
+    //this.refreshView();
+
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }
+
 
   ionViewWillEnter () {
     let userLogged = this.globalService.getLoggedProffessionalData();
@@ -166,9 +177,10 @@ customer:CustomerClass;
       modal.onDidDismiss(data => {
 
         this.navCtrl.setRoot(this.navCtrl.getActive().component);
+        console.log('PLATAFORMA ' + this.platform.platforms());
     if(data!=undefined && this.platform.is('mobile')){
       console.log('entrando a MODAL Whatsapp :' + JSON.stringify(this.loggedUser.jsonProfessional))
-      let professional = this.loggedUser.jsonProfessional['personName']['firstName'] + ' ' + this.loggedUser.jsonProfessional['personName']['lastName'];
+      let professional = this.loggedUser.jsonProfessional['person']['personName']['firstName'] + ' ' + this.loggedUser.jsonProfessional['person']['personName']['lastName'];
       console.log(professional)
       this.openmodalwhatsapp(data.mobile, data.personName, professional);
     }
