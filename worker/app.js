@@ -120,7 +120,7 @@ async function sendNotificationAlarm(job, done) {
                                                             professionalPhone = professionalPerson.mobile;
                                                         }
                                                     }
-                                                    console.log("telefono: " + professionalPhone + " y " + professionalPerson.phone + " y " + professionalPerson.mobile);
+                                                    
                                                     var startTime =  dateFormat(appointment.startTime, "h:MM:ss");   
                                                     var endTime =  dateFormat(appointment.endTime, "h:MM:ss");  
                                                     var day = dateFormat(appointment.startTime, "yyyy-mm-dd");
