@@ -112,15 +112,20 @@ async function sendNotificationAlarm(job, done) {
                                                 var yesterday = new Date(sumarDias(startTime, -1));
                                                 //console.log(yesterday -currentDate);
                                                 if(currentDate > yesterday){// 1 día es igual a 86400000ms
-                                                    
+                                                    var professionalPhone = "";
+                                                    if(professionalPerson.mobile != null && professionalPerson.mobile != undefined && professionalPerson.mobile.trim() != ""){
+                                                        professionalPhone = professionalPerson.mobile;
+                                                    }
+                                                    if(professionalPerson.phone != null && professionalPerson.phone != undefined && professionalPerson.phone.trim() != ""){
+                                                        professionalPhone = professionalPerson.phone;
+                                                    }
                                                     var startTime =  dateFormat(appointment.startTime, "h:MM:ss");   
                                                     var endTime =  dateFormat(appointment.endTime, "h:MM:ss");  
                                                     var day = dateFormat(appointment.startTime, "yyyy-mm-dd");
                                                     var url = herokuURL + appointment._id + "?status=Confirmada";
                                                     var serviceName = service.name;
                                                     var professionalName = professionalPerson.personName.firstName + " " + professionalPerson.personName.lastName;
-                                                    var professionalMobile = professionalPerson.mobile;
-                                                    var arrayAppointment = [serviceName, day, startTime, endTime, url, professionalName, professionalMobile];
+                                                    var arrayAppointment = [serviceName, day, startTime, endTime, url, professionalName, professionalPhone];
                                                     WhatsappService.sendNotification(person.mobile,message.message,notification,arrayAppointment,db).then((results) => {
                                                         //console.log(results);
                                                     }); 

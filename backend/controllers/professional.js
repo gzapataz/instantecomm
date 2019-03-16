@@ -48,7 +48,7 @@ exports.setProfessional = function(req, res){
 
   var arrayExceptionsByDefault = new Array();
   arrayExceptionsByDefault.push(ECAIConstants.EXCEPTION_COLOMBIAN_HOLIDAY);
-  arrayExceptionsByDefault.push(ECAIConstants.EXCEPTION_BREAK_TIME_DEFAULT);
+  //arrayExceptionsByDefault.push(ECAIConstants.EXCEPTION_BREAK_TIME_DEFAULT);
   arrayExceptionsByDefault.push(ECAIConstants.EXCEPTION_DAY_SUNDAY_DEFAULT);
 
   if(req.body.email != undefined && req.body.email != null){
