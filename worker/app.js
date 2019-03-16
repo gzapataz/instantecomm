@@ -113,12 +113,14 @@ async function sendNotificationAlarm(job, done) {
                                                 //console.log(yesterday -currentDate);
                                                 if(currentDate > yesterday){// 1 día es igual a 86400000ms
                                                     var professionalPhone = "";
-                                                    if(professionalPerson.mobile != null && professionalPerson.mobile != undefined && professionalPerson.mobile.trim() != ""){
-                                                        professionalPhone = professionalPerson.mobile;
-                                                    }
                                                     if(professionalPerson.phone != null && professionalPerson.phone != undefined && professionalPerson.phone.trim() != ""){
                                                         professionalPhone = professionalPerson.phone;
+                                                    }else{
+                                                        if(professionalPerson.mobile != null && professionalPerson.mobile != undefined && professionalPerson.mobile.trim() != ""){
+                                                            professionalPhone = professionalPerson.mobile;
+                                                        }
                                                     }
+                                                    console.log("telefono: " + professionalPhone + " y " + professionalPerson.phone + " y " + professionalPerson.mobile);
                                                     var startTime =  dateFormat(appointment.startTime, "h:MM:ss");   
                                                     var endTime =  dateFormat(appointment.endTime, "h:MM:ss");  
                                                     var day = dateFormat(appointment.startTime, "yyyy-mm-dd");
