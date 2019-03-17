@@ -71,7 +71,14 @@ async function sendNotification(job, done) {
                                                 //console.log(results);
                                             });
                                     });  
-                                }  
+                                } 
+                                else{
+                                    if(notification != null && notification != undefined && notification.notificationState == "Initial"){
+                                        NotificationService.updateStatusReport(db,notification._id, "Error", "Cliente no existente o no esta asociado a este profesional").then((results) => {
+                                            console.log("[Error] Cliente no existente o no esta asociado a este profesional" + JSON.stringify(results));
+                                        });
+                                    }
+                                }
                             }); 
                         });    
                     }
@@ -133,7 +140,14 @@ async function sendNotificationAlarm(job, done) {
                                                     }); 
                                                 }
                                             });  
-                                        }  
+                                        }
+                                        else{
+                                            if(notification != null && notification != undefined && notification.notificationState == "Initial"){
+                                                NotificationService.updateStatusReport(db,notification._id, "Error", "Cliente no existente o no esta asociado a este profesional").then((results) => {
+                                                    console.log("[Error] Cliente no existente o no esta asociado a este profesional" + JSON.stringify(results));
+                                                });
+                                            }
+                                        }
                                     });
                                 });    
                             });     
