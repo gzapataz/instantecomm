@@ -17,10 +17,14 @@ var clientSchema   = new Schema({
     },
     /*clientGrades:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Rating',
+        ref: 'Rating'
     }],*/
     uid: String,
-    modificationDate:{ type: Date, default: Date.now }
+    modificationDate:{ type: Date, default: Date.now },
+    channels:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ClientChannel'
+    }]
 });
 
 module.exports = mongoose.model('Client', clientSchema);
