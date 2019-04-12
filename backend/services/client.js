@@ -40,6 +40,24 @@ exports.saveRatingClient =  async function(client,rating){
 }
 
 /**
+ * Guardar canales de comunicación para clientes
+ * @param {*} client 
+ * @param {*} channel 
+ */
+exports.saveChannelsClient =  async function(client,channels){
+  try{
+    return await Client.findOneAndUpdate(
+      {_id : client._id},
+      {$push: { channels: channels } },
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }  
+}
+
+/**
  * Buscar clientes por person
  * @param {*} personId 
  */
