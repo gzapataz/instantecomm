@@ -18,6 +18,8 @@ const ExceptionType = require('../enums/exceptionType');
 var module = require('colombia-holidays');
 var ECAIConstants = require('../constants/ECAIConstants');
 var CompareArrayUtil = require('../utils/compareArrayUtil');
+var ArrayUtil = require('../utils/arrayUtil');
+const Channel = require('../enums/channel');
 
 /**
  * Conseguir datos de todos los profesionales
@@ -627,11 +629,28 @@ exports.setClientProfessionalUpdateByUid = function(req, res){
         }  
         if(isClient){
           if(clientId != undefined){
+            var channels = req.body.channels;
+            var arrayUtil = new ArrayUtil(channels);
+
+            if(channels == null || channels == undefined || channels.length == 0){
+              return res.status(404).send({message: 'Es obligatorio escoger por lo menos un canal de comunicación con el cliente'});
+            }
+
+            if(arrayUtil.contains(Channel.SMS) && arrayUtil.contains(Channel.WHATSAPP)){
+              return res.status(404).send({message: 'No se pueden configurar los canales de WhatsApp y SMS para un cliente'});
+            }
+
             var clientService = ClientService.findClientBy_id(clientId);
             clientService.then((client) => {
               var personService = PersonService.updatePerson(req, client.person);
               personService.then((person) => {
-                res.json(person); 
+                var clientService = ClientService.updateRemoveChannelsClientBy_id(clientId,client.channels);
+                clientService.then((client) => {
+                  var clientService = ClientService.saveChannelsClient(clientId, channels);
+                  clientService.then((results) => {
+                    res.json(person);
+                  }); 
+                });   
               });
             }); 
           }

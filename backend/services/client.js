@@ -44,10 +44,10 @@ exports.saveRatingClient =  async function(client,rating){
  * @param {*} client 
  * @param {*} channel 
  */
-exports.saveChannelsClient =  async function(client,channels){
+exports.saveChannelsClient =  async function(clientId,channels){
   try{
     return await Client.findOneAndUpdate(
-      {_id : client._id},
+      {_id : clientId},
       {$push: { channels: channels } },
       {safe: true, upsert: true, new: true}
     );
@@ -84,7 +84,7 @@ exports.findClientsByPersonsId = function(persons){
  * @param {*} _id 
  */
 exports.findClientBy_id = function(_id){
-  var client = Client.findOne({_id:_id}).select('clientSince lastVisit status')
+  var client = Client.findOne({_id:_id}).select('clientSince lastVisit status channels')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
   'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
   //.populate('clientGrades');
@@ -123,4 +123,19 @@ exports.deleteArrayClients = function(arrayClients){
 exports.deleteOneClient = function(client){
   var client = Client.deleteOne({ _id: client});
   return client;
+}
+
+/**
+ * 
+ * @param {*} _id 
+ * @param {*} channels 
+ */
+exports.updateRemoveChannelsClientBy_id = async function(_id,channels){
+  try{
+  return await Client.update({ _id: _id }, 
+    {'$pullAll': { channels: channels}});
+  } 
+  catch(error){
+    return error;
+  }      
 }

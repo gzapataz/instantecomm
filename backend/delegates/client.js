@@ -192,7 +192,10 @@ exports.saveClientsDelegate = async function(req){
   try{
     var channels = req.body.channels;
     var arrayUtil = new ArrayUtil(channels);
-    if(arrayUtil.contains(Channel.SMS) && arrayUtil.contains(Channel.WHATSAPP)){
+    if(channels == null || channels == undefined || channels.length == 0){
+      throw new Error('Es obligatorio escoger por lo menos un canal de comunicación con el cliente');
+    }
+    else if(arrayUtil.contains(Channel.SMS) && arrayUtil.contains(Channel.WHATSAPP)){
       throw new Error('No se pueden configurar los canales de WhatsApp y SMS para un cliente');
     }
     else{  
@@ -202,7 +205,7 @@ exports.saveClientsDelegate = async function(req){
           clientService.then((client) => {
               var professional = ProfessionalService.saveClientProfessional(req.params.uid, client);
               professional.then((results) => {
-                var clientService = ClientService.saveChannelsClient(client, req.params.channels);
+                var clientService = ClientService.saveChannelsClient(client._id, channels);
                 clientService.then((results) => {
                 }); 
               }); 
