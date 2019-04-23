@@ -178,7 +178,7 @@ exports.findAllInformationProfessionalByUid = function(uid){
     .populate(
       {
         path:'clients', 
-        select: ('clientSince lastVisit status'),
+        select: ('clientSince lastVisit status channels'),
         populate:{
           path:'person', 
           select: {
@@ -341,7 +341,7 @@ exports.findClientsByProfessionalUid = function(uid){
   var professional = Professional.findOne({uid:uid})
     .populate({path:'clients',
       match: {"status": { "$ne": ActivationStatus.INACTIVE}},
-      select: {'clientSince':1, 'lastVisit':1, 'status':1},
+      select: {'clientSince':1, 'lastVisit':1, 'status':1, 'channels':1},
       populate: {
         path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
         'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1},
