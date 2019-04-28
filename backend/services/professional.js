@@ -146,7 +146,7 @@ exports.saveServiceProfessional =  async function(professionalUid, service){
 exports.findProfessionalByUid = function(uid){
   var professional = Professional.findOne({uid:uid}).select('professionalSince lastVisit status uid startHour endHour')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 'address':1}})
   .populate({path:'professionalSchedule', select: {'idSchedule':1}});
   return professional;
 }
@@ -159,7 +159,7 @@ exports.findAllInformationProfessionalByUid = function(uid){
   var professional = Professional.findOne({uid:uid})
   .select('professionalSince lastVisit status uid startHour endHour')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 'address':1}})
   .populate(
       {
         path:'professionalSchedule', select: {'idSchedule':1}, 
@@ -183,7 +183,7 @@ exports.findAllInformationProfessionalByUid = function(uid){
           path:'person', 
           select: {
             'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-            'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1
+            'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 'address':1
           }          
         }  
       })
@@ -201,8 +201,8 @@ exports.findAllInformationProfessionalByUid = function(uid){
  */
 exports.findProfessionalByPersonId = function(personId){
   var professional = Professional.findOne({person:personId}).select('professionalSince lastVisit status uid startHour endHour')
-  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  .populate({path:'person', select: {'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 'address':1}})
   .populate({path:'professionalSchedule', select: {'idSchedule':1}});
   return professional;
 }
@@ -252,8 +252,8 @@ exports.findProfessionalsByPersons = function(persons){
 exports.findProfessionalsBy_id = function(_ids){
   var professional = Professional.find({_id: { "$in" : _ids}})
   .select('professionalSince lastVisit status uid startHour endHour')
-  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  .populate({path:'person', select: {'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'extension':1,'mobile':1, 'email':1, 'address':1}})
   return professional;
 }
 
@@ -344,7 +344,7 @@ exports.findClientsByProfessionalUid = function(uid){
       select: {'clientSince':1, 'lastVisit':1, 'status':1, 'channels':1},
       populate: {
         path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-        'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1},
+        'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 'address':1},
         options: {sort: {personName: 'asc'}}
       }
     });

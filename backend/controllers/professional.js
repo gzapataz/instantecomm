@@ -407,7 +407,36 @@ exports.getClientsByProfessionalUid = function(req, res){
       if(!professional) 
         return res.status(404).send({message: 'No existe este profesional'});
       else{
-          return res.json(professional.clients);
+          var clientsArray=new Array();
+          var clients = professional.clients;
+          for(var i=0;i<clients.length;i++){
+            var client = clients[i];
+            clientsArray.push({
+                personName: client.person.personName,
+                idType: client.person.idType,
+                identification: client.person.identification,
+                gender: client.person.gender,
+                birthdate: client.person.birthdate,
+                phone: client.person.phone,
+                extension: client.person.extension,
+                mobile: client.person.mobile,
+                email: client.person.email,
+                address: client.person.address,
+                age: client.person.age,
+                status : client.status,
+                clientSince: client.clientSince,
+                lastVisit: client.lastVisit,
+                uid: client.uid,
+                channels : client.channels
+              });
+          }
+          if(clientsArray.length > 0){
+            return res.json(clientsArray);
+          }
+          else{
+            return res.status(200).send({message: 'Aún no hay clientes configurados'});
+          }
+
       }        
     });
   }
