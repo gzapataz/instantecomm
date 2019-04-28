@@ -551,12 +551,17 @@ exports.setClientProfessionalByUid = function(req, res){
         personService.then((persons) => {
           if(persons != undefined && persons != null){
             //Buscar cliente por persona
-            var clients = ClientService.findClientsByPersonsId(persons);
-            clients.then((clients) => {
-              if(clients != undefined && clients != null){
-                var professionalService = ProfessionalService.findClientsByProfessionalUid(req.params.uid, clients);
+            var clientService = ClientService.findClientsByPersonsId(persons);
+            clientService.then((clients) => {
+              if(clients != undefined && clients != null && clients.length > 0){
+                var professionalService = ProfessionalService.findClientsByClientsAndProfessionalUid(req.params.uid, clients);
                 professionalService.then((professional) => {
-                  var compareArrayUtil = new CompareArrayUtil(professional.clients,clients);
+                  var clientsArray = new Array();
+                  for(var i=0;i<clients.length;i++){
+                    var cli = clients[i];
+                    clientsArray.push(cli._id);
+                  }
+                  var compareArrayUtil = new CompareArrayUtil(professional.clients,clientsArray);
                   var client = new Array();
                   client = compareArrayUtil.getArrayIntersect();
                   if(client != null && client != undefined && client.length > 0){

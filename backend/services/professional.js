@@ -231,8 +231,8 @@ exports.findClientByProfessionalUid = function(uid, client){
  * @param {*} uid 
  * @param {*} clients
  */
-exports.findClientsByProfessionalUid = function(uid, clients){
-  var professional = Professional.find({uid:uid, clients: { "$in" : clients}});
+exports.findClientsByClientsAndProfessionalUid = function(uid, clients){
+  var professional = Professional.findOne({uid:uid, clients: { "$in" : clients}});
   return professional;
 } 
 

@@ -62,7 +62,7 @@ exports.saveChannelsClient =  async function(clientId,channels){
  * @param {*} personId 
  */
 exports.findClientByPersonId = function(personId){
-  var client = Client.findOne({person:personId}).select('clientSince lastVisit status channels')
+  var client = Client.findOne({person:personId}).select('_id clientSince lastVisit status channels')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
   'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
   return client;
@@ -73,7 +73,7 @@ exports.findClientByPersonId = function(personId){
  * @param {*} persons 
  */
 exports.findClientsByPersonsId = function(persons){
-  var clients = Client.find({person:persons}).select('clientSince lastVisit status channels')
+  var clients = Client.find({person:persons}).select('_id clientSince lastVisit status channels')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
   'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
   return clients;
