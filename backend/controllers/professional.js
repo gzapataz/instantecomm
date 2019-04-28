@@ -412,6 +412,7 @@ exports.getClientsByProfessionalUid = function(req, res){
           for(var i=0;i<clients.length;i++){
             var client = clients[i];
             clientsArray.push({
+                _id: client._id,
                 personName: client.person.personName,
                 idType: client.person.idType,
                 identification: client.person.identification,
@@ -532,6 +533,9 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
  */
 exports.setClientProfessionalByUid = function(req, res){
     if(req.params.uid != undefined && req.params.uid != null){
+      if(req.body.extension != null && req.body.phone == null){
+        return res.status(404).send({message: "Si diligencia el número de la extensión, debe seleccionar el número de teléfono fijo"});
+      }
       var invalidIdentification = false;
       var invalidIdType = false;
       if(req.body.idType == undefined || req.body.idType == null || req.body.idType.trim() == "")
@@ -640,6 +644,9 @@ exports.setClientProfessionalByUid = function(req, res){
  */
 exports.setClientProfessionalUpdateByUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
+    if(req.body.extension != null && req.body.phone == null){
+      return res.status(404).send({message: "Si diligencia el número de la extensión, debe seleccionar el número de teléfono fijo"});
+    }
     var professionalService = ProfessionalService.findClientsByProfessionalUid(req.params.uid);
     professionalService.then((professional) => {
       var clients = professional.clients;
