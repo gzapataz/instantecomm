@@ -411,25 +411,31 @@ exports.getClientsByProfessionalUid = function(req, res){
           var clients = professional.clients;
           for(var i=0;i<clients.length;i++){
             var client = clients[i];
-            clientsArray.push({
-                _id: client._id,
-                personName: client.person.personName,
-                idType: client.person.idType,
-                identification: client.person.identification,
-                gender: client.person.gender,
-                birthdate: client.person.birthdate,
-                phone: client.person.phone,
-                extension: client.person.extension,
-                mobile: client.person.mobile,
-                email: client.person.email,
-                address: client.person.address,
-                age: client.person.age,
-                status : client.status,
-                clientSince: client.clientSince,
-                lastVisit: client.lastVisit,
-                uid: client.uid,
-                channels : client.channels
-              });
+            var personObj = {};
+            personObj = {
+              _id: client._id,
+              status : client.status,
+              clientSince: client.clientSince,
+              lastVisit: client.lastVisit,
+              uid: client.uid,
+            }
+
+            personObj["person"] = {
+              _id: client.person._id,
+              personName: client.person.personName,
+              idType: client.person.idType,
+              identification: client.person.identification,
+              gender: client.person.gender,
+              birthdate: client.person.birthdate,
+              phone: client.person.phone,
+              extension: client.person.extension,
+              mobile: client.person.mobile,
+              email: client.person.email,
+              address: client.person.address,
+              age: client.person.age,
+              channels : client.channels}
+
+            clientsArray.push(personObj);
           }
           if(clientsArray.length > 0){
             return res.json(clientsArray);
