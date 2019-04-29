@@ -441,7 +441,7 @@ exports.getClientsByProfessionalUid = function(req, res){
             return res.json(clientsArray);
           }
           else{
-            return res.status(200).send({message: 'Aún no hay clientes configurados'});
+            return res.status(404).send({message: 'Aún no hay clientes configurados'});
           }
 
       }        
