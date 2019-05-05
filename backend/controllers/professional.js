@@ -225,7 +225,7 @@ exports.setProfessionalUpdate = function(req, res){
       if(profesional.errors)
         return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + profesional.errors});
       else{
-        var personService = PersonService.updatePerson(req, profesional.person); 
+        var personService = PersonService.updatePerson(req, profesional.person, true); 
         personService.then((person) => {
           if(person.errors)
             return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + person.errors});
@@ -689,7 +689,7 @@ exports.setClientProfessionalUpdateByUid = function(req, res){
 
             var clientService = ClientService.findClientBy_id(clientId);
             clientService.then((client) => {
-              var personService = PersonService.updatePerson(req, client.person);
+              var personService = PersonService.updatePerson(req, client.person, false);
               personService.then((person) => {
                 var clientService = ClientService.updateRemoveChannelsClientBy_id(clientId,client.channels);
                 clientService.then((client) => {
