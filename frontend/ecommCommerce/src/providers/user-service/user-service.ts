@@ -128,7 +128,8 @@ export class UserServiceProvider {
               }
             });
         }).catch(function(error) {
-          return;
+          console.log('Error Login:' + error)
+          reject(error);
         });
 
     });

@@ -68,8 +68,10 @@ customer:CustomerClass;
     this.myCustomers = this.loadedCountryList;
   }
   getCustomers(professionaUID) {
-    this.customerService.getCustomers(professionaUID).subscribe(data => this.myCustomers = data);
+    this.customerService.getCustomers(professionaUID).subscribe(data => {this.myCustomers = data
+      console.log('Lista de Clientes' + JSON.stringify(this.myCustomers))});
     this.customerService.getCustomers(professionaUID).subscribe(data => this.loadedCountryList = data);
+
   }
 
   ngOnInit() {
@@ -158,13 +160,14 @@ customer:CustomerClass;
 
   startChat(mobile) {
   }
+
   addCustomer(){
     let userLogged = this.globalService.getLoggedProffessionalData();
 
     if (userLogged.userId === '' || userLogged.userId == null) {
       let alert = this.alertCtrl.create({
-        title: 'Errro de Ingreso',
-        subTitle: 'Debe ingresar sus credenciales antes agregar un paciente',
+        title: 'Error de Ingreso',
+        subTitle: 'Debe ingresar sus credenciales antes de agregar un paciente',
         buttons: ['Dismiss']
       })
       alert.present();
@@ -177,30 +180,7 @@ customer:CustomerClass;
       modal.onDidDismiss(data => {
 
         this.navCtrl.setRoot(this.navCtrl.getActive().component);
-        console.log('PLATAFORMA ' + this.platform.platforms());
-    if(data!=undefined && this.platform.is('mobile')){
-      console.log('entrando a MODAL Whatsapp :' + JSON.stringify(this.loggedUser.jsonProfessional))
-      let professional = this.loggedUser.jsonProfessional['person']['personName']['firstName'] + ' ' + this.loggedUser.jsonProfessional['person']['personName']['lastName'];
-      console.log(professional)
-      this.openmodalwhatsapp(data.mobile, data.personName, professional);
-    }
-
     });
     }
-}
-
-openmodalwhatsapp(mobile, personName, professional){
-
-  let modal = this.modalCtrl.create('CustomerWhatsappPage', {
-    mobile: mobile,
-    customer: personName,
-    professional: professional
-  });
-  modal.present();
-  modal.onDidDismiss(data => {
-  this.navCtrl.setRoot(this.navCtrl.getActive().component);
-
-  });
-
-}
+  }
 }

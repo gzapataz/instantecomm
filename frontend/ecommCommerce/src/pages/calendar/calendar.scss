@@ -1,18 +1,60 @@
 page-calendar {
 
-  .left {
-    border-right: 1px solid #000000;
-    padding: 0px;
-    overflow: scroll;
+  .dayview-allday-label{
+    display: none;
   }
 
-  .right {
-    padding: 0px;
-    overflow: scroll;
+  .weekview-allday-table{
+    display: none;
   }
+
   ion-row {
     height: 100%;
   }
 
+  .dayview-normal-event-container{
+    margin-top: 0px;
+    margin-bottom: 0%;
+  }
 
+  .weekview-normal-event-container{
+    margin-top: 37px;
+    margin-bottom: 0%;
+  }
+
+  .parentContent {
+    margin-bottom: 0%;
+  }
+
+  .coreId {
+    margin-top: 0%;
+    margin-bottom: 0%;
+  }
+
+
+
+  /*
+    .left {
+      border-right: 1px solid #000000;
+      padding: 0px;
+      overflow: scroll;
+    }
+
+    .right {
+      padding: 0px;
+      overflow: scroll;
+    }
+
+
+
+
+
+    .dayview-allday-content-wrapper{
+      height: 0px;
+    }
+
+
+
+
+  */
 }

@@ -1,125 +1,157 @@
 <ion-header>
   <ion-navbar  color="primary">
     <ion-title>Mi Agenda</ion-title>
-    <!--<button ion-button icon-only [menuToggle] start>
-      <img src="../assets/images/navicon.png" width="20" height="20" >
-    </button>-->
     <ion-icon name="menu" icon-only [menuToggle] start left></ion-icon>
   </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-
-
   <customer-search (messageEvent)="receiveMessage($event)"></customer-search>
-  <ion-row>
-    <div *ngIf="platform.is('tablet') || platform.is('core')">
-      <ion-col col-4 col-md-4 col-lg-6 >
-        <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">
-          <ion-item *ngFor="let service of servicesAvail" id={{service._id}}>{{service.name}}</ion-item>
-        </ion-list>
-      </ion-col>
+</ion-header>
+  <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">
+    <div class="calendar-event-inner"
+         [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white', 'font-color': 'white', 'font-size': '12px', 'border-style': 'solid', 'border-color': 'double', 'border-width': 'thin'}"
+         [style.top]="(37*displayEvent.startOffset/hourParts)+'px'"
+         [style.left]="100/displayEvent.overlapNumber*displayEvent.position+'%'"
+         [style.width]="100/displayEvent.overlapNumber+'%'"
+         [style.border-color]="'#C0C0C0'"
+         [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + 'px'">
+      {{displayEvent.event.title}}
+      <br>
     </div>
-      <ion-col col-12 col-sm-12 col-md-8 col-lg-8>
+  </ng-template>
+  <ng-template #template2 let-displayEvent="displayEvent" let-hourParts="hourParts">
+    <div class="calendar-event-inner"
+         [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white', 'border-style': 'solid', 'border-color': 'double', 'border-width': 'thin'}"
+         [style.top]="(37*displayEvent.startOffset/hourParts)+'px'"
+         [style.left]="100/displayEvent.overlapNumber*displayEvent.position+'%'"
+         [style.width]="100/displayEvent.overlapNumber+'%'"
+         [style.font-size]="'11px'"
+         [style.border-color]="'#C0C0C0'"
+         [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + 'px'">
+      {{displayEvent.event.title | slice:0:displayEvent.event.title.indexOf(' ')}}
+    </div>
+  </ng-template>
+  <ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+    <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+      <ion-item *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
+                            <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
+                              {{event.endTime|date: 'HH:mm'}}
+                            </span>
+        <!--span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span-->
+        <span class="event-detail">  |  {{event.title}} - {{event.status}}</span>
+      </ion-item>
+      <ion-item *ngIf="selectedDate?.events.length==0">
+        <div class="no-events-label">No hay Citas programadas</div>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+<ion-content no-padding *ngIf="platform.is('tablet') || platform.is('core')">
+    <ion-row>
+      <div *ngIf="platform.is('tablet') || platform.is('core')">
+        <ion-col col-4 col-md-4 col-lg-6 >
+          <ion-list dragula="SERVICE" id="left" [(dragulaModel)]="servicesAvail">
+            <ion-item *ngFor="let service of servicesAvail" id={{service._id}}>{{service.name}}</ion-item>
+          </ion-list>
+        </ion-col>
+      </div>
+        <ion-col col-12 col-sm-12 col-md-8 col-lg-8>
         <div align-items-start>
           <ion-title>
             {{ viewTitle }}
           </ion-title>
         </div>
-        <!--ion-buttons end>
-          {{ viewTitle }}
-          <button ion-button (click)="loadEvents()"><ion-icon name="refresh"></ion-icon></button>
-        </ion-buttons-->
+        <ion-navbar color="primary">
+          <ion-buttons>
+            <button ion-button (click)="goToActual()">Hoy</button>
+            <button ion-button (click)="changeMode('month')">Mes</button>
+            <button ion-button (click)="changeMode('week')">Semana</button>
+            <button ion-button (click)="changeMode('day')">Dia</button>
+            <button ion-button (click)="refreshView()"><ion-icon name="refresh"></ion-icon></button>
+          </ion-buttons>
+          <ion-buttons end>
+            <button ion-button icon-only (click)="addEvent()">
+              <ion-icon name="add"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-navbar>
 
-
-     <ion-navbar color="primary">
-       <ion-buttons>
-         <button ion-button (click)="goToActual()">Hoy</button>
-         <button ion-button (click)="changeMode('month')">Mes</button>
-         <button ion-button (click)="changeMode('week')">Semana</button>
-         <button ion-button (click)="changeMode('day')">Dia</button>
-         <button ion-button (click)="refreshView()"><ion-icon name="refresh"></ion-icon></button>
-       </ion-buttons>
-       <ion-buttons end>
-         <button ion-button icon-only (click)="addEvent()">
-           <ion-icon name="add"></ion-icon>
-         </button>
-       </ion-buttons>
-     </ion-navbar>
-
-       <ng-template #template3 let-displayEvent="displayEvent" let-hourParts="hourParts">
-          <div class="calendar-event-inner"
-               [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white', 'font-color': 'white', 'font-size': '12px', 'border-style': 'solid', 'border-color': 'double', 'border-width': 'thin'}"
-               [style.top]="(37*displayEvent.startOffset/hourParts)+'px'"
-               [style.left]="100/displayEvent.overlapNumber*displayEvent.position+'%'"
-               [style.width]="100/displayEvent.overlapNumber+'%'"
-               [style.border-color]="'#C0C0C0'"
-               [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + 'px'">
-            {{displayEvent.event.title}}
-            <br>
-          </div>
-        </ng-template>
-
-        <ng-template #template2 let-displayEvent="displayEvent" let-hourParts="hourParts">
-          <div class="calendar-event-inner"
-               [ngStyle]="{'background-color': displayEvent.event.eventColor, color: 'white', 'border-style': 'solid', 'border-color': 'double', 'border-width': 'thin'}"
-               [style.top]="(37*displayEvent.startOffset/hourParts)+'px'"
-               [style.left]="100/displayEvent.overlapNumber*displayEvent.position+'%'"
-               [style.width]="100/displayEvent.overlapNumber+'%'"
-               [style.font-size]="'11px'"
-               [style.border-color]="'#C0C0C0'"
-               [style.height]="37*(displayEvent.endIndex - displayEvent.startIndex - (displayEvent.endOffset + displayEvent.startOffset)/2) + 'px'">
-            {{displayEvent.event.title | slice:0:displayEvent.event.title.indexOf(' ')}}
-          </div>
-        </ng-template>
-
-        <ng-template #template1 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
-          <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-            <ion-item *ngFor="let event of selectedDate?.events" (click)="onEventSelected(event)">
-                        <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
-                            {{event.endTime|date: 'HH:mm'}}
-                        </span>
-              <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>
-              <span class="event-detail">  |  {{event.title}} - {{event.status}}</span>
-            </ion-item>
-            <ion-item *ngIf="selectedDate?.events.length==0">
-              <div class="no-events-label">No hay Citas programadas</div>
-            </ion-item>
-          </ion-list>
-        </ng-template>
-
-       <calendar [eventSource]="eventSource"
-                 [formatHourColumn]="calendar.formatHourColumn"
-                 [calendarMode]="calendar.mode"
-                 [markDisabled]="markDisabled"
-                 [queryMode]="calendar.queryMode"
-                 [currentDate]="calendar.currentDate"
-                 (press)="calendar.onTimePress($event)"
-                 (click)="calendar.onClick()"
-                 (doubleclick)="calendar.onDoubleClick()"
-                 (mousemove)="calendar.onMove($event)"
-                 (mousedown)="calendar.onMoveDown($event)"
-                 (drop)="calendar.onDrop()"
-                 (dragover)="calendar.onDrop()"
-                 (onEventSelected)="onEventSelected($event)"
-                 (onTitleChanged)="onViewTitleChanged($event)"
-                 (onTimeSelected)="onTimeSelected($event)"
-                 (onRangeChanged)="onRangeChanged($event)"
-                 [locale]="calendar.locale"
-                 [dayviewNormalEventTemplate]="template3"
-                 [weekviewNormalEventTemplate]="template2"
-                 [monthviewEventDetailTemplate]="template1"
-                 step="30"
-                 startHour={{startHour}}
-                 endHour={{endHour}}
-                 class="calendar">
-       </calendar>
-
-
-
-
-   </ion-col>
-  </ion-row>
+        <calendar [eventSource]="eventSource"
+                  [formatHourColumn]="calendar.formatHourColumn"
+                  [calendarMode]="calendar.mode"
+                  [markDisabled]="markDisabled"
+                  [queryMode]="calendar.queryMode"
+                  [currentDate]="calendar.currentDate"
+                  (press)="calendar.onTimePress($event)"
+                  (click)="calendar.onClick()"
+                  (doubleclick)="calendar.onDoubleClick()"
+                  (mousemove)="calendar.onMove($event)"
+                  (mousedown)="calendar.onMoveDown($event)"
+                  (drop)="calendar.onDrop()"
+                  (dragover)="calendar.onDrop()"
+                  (onEventSelected)="onEventSelected($event)"
+                  (onTitleChanged)="onViewTitleChanged($event)"
+                  (onTimeSelected)="onTimeSelected($event)"
+                  (onRangeChanged)="onRangeChanged($event)"
+                  [locale]="calendar.locale"
+                  [dayviewNormalEventTemplate]="template3"
+                  [weekviewNormalEventTemplate]="template2"
+                  [monthviewEventDetailTemplate]="template1"
+                  step="15"
+                  timeInterval = {{timeInterval}}
+                  startHour={{startHour}}
+                  endHour={{endHour}}
+                  class="calendar">
+        </calendar>
+      </ion-col>
+    </ion-row>
 </ion-content>
+<ion-content no-padding *ngIf="!platform.is('tablet') && !platform.is('core')">
+  <ion-col size="8">
+    <div align-items-start>
+      <ion-title>
+        {{ viewTitle }}
+      </ion-title>
+    </div>
+    <ion-navbar color="primary">
+      <ion-buttons>
+        <button ion-button (click)="goToActual()">Hoy</button>
+        <button ion-button (click)="changeMode('month')">Mes</button>
+        <button ion-button (click)="changeMode('week')">Semana</button>
+        <button ion-button (click)="changeMode('day')">Dia</button>
+        <button ion-button (click)="refreshView()"><ion-icon name="refresh"></ion-icon></button>
+      </ion-buttons>
+      <ion-buttons end>
+        <button ion-button icon-only (click)="addEvent()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-navbar>
 
 
+    <calendar [eventSource]="eventSource"
+              [formatHourColumn]="calendar.formatHourColumn"
+              [calendarMode]="calendar.mode"
+              [markDisabled]="markDisabled"
+              [queryMode]="calendar.queryMode"
+              [currentDate]="calendar.currentDate"
+              (press)="calendar.onTimePress($event)"
+              (click)="calendar.onClick()"
+              (doubleclick)="calendar.onDoubleClick()"
+              (mousemove)="calendar.onMove($event)"
+              (mousedown)="calendar.onMoveDown($event)"
+              (drop)="calendar.onDrop()"
+              (dragover)="calendar.onDrop()"
+              (onEventSelected)="onEventSelected($event)"
+              (onTitleChanged)="onViewTitleChanged($event)"
+              (onTimeSelected)="onTimeSelected($event)"
+              (onRangeChanged)="onRangeChanged($event)"
+              [locale]="calendar.locale"
+              [dayviewNormalEventTemplate]="template3"
+              [weekviewNormalEventTemplate]="template2"
+              [monthviewEventDetailTemplate]="template1"
+              step="15"
+              timeInterval = {{timeInterval}}
+              startHour={{startHour}}
+              endHour={{endHour}}
+              class="calendar">
+    </calendar>
+  </ion-col>
+</ion-content>

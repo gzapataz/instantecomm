@@ -73,20 +73,24 @@ export class RegistrationPage {
       this.reg.password2 = '';
     }
     else {
-      this.reg.email = this.professional.email;
-      this.afAuth.auth.createUserWithEmailAndPassword(this.professional.email, this.reg.password)
-        .then(res => this.regSuccess(res))
-        .catch(err => this.displayAlert('Error!', err));
+      if (this.validateData()) {
+        this.reg.email = this.professional.email;
+        this.afAuth.auth.createUserWithEmailAndPassword(this.professional.email, this.reg.password)
+          .then(res => this.regSuccess(res))
+          .catch(err => this.displayAlert('Error!', err));
+      }
     }
   }
 
   updateAccount() {
     delete this.professional['email'];
     console.log("Update:" + JSON.stringify(this.professional))
-    this.userService.updateDBUser(this.professional).subscribe(data => {
-      console.log("UpdatedData:" + JSON.stringify(data))
-      this.viewCtrl.dismiss();
-    })
+    if (this.validateData()) {
+      this.userService.updateDBUser(this.professional).subscribe(data => {
+        console.log("UpdatedData:" + JSON.stringify(data))
+        this.viewCtrl.dismiss();
+      })
+    }
   }
 
 
@@ -94,11 +98,46 @@ export class RegistrationPage {
     console.log("result:" + JSON.stringify(result))
     this.professional.uid = result.user.uid;
     console.log("this.professional:" + JSON.stringify(this.professional))
-
     this.userService.createDBUser(this.professional).subscribe(data => {
       this.userService.logOn(this.reg)
         .then(res => this.navCtrl.push(TabsPage));
     })
+  }
+
+  validateData() {
+    if ((this.professional.startHour == undefined || this.professional.startHour == null) || (this.professional.endHour == undefined || this.professional.endHour == null)) {
+      let theAlert = this.alertCtrl.create({
+        title: "Horario Presentación Calendario en la Pantalla",
+        subTitle: "Deben ser horas enteras entre la 1 y las 24 PM",
+        buttons: ['OK']
+      });
+      theAlert.present();
+      return false
+    }
+    console.log('this.professional.startHour: ' + +this.professional.startHour + typeof +this.professional.startHour+ ' this.professional.endHour ' + typeof +this.professional.startHour + ' ' + +this.professional.endHour)
+    if (+this.professional.startHour >= +this.professional.endHour) {
+      let theAlert = this.alertCtrl.create({
+        title: "Horario Presentación Calendario en la Pantalla",
+        subTitle: "La hora inicial debe ser menor que la hora final",
+        buttons: ['OK']
+      });
+      theAlert.present();
+      return false
+    }
+    return true;
+  }
+
+  onChangeHourStart(hour) {
+    var hourVal = parseInt(hour);
+    console.log('INTEGER:' + ' ' + hourVal + ' ' + !Number.isInteger(hourVal) + ' ' + typeof hourVal)
+    if (hourVal == undefined || hourVal == null || !Number.isInteger(hourVal)) {
+      let theAlert = this.alertCtrl.create({
+        title: "Horario Presentación Calendario en la Pantalla",
+        subTitle: "Deben ser horas enteras entre la 1 y las 24 PM",
+        buttons: ['OK']
+      });
+      theAlert.present();
+    }
   }
 
   cancel() {
