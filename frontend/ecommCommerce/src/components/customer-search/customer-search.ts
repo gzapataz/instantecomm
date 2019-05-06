@@ -25,13 +25,14 @@ import {GlobalsServiceProvider} from "../../providers/globals-service/globals-se
 export class CustomerSearchComponent implements OnInit {
 
   modal: any;
+  found: boolean = false;
   openAlready: boolean = false;
   srcTitle = "Busqueda de Paciente"
   private searchTerms = new Subject<string>();
   public myInput: string;
   show = true;
   custId$: Observable<string>;
-  customerTest = [];
+  myCustomers: CustomerClass[] = [];
   loggedUser: LoggedProfessional;
 
   @Output() messageEvent = new EventEmitter<CustomerClass>();
@@ -72,23 +73,56 @@ export class CustomerSearchComponent implements OnInit {
 
   }
 
+  getItems(searchbar) {
+    // Reset items back to all of the items
+    this.customerService.searchCustomers(searchbar.target.value, this.loggedUser.userId).subscribe(customers => {
+
+      this.myCustomers = customers;
+
+      // set q to the value of the searchbar
+      var q = searchbar.srcElement.value;
+
+
+      // if the value is an empty string don't filter the items
+      if (!q) {
+        return;
+      }
+      console.log("Encontro clientes" + JSON.stringify(this.myCustomers))
+      this.myCustomers = this.myCustomers.filter((v) => {
+        if(v.person.personName.firstName && q ||v.person.personName.lastName && q) {
+          if (v.person.personName.firstName.toLowerCase().indexOf(q.toLowerCase()) > -1||v.person.personName.lastName.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+            return true;
+          }
+          return false;
+        }
+      });
+
+      console.log(q, this.myCustomers.length);
+      if (this.myCustomers.length > 0) {
+        this.found = true;
+        this.modal = this.modalCtrl.create('CustomerModalPage', {customerList: this.myCustomers});
+        this.modal.present();
+        this.openAlready = true;
+        this.modal.onDidDismiss(data => {
+          if (data !== undefined) {
+            this.selectedName(data._id, data.name, data);
+          }
+          this.openAlready = false;
+        });
+      }
+      else {
+        this.found = false;
+      }
+    });
+
+  }
+
   onInput(ev: any) {
     console.log ('OnInput Search:' +ev.target.value);
     if (ev.target.value != undefined && ev.target.value !== '' && !this.openAlready) {
       this.customerService.searchCustomers(ev.target.value, this.loggedUser.userId).subscribe(customers => {
-          this.customerTest = this.transform(customers, ev.target.value);
-          console.log('CusotmerOnInput:' + JSON.stringify(this.customerTest))
-          this.modal = this.modalCtrl.create('CustomerModalPage', {customerList: this.customerTest});
-          this.modal.present();
-          this.openAlready = true;
-          this.modal.onDidDismiss(data => {
-            if (data !== undefined) {
-              this.selectedName(data._id, data.name, data);
-            }
-            this.openAlready = false;
-          });
-        },
-        null);
+          this.getItems(ev);
+        }, null);
     }
     else {
       console.log('Search Nulo');
@@ -100,6 +134,10 @@ export class CustomerSearchComponent implements OnInit {
   onClear(ev: any) {
     console.log('Clear Fired');
     //this.myInput = undefined;
+    this.messageEvent.emit(undefined);
+  }
+
+  onCancel(ev: any) {
     this.messageEvent.emit(undefined);
   }
 

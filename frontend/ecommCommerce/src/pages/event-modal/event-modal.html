@@ -10,9 +10,9 @@
   </ion-navbar>
   <ion-buttons end>
     <button ion-button color="secondary" small><a href="tel:{{customerSelected.person.mobile}}"><ion-icon name="call"></ion-icon> </a></button>
-    <button ion-button color="secondary" small><a [href]=sanitaize()>SMS</a></button>
-    <button ion-button color="secondary" small><a href="https://wa.me/{{customerSelected.person.mobile}}?text={{messageTest}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>
-    <button ion-button color="secondary" small><a href="mailto:{{customerSelected.person.email}}?subject=Su Próxima Cita&body={{messageTest}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>
+    <button ion-button color="secondary" small *ngIf="event.service && event.status !='No Agendada'"><a [href]=sanitaize()>SMS</a></button>
+    <button ion-button color="secondary" small *ngIf="event.service && event.status !='No Agendada'"><a href="https://wa.me/{{customerSelected.person.mobile}}?text={{messageTest}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>
+    <button ion-button color="secondary" small *ngIf="event.service && event.status !='No Agendada'"><a href="mailto:{{customerSelected.person.email}}?subject=Su Próxima Cita&body={{messageTest}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>
   </ion-buttons>
 </ion-header>
 
@@ -20,7 +20,7 @@
   <ion-list>
     <ion-item>
       <ion-label color={{eventColor}}>Servicio</ion-label>
-      <ion-select  type="text" placeholder="Tipo" [(ngModel)]="event.service" (ionChange)="onServiceSelected()">
+      <ion-select  type="text" placeholder="Tipo" [(ngModel)]="event.service" (ionChange)="onServiceSelected()" required>
         <ion-option  *ngFor="let service of servicesAvail" value={{service._id}}>{{service.name}}</ion-option>
       </ion-select>
     </ion-item>
@@ -39,10 +39,10 @@
       <ion-label end>{{event.status}}</ion-label>
     </ion-item>
 
-    <ion-item>
+    <!--ion-item>
       <ion-label>Todo el Día?</ion-label>
       <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
-    </ion-item>
+    </ion-item-->
   </ion-list>
   <ion-buttons *ngIf="!this.eventSelected">
     <button ion-button full icon-left color="secondary" (click)="save()">

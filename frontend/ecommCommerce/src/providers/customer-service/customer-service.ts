@@ -45,16 +45,46 @@ export class CustomerServiceProvider {
 
   searchCustomers(term: string, professionalUID): Observable<CustomerClass[]> {
     //console.log('En Busqueda:' + term);
+    var q = term;
+    console.log('Term:' + q)
     if (!term.trim()) {
       // if not search term, return empty hero array.
       return of([]);
     }
     var finalURL = this.customerUrl + professionalUID + '/clients/';
-    return this.http.get<CustomerClass[]>(`${finalURL}`).pipe(
-      tap(_ => this.log(`found heroes matching "${term}"`)),
+      return this.http.get<CustomerClass[]>(`${finalURL}`)
+  }
+
+
+  /*
+searchCustomers(term: string, professionalUID): Observable<CustomerClass[]> {
+    //console.log('En Busqueda:' + term);
+    var q = term;
+    console.log('Term:' + q)
+    if (!term.trim()) {
+      // if not search term, return empty hero array.
+      return of([]);
+    }
+    var finalURL = this.customerUrl + professionalUID + '/clients/';
+      return this.http.get<CustomerClass[]>(`${finalURL}`).pipe(
+
+
+        tap( data => {
+        data.filter( (v) => {
+          if(v.person.personName.firstName && q ||v.person.personName.lastName && q) {
+            if (v.person.personName.firstName.toLowerCase().indexOf(q.toLowerCase()) > -1||v.person.personName.lastName.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+              console.log('Encontrado Term:' + JSON.stringify(v.person.personName))
+              return true;
+            }
+          }
+        });
+          }
+        ),
       catchError(this.handleError<CustomerClass[]>('searchCustomers', []))
     );
   }
+ */
+
 
   getCustomer(id: string): Observable<CustomerClass> {
     let _id = id;

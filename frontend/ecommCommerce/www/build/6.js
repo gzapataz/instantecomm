@@ -1,14 +1,14 @@
 webpackJsonp([6],{
 
-/***/ 888:
+/***/ 893:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CustomerWhatsappPageModule", function() { return CustomerWhatsappPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_whatsapp__ = __webpack_require__(903);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__customer_whatsapp__ = __webpack_require__(911);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,12 +38,12 @@ var CustomerWhatsappPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 903:
+/***/ 911:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomerWhatsappPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_globals_service_globals_service__ = __webpack_require__(37);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -86,14 +86,14 @@ var CustomerWhatsappPage = /** @class */ (function () {
     CustomerWhatsappPage.prototype.ionViewDidLoad = function () {
     };
     CustomerWhatsappPage.prototype.ngOnInit = function () {
-        this.textData = 'Buenas%20tardes%20Sr(a)%3A%20' + this.customer['firstName'] + '%20' + this.customer['lastName'] + '%20este%20mensaje%20es%20enviado%20desde%20el%20consultorio%20del%20Dr(a)%3A%20' + this.professional + '%20%2C%20para%20poderlo%20tener%20al%20tanto%20de%20sus%20citas%20y%20procedimientos%20de%20inter%C3%A9s.%20Para%20poder%20activar%20el%20servicio%20por%20favor%20env%C3%ADe%20el%20mensaje%20por%20whatsapp%20con%20la%20palabra%20%22Recibido%22%20al%20n%C3%BAmero%20de%20nuestro%20servicio%20presionando%20el%20siguiente%20link%3A%20%0Ahttps%3A%2F%2Fapi.whatsapp.com%2Fsend%3Fphone%3D85296231044%26text%3DRecibido';
+        this.textData = 'Buenas+tardes+Sr%28a%29%3A+' + this.customer['firstName'] + '%2C+este+mensaje+es+enviado+desde+el+consultorio+del+%28la%29+Dr%28a%29%3A+' + this.professional + '.++Por+este+medio+le+recordaremos+oportunamente+sus+citas+y%2Fo+procedimientos+programados.++Con+el+fin+de+activar+el+servicio%2C+por+favor+presione+sobre+el+siguiente+texto+en+azul%3A+https%3A%2F%2Fapi.whatsapp.com%2Fsend%3Fphone%3D85296231044%26text%3DRecibido';
     };
     CustomerWhatsappPage.prototype.cancel = function () {
         this.viewCtrl.dismiss();
     };
     CustomerWhatsappPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-customer-whatsapp',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-whatsapp/customer-whatsapp.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Paciente creado</ion-title>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n    <ion-label>El paciente ha sido creado correctamente.<br></ion-label>\n    <ion-label>Para poder contactalo por WhatsApp el paciente<br></ion-label>\n    <ion-label>debe autorizar los mensajes.<br></ion-label>\n    <ion-label>Es necesario enviar este link</ion-label>\n  <!--ion-buttons >\n    <button ion-button color="secondary" small (click)="sendSms()">SMS</button>\n  </ion-buttons-->\n\n  <ion-buttons >\n    <button ion-button color="secondary" small><a href="https://wa.me/{{mobile}}?text={{textData}}">Enviar Acceso</a></button>\n  </ion-buttons>\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-whatsapp/customer-whatsapp.html"*/,
+            selector: 'page-customer-whatsapp',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-whatsapp/customer-whatsapp.html"*/'<ion-header>\n  <ion-navbar  color="primary">\n    <ion-title>Paciente creado</ion-title>\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n    <p>Los pacientes que prefieren notificacion por WhatsApp deben autorizar los mensajes del centro de comunicaciones de la aplicacion.\n    Por tal motivo se les debe enviar el mensaje siguiente por whatsapp</p>\n    <ion-label>Es necesario enviar este link</ion-label>\n  <!--ion-buttons >\n    <button ion-button color="secondary" small (click)="sendSms()">SMS</button>\n  </ion-buttons-->\n\n  <ion-buttons >\n    <button ion-button color="secondary" small><a href="https://wa.me/{{mobile}}?text={{textData}}">Enviar</a></button>\n  </ion-buttons>\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/customer-whatsapp/customer-whatsapp.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */],
             __WEBPACK_IMPORTED_MODULE_2__providers_globals_service_globals_service__["a" /* GlobalsServiceProvider */]])

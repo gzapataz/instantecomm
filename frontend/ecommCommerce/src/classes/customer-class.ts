@@ -10,8 +10,9 @@ export interface IPerson {
   phone: any,
   mobile: any,
   email: string,
-  identication: string
-  address:string
+  identication: string,
+  address:string,
+  channels: string
 };
 
 export class PersonName {
@@ -30,6 +31,7 @@ export class Person {
   email: string;
   identification: string;
   address:string;
+  channels: string;
 };
 
 

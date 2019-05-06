@@ -31,6 +31,7 @@ registerLocaleData(localCo);
 })
 export class EventModalPage implements OnInit {
   messageTest = '';
+  action = '';
   eventColor = 'default';
   servicesAvail = [];
   servicesAvailAux$: Observable<any[]>;
@@ -67,7 +68,7 @@ export class EventModalPage implements OnInit {
       else {
         let preselectedDate = moment(this.navParams.get('selectedDay')).format();
         let thsService = this.navParams.get('service');
-        this.event = new AppointmentClass(null, UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,0, 'Agendada', this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
+        this.event = new AppointmentClass(null, UUID.UUID(), this.professional.idSchedule, preselectedDate, preselectedDate,0, 'No Agendada', this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
         this.event.startTime = preselectedDate;
         if (thsService !== undefined) {
           this.event.service = thsService;
@@ -77,13 +78,15 @@ export class EventModalPage implements OnInit {
           });
         }
       }
-      this.messageTest = 'Buenas tardes ' + this.customerSelected.person.personName.firstName + ' su cita de ' +
-        //this.event.title.slice(0, this.event.title.indexOf(':'))
-        this.event.title
-        + ' para el dia ' + moment(this.event.startTime).locale(localCo.toLocaleString()).format('LLLL') +
-        ' Por favor para confirmar presione el siguiente link:\n' +
-        'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada'
-
+      console.log('Evento: ' + JSON.stringify(this.event))
+      if (this.event.status != 'No Agendada') {
+        this.messageTest = 'Buenas tardes ' + this.customerSelected.person.personName.firstName + ' su cita de ' +
+          //this.event.title.slice(0, this.event.title.indexOf(':'))
+          this.event.title.slice(0, this.event.title.indexOf(':'))
+          + ' para el dia ' + moment(this.event.startTime).locale(localCo.toLocaleString()).format('LLLL') +
+          ' está agendada. Por favor para confirmar presione el siguiente link:\n' +
+          'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada'
+      }
       console.log('MESSAGE : ' + this.messageTest);
 
   }
@@ -110,7 +113,7 @@ export class EventModalPage implements OnInit {
     this.getServices()
   }
 
-  sanitaize(url) {
+  sanitaize() {
     let conector = '?body=';
 
     if (this.platform.is('ios')) {
