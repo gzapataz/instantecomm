@@ -24,8 +24,9 @@
   </ion-item>
   <ion-item>
     <ion-label >Tipo de identificacion:  </ion-label>
-    <ion-input  type="text" id="idType"[(ngModel)]="customer.person.idType" name="idType" >
-    </ion-input>
+    <ion-select type="text" placeholder="Cédula"  id="idType" name="idType" multiple="false" [(ngModel)]="customer.person.idType" >
+      <ion-option *ngFor="let idType of idTypes" [value] = "idType.code" [selected]="idType.code == 'Cédula'">{{idType.name}}</ion-option>
+    </ion-select>
   </ion-item>
   <ion-item>
     <ion-label >Numero  de identificacion:  </ion-label>
@@ -40,14 +41,21 @@
   <ion-item>
     <ion-label >Telefono celular: </ion-label>
 
-    <ion-input  type="tel" id="mobile"[(ngModel)]="customer.person.mobile" name="mobile" required="required" >
+    <ion-input  type="tel" id="mobile" (ionBlur)="onChangeTel(customer.person.mobile)" [(ngModel)]="customer.person.mobile" name="mobile" required="required" >
     </ion-input>
   </ion-item>
   <ion-item>
-    <ion-label >Correo electronico: </ion-label>
+    <ion-label >Correo electrónico: </ion-label>
     <ion-input  type="email" id="email"[(ngModel)]="customer.person.email" name="email">
     </ion-input>
   </ion-item>
+  <ion-item>
+    <ion-label>Notificación Masiva: </ion-label>
+    <ion-select type="text" placeholder="WhatsApp"  id="contact" name="contact" multiple="false" [(ngModel)]="customer.person.channels" >
+      <ion-option *ngFor="let contactPref of contactPref" [value] = "contactPref.code" [selected]="contactPref.code == 'WhatsApp'">{{contactPref.name}}</ion-option>
+    </ion-select>
+  </ion-item>
+
   <ion-item>
     <ion-label>Direccion </ion-label>
     <ion-input  type="text" placeholder="Baker street" id="address"[(ngModel)]="customer.person.address" name="address">
@@ -57,6 +65,7 @@
     <button ion-button full icon-left color="secondary" (click)="save()">
       <ion-icon name="checkmark"></ion-icon> Actualizar
     </button>
+
     <!--button ion-button full icon-left color="danger" (click)="delete()">
       Eliminar
     </button-->

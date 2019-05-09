@@ -19,6 +19,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { ComponentsModule } from "../components/components.module";
 import { CustomerSearchComponent } from "../components/customer-search/customer-search";
+import { AlertmsgComponent } from "../components/alertmsg/alertmsg";
 import { MyApp } from './app.component';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CalendarPage } from "../pages/calendar/calendar";
@@ -92,11 +93,11 @@ import { NgxVcardModule } from 'ngx-vcard';
     CustomerServiceProvider,
     MessageServiceProvider,
     CustomerSearchComponent,
+    AlertmsgComponent,
     AppointmentServiceProvider,
     ScheduleServiceProvider,
     PreferencesServiceProvider,
     GlobalsServiceProvider,
-
     ScreenOrientation,
     ExceptionServiceProvider,
 

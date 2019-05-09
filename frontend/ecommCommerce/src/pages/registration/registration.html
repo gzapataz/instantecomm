@@ -28,13 +28,13 @@
     <ion-input type="password" [(ngModel)] = "reg.password2" name="password2"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label >Hora de Inicio (*)</ion-label>
-    <ion-input  type="number" placeholder="6" [(ngModel)]="professional.startHour" required="required">
+    <ion-label >Hora de Inicio Calendario por Día (*)</ion-label>
+    <ion-input  type="number" placeholder="hora inicio calendario" min = 1 max = 24 (ionBlur)="onChangeHourStart(professional.startHour)"  [(ngModel)]="professional.startHour" required="required">
     </ion-input>
   </ion-item>
   <ion-item>
-    <ion-label >Hora de Salida (*)</ion-label>
-    <ion-input  type="number" placeholder="21" [(ngModel)]="professional.endHour" required="required">
+    <ion-label >Hora de Fin Calendario por Día (*)</ion-label>
+    <ion-input  type="number" placeholder="hora fin calendario" min = 1 max = 24 (ionBlur)="onChangeHourStart(professional.endHour)" [(ngModel)]="professional.endHour" required="required">
     </ion-input>
   </ion-item>
 

@@ -22,21 +22,22 @@
       </ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>E-mail (*)</ion-label>
-      <ion-input type="email" placeholder="jon@gmail.com" id="email" [(ngModel)]="persona.email" name="email" required="required">
+      <ion-label>E-mail</ion-label>
+      <ion-input type="email" placeholder="jon@gmail.com" id="email" [(ngModel)]="persona.email" name="email">
 
       </ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>Pais (*)</ion-label>
-      <ion-select type="text" placeholder="Codigo"  id="code" name="code" multiple="false " [(ngModel)]="codigo" >
+      <ion-select type="text" placeholder="Código"  id="code" name="code" multiple="false " [(ngModel)]="codigo" >
+        <!--suppress TypeScriptUnresolvedVariable -->
         <ion-option *ngFor="let c of countries" [value] = "c.callingCodes[0]" [selected]="c.callingCodes[0] == '57'">{{c.name}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Celular (*)</ion-label>
-      <ion-input type="tel" placeholder="345123456" id="mobile" [(ngModel)]="persona.mobile" name="mobile"
+      <ion-input type="tel" placeholder="celular" id="mobile" (ionBlur)='onChangeTel(persona.mobile)' [(ngModel)]="persona.mobile" name="mobile"
                  required="required">
       </ion-input>
     </ion-item>
@@ -44,6 +45,12 @@
       <ion-label>Telefono Fijo</ion-label>
       <ion-input type="tel" placeholder="0312345" id="phone" [(ngModel)]="persona.phone" name="phone">
       </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Notificación Masiva</ion-label>
+      <ion-select type="text" placeholder="WhatsApp"  id="contact" name="contact" multiple="false" [(ngModel)]="persona.channels" >
+        <ion-option *ngFor="let contactPref of contactPref" [value] = "contactPref.code" [selected]="contactPref.code == 'WhatsApp'">{{contactPref.name}}</ion-option>
+      </ion-select>
     </ion-item>
     <ion-item>
       <ion-label>Campos obligatorios (*)</ion-label>
