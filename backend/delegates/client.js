@@ -4,7 +4,8 @@ var ClientService = require('../services/client');
 var PersonService = require('../services/person');
 var ProfessionalService = require('../services/professional');
 var CompareArrayUtil = require('../utils/compareArrayUtil');
-
+var ArrayUtil = require('../utils/arrayUtil');
+const Channel = require('../enums/channel');
 
 /**
  * 
@@ -187,20 +188,33 @@ exports.deleteClientDelegate = async function(clients, uid){
  * @param {*} req 
  * @param {*} uid 
  */
-exports.saveServicesDelegate = async function(req){
+exports.saveClientsDelegate = async function(req){
   try{
-    var personService = PersonService.savePerson(req);
-    personService.then((person) => {
-        var clientService = ClientService.saveClient(req, person);
-        clientService.then((results) => {
-            var professional = ProfessionalService.saveClientProfessional(req.params.uid, results);
-            professional.then((results) => {
-            }); 
-        }); 
-    }); 
+    var channels = req.body.channels;
+    var arrayUtil = new ArrayUtil(channels);
+    if(channels == null || channels == undefined || channels.length == 0){
+      throw new Error('Es obligatorio escoger por lo menos un canal de comunicación con el cliente');
+    }
+    else if(arrayUtil.contains(Channel.SMS) && arrayUtil.contains(Channel.WHATSAPP)){
+      throw new Error('No se pueden configurar los canales de WhatsApp y SMS para un cliente');
+    }
+    else{  
+      var personService = PersonService.savePerson(req);
+      personService.then((person) => {
+          var clientService = ClientService.saveClient(req, person);
+          clientService.then((client) => {
+              var professional = ProfessionalService.saveClientProfessional(req.params.uid, client);
+              professional.then((results) => {
+                var clientService = ClientService.saveChannelsClient(client._id, channels);
+                clientService.then((results) => {
+                }); 
+              }); 
+          }); 
+      }); 
+    }
     return personService;
   }
   catch(error){
-    throw new Error(error);
+    throw error;
   } 
 }

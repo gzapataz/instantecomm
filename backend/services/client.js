@@ -40,11 +40,29 @@ exports.saveRatingClient =  async function(client,rating){
 }
 
 /**
+ * Guardar canales de comunicación para clientes
+ * @param {*} client 
+ * @param {*} channel 
+ */
+exports.saveChannelsClient =  async function(clientId,channels){
+  try{
+    return await Client.findOneAndUpdate(
+      {_id : clientId},
+      {$push: { channels: channels } },
+      {safe: true, upsert: true, new: true}
+    );
+  } 
+  catch(error){
+    return error;
+  }  
+}
+
+/**
  * Buscar clientes por person
  * @param {*} personId 
  */
 exports.findClientByPersonId = function(personId){
-  var client = Client.findOne({person:personId}).select('clientSince lastVisit status')
+  var client = Client.findOne({person:personId}).select('_id clientSince lastVisit status channels')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
   'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
   return client;
@@ -55,7 +73,7 @@ exports.findClientByPersonId = function(personId){
  * @param {*} persons 
  */
 exports.findClientsByPersonsId = function(persons){
-  var clients = Client.find({person:persons}).select('clientSince lastVisit status')
+  var clients = Client.find({person:persons}).select('_id clientSince lastVisit status channels')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
   'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
   return clients;
@@ -66,7 +84,7 @@ exports.findClientsByPersonsId = function(persons){
  * @param {*} _id 
  */
 exports.findClientBy_id = function(_id){
-  var client = Client.findOne({_id:_id}).select('clientSince lastVisit status')
+  var client = Client.findOne({_id:_id}).select('clientSince lastVisit status channels')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
   'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
   //.populate('clientGrades');
@@ -75,7 +93,7 @@ exports.findClientBy_id = function(_id){
 
 exports.findClientsBy_ids = function(_ids){
   var clients = Client.find({_id: { "$in" : _ids}})
-  .select('clientSince lastVisit status')
+  .select('clientSince lastVisit status channels')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
   'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}});
   return clients;
@@ -105,4 +123,19 @@ exports.deleteArrayClients = function(arrayClients){
 exports.deleteOneClient = function(client){
   var client = Client.deleteOne({ _id: client});
   return client;
+}
+
+/**
+ * 
+ * @param {*} _id 
+ * @param {*} channels 
+ */
+exports.updateRemoveChannelsClientBy_id = async function(_id,channels){
+  try{
+  return await Client.update({ _id: _id }, 
+    {'$pullAll': { channels: channels}});
+  } 
+  catch(error){
+    return error;
+  }      
 }

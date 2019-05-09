@@ -18,6 +18,8 @@ const ExceptionType = require('../enums/exceptionType');
 var module = require('colombia-holidays');
 var ECAIConstants = require('../constants/ECAIConstants');
 var CompareArrayUtil = require('../utils/compareArrayUtil');
+var ArrayUtil = require('../utils/arrayUtil');
+const Channel = require('../enums/channel');
 
 /**
  * Conseguir datos de todos los profesionales
@@ -223,7 +225,7 @@ exports.setProfessionalUpdate = function(req, res){
       if(profesional.errors)
         return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + profesional.errors});
       else{
-        var personService = PersonService.updatePerson(req, profesional.person); 
+        var personService = PersonService.updatePerson(req, profesional.person, true); 
         personService.then((person) => {
           if(person.errors)
             return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + person.errors});
@@ -405,7 +407,43 @@ exports.getClientsByProfessionalUid = function(req, res){
       if(!professional) 
         return res.status(404).send({message: 'No existe este profesional'});
       else{
-          return res.json(professional.clients);
+          var clientsArray=new Array();
+          var clients = professional.clients;
+          for(var i=0;i<clients.length;i++){
+            var client = clients[i];
+            var personObj = {};
+            personObj = {
+              _id: client._id,
+              status : client.status,
+              clientSince: client.clientSince,
+              lastVisit: client.lastVisit,
+              uid: client.uid,
+            }
+
+            personObj["person"] = {
+              _id: client.person._id,
+              personName: client.person.personName,
+              idType: client.person.idType,
+              identification: client.person.identification,
+              gender: client.person.gender,
+              birthdate: client.person.birthdate,
+              phone: client.person.phone,
+              extension: client.person.extension,
+              mobile: client.person.mobile,
+              email: client.person.email,
+              address: client.person.address,
+              age: client.person.age,
+              channels : client.channels}
+
+            clientsArray.push(personObj);
+          }
+          if(clientsArray.length > 0){
+            return res.json(clientsArray);
+          }
+          else{
+            return res.status(404).send({message: 'Aún no hay clientes configurados'});
+          }
+
       }        
     });
   }
@@ -500,97 +538,114 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
  * @param {*} res 
  */
 exports.setClientProfessionalByUid = function(req, res){
-  if(req.params.uid != undefined && req.params.uid != null){
-    var invalidIdentification = false;
-    var invalidIdType = false;
-    if(req.body.idType == undefined || req.body.idType == null || req.body.idType.trim() == "")
-    {
-      invalidIdType = true;
-    }
-    if(req.body.identification == undefined || req.body.identification == null || req.body.identification.trim() == ""){
-      invalidIdentification = true;
-    }  
-    if(invalidIdentification == false && invalidIdType == false){
-      req.body.status = ActivationStatus.ACTIVE;
-      var personService = PersonService.findPersonsByIdentification(req.body.idType, req.body.identification);
-      personService.then((persons) => {
-        if(persons != undefined && persons != null){
-          //Buscar cliente por persona
-          var clients = ClientService.findClientsByPersonsId(persons);
-          clients.then((clients) => {
-            if(clients != undefined && clients != null){
-              var professionalService = ProfessionalService.findClientsByProfessionalUid(req.params.uid, clients);
-              professionalService.then((professional) => {
-                var compareArrayUtil = new CompareArrayUtil(professional.clients,clients);
-                var client = new Array();
-                client = compareArrayUtil.getArrayIntersect();
-                if(client != null && client != undefined && client.length > 0){
-                  return res.status(404).send({message: 'El cliente con ' + req.body.idType + ': ' + req.body.identification + ' ya existe para este profesional'});
-                }
-                else{
-                  //crear cliente y persona
-                  var resultSaveClientDelegate = ClientDelegate.saveServicesDelegate(req);
-                  resultSaveClientDelegate.then((results) => {
-                    if(results.errors){
-                      return res.status(500).send({message: 'Error en la petición: ' + results});
-                    }
-                    else{
-                      return res.status(200).send({message: 'Cliente asociado al profesional'});
-                    }  
-                  }); 
-                }
-              });
-              
-            } 
-            else{
-              //crear cliente y persona
-              var resultSaveClientDelegate = ClientDelegate.saveServicesDelegate(req);
-              resultSaveClientDelegate.then((results) => {
-                if(results.errors){
-                  return res.status(500).send({message: 'Error en la petición: ' + results});
-                }
-                else{
-                  return res.status(200).send({message: 'Cliente asociado al profesional'});
-                } 
-              });    
-            }
-          });  
+    if(req.params.uid != undefined && req.params.uid != null){
+      if(req.body.extension != null && req.body.phone == null){
+        return res.status(404).send({message: "Si diligencia el número de la extensión, debe seleccionar el número de teléfono fijo"});
+      }
+      var invalidIdentification = false;
+      var invalidIdType = false;
+      if(req.body.idType == undefined || req.body.idType == null || req.body.idType.trim() == "")
+      {
+        invalidIdType = true;
+      }
+      if(req.body.identification == undefined || req.body.identification == null || req.body.identification.trim() == ""){
+        invalidIdentification = true;
+      }  
+      if(invalidIdentification == false && invalidIdType == false){
+        req.body.status = ActivationStatus.ACTIVE;
+        var personService = PersonService.findPersonsByIdentification(req.body.idType, req.body.identification);
+        personService.then((persons) => {
+          if(persons != undefined && persons != null){
+            //Buscar cliente por persona
+            var clientService = ClientService.findClientsByPersonsId(persons);
+            clientService.then((clients) => {
+              if(clients != undefined && clients != null && clients.length > 0){
+                var professionalService = ProfessionalService.findClientsByClientsAndProfessionalUid(req.params.uid, clients);
+                professionalService.then((professional) => {
+                  var clientsArray = new Array();
+                  for(var i=0;i<clients.length;i++){
+                    var cli = clients[i];
+                    clientsArray.push(cli._id);
+                  }
+                  var compareArrayUtil = new CompareArrayUtil(professional.clients,clientsArray);
+                  var client = new Array();
+                  client = compareArrayUtil.getArrayIntersect();
+                  if(client != null && client != undefined && client.length > 0){
+                    return res.status(404).send({message: 'El cliente con ' + req.body.idType + ': ' + req.body.identification + ' ya existe para este profesional'});
+                  }
+                  else{
+                    //crear cliente y persona
+                    var resultSaveClientDelegate = ClientDelegate.saveClientsDelegate(req);
+                    resultSaveClientDelegate.then((results) => {
+                      if(results.errors){
+                        return res.status(500).send({message: 'Error en la petición: ' + results});
+                      }
+                      else{
+                        return res.status(200).send({message: 'Cliente asociado al profesional'});
+                      }  
+                    }).catch((error) => {
+                      return res.status(500).send({message: "" + error});
+                    });
+                  }
+                });
+                
+              } 
+              else{
+                //crear cliente y persona
+                var resultSaveClientDelegate = ClientDelegate.saveClientsDelegate(req);
+                resultSaveClientDelegate.then((results) => {
+                  if(results.errors){
+                    return res.status(500).send({message: 'Error en la petición: ' + results});
+                  }
+                  else{
+                    return res.status(200).send({message: 'Cliente asociado al profesional'});
+                  } 
+                }).catch((error) => {
+                  return res.status(500).send({message: "" + error});
+                });    
+              }
+            });  
+          }
+          else{
+            //crear cliente y persona
+            var resultSaveClientDelegate = ClientDelegate.saveClientsDelegate(req);
+            resultSaveClientDelegate.then((results) => {
+              if(results.errors){
+                return res.status(500).send({message: 'Error en la petición: ' + results});
+              }
+              else{
+                return res.status(200).send({message: 'Cliente asociado al profesional'});
+              } 
+            }).catch((error) => {
+              return res.status(500).send({message: "" + error});
+            });  
+          }
+        });
+      }
+      else{
+        if(invalidIdentification && invalidIdType == false || invalidIdentification == false && invalidIdType){
+          return res.status(404).send({message: 'Tipo de documento o identificación invalidos'});
         }
-        else{
+        else{  
           //crear cliente y persona
-          var resultSaveClientDelegate = ClientDelegate.saveServicesDelegate(req);
+          var resultSaveClientDelegate = ClientDelegate.saveClientsDelegate(req);
           resultSaveClientDelegate.then((results) => {
             if(results.errors){
               return res.status(500).send({message: 'Error en la petición: ' + results});
             }
             else{
               return res.status(200).send({message: 'Cliente asociado al profesional'});
-            } 
-          });  
-        }
-      });
+            }
+          }).catch((error) => {
+            return res.status(500).send({message: "" + error});
+          }); 
+        }    
+      }
     }
     else{
-      if(invalidIdentification && invalidIdType == false || invalidIdentification == false && invalidIdType){
-        return res.status(404).send({message: 'Tipo de documento o identificación invalidos'});
-      }
-      else{  
-        //crear cliente y persona
-        var resultSaveClientDelegate = ClientDelegate.saveServicesDelegate(req);
-        resultSaveClientDelegate.then((results) => {
-          if(results.errors){
-            return res.status(500).send({message: 'Error en la petición: ' + results});
-          }
-          else{
-            return res.status(200).send({message: 'Cliente asociado al profesional'});
-          }
-        }); 
-      }    
+      return res.status(404).send({message: 'El uid del profesional es requerido'});
     }
-  }
-  else{
-    return res.status(404).send({message: 'El uid del profesional es requerido'});
-  }
+
 }  
 
 /**
@@ -600,6 +655,9 @@ exports.setClientProfessionalByUid = function(req, res){
  */
 exports.setClientProfessionalUpdateByUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
+    if(req.body.extension != null && req.body.phone == null){
+      return res.status(404).send({message: "Si diligencia el número de la extensión, debe seleccionar el número de teléfono fijo"});
+    }
     var professionalService = ProfessionalService.findClientsByProfessionalUid(req.params.uid);
     professionalService.then((professional) => {
       var clients = professional.clients;
@@ -618,11 +676,28 @@ exports.setClientProfessionalUpdateByUid = function(req, res){
         }  
         if(isClient){
           if(clientId != undefined){
+            var channels = req.body.channels;
+            var arrayUtil = new ArrayUtil(channels);
+
+            if(channels == null || channels == undefined || channels.length == 0){
+              return res.status(404).send({message: 'Es obligatorio escoger por lo menos un canal de comunicación con el cliente'});
+            }
+
+            if(arrayUtil.contains(Channel.SMS) && arrayUtil.contains(Channel.WHATSAPP)){
+              return res.status(404).send({message: 'No se pueden configurar los canales de WhatsApp y SMS para un cliente'});
+            }
+
             var clientService = ClientService.findClientBy_id(clientId);
             clientService.then((client) => {
-              var personService = PersonService.updatePerson(req, client.person);
+              var personService = PersonService.updatePerson(req, client.person, false);
               personService.then((person) => {
-                res.json(person); 
+                var clientService = ClientService.updateRemoveChannelsClientBy_id(clientId,client.channels);
+                clientService.then((client) => {
+                  var clientService = ClientService.saveChannelsClient(clientId, channels);
+                  clientService.then((results) => {
+                    res.json(person);
+                  }); 
+                });   
               });
             }); 
           }

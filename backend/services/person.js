@@ -5,22 +5,12 @@ var Person = require('../models/person');
 exports.savePerson = async function(req){
   var person = new Person();
   Object.keys(req.body).forEach(key => {
-    if (req.body[key]!=null && req.body[key]!=undefined) {
-         person[key] = req.body[key];
+    if (req.body[key]!=null && req.body[key]!=undefined){
+      if (!(typeof req.body[key] == "string" && req.body[key].trim() == "")) {
+        person[key] = req.body[key];
+      }   
     }
   });
-
-  /*var person = new Person();
-  person.personName = req.body.personName;
-  person.personLastName = req.body.personLastName;
-  person.idType = req.body.idType;
-  person.identification = req.body.identification;
-  person.gender = req.body.gender;
-  person.birthdate = req.body.birthdate;
-  person.phone = req.body.phone;
-  person.mobile = req.body.mobile;
-  person.email = req.body.email;
-  person.address = req.body.address;*/
   try{
     await person.save();
   }
@@ -37,12 +27,16 @@ exports.savePerson = async function(req){
  * Actualiza una persona. Actualiza la persona.
  * @param {*} req 
  */
-exports.updatePerson = async function(req, personId){
+exports.updatePerson = async function(req, personId, isProfessional){
  const updatedFields = {};
  Object.keys(req.body).forEach(key => {
    if (req.body[key]!=null && req.body[key]!=undefined) {
-     if(key != "email" && key != "uid" && key != "_id"){
-        updatedFields[key] = req.body[key];
+     if(key != "uid" && key != "_id"){
+      if(key == "email" &&  !isProfessional){
+        if (!(typeof req.body[key] == "string" && req.body[key].trim() == "")) {
+          updatedFields[key] = req.body[key];
+        }  
+      }
      }
    }
  });

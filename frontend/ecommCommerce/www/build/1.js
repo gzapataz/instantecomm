@@ -1,14 +1,14 @@
 webpackJsonp([1],{
 
-/***/ 898:
+/***/ 899:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegistrationPageModule", function() { return RegistrationPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration__ = __webpack_require__(914);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration__ = __webpack_require__(915);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,18 +38,18 @@ var RegistrationPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 914:
+/***/ 915:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegistrationPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_user_service_user_service__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__tabs_tabs__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__classes_ProfessionalClass__ = __webpack_require__(915);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__classes_customer_class__ = __webpack_require__(916);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__classes_ProfessionalClass__ = __webpack_require__(916);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__classes_customer_class__ = __webpack_require__(917);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -122,20 +122,24 @@ var RegistrationPage = /** @class */ (function () {
             this.reg.password2 = '';
         }
         else {
-            this.reg.email = this.professional.email;
-            this.afAuth.auth.createUserWithEmailAndPassword(this.professional.email, this.reg.password)
-                .then(function (res) { return _this.regSuccess(res); })
-                .catch(function (err) { return _this.displayAlert('Error!', err); });
+            if (this.validateData()) {
+                this.reg.email = this.professional.email;
+                this.afAuth.auth.createUserWithEmailAndPassword(this.professional.email, this.reg.password)
+                    .then(function (res) { return _this.regSuccess(res); })
+                    .catch(function (err) { return _this.displayAlert('Error!', err); });
+            }
         }
     };
     RegistrationPage.prototype.updateAccount = function () {
         var _this = this;
         delete this.professional['email'];
         console.log("Update:" + JSON.stringify(this.professional));
-        this.userService.updateDBUser(this.professional).subscribe(function (data) {
-            console.log("UpdatedData:" + JSON.stringify(data));
-            _this.viewCtrl.dismiss();
-        });
+        if (this.validateData()) {
+            this.userService.updateDBUser(this.professional).subscribe(function (data) {
+                console.log("UpdatedData:" + JSON.stringify(data));
+                _this.viewCtrl.dismiss();
+            });
+        }
     };
     RegistrationPage.prototype.regSuccess = function (result) {
         var _this = this;
@@ -146,6 +150,40 @@ var RegistrationPage = /** @class */ (function () {
             _this.userService.logOn(_this.reg)
                 .then(function (res) { return _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__tabs_tabs__["a" /* TabsPage */]); });
         });
+    };
+    RegistrationPage.prototype.validateData = function () {
+        if ((this.professional.startHour == undefined || this.professional.startHour == null) || (this.professional.endHour == undefined || this.professional.endHour == null)) {
+            var theAlert = this.alertCtrl.create({
+                title: "Horario Presentación Calendario en la Pantalla",
+                subTitle: "Deben ser horas enteras entre la 1 y las 24 PM",
+                buttons: ['OK']
+            });
+            theAlert.present();
+            return false;
+        }
+        console.log('this.professional.startHour: ' + +this.professional.startHour + typeof +this.professional.startHour + ' this.professional.endHour ' + typeof +this.professional.startHour + ' ' + +this.professional.endHour);
+        if (+this.professional.startHour >= +this.professional.endHour) {
+            var theAlert = this.alertCtrl.create({
+                title: "Horario Presentación Calendario en la Pantalla",
+                subTitle: "La hora inicial debe ser menor que la hora final",
+                buttons: ['OK']
+            });
+            theAlert.present();
+            return false;
+        }
+        return true;
+    };
+    RegistrationPage.prototype.onChangeHourStart = function (hour) {
+        var hourVal = parseInt(hour);
+        console.log('INTEGER:' + ' ' + hourVal + ' ' + !Number.isInteger(hourVal) + ' ' + typeof hourVal);
+        if (hourVal == undefined || hourVal == null || !Number.isInteger(hourVal)) {
+            var theAlert = this.alertCtrl.create({
+                title: "Horario Presentación Calendario en la Pantalla",
+                subTitle: "Deben ser horas enteras entre la 1 y las 24 PM",
+                buttons: ['OK']
+            });
+            theAlert.present();
+        }
     };
     RegistrationPage.prototype.cancel = function () {
         this.viewCtrl.dismiss();
@@ -170,7 +208,7 @@ var RegistrationPage = /** @class */ (function () {
     };
     RegistrationPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-registration',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/'<ion-header>\n  <ion-toolbar color="primary">\n    <ion-title>{{action}}</ion-title>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-item>\n    <ion-label color="facebook">Nombre</ion-label>\n    <ion-input type="text" [(ngModel)] = "professional.personName.firstName" name="name"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Apellido</ion-label>\n    <ion-input type="text" [(ngModel)] = "professional.personName.lastName" name="lastName"></ion-input>\n  </ion-item>\n  <ion-item *ngIf="action == \'Registrarse\'">\n    <ion-label color="facebook">Correo Electrónico</ion-label>\n    <ion-input type="email" [(ngModel)] = "professional.email" name="email"></ion-input>\n  </ion-item>\n  <ion-item *ngIf="action == \'Registrarse\'">\n    <ion-label color="facebook">Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password" name="password"></ion-input>\n  </ion-item>\n  <ion-item *ngIf="action == \'Registrarse\'">\n    <ion-label color="facebook">Repetir Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password2" name="password2"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Hora de Inicio (*)</ion-label>\n    <ion-input  type="number" placeholder="6" [(ngModel)]="professional.startHour" required="required">\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Hora de Salida (*)</ion-label>\n    <ion-input  type="number" placeholder="21" [(ngModel)]="professional.endHour" required="required">\n    </ion-input>\n  </ion-item>\n\n  <button ion-button full color="secondary" (click)="registerAccount()" *ngIf="action == \'Registrarse\'">Registrarse</button>\n  <button ion-button full color="secondary" (click)="updateAccount()" *ngIf="action == \'Actualizar\'">Actualizar</button>\n  <button ion-button full icon-left color="gray" (click)="cancel()" *ngIf="action == \'Actualizar\'">Cancelar</button>\n  <button ion-button full icon-left color="danger" (click)="deleteUser()" *ngIf="action == \'Actualizar\'">Eliminar</button>\n\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/,
+            selector: 'page-registration',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/'<ion-header>\n  <ion-toolbar color="primary">\n    <ion-title>{{action}}</ion-title>\n  </ion-toolbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-item>\n    <ion-label color="facebook">Nombre</ion-label>\n    <ion-input type="text" [(ngModel)] = "professional.personName.firstName" name="name"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label color="facebook">Apellido</ion-label>\n    <ion-input type="text" [(ngModel)] = "professional.personName.lastName" name="lastName"></ion-input>\n  </ion-item>\n  <ion-item *ngIf="action == \'Registrarse\'">\n    <ion-label color="facebook">Correo Electrónico</ion-label>\n    <ion-input type="email" [(ngModel)] = "professional.email" name="email"></ion-input>\n  </ion-item>\n  <ion-item *ngIf="action == \'Registrarse\'">\n    <ion-label color="facebook">Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password" name="password"></ion-input>\n  </ion-item>\n  <ion-item *ngIf="action == \'Registrarse\'">\n    <ion-label color="facebook">Repetir Password</ion-label>\n    <ion-input type="password" [(ngModel)] = "reg.password2" name="password2"></ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Hora de Inicio Calendario por Día (*)</ion-label>\n    <ion-input  type="number" placeholder="hora inicio calendario" min = 1 max = 24 (ionBlur)="onChangeHourStart(professional.startHour)"  [(ngModel)]="professional.startHour" required="required">\n    </ion-input>\n  </ion-item>\n  <ion-item>\n    <ion-label >Hora de Fin Calendario por Día (*)</ion-label>\n    <ion-input  type="number" placeholder="hora fin calendario" min = 1 max = 24 (ionBlur)="onChangeHourStart(professional.endHour)" [(ngModel)]="professional.endHour" required="required">\n    </ion-input>\n  </ion-item>\n\n  <button ion-button full color="secondary" (click)="registerAccount()" *ngIf="action == \'Registrarse\'">Registrarse</button>\n  <button ion-button full color="secondary" (click)="updateAccount()" *ngIf="action == \'Actualizar\'">Actualizar</button>\n  <button ion-button full icon-left color="gray" (click)="cancel()" *ngIf="action == \'Actualizar\'">Cancelar</button>\n  <button ion-button full icon-left color="danger" (click)="deleteUser()" *ngIf="action == \'Actualizar\'">Eliminar</button>\n\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/registration/registration.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_2_angularfire2_auth__["a" /* AngularFireAuth */],
@@ -183,7 +221,7 @@ var RegistrationPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 915:
+/***/ 916:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -200,7 +238,7 @@ var ProfessionalClass = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 916:
+/***/ 917:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

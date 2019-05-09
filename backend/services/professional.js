@@ -146,7 +146,7 @@ exports.saveServiceProfessional =  async function(professionalUid, service){
 exports.findProfessionalByUid = function(uid){
   var professional = Professional.findOne({uid:uid}).select('professionalSince lastVisit status uid startHour endHour')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 'address':1}})
   .populate({path:'professionalSchedule', select: {'idSchedule':1}});
   return professional;
 }
@@ -159,7 +159,7 @@ exports.findAllInformationProfessionalByUid = function(uid){
   var professional = Professional.findOne({uid:uid})
   .select('professionalSince lastVisit status uid startHour endHour')
   .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 'address':1}})
   .populate(
       {
         path:'professionalSchedule', select: {'idSchedule':1}, 
@@ -178,12 +178,12 @@ exports.findAllInformationProfessionalByUid = function(uid){
     .populate(
       {
         path:'clients', 
-        select: ('clientSince lastVisit status'),
+        select: ('clientSince lastVisit status channels'),
         populate:{
           path:'person', 
           select: {
             'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-            'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1
+            'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 'address':1
           }          
         }  
       })
@@ -201,8 +201,8 @@ exports.findAllInformationProfessionalByUid = function(uid){
  */
 exports.findProfessionalByPersonId = function(personId){
   var professional = Professional.findOne({person:personId}).select('professionalSince lastVisit status uid startHour endHour')
-  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  .populate({path:'person', select: {'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 'address':1}})
   .populate({path:'professionalSchedule', select: {'idSchedule':1}});
   return professional;
 }
@@ -231,8 +231,8 @@ exports.findClientByProfessionalUid = function(uid, client){
  * @param {*} uid 
  * @param {*} clients
  */
-exports.findClientsByProfessionalUid = function(uid, clients){
-  var professional = Professional.find({uid:uid, clients: { "$in" : clients}});
+exports.findClientsByClientsAndProfessionalUid = function(uid, clients){
+  var professional = Professional.findOne({uid:uid, clients: { "$in" : clients}});
   return professional;
 } 
 
@@ -252,8 +252,8 @@ exports.findProfessionalsByPersons = function(persons){
 exports.findProfessionalsBy_id = function(_ids){
   var professional = Professional.find({_id: { "$in" : _ids}})
   .select('professionalSince lastVisit status uid startHour endHour')
-  .populate({path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-  'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1}})
+  .populate({path:'person', select: {'personName':1, 'creationDate':1, 'idType':1 ,
+  'identification':1,'gender':1, 'phone':1, 'extension':1,'mobile':1, 'email':1, 'address':1}})
   return professional;
 }
 
@@ -341,10 +341,11 @@ exports.findClientsByProfessionalUid = function(uid){
   var professional = Professional.findOne({uid:uid})
     .populate({path:'clients',
       match: {"status": { "$ne": ActivationStatus.INACTIVE}},
-      select: {'clientSince':1, 'lastVisit':1, 'status':1},
+      select: {'clientSince':1, 'lastVisit':1, 'status':1, 'channels':1},
       populate: {
         path:'person', select: {'mobile':1, 'personName':1, 'creationDate':1, 'idType':1 ,
-        'identification':1,'gender':1, 'phone':1, 'mobile':1, 'email':1, 'address':1},
+        'identification':1,'gender':1, 'phone':1, 'extension':1, 'mobile':1, 'email':1, 
+        'address':1, 'birthdate':1, 'age':1},
         options: {sort: {personName: 'asc'}}
       }
     });

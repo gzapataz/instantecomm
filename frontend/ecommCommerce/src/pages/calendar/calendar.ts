@@ -60,7 +60,8 @@ export class CalendarPage implements OnInit, OnDestroy {
   toDate = null;
   startHour = "6";
   endHour = '22';
-  space = '1';
+  timeInterval = "30";
+  space = '30';
 
   calendar = {
     mode: 'day',
@@ -382,10 +383,33 @@ export class CalendarPage implements OnInit, OnDestroy {
     }
   }
 
+  getEndSlotAppTime (tempHoraIni, tempHoraFin): AppointmentClass[] {
+    return this.eventSource.filter( eventDate => {
+      return eventDate.endTime >= tempHoraIni && eventDate.endTime <= tempHoraFin
+    });
+
+  }
+
+  eventInSlot(ev) {
+    var tempHora = ev.selectedTime;
+    let fromDateMls = new Date(ev.selectedTime).getTime() + parseInt(this.timeInterval)*60*1000;
+    let endTime = new Date(fromDateMls);
+
+    let event = this.getEndSlotAppTime(tempHora, endTime)
+    console.log(' PruebaInic Evento ' + JSON.stringify(event))
+
+    if (event.length > 0) {
+      tempHora = event[0].endTime;
+    }
+    console.log(' PruebaInic Slot ' + ev.selectedTime + ' ' + endTime + ' Evento ' + JSON.stringify(event) + ' HORA FIN ' + tempHora)
+    return tempHora;
+  }
+
   onTimeSelected(ev) {
     this.theColor = 'blue';
     //console.log('Event onTimeSelected' + ev + ' ' + this.eventSelected);
-    this.selectedDay = ev.selectedTime;
+    this.selectedDay = this.eventInSlot(ev);
+    console.log ('Fecha Inicio: ' + this.selectedDay);
     if (!this.eventSelected && (this.calendar.mode == 'day' || this.calendar.mode == 'week') ) {
       if (!this.findException(this.selectedDay)) {
         if (this.customerId) {

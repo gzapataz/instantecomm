@@ -50,12 +50,12 @@ export class LoginPage {
 
   signOn() {
     if (!this.login.email || !this.login.password) {
-      this.userService.displayAlert('Error',  "Ingresar correo electronico y password");
+      this.userService.displayAlert('Error',  "Ingresar correo electrónico y password");
     }
     else {
       this.userService.logOn(this.login)
         .then(returned => {
-          //console.log('RETORNO LOGGED: ' + JSON.stringify(returned))
+          console.log('RETORNO LOGGED: ' + JSON.stringify(returned))
           if (this.userService.success) {
             this.globalService.readFromStorageProfessionalData().then( professionalData => {
               console.log('DisparadoLOGIN0:' + JSON.stringify(professionalData))
@@ -64,18 +64,27 @@ export class LoginPage {
             });
           }
           else {
-            console.log('elese error');
-            this.login.email = '';
-            this.login.password = '';
+
+
           }
 
-        })
+        }).catch( error => {
+          let theAlert = this.alertCtrl.create({
+            title: "Credenciales Erroneas",
+            subTitle: "Los datos de login o password no coinciden",
+            buttons: ['OK']
+          });
+          theAlert.present();
+          console.log('else error');
+          this.login.email = '';
+          this.login.password = '';
+      })
     }
   }
 
 
 
-  forgotPwd(email) {
+  forgotPwd() {
     console.log('email:' + this.login.email)
     if (this.login.email == "" || this.login.email == null || this.login.email == undefined) {
       let theAlert = this.alertCtrl.create({

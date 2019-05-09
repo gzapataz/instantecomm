@@ -25733,19 +25733,62 @@ customer-search modal-wrapper {
   }
 }
 
-page-calendar .left {
-  border-right: 1px solid #000000;
-  padding: 0px;
-  overflow: scroll;
+page-calendar {
+  /*
+    .left {
+      border-right: 1px solid #000000;
+      padding: 0px;
+      overflow: scroll;
+    }
+
+    .right {
+      padding: 0px;
+      overflow: scroll;
+    }
+
+
+
+
+
+    .dayview-allday-content-wrapper{
+      height: 0px;
+    }
+
+
+
+
+  */
 }
 
-page-calendar .right {
-  padding: 0px;
-  overflow: scroll;
+page-calendar .dayview-allday-label {
+  display: none;
+}
+
+page-calendar .weekview-allday-table {
+  display: none;
 }
 
 page-calendar ion-row {
   height: 100%;
+}
+
+page-calendar .dayview-normal-event-container {
+  margin-top: 0px;
+  margin-bottom: 0%;
+}
+
+page-calendar .weekview-normal-event-container {
+  margin-top: 37px;
+  margin-bottom: 0%;
+}
+
+page-calendar .parentContent {
+  margin-bottom: 0%;
+}
+
+page-calendar .coreId {
+  margin-top: 0%;
+  margin-bottom: 0%;
 }
 
 page-customer ion-icon {

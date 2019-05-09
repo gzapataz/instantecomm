@@ -2,6 +2,7 @@
 
 var mongoose              = require('mongoose');
 const ActivationStatus     = require('../enums/activationStatus');
+const Channel            = require('../enums/channel');
 var Schema                = mongoose.Schema;
 
 var clientSchema   = new Schema({
@@ -22,8 +23,8 @@ var clientSchema   = new Schema({
     uid: String,
     modificationDate:{ type: Date, default: Date.now },
     channels:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'ClientChannel'
+        type: String,
+        enum: Object.values(Channel)
     }]
 });
 

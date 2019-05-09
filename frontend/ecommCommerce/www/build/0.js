@@ -1,14 +1,14 @@
 webpackJsonp([0],{
 
-/***/ 891:
+/***/ 892:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventModalPageModule", function() { return EventModalPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__event_modal__ = __webpack_require__(905);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__event_modal__ = __webpack_require__(906);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,21 +38,21 @@ var EventModalPageModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 905:
+/***/ 906:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EventModalPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(906);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular2_uuid__ = __webpack_require__(908);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__ = __webpack_require__(907);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular2_uuid__ = __webpack_require__(909);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular2_uuid___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_angular2_uuid__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_service_service_service_service__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__classes_appointment_class__ = __webpack_require__(909);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_common_locales_es_CO__ = __webpack_require__(511);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__classes_appointment_class__ = __webpack_require__(910);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__angular_common_locales_es_CO__ = __webpack_require__(514);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_common__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__angular_platform_browser__ = __webpack_require__(49);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -87,6 +87,7 @@ var EventModalPage = /** @class */ (function () {
         this.platform = platform;
         this.sanitizer = sanitizer;
         this.messageTest = '';
+        this.action = '';
         this.eventColor = 'default';
         this.servicesAvail = [];
         this.events = [];
@@ -107,7 +108,7 @@ var EventModalPage = /** @class */ (function () {
         else {
             var preselectedDate = __WEBPACK_IMPORTED_MODULE_2_moment__(this.navParams.get('selectedDay')).format();
             var thsService = this.navParams.get('service');
-            this.event = new __WEBPACK_IMPORTED_MODULE_6__classes_appointment_class__["a" /* AppointmentClass */](null, __WEBPACK_IMPORTED_MODULE_4_angular2_uuid__["UUID"].UUID(), this.professional.idSchedule, preselectedDate, preselectedDate, 0, 'Agendada', this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
+            this.event = new __WEBPACK_IMPORTED_MODULE_6__classes_appointment_class__["a" /* AppointmentClass */](null, __WEBPACK_IMPORTED_MODULE_4_angular2_uuid__["UUID"].UUID(), this.professional.idSchedule, preselectedDate, preselectedDate, 0, 'No Agendada', this.customerSelected._id, this.customerSelected.name, this.professional.userId, thsService, null);
             this.event.startTime = preselectedDate;
             if (thsService !== undefined) {
                 this.event.service = thsService;
@@ -117,12 +118,15 @@ var EventModalPage = /** @class */ (function () {
                 });
             }
         }
-        this.messageTest = 'Buenas tardes ' + this.customerSelected.person.personName.firstName + ' su cita de ' +
-            //this.event.title.slice(0, this.event.title.indexOf(':'))
-            this.event.title
-            + ' para el dia ' + __WEBPACK_IMPORTED_MODULE_2_moment__(this.event.startTime).locale(__WEBPACK_IMPORTED_MODULE_7__angular_common_locales_es_CO__["a" /* default */].toLocaleString()).format('LLLL') +
-            ' Por favor para confirmar presione el siguiente link:\n' +
-            'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada';
+        console.log('Evento: ' + JSON.stringify(this.event));
+        if (this.event.status != 'No Agendada') {
+            this.messageTest = 'Buenas tardes ' + this.customerSelected.person.personName.firstName + ' su cita de ' +
+                //this.event.title.slice(0, this.event.title.indexOf(':'))
+                this.event.title.slice(0, this.event.title.indexOf(':'))
+                + ' para el dia ' + __WEBPACK_IMPORTED_MODULE_2_moment__(this.event.startTime).locale(__WEBPACK_IMPORTED_MODULE_7__angular_common_locales_es_CO__["a" /* default */].toLocaleString()).format('LLLL') +
+                ' está agendada. Por favor para confirmar presione el siguiente link:\n' +
+                'https://ecommercealinstante.herokuapp.com/appointments/confirm/' + this.event._id + '?status=Confirmada';
+        }
         console.log('MESSAGE : ' + this.messageTest);
     }
     EventModalPage.prototype.validateSlotTime = function (currentEvent) {
@@ -144,7 +148,7 @@ var EventModalPage = /** @class */ (function () {
             this.event = this.eventSelected;
         this.getServices();
     };
-    EventModalPage.prototype.sanitaize = function (url) {
+    EventModalPage.prototype.sanitaize = function () {
         var conector = '?body=';
         if (this.platform.is('ios')) {
             conector = '&body=';
@@ -214,7 +218,7 @@ var EventModalPage = /** @class */ (function () {
             imports: [__WEBPACK_IMPORTED_MODULE_3__pipes_pipes_module__["a" /* PipesModule */]]
         }),
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-event-modal',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/event-modal/event-modal.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n    <ion-title>Cita: {{customerSelected.person.personName.lastName}} {{customerSelected.person.personName.firstName}}</ion-title>\n  </ion-navbar>\n  <ion-buttons end>\n    <button ion-button color="secondary" small><a href="tel:{{customerSelected.person.mobile}}"><ion-icon name="call"></ion-icon> </a></button>\n    <button ion-button color="secondary" small><a [href]=sanitaize()>SMS</a></button>\n    <button ion-button color="secondary" small><a href="https://wa.me/{{customerSelected.person.mobile}}?text={{messageTest}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>\n    <button ion-button color="secondary" small><a href="mailto:{{customerSelected.person.email}}?subject=Su Próxima Cita&body={{messageTest}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>\n  </ion-buttons>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item>\n      <ion-label color={{eventColor}}>Servicio</ion-label>\n      <ion-select  type="text" placeholder="Tipo" [(ngModel)]="event.service" (ionChange)="onServiceSelected()">\n        <ion-option  *ngFor="let service of servicesAvail" value={{service._id}}>{{service.name}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Inicio</ion-label>\n      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" (ionChange)="newStartDate()"></ion-datetime>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Fin</ion-label>\n      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime"></ion-datetime>\n    </ion-item>\n    <ion-item>\n      <ion-label>Estado</ion-label>\n      <ion-label end>{{event.status}}</ion-label>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Todo el Día?</ion-label>\n      <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>\n    </ion-item>\n  </ion-list>\n  <ion-buttons *ngIf="!this.eventSelected">\n    <button ion-button full icon-left color="secondary" (click)="save()">\n      <ion-icon name="checkmark"></ion-icon> Adicionar Cita\n    </button>\n  </ion-buttons>\n  <ion-buttons *ngIf="this.eventSelected">\n    <button ion-button small (click)="save()">\n      <ion-icon name="checkmark"></ion-icon> Actualizar Cita\n    </button>\n    <button ion-button small color="secondary" icon-left (click)="confirmAppnt(\'Confirmada\')">\n      <ion-icon name="checkmark"></ion-icon>Confirmar\n    </button>\n    <button ion-button small icon-left color="danger" (click)="confirmAppnt(\'Cancelada\')">\n      <ion-icon name="checkmark"></ion-icon>Cancelar Cita\n    </button>\n  </ion-buttons>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/event-modal/event-modal.html"*/
+            selector: 'page-event-modal',template:/*ion-inline-start:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/event-modal/event-modal.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <ion-buttons start>\n      <button ion-button icon-only (click)="cancel()">\n        <ion-icon name="close"></ion-icon>\n      </button>\n\n    </ion-buttons>\n    <ion-title>Cita: {{customerSelected.person.personName.lastName}} {{customerSelected.person.personName.firstName}}</ion-title>\n  </ion-navbar>\n  <ion-buttons end>\n    <button ion-button color="secondary" small><a href="tel:{{customerSelected.person.mobile}}"><ion-icon name="call"></ion-icon> </a></button>\n    <button ion-button color="secondary" small *ngIf="event.service && event.status !=\'No Agendada\'"><a [href]=sanitaize()>SMS</a></button>\n    <button ion-button color="secondary" small *ngIf="event.service && event.status !=\'No Agendada\'"><a href="https://wa.me/{{customerSelected.person.mobile}}?text={{messageTest}}"><ion-icon name="chatbubbles"></ion-icon>  </a></button>\n    <button ion-button color="secondary" small *ngIf="event.service && event.status !=\'No Agendada\'"><a href="mailto:{{customerSelected.person.email}}?subject=Su Próxima Cita&body={{messageTest}}" target="_top"><ion-icon name="mail"></ion-icon> </a></button>\n  </ion-buttons>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item>\n      <ion-label color={{eventColor}}>Servicio</ion-label>\n      <ion-select  type="text" placeholder="Tipo" [(ngModel)]="event.service" (ionChange)="onServiceSelected()" required>\n        <ion-option  *ngFor="let service of servicesAvail" value={{service._id}}>{{service.name}}</ion-option>\n      </ion-select>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Inicio</ion-label>\n      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" (ionChange)="newStartDate()"></ion-datetime>\n    </ion-item>\n\n    <ion-item>\n      <ion-label>Fin</ion-label>\n      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime"></ion-datetime>\n    </ion-item>\n    <ion-item>\n      <ion-label>Estado</ion-label>\n      <ion-label end>{{event.status}}</ion-label>\n    </ion-item>\n\n    <!--ion-item>\n      <ion-label>Todo el Día?</ion-label>\n      <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>\n    </ion-item-->\n  </ion-list>\n  <ion-buttons *ngIf="!this.eventSelected">\n    <button ion-button full icon-left color="secondary" (click)="save()">\n      <ion-icon name="checkmark"></ion-icon> Adicionar Cita\n    </button>\n  </ion-buttons>\n  <ion-buttons *ngIf="this.eventSelected">\n    <button ion-button small (click)="save()">\n      <ion-icon name="checkmark"></ion-icon> Actualizar Cita\n    </button>\n    <button ion-button small color="secondary" icon-left (click)="confirmAppnt(\'Confirmada\')">\n      <ion-icon name="checkmark"></ion-icon>Confirmar\n    </button>\n    <button ion-button small icon-left color="danger" (click)="confirmAppnt(\'Cancelada\')">\n      <ion-icon name="checkmark"></ion-icon>Cancelar Cita\n    </button>\n  </ion-buttons>\n</ion-content>\n'/*ion-inline-end:"/Users/Gabriel/Documents/Universidad/ProyectoIntegrador/instantecomm/frontend/ecommCommerce/src/pages/event-modal/event-modal.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ViewController */],
             __WEBPACK_IMPORTED_MODULE_5__providers_service_service_service_service__["a" /* ServiceServiceProvider */],
@@ -229,13 +233,13 @@ var EventModalPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 906:
+/***/ 907:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PipesModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__safe_url_safe_url__ = __webpack_require__(907);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__safe_url_safe_url__ = __webpack_require__(908);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -261,12 +265,12 @@ var PipesModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 907:
+/***/ 908:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SafeUrlPipe; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(49);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -305,7 +309,7 @@ var SafeUrlPipe = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 908:
+/***/ 909:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -349,7 +353,7 @@ exports.UUID = UUID;
 
 /***/ }),
 
-/***/ 909:
+/***/ 910:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

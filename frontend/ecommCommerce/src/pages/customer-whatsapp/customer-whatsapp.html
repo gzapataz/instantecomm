@@ -11,17 +11,15 @@
 </ion-header>
 
 <ion-content padding>
-
-    <ion-label>El paciente ha sido creado correctamente.<br></ion-label>
-    <ion-label>Para poder contactalo por WhatsApp el paciente<br></ion-label>
-    <ion-label>debe autorizar los mensajes.<br></ion-label>
+    <p>Los pacientes que prefieren notificacion por WhatsApp deben autorizar los mensajes del centro de comunicaciones de la aplicacion.
+    Por tal motivo se les debe enviar el mensaje siguiente por whatsapp</p>
     <ion-label>Es necesario enviar este link</ion-label>
   <!--ion-buttons >
     <button ion-button color="secondary" small (click)="sendSms()">SMS</button>
   </ion-buttons-->
 
   <ion-buttons >
-    <button ion-button color="secondary" small><a href="https://wa.me/{{mobile}}?text={{textData}}">Enviar Acceso</a></button>
+    <button ion-button color="secondary" small><a href="https://wa.me/{{mobile}}?text={{textData}}">Enviar</a></button>
   </ion-buttons>
 
 </ion-content>
