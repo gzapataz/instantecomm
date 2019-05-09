@@ -1,7 +1,7 @@
 //channel.js
 
 const Channel = Object.freeze({
-    EMAIL: "Masculino",
+    EMAIL: "Email",
     WHATSAPP: "WhatsApp",
     SMS: "Sms"
   });
