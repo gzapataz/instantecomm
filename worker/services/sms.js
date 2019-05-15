@@ -1,17 +1,7 @@
 #!/usr/bin/env node
 
-//const Nexmo = require('nexmo');
 var NotificationService = require('./notification');
 
-/*const nexmo = new Nexmo({
-  apiKey: '8be05119',
-  apiSecret: 'AhQ9JRVdkQUJ8ZPL'
-});*/
-
-/*const nexmo = new Nexmo({
-  apiKey: 'd2c738d3',
-  apiSecret: 'ikUlZEXe6LTrwgRt'
-})*/
 
 const accountSid = process.env.ACCOUNT_SMS_ID;
 const authToken = process.env.AUTH_SMS_TOKEN;
