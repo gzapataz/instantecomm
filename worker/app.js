@@ -16,6 +16,10 @@ var redisUrl =  process.env.REDISCLOUD_URL;
 var ObjectId = require('mongodb').ObjectID
 const initialNotification = "5ba1a970aedec9a5acbfc25e";
 const alarmNotification = "5bd12a8d1544111f28715083";
+var Notification = require('./notifications/notificationContext');
+var WhatsApp = require('./notifications/whatsAppNotification');
+var Sms = require('./notifications/smsNotification');
+
 
 process.title = "dentalapp";
 
@@ -41,7 +45,7 @@ var jobAlarm = Queue
 
 // Schedule it to run every 60 minutes. Function every(interval, job) accepts interval in either a human-interval String format or a cron String format.
 Queue.every('1 minutes', job);
-Queue.every('30 minutes', jobAlarm);
+Queue.every('5 minutes', jobAlarm);
 
 Queue.process(jobName, sendNotification);
 Queue.process(jobAlarmName, sendNotificationAlarm);
@@ -67,9 +71,28 @@ async function sendNotification(job, done) {
 
                                             var serviceName = service.name;
                                             var arrayAppointment = [serviceName, day, startTime, endTime];
-                                            WhatsappService.sendNotification(person.mobile,message.message,notification,arrayAppointment,db).then((results) => {
-                                                //console.log(results);
-                                            });
+
+                                            var channel = "WhatsApp";
+                                            if(client.channels != null && client.channels != undefined && client.channels.length > 0){
+                                                channel = client.channels[0];
+                                            }
+
+                                            console.log("[Notificación] El canal seleccionado es: " + channel);
+
+                                            try{
+                                                var channelInstance = eval("new " + channel + "()");
+                                                var notificationContext = new Notification(channelInstance);
+                                                notificationContext.execute(person.mobile,message.message,notification,arrayAppointment,db, true).then(() => {
+                                                });  
+                                            }
+                                            catch (e) {
+                                                if (e instanceof ReferenceError) {
+                                                    console.log("El canal " + channel + " no ha sido configurado");
+                                                }
+                                                else{
+                                                    console.log(e);
+                                                } 
+                                            }      
                                     });  
                                 } 
                                 else{
@@ -135,9 +158,28 @@ async function sendNotificationAlarm(job, done) {
                                                     var serviceName = service.name;
                                                     var professionalName = professionalPerson.personName.firstName + " " + professionalPerson.personName.lastName;
                                                     var arrayAppointment = [serviceName, day, startTime, endTime, url, professionalName, professionalPhone];
-                                                    WhatsappService.sendNotification(person.mobile,message.message,notification,arrayAppointment,db).then((results) => {
-                                                        //console.log(results);
-                                                    }); 
+
+                                                    var channel = "WhatsApp";
+                                                    if(client.channels != null && client.channels != undefined && client.channels.length > 0){
+                                                        channel = client.channels[0];
+                                                    }
+
+                                                    console.log("[Alarma]  El canal seleccionado es: " + channel);
+
+                                                    try{
+                                                        var channelInstance = eval("new " + channel + "()");
+                                                        var notificationContext = new Notification(channelInstance);
+                                                        notificationContext.execute(person.mobile,message.message,notification,arrayAppointment,db, false).then(() => {
+                                                        });
+                                                    }
+                                                    catch (e) {
+                                                        if (e instanceof ReferenceError) {
+                                                            console.log("El canal " + channel + " no ha sido configurado");
+                                                        }
+                                                        else{
+                                                            console.log(e);
+                                                        } 
+                                                    } 
                                                 }
                                             });  
                                         }

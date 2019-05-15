@@ -8,11 +8,12 @@
   },
   "dependencies": {
     "dateformat": "^3.0.3",
+    "killall": "1.0.4",
     "kue": "^0.11.6",
     "kue-scheduler": "^0.7.4",
     "mongoist": "^1.7.4",
     "redis": "^2.8.0",
-    "killall": "1.0.4"
+    "twilio": "^3.30.3"
   },
   "main": "app.js",
   "devDependencies": {},

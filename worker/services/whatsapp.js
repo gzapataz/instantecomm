@@ -6,6 +6,7 @@ var instanceId = process.env.GATEWAY_INSTANCE_ID; // TODO: Replace it with your 
 var clientId = process.env.CLIENT_ID;     // TODO: Replace it with your Forever Green client ID here
 var clientSecret = process.env.CLIENT_SECRET;  // TODO: Replace it with your Forever Green client secret here
 var NotificationService = require('./notification');
+//var Message = require('../utils/message')
 
 var jsonPayload = JSON.stringify({
     number: "",  // TODO: Specify the recipient's number here. NOT the gateway number
@@ -31,15 +32,10 @@ var options = {
  * @param {*} req 
  * @param {*} person 
  */
-exports.sendNotification = async function(phone, message, notification, arrayApointment , db){
-    
-    for(i=0;i<arrayApointment.length;i++){
-        var comodin = "{"+i+"}"; 
-        message = message.replace(comodin, arrayApointment[i]);
-    }
+exports.sendNotification = async function(phone, message, notification, db){
 
     var mensajePreparado = {number: phone, message: message};
-    console.log(mensajePreparado);
+
     jsonPayload = JSON.stringify(mensajePreparado);
     options.headers["Content-Length"] = Buffer.byteLength(jsonPayload);
 
@@ -56,16 +52,16 @@ exports.sendNotification = async function(phone, message, notification, arrayApo
         });
         if(response.statusCode == 200){
             NotificationService.updateStatusReport(db, notification._id, 'Sent').then((results) => {
+                console.log('Se actualiza el estado de notificación a enviada');
             });   
-            console.log('Se actualiza el estado de notificación a enviada');
         }
         else if(response.statusCode == 469){
             console.log('Plan de whatsapp agotado, sigue encolado el mensaje');
         }
         else if(response.statusCode == 471){
             NotificationService.updateStatusReport(db, notification._id, 'Error', 'Status code: ' + response.statusCode).then((results) => {
+                console.log('Se actualiza el estado a error en el móvil');
             });  
-            console.log('Se actualiza el estado a error en el móvil');
         }
     });
     return respuesta;
