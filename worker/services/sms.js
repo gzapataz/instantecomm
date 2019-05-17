@@ -5,6 +5,7 @@ var NotificationService = require('./notification');
 
 const accountSid = process.env.ACCOUNT_SMS_ID;
 const authToken = process.env.AUTH_SMS_TOKEN;
+
 const client = require('twilio')(accountSid, authToken);
 
 
