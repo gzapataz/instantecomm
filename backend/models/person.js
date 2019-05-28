@@ -19,28 +19,44 @@ var personSchema   = new Schema({
     identification: {
         type: String,
         //required: true
-    },    
-    gender: {
-        type: String,
-        allowNull: true,
-        enum: Object.values(Gender)
     },
     birthdate: { type: Date },
     creationDate:{ type: Date, default: Date.now },
     phone: String,
     extension: { type: Number},
-    mobile: { type: String 
+    mobile: { type: String,
+        
         //required: true
     },
     email: { 
         type: String, 
-        //required: true, 
-        //index: { unique: true },
-        validate: [ validator.isEmail, 'invalid email' ]
+        validate: {
+            validator: (value) => {
+              // Check if value is empty then return true.
+              if (value.trim() === "") {
+                return true;
+              }
+      
+              // If value is empty will not validate for mobile phone.
+              return validator.isEmail(value);
+            },
+            message: "email invalido"
+          }
+
     },
     address: {
         type: String
-    }
+    },
+    gender: {
+        type: String,
+        allowNull: true,
+        enum: Object.values(Gender)
+    },
+});
+
+personSchema.pre('updateOne', function (next) {
+    this.options.runValidators = true
+    next();
 });
 
 personSchema.set('toObject', { virtuals: true })

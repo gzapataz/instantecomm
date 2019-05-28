@@ -1,12 +1,17 @@
 'use strict'
 // Cargamos los modelos para usarlos posteriormente
 var Person = require('../models/person');
+var StringUtil = require('../utils/stringUtil');
 
 exports.savePerson = async function(req){
   var person = new Person();
   Object.keys(req.body).forEach(key => {
     if (req.body[key]!=null && req.body[key]!=undefined){
       if (!(typeof req.body[key] == "string" && req.body[key].trim() == "")) {
+        if(key == "mobile"){
+          var stringUtil = new StringUtil(req.body[key]);
+          req.body[key] =  stringUtil.removeSpecialCharacters();
+        }
         person[key] = req.body[key];
       }   
     }
@@ -21,8 +26,6 @@ exports.savePerson = async function(req){
 }
 
 
-
-
 /**
  * Actualiza una persona. Actualiza la persona.
  * @param {*} req 
@@ -30,28 +33,33 @@ exports.savePerson = async function(req){
 exports.updatePerson = async function(req, personId, isProfessional){
  const updatedFields = {};
  Object.keys(req.body).forEach(key => {
-   if (req.body[key]!=null && req.body[key]!=undefined) {
-     if(key != "uid" && key != "_id"){
-      if(key == "email" &&  !isProfessional){
-        if (!(typeof req.body[key] == "string" && req.body[key].trim() == "")) {
-          updatedFields[key] = req.body[key];
-        }  
+  if (req.body[key]!=null && req.body[key]!=undefined) {
+    if(key != "uid" && key != "_id"){
+     if(!(key == "email" &&  isProfessional)){
+       if(key == "email"){
+        req.body[key] = req.body[key].trim();
+       }
+       if(key == "mobile"){
+        var stringUtil = new StringUtil(req.body[key]);
+        req.body[key] =  stringUtil.removeSpecialCharacters();
       }
-     }
+      updatedFields[key] = req.body[key];     
+     }  
+    }
    }
- });
+  });
 
   try{
-    var person = Person.findOneAndUpdate(
+    var persona = await Person.findOneAndUpdate(
       {_id:personId},
       {$set:updatedFields},          
-      {safe: true, upsert: true, new: true}
+      {safe: true,new: true, runValidators:true}
     );
+    return persona;
   } 
   catch(error){
-    return error;
-  }
-  return person;
+    throw error;
+  } 
 }
 
 /**

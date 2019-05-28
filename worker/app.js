@@ -10,7 +10,6 @@ var NotificationMessageService = require('./services/notificationMessage');
 var ClientService = require('./services/client');
 var PersonService = require('./services/person');
 var ProfessionalService = require('./services/professional');
-var WhatsappService = require('./services/whatsapp');
 var herokuURL = process.env.CONFIRM_URL; //https://ecommercealinstante.herokuapp.com/appointments/confirm/";
 var redisUrl =  process.env.REDISCLOUD_URL;
 var ObjectId = require('mongodb').ObjectID
@@ -123,7 +122,7 @@ async function sendNotification(job, done) {
 }
 
 async function sendNotificationAlarm(job, done) {
-    console.log("Envío de alarmas");
+    console.info("Envío de alarmas");
     const notificationCollection = await NotificationService.getNotificationsByStatus(db,"Initial", new ObjectId(alarmNotification));
     notificationCollection.forEach(notification => {
         NotificationMessageService.getNotificationMessageBy_id(db, notification.notificationMesagge).then((message) => {
@@ -140,6 +139,15 @@ async function sendNotificationAlarm(job, done) {
                                                 var currentDate = new Date();
                                                 var startTime = new Date(appointment.startTime);
                                                 var yesterday = new Date(sumarDias(startTime, -1));
+
+
+                                                if(currentDate > startTime){
+                                                    console.warn("debería borrarse");
+                                                }
+                                                else{
+                                                    console.log("La cita esta vigente");
+                                                }
+
                                                 //console.log(yesterday -currentDate);
                                                 if(currentDate > yesterday){// 1 día es igual a 86400000ms
                                                     var professionalPhone = "";

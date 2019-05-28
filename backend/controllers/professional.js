@@ -34,7 +34,7 @@ exports.getProfessionals = function(req, res){
     exports.getProfessionalByUid(req, res);
   }
   else{
-    return res.status(404).send({message: 'No hay filtros para esta consulta'});
+    return res.status(400).send({message: 'No hay filtros para esta consulta'});
   }
 }
 
@@ -56,19 +56,19 @@ exports.setProfessional = function(req, res){
   if(req.body.email != undefined && req.body.email != null){
     if(startHour != undefined && startHour != null){
       if(!Number.isInteger(Number(startHour))){
-        return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de inicio de jornada debe ser numerica '});
+        return res.status(400).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de inicio de jornada debe ser numerica '});
       }
     }
     else{
-      return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional, La hora de inicio de jornada es requerida '});
+      return res.status(400).send({message: 'Ha ocurrido un error en la validación del profesional, La hora de inicio de jornada es requerida '});
     }
     if(endHour != undefined && endHour != null){
       if(!Number.isInteger(Number(endHour))){
-        return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de fin de jornada debe ser numerica '});
+        return res.status(400).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de fin de jornada debe ser numerica '});
       }
     }
     else{
-      return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de fin de jornada es requerida '});
+      return res.status(400).send({message: 'Ha ocurrido un error en la validación de la persona, La hora de fin de jornada es requerida '});
     }
 
     if(req.body.idType != undefined && req.body.idType != null && req.body.identification != undefined && req.body.identification != null){
@@ -77,7 +77,7 @@ exports.setProfessional = function(req, res){
         var professionalService = ProfessionalService.findProfessionalByPersonId(person);
         professionalService.then((professional) => {
           if(person != null && person != undefined && professional != null && professional != undefined){
-            return res.status(404).send({message: 'Ya existe un profesional con ' +  req.body.idType +  ' ' + req.body.identification});
+            return res.status(400).send({message: 'Ya existe un profesional con ' +  req.body.idType +  ' ' + req.body.identification});
           }
           else{
             var personService = PersonService.findPersonByEmail(req.body.email);
@@ -86,7 +86,7 @@ exports.setProfessional = function(req, res){
                 var professionalService = ProfessionalService.findProfessionalByPersonId(person) 
                   professionalService.then((professional) => {
                     if(professional != undefined && professional != null){
-                      return res.status(404).send({message: 'El profesional con email ' + req.body.email +  ' ya existe'});
+                      return res.status(400).send({message: 'El profesional con email ' + req.body.email +  ' ya existe'});
                     }
                     else{
                       var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
@@ -97,7 +97,7 @@ exports.setProfessional = function(req, res){
                           var professionalService = ProfessionalService.saveProfessional(req, person);
                           professionalService.then((professional) => {
                             if(professional.errors)
-                              return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
+                              return res.status(400).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
                             else{
                               var professionalScheduleService = ProfessionalScheduleService.
                                 saveProfessionalScheduleException(arrayExceptionsByDefault, professionalSchedule._id);
@@ -115,7 +115,7 @@ exports.setProfessional = function(req, res){
                   var personService = PersonService.savePerson(req);
                   personService.then((results) => {
                     if(results.errors)
-                      return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona ' + results});
+                      return res.status(400).send({message: 'Ha ocurrido un error en la validación de la persona ' + results});
                     else{
                       var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
                       professionalScheduleService.then((professionalSchedule) => {
@@ -125,7 +125,7 @@ exports.setProfessional = function(req, res){
                           var professionalService = ProfessionalService.saveProfessional(req, results);
                           professionalService.then((professional) => {
                             if(results.errors)
-                              return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + professional});
+                              return res.status(400).send({message: 'Ha ocurrido un error en la validación del profesional ' + professional});
                             else{
                               var professionalScheduleService = ProfessionalScheduleService.
                                 saveProfessionalScheduleException(arrayExceptionsByDefault, professionalSchedule._id);
@@ -151,7 +151,7 @@ exports.setProfessional = function(req, res){
           var professionalService = ProfessionalService.findProfessionalByPersonId(person) 
             professionalService.then((professional) => {
               if(professional != undefined && professional != null){
-                return res.status(404).send({message: 'El profesional con email ' + req.body.email +  ' ya existe'});
+                return res.status(400).send({message: 'El profesional con email ' + req.body.email +  ' ya existe'});
               }
               else{
                 var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
@@ -162,7 +162,7 @@ exports.setProfessional = function(req, res){
                     var professionalService = ProfessionalService.saveProfessional(req, person);
                     professionalService.then((professional) => {
                       if(professional.errors)
-                        return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
+                        return res.status(400).send({message: 'Ha ocurrido un error en la validación del profesional ' + results});
                       else{
                         var professionalScheduleService = ProfessionalScheduleService.
                           saveProfessionalScheduleException(arrayExceptionsByDefault, professionalSchedule._id);
@@ -180,7 +180,7 @@ exports.setProfessional = function(req, res){
             var personService = PersonService.savePerson(req);
             personService.then((results) => {
               if(results.errors)
-                return res.status(500).send({message: 'Ha ocurrido un error en la validación de la persona ' + results});
+                return res.status(400).send({message: 'Ha ocurrido un error en la validación de la persona ' + results});
               else{
                 var professionalScheduleService = ProfessionalScheduleService.saveProfessionalSchedule(req);
                 professionalScheduleService.then((professionalSchedule) => {
@@ -190,7 +190,7 @@ exports.setProfessional = function(req, res){
                     var professionalService = ProfessionalService.saveProfessional(req, results);
                     professionalService.then((professional) => {
                       if(results.errors)
-                        return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional ' + professional});
+                        return res.status(400).send({message: 'Ha ocurrido un error en la validación del profesional ' + professional});
                       else{
                         var professionalScheduleService = ProfessionalScheduleService.
                           saveProfessionalScheduleException(arrayExceptionsByDefault, professionalSchedule._id);
@@ -208,7 +208,7 @@ exports.setProfessional = function(req, res){
     }
   }
   else{
-    return res.status(500).send({message: 'Ha ocurrido un error en la validación del profesional, el email es requerido'});
+    return res.status(400).send({message: 'Ha ocurrido un error en la validación del profesional, el email es requerido'});
   }
 }
 
@@ -223,12 +223,12 @@ exports.setProfessionalUpdate = function(req, res){
     var professionalService = ProfessionalService.updateProfessional(req);
     professionalService.then((profesional) => {
       if(profesional.errors)
-        return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + profesional.errors});
+        return res.status(400).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + profesional.errors});
       else{
         var personService = PersonService.updatePerson(req, profesional.person, true); 
         personService.then((person) => {
           if(person.errors)
-            return res.status(500).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + person.errors});
+            return res.status(400).send({message: 'Ha ocurrido un error al tratar de actualizar la información del profesional ' + person.errors});
           else{
             return res.status(200).send({message: 'Profesional actualizado correctamente'});
           }  
@@ -237,7 +237,7 @@ exports.setProfessionalUpdate = function(req, res){
     });
   }
   else{
-    return res.status(500).send({message: 'El campo uid del profesional es obligatorio'});
+    return res.status(400).send({message: 'El campo uid del profesional es obligatorio'});
   }
 }
 
@@ -289,7 +289,7 @@ exports.getProfessionalByUid = function(req, res){
     });
   }
   else{
-    return res.status(500).send({message: 'El campo uid del profesional es obligatorio'});
+    return res.status(400).send({message: 'El campo uid del profesional es obligatorio'});
   }
 }
 
@@ -335,7 +335,7 @@ exports.getServicesProfessionalByUid = function(req, res){
     });
   }
   else{
-    return res.status(500).send({message: 'El uid del profesional es requerido'});
+    return res.status(400).send({message: 'El uid del profesional es requerido'});
   }
 }
 
@@ -389,7 +389,7 @@ exports.getAppointmentsScheduleByProfessionalUid = function(req, res){
     });
   }
   else{
-    return res.status(404).send({message: 'El uid del profesional es requerido'});
+    return res.status(400).send({message: 'El uid del profesional es requerido'});
   }
 }
 
@@ -448,7 +448,7 @@ exports.getClientsByProfessionalUid = function(req, res){
     });
   }
   else{
-    return res.status(404).send({message: 'El uid del profesional es requerido'});
+    return res.status(400).send({message: 'El uid del profesional es requerido'});
   }  
 }
 
@@ -527,7 +527,7 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
       });
     }
     else{
-      return res.status(404).send({message: 'El uid del profesional es requerido'});
+      return res.status(400).send({message: 'El uid del profesional es requerido'});
     }
   }
 
@@ -540,7 +540,7 @@ exports.getExceptionsScheduleByProfessionalUid = function(req, res){
 exports.setClientProfessionalByUid = function(req, res){
     if(req.params.uid != undefined && req.params.uid != null){
       if(req.body.extension != null && req.body.phone == null){
-        return res.status(404).send({message: "Si diligencia el número de la extensión, debe seleccionar el número de teléfono fijo"});
+        return res.status(400).send({message: "Si diligencia el número de la extensión, debe seleccionar el número de teléfono fijo"});
       }
       var invalidIdentification = false;
       var invalidIdType = false;
@@ -571,7 +571,7 @@ exports.setClientProfessionalByUid = function(req, res){
                   var client = new Array();
                   client = compareArrayUtil.getArrayIntersect();
                   if(client != null && client != undefined && client.length > 0){
-                    return res.status(404).send({message: 'El cliente con ' + req.body.idType + ': ' + req.body.identification + ' ya existe para este profesional'});
+                    return res.status(400).send({message: 'El cliente con ' + req.body.idType + ': ' + req.body.identification + ' ya existe para este profesional'});
                   }
                   else{
                     //crear cliente y persona
@@ -584,7 +584,7 @@ exports.setClientProfessionalByUid = function(req, res){
                         return res.status(200).send({message: 'Cliente asociado al profesional'});
                       }  
                     }).catch((error) => {
-                      return res.status(500).send({message: "" + error});
+                      return res.status(400).send({message: "" + error});
                     });
                   }
                 });
@@ -617,14 +617,14 @@ exports.setClientProfessionalByUid = function(req, res){
                 return res.status(200).send({message: 'Cliente asociado al profesional'});
               } 
             }).catch((error) => {
-              return res.status(500).send({message: "" + error});
+              return res.status(400).send({message: "" + error});
             });  
           }
         });
       }
       else{
         if(invalidIdentification && invalidIdType == false || invalidIdentification == false && invalidIdType){
-          return res.status(404).send({message: 'Tipo de documento o identificación invalidos'});
+          return res.status(400).send({message: 'Tipo de documento o identificación invalidos'});
         }
         else{  
           //crear cliente y persona
@@ -637,13 +637,13 @@ exports.setClientProfessionalByUid = function(req, res){
               return res.status(200).send({message: 'Cliente asociado al profesional'});
             }
           }).catch((error) => {
-            return res.status(500).send({message: "" + error});
+            return res.status(400).send({message: "" + error});
           }); 
         }    
       }
     }
     else{
-      return res.status(404).send({message: 'El uid del profesional es requerido'});
+      return res.status(400).send({message: 'El uid del profesional es requerido'});
     }
 
 }  
@@ -656,7 +656,7 @@ exports.setClientProfessionalByUid = function(req, res){
 exports.setClientProfessionalUpdateByUid = function(req, res){
   if(req.params.uid != undefined && req.params.uid != null){
     if(req.body.extension != null && req.body.phone == null){
-      return res.status(404).send({message: "Si diligencia el número de la extensión, debe seleccionar el número de teléfono fijo"});
+      return res.status(400).send({message: "Si diligencia el número de la extensión, debe seleccionar el número de teléfono fijo"});
     }
     var professionalService = ProfessionalService.findClientsByProfessionalUid(req.params.uid);
     professionalService.then((professional) => {
@@ -680,11 +680,11 @@ exports.setClientProfessionalUpdateByUid = function(req, res){
             var arrayUtil = new ArrayUtil(channels);
 
             if(channels == null || channels == undefined || channels.length == 0){
-              return res.status(404).send({message: 'Es obligatorio escoger por lo menos un canal de comunicación con el cliente'});
+              return res.status(400).send({message: 'Es obligatorio escoger por lo menos un canal de comunicación con el cliente'});
             }
 
             if(arrayUtil.contains(Channel.SMS) && arrayUtil.contains(Channel.WHATSAPP)){
-              return res.status(404).send({message: 'No se pueden configurar los canales de WhatsApp y SMS para un cliente'});
+              return res.status(400).send({message: 'No se pueden configurar los canales de WhatsApp y SMS para un cliente'});
             }
 
             var clientService = ClientService.findClientBy_id(clientId);
@@ -697,12 +697,18 @@ exports.setClientProfessionalUpdateByUid = function(req, res){
                   clientService.then((results) => {
                     res.json(person);
                   }); 
-                });   
-              });
+                });
+
+              }).catch(
+                err => {
+                  return res.status(400).send({message: err.message});
+              }
+              
+              );
             }); 
           }
           else{
-            return res.status(404).send({message: 'El campo _id del cliente es requerido para su actualización'});
+            return res.status(400).send({message: 'El campo _id del cliente es requerido para su actualización'});
           }
         }
         else{
@@ -715,7 +721,7 @@ exports.setClientProfessionalUpdateByUid = function(req, res){
     });
   }
   else{
-    return res.status(404).send({message: 'El uid del profesional es requerido'});
+    return res.status(400).send({message: 'El uid del profesional es requerido'});
   } 
 }  
 
@@ -750,17 +756,17 @@ exports.setServiceProfessionalByUid = function(req, res){
             }); 
           }
           else{
-            return res.status(500).send({message: 'El servicio no pudo ser creado'});
+            return res.status(400).send({message: 'El servicio no pudo ser creado'});
           }
         });
       }
       else{
-        return res.status(500).send({message: 'Un servicio con este nombre ya esta asociado a este profesional'});
+        return res.status(400).send({message: 'Un servicio con este nombre ya esta asociado a este profesional'});
       }
     });
   }
   else{
-    return res.status(404).send({message: 'El uid del profesional es requerido'});
+    return res.status(400).send({message: 'El uid del profesional es requerido'});
   }
 }
  
@@ -804,11 +810,11 @@ exports.setServiceProfessionalUpdateByUid = function(req, res){
       });
     }
     else{
-      return res.status(404).send({message: 'El _id del servicio es requerido'});
+      return res.status(400).send({message: 'El _id del servicio es requerido'});
     }  
   }
   else{
-    return res.status(404).send({message: 'El uid del profesional es requerido'});
+    return res.status(400).send({message: 'El uid del profesional es requerido'});
   } 
 } 
 
@@ -859,11 +865,11 @@ exports.removeServiceProfessionalByUid = function(req, res){
       });  
     }
     else{
-      return res.status(404).send({message: 'El _id del servicio es requerido'});
+      return res.status(400).send({message: 'El _id del servicio es requerido'});
     }  
   }
   else{
-    return res.status(404).send({message: 'El uid del profesional es requerido'});
+    return res.status(400).send({message: 'El uid del profesional es requerido'});
   }
 }
 
@@ -930,11 +936,11 @@ exports.removeClientProfessionalByUid = function(req, res){
       });  
     }
     else{
-      return res.status(404).send({message: 'El identificador del cliente es requerido'});
+      return res.status(400).send({message: 'El identificador del cliente es requerido'});
     }  
   }
   else{
-    return res.status(404).send({message: 'El uid del profesional es requerido'});
+    return res.status(400).send({message: 'El uid del profesional es requerido'});
   } 
 }
 
@@ -1022,7 +1028,7 @@ exports.removeProfessionalCascadeByUid = function(req, res){
   });
 }
 else{
-  return res.status(404).send({message: 'El uid del profesional es requerido'});
+  return res.status(400).send({message: 'El uid del profesional es requerido'});
 }
 }  
 
