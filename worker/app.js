@@ -141,12 +141,12 @@ async function sendNotificationAlarm(job, done) {
                                                 var yesterday = new Date(sumarDias(startTime, -1));
 
 
-                                                if(currentDate > startTime){
+                                                /*if(currentDate > startTime){
                                                     console.warn("debería borrarse");
                                                 }
                                                 else{
                                                     console.log("La cita esta vigente");
-                                                }
+                                                }*/
 
                                                 //console.log(yesterday -currentDate);
                                                 if(currentDate > yesterday){// 1 día es igual a 86400000ms
