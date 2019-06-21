@@ -680,7 +680,11 @@ exports.setClientProfessionalUpdateByUid = function(req, res){
             var arrayUtil = new ArrayUtil(channels);
 
             if(channels == null || channels == undefined || channels.length == 0){
-              return res.status(400).send({message: 'Es obligatorio escoger por lo menos un canal de comunicación con el cliente'});
+              channels.push(Channel.WHATSAPP);
+              var clientServiceChannels = ClientService.saveChannelsClient(clientId, channels);
+              clientServiceChannels.then((results) => {
+                console.info("Se actualiza a canal de WhatsApp por defecto");
+              }); 
             }
 
             if(arrayUtil.contains(Channel.SMS) && arrayUtil.contains(Channel.WHATSAPP)){
