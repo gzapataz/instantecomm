@@ -72,7 +72,7 @@
         "karma-coverage-istanbul-reporter": "~2.0.0",
         "karma-jasmine": "~1.1.1",
         "karma-jasmine-html-reporter": "^0.2.2",
-        "moment": "^2.22.2",
+        "moment": "^2.29.4",
         "morgan": "^1.9.1",
         "ng2-dragula": "^2.0.4",
         "ngx-vcard": "^1.1.6",
