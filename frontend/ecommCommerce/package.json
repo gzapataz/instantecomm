@@ -40,7 +40,7 @@
         "angular2-uuid": "^1.1.1",
         "angularfire2": "^5.0.0-rc.12",
         "body-parser": "^1.18.3",
-        "cordova-android": "7.0.0",
+        "cordova-android": "11.0.0",
         "cordova-ios": "^5.0.1",
         "cordova-plugin-advanced-http": "^2.0.1",
         "cordova-plugin-contacts": "3.0.1",
